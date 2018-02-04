@@ -44,6 +44,40 @@ bot.on("message", async message => {
     .addField(`${botSettings.prefix}hero`,"Display list of available heroes");
     message.channel.send(embed);
   }
+  
+  if (messageArray.length == 1) {
+    //hero commands
+    if (command.length == 3) {
+      
+      var d = new Discord.RichEmbed()
+      .setAuthor(message.author.username)
+      .setColor("#123456");
+      
+      let cmd = command.substring(1,3);
+      
+      //hero quick name
+      let hName = cmd.toLowerCase();
+      let heroName = cp.getHeroName(hName);
+      
+      let result = getGeneralInfo(heroName);
+    
+    
+  
+      if (heroName != null) {
+        let result = cp.getCounter(heroName.toLowerCase());
+        let resultSupport = cp.getSupport(heroName.toLowerCase());
+  
+        if (result != null) {
+          d = d.addField(`${heroName} is weak against`,result).addField(`${heroName} is strong against`,resultSupport);
+          message.channel.send(d);
+        } else {
+          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+        }
+      } else {
+        message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+      }
+    }
+  }
 
   if (messageArray.length >= 2) {
     
@@ -136,6 +170,35 @@ bot.on("message", async message => {
       }
     }
 
+    // quick general information
+    if (command.toLowerCase() === `${botSettings.prefix}g` ) {
+      
+      var d = new Discord.RichEmbed()
+      .setAuthor(message.author.username)
+      .setColor("#123456");
+      
+      //hero quick name
+      let hName = messageArray[1].toLowerCase();
+      let heroName = cp.getHeroName(hName);
+      
+      if (heroName != null) {
+        let result = cp.getCounter(heroName.toLowerCase());
+        let resultSupport = cp.getSupport(heroName.toLowerCase());
+      
+        if (result != null) {
+          
+          d = d.addField(`${heroName} is weak against`,result).addField(`${heroName} is strong against`,resultSupport);
+          message.channel.send(d);
+        } else {
+          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+        }
+      } else {
+          message.channel.send(new Discord.RichEmbed()
+            .setAuthor(message.author.username)
+            .setDescription(`'${heroName}': Invalid hero code!`));
+      }
+    }
+
   } else {
     // show heroes list
     if (command === `${botSettings.prefix}hero`) {
@@ -148,6 +211,22 @@ bot.on("message", async message => {
     }
   }
 });
+
+function getGeneralInfo(heroName) {
+  
+  if (heroName != null) {
+    let result = cp.getCounter(heroName.toLowerCase());
+    let resultSupport = cp.getSupport(heroName.toLowerCase());
+  
+    if (result != null) {
+      return result;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
 
 
 if (botSettings.token != "") {
