@@ -111,7 +111,9 @@ bot.on("message", async message => {
   }
 });
 
-bot.login(botSettings.token);
+//bot.login(botSettings.token);
+// Heroku token
+bot.login(process.env.BOT_TOKEN);
 
 // weak against
 function counter(hero, username) {
