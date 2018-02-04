@@ -38,7 +38,8 @@ bot.on("message", async message => {
     .addField("!counter HERO","Displays the weakness of given hero")
     .addField("!c HERO-CODE","Quick Display weakness of given hero code")
     .addField("!support HERO","Displays the strength of hero")
-    .addField("!s HERO-CODE","Quick Display strength of given hero code");
+    .addField("!s HERO-CODE","Quick Display strength of given hero code")
+    .addField("!hero","Display list of available heroes");
     message.channel.send(embed);
   }
   
@@ -176,12 +177,9 @@ function heroList(username) {
   var list = "";
   
   
-  
   for (var key of Object.keys(mobaCounter.hero)) {
     list = list+ "+ " + mobaCounter.hero[key] + " [" + `${key}` + "]\n";
   }
   
-  
-  
-  return d.addField("List of available heroes",list);
+  return d.addField(`List of available heroes [${Object.keys(mobaCounter.hero).length}]`,list);
 }
