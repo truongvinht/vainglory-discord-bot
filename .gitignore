@@ -1,3 +1,4 @@
 #ignore following files
 node_modules
 botsettings.json
+.DS_Store
