@@ -34,12 +34,11 @@ bot.on("message", async message => {
     let embed = new Discord.RichEmbed()
     .setAuthor(message.author.username)
     .setDescription("Following commands are available:")
-    .setColor("#123456")
-    .addField("!counter HERO","Displays the weakness of given hero")
-    .addField("!c HERO-CODE","Quick Display weakness of given hero code")
-    .addField("!support HERO","Displays the strength of hero")
-    .addField("!s HERO-CODE","Quick Display strength of given hero code")
-    .addField("!hero","Display list of available heroes");
+    .addField("${botSettings.prefix}counter HERO","Displays the weakness of given hero")
+    .addField("${botSettings.prefix}c HERO-CODE","Quick Display weakness of given hero code")
+    .addField("${botSettings.prefix}support HERO","Displays the strength of hero")
+    .addField("${botSettings.prefix}s HERO-CODE","Quick Display strength of given hero code")
+    .addField("${botSettings.prefix}hero","Display list of available heroes");
     message.channel.send(embed);
   }
   
