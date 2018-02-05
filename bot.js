@@ -1,14 +1,16 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
 const mobaCounter = require("./mobaCounter.json");
-
-const bot = new Discord.Client({disableEveryone: true});
+const i18n = require('./langSupport');
 
 //counter picker
 const cp = require('./vgCounterPicker');
 
+const bot = new Discord.Client({disableEveryone: true});
+
 bot.on("ready", async () => {
-  console.log(`Bot is ready! ${bot.user.username}`);
+  
+  console.log(`${i18n.get('BotReady')} ${bot.user.username}`);
   
   try {
     let link = await bot.generateInvite(["ADMINISTRATOR"]);
@@ -35,13 +37,13 @@ bot.on("message", async message => {
   if (command === `${botSettings.prefix}help`) {
     let embed = new Discord.RichEmbed()
     .setAuthor(message.author.username)
-    .setDescription("Following commands are available:")
-    .addField(`${botSettings.prefix}counter HERO`,"Displays the weakness of given hero")
-    .addField(`${botSettings.prefix}c HERO-CODE`,"Quick Display weakness of given hero code")
-    .addField(`${botSettings.prefix}support HERO`,"Displays the strength of hero")
-    .addField(`${botSettings.prefix}s HERO-CODE`,"Quick Display strength of given hero code")
-    .addField(`${botSettings.prefix}g HERO-CODE`,"Quick Display strength/weakness of given hero code")
-    .addField(`${botSettings.prefix}hero`,"Display list of available heroes");
+    .setDescription(`${i18n.get('FollowingCommands')}`)
+    .addField(`${botSettings.prefix}counter HERO`,`${i18n.get('DisplayWeaknessHero')}`)
+    .addField(`${botSettings.prefix}c HERO-CODE`,`${i18n.get('DisplayWeaknessHeroCode')}`)
+    .addField(`${botSettings.prefix}support HERO`,`${i18n.get('DisplayStrengthHero')}`)
+    .addField(`${botSettings.prefix}s HERO-CODE`,`${i18n.get('DisplayStrengthHeroCode')}`)
+    .addField(`${botSettings.prefix}HERO-CODE`,`${i18n.get('DisplayInfoHeroCode')}`)
+    .addField(`${botSettings.prefix}hero`,`${i18n.get('DisplayListHero')}`);
     message.channel.send(embed);
   }
   
@@ -61,20 +63,19 @@ bot.on("message", async message => {
       
       let result = getGeneralInfo(heroName);
     
-    
-  
       if (heroName != null) {
         let result = cp.getCounter(heroName.toLowerCase());
         let resultSupport = cp.getSupport(heroName.toLowerCase());
   
         if (result != null) {
-          d = d.addField(`${heroName} is weak against`,result).addField(`${heroName} is strong against`,resultSupport);
+          d = d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result)
+          .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`,resultSupport);
           message.channel.send(d);
         } else {
-          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+          message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
         }
       } else {
-        message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+        message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
       }
     }
   }
@@ -93,9 +94,9 @@ bot.on("message", async message => {
       let result = cp.getCounter(hero);
       
       if (result != null) {
-        message.channel.send(d.addField(`${hero} is weak against`,result));
+        message.channel.send(d.addField(`${hero} ${i18n.get('IsWeakAgainst')}`,result));
       } else {
-        message.channel.send(d.setDescription(`Hero '${hero}' not found!`))
+        message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
       }
     }
 
@@ -116,14 +117,14 @@ bot.on("message", async message => {
         let result = cp.getCounter(heroName.toLowerCase());
       
         if (result != null) {
-          message.channel.send(d.addField(`${heroName} is weak against`,result));
+          message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result));
         } else {
-          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+          message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
         }
       } else {
           message.channel.send(new Discord.RichEmbed()
             .setAuthor(message.author.username)
-            .setDescription(`'${heroName}': Invalid hero code!`));
+            .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
       }
     }
 
@@ -137,12 +138,11 @@ bot.on("message", async message => {
       let result = cp.getSupport(hero);
       
       if (result != null) {
-        message.channel.send(d.addField(`${hero} is strong against`,result));
+        message.channel.send(d.addField(`${hero} ${i18n.get('IsStrongAgainst')}`,result));
       } else {
-        message.channel.send(d.setDescription(`Hero '${hero}' not found!`))
+        message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`))
       }
     }
-
 
     // quick counter pick
     if (command.toLowerCase() === `${botSettings.prefix}s` ) {
@@ -159,43 +159,14 @@ bot.on("message", async message => {
         let result = cp.getSupport(heroName.toLowerCase());
       
         if (result != null) {
-          message.channel.send(d.addField(`${heroName} is weak against`,result));
+          message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result));
         } else {
-          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
+          message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
         }
       } else {
           message.channel.send(new Discord.RichEmbed()
             .setAuthor(message.author.username)
-            .setDescription(`'${heroName}': Invalid hero code!`));
-      }
-    }
-
-    // quick general information
-    if (command.toLowerCase() === `${botSettings.prefix}g` ) {
-      
-      var d = new Discord.RichEmbed()
-      .setAuthor(message.author.username)
-      .setColor("#123456");
-      
-      //hero quick name
-      let hName = messageArray[1].toLowerCase();
-      let heroName = cp.getHeroName(hName);
-      
-      if (heroName != null) {
-        let result = cp.getCounter(heroName.toLowerCase());
-        let resultSupport = cp.getSupport(heroName.toLowerCase());
-      
-        if (result != null) {
-          
-          d = d.addField(`${heroName} is weak against`,result).addField(`${heroName} is strong against`,resultSupport);
-          message.channel.send(d);
-        } else {
-          message.channel.send(d.setDescription(`Hero '${heroName}' not found!`))
-        }
-      } else {
-          message.channel.send(new Discord.RichEmbed()
-            .setAuthor(message.author.username)
-            .setDescription(`'${heroName}': Invalid hero code!`));
+            .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
       }
     }
 
@@ -211,6 +182,7 @@ bot.on("message", async message => {
     }
   }
 });
+
 
 function getGeneralInfo(heroName) {
   

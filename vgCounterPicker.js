@@ -5,7 +5,7 @@
 
 // import 
 const mobaCounter = require("./mobaCounter.json");
-
+const i18n = require('./langSupport');
 
 // weak against
 var counter = function(hero) {
@@ -58,7 +58,7 @@ var heroes = function() {
   }
   
   let content = {
-    "title": `List of available heroes [${Object.keys(mobaCounter.hero).length}]`,
+    "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(mobaCounter.hero).length}]`,
     "content": list
   }
   

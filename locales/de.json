@@ -1,0 +1,16 @@
+{
+	"AvailableCommands": "Folgende Befehle sind verfügbar:",
+	"BotReady": "Bot is bereit!",
+  "DisplayWeaknessHero":"Anzeige der Helden, die diesen Helden überlegen sind (Heldennamen)",
+  "DisplayWeaknessHeroCode":"Anzeige der Helden, die diesen Helden überlegen sind (Code)",
+  "DisplayStrengthHero":"Anzeige der Helden, wo dieser Held unterlegen ist (Heldennamen)",
+  "DisplayStrengthHeroCode":"Anzeige der Helden, wo dieser Held unterlegen ist (Code)",
+  "DisplayInfoHeroCode":"Anzeige der Informationen zu dem Helden (Code)",
+  "DisplayListHero":"Anzeige der verfügbaren Helden",
+  "FollowingCommands":"Folgende Befehle sind verfügbar:",
+  "InvalidHeroCode": "Ungültiger Code!",
+  "IsStrongAgainst":"ist gut gegen",
+  "IsWeakAgainst":"ist schwach gegen",
+  "ListAvailableHeroes":"Liste verfügbarer Helden",
+  "NotFound":"wurde nicht gefunden!"
+}

@@ -1,0 +1,16 @@
+{
+  "AvailableCommands":"Following commands are available:",
+  "BotReady":"Bot is ready!",
+  "DisplayWeaknessHero":"Display weakness for given hero name",
+  "DisplayWeaknessHeroCode":"Display weakness for given hero code",
+  "DisplayStrengthHero":"Display strength for given hero name",
+  "DisplayStrengthHeroCode":"Display strength for given hero code",
+  "DisplayInfoHeroCode":"Display strength and weakness for given hero code",
+  "DisplayListHero":"Display list of available heroes",
+  "FollowingCommands":"Following commands are available:",
+  "InvalidHeroCode": "Invalid hero code!",
+  "IsStrongAgainst":"is strong against",
+  "IsWeakAgainst":"is weak against",
+  "ListAvailableHeroes":"List of available heroes",
+  "NotFound":"not found!"
+}
