@@ -4,19 +4,19 @@
 
 
 // import 
-const mobaCounter = require("./mobaCounter.json");
+const vgCounter = require("./heroes.json");
 const i18n = require('./langSupport');
 
 // weak against
 var counter = function(hero) {
     
   //check for hero name
-  if (mobaCounter.against.hasOwnProperty(hero)) {
+  if (vgCounter.against.hasOwnProperty(hero)) {
   
-    if (mobaCounter.against[hero].length > 0) {
+    if (vgCounter.against[hero].length > 0) {
       var list = "";
       
-      for(var name of mobaCounter.against[hero]) {
+      for(var name of vgCounter.against[hero]) {
         list = list + (`- ${name}`) + "\n";
       }
       return list;
@@ -31,12 +31,12 @@ var counter = function(hero) {
 var support = function(hero) {
   
   //check for hero name
-  if (mobaCounter.with.hasOwnProperty(hero)) {
+  if (vgCounter.with.hasOwnProperty(hero)) {
   
-    if (mobaCounter.with[hero].length > 0) {
+    if (vgCounter.with[hero].length > 0) {
       var list = "";
       
-      for(var name of mobaCounter.with[hero]) {
+      for(var name of vgCounter.with[hero]) {
         list = list + (`+ ${name}`) + "\n";
       }
       
@@ -53,12 +53,12 @@ var heroes = function() {
   // list for output
   var list = "";
   
-  for (var key of Object.keys(mobaCounter.hero)) {
-    list = list+ "+ " + mobaCounter.hero[key] + " [" + `${key}` + "]\n";
+  for (var key of Object.keys(vgCounter.hero)) {
+    list = list+ "+ " + vgCounter.hero[key] + " [" + `${key}` + "]\n";
   }
   
   let content = {
-    "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(mobaCounter.hero).length}]`,
+    "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(vgCounter.hero).length}]`,
     "content": list
   }
   
@@ -67,8 +67,8 @@ var heroes = function() {
 
 var quickHeroLookup = function(hero) {
   if (hero.length == 2) {
-    if (mobaCounter.hero.hasOwnProperty(hero)) {
-      return mobaCounter.hero[hero];
+    if (vgCounter.hero.hasOwnProperty(hero)) {
+      return vgCounter.hero[hero];
     }
   }else {
     return null;

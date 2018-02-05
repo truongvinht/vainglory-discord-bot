@@ -1,6 +1,5 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
-const mobaCounter = require("./mobaCounter.json");
 const i18n = require('./langSupport');
 
 //counter picker
