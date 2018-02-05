@@ -1,6 +1,7 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
 const i18n = require('./langSupport');
+var vg = require('./vainglory-req');
 
 //counter picker
 const cp = require('./vgCounterPicker');
@@ -23,16 +24,14 @@ bot.on("message", async message => {
 
   if(message.author.bot) return;
 
+  if(!message.content.startsWith(botSettings.prefix)) return;
+  
   //check for direct message
   if(message.channel.type === "dm") return;
 
-  if(!message.content.startsWith(botSettings.prefix)) return;
-
   let messageArray = message.content.split(" ");
-
   let command = messageArray[0];
-  let args = messageArray.slice(1);
-
+   
   if (command === `${botSettings.prefix}help`) {
     let embed = new Discord.RichEmbed()
     .setAuthor(message.author.username)
@@ -43,6 +42,11 @@ bot.on("message", async message => {
     .addField(`${botSettings.prefix}s HERO-CODE`,`${i18n.get('DisplayStrengthHeroCode')}`)
     .addField(`${botSettings.prefix}HERO-CODE`,`${i18n.get('DisplayInfoHeroCode')}`)
     .addField(`${botSettings.prefix}hero`,`${i18n.get('DisplayListHero')}`);
+    
+    if(message.member.roles.find("name", "Admin") || message.member.roles.find("name", "Mod")) {
+      embed.addField(`${botSettings.prefix}match Player [server]`,`${i18n.get('Last match details')}`);
+    }
+    
     message.channel.send(embed);
   }
   
@@ -168,6 +172,60 @@ bot.on("message", async message => {
             .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
       }
     }
+
+      
+    //only allow users with roles
+    if (command.toLowerCase() === `${botSettings.prefix}match` ) {
+
+      var hasRole = false;
+      
+      for (var reqRole of botSettings.restricted) {
+        if (message.member.roles.find("name", reqRole)) {
+          hasRole = true;
+          break;
+        }
+      }
+      
+      if (hasRole){
+        // restricted actions
+        console.log("user has role");
+        const playerName = messageArray[1];
+        
+        var serverCode = botSettings.vaingloryAPIServer;
+        
+        //override default server
+        if (messageArray.length===3 && messageArray[2].length > 1 && messageArray[2].length < 4){
+          serverCode = messageArray[2];
+        }
+        
+        // prepare VG API token
+        var vgToken = "";
+        if (botSettings.vgAPIToken != "") {
+          // use local TOKEN from settings
+          vgToken = botSettings.vgAPIToken;
+        } else {
+          // Heroku ENV token
+          vgToken = process.env.vgAPIToken;
+        }
+
+        var callback = function(text, matchID, matchDate, dbKey, device) {
+          if(text!=null) {
+
+            var d = new Discord.RichEmbed()
+            .setAuthor(message.author.username)
+            .setColor("#000000");
+
+            message.channel.send(d.setDescription(`${text}`));
+          }
+        };
+
+        vg.setToken(vgToken);
+        vg.getPlayerStats("device",serverCode,playerName,new Date(), callback);
+        
+      }
+      
+    }
+    
 
   } else {
     // show heroes list
