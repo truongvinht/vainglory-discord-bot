@@ -7,6 +7,7 @@
   "DisplayStrengthHeroCode":"Anzeige der Helden, wo dieser Held unterlegen ist (Code)",
   "DisplayInfoHeroCode":"Anzeige der Informationen zu dem Helden (Code)",
   "DisplayListHero":"Anzeige der verfügbaren Helden",
+  "EnteredHeroDoesntExist": "Eingegebener Held existiert nicht!",
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
   "InvalidHeroCode": "Ungültiger Code!",
   "IsStrongAgainst":"ist gut gegen",

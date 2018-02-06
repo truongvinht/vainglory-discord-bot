@@ -1,8 +1,8 @@
 {
-  "token":"",
+  "token":"NDA5NDA2ODQ3MTA0MzE5NDg5.DVmTIQ.bb-qP85s0HKRwfPUo9Q_fvCePtc",
   "prefix":"?",
   "lang": "de",
   "restricted":["Leader","Moderator"],
-  "vgAPIToken":"",
+  "vgAPIToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NGYwZmQwMC1lZmQ0LTAxMzQtNTU1Zi0wMjQyYWMxMTAwMDQiLCJpc3MiOiJnYW1lbG9ja2VyIiwib3JnIjoidHJ1b25ndmluaHQtbXNuLWNvbSIsImFwcCI6Ijg0ZWZmMjMwLWVmZDQtMDEzNC01NTVlLTAyNDJhYzExMDAwNCIsInB1YiI6InNlbWMiLCJ0aXRsZSI6InZhaW5nbG9yeSIsInNjb3BlIjoiY29tbXVuaXR5IiwibGltaXQiOjEwfQ.GU39V1yTUtgoe0SExAqNoA2kw-rz2aE8nbVjSoBCHIE",
   "vaingloryAPIServer": "eu"
 }

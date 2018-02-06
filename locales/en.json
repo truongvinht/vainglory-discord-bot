@@ -7,6 +7,7 @@
   "DisplayStrengthHeroCode":"Display strength for given hero code",
   "DisplayInfoHeroCode":"Display strength and weakness for given hero code",
   "DisplayListHero":"Display list of available heroes",
+  "EnteredHeroDoesntExist": "Entered hero doesn't exist!",
   "FollowingCommands":"Following commands are available:",
   "InvalidHeroCode": "Invalid hero code!",
   "IsStrongAgainst":"is strong against",

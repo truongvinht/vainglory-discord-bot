@@ -75,10 +75,10 @@ bot.on("message", async message => {
           .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`,resultSupport);
           message.channel.send(d);
         } else {
-          message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
+          message.channel.send(d.setDescription(`'${heroName}': ${i18n.get('EnteredHeroDoesntExist')}`));
         }
       } else {
-        message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
+        message.channel.send(d.setDescription(`'${hName}': ${i18n.get('EnteredHeroDoesntExist')}`));
       }
     }
   }

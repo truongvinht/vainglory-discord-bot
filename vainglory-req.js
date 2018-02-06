@@ -58,6 +58,8 @@ var playerStats = function (device, region, player, rawDate, callback) {
 			var match = fetchLastMatch(json)
 			
 			var text = player + ": " + getFormattedDate(match.createdAt) + "\n";
+      
+      text = text + match.gameMode + ": "+ (match.duration-(match.duration%60))/60+"mins \n";
 
       // Helper list with all players grouped by roster
 			var rosterLeft = [];
@@ -96,10 +98,13 @@ var playerStats = function (device, region, player, rawDate, callback) {
       
       //left
       for (var p of rosterLeft) {
+        
+        const player = fetchPlayer(json,p.playerID);
+        
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor + " ("+p.tier +") [x]";
+          text = text + "" + p.actor + "/"+ player.name + " - " + player.guildTag + " ("+p.tier +") [x]";
         } else {
-          text = text + "" + p.actor + " ("+p.tier +")";
+          text = text + "" + p.actor +  "/"+ player.name + " - " + player.guildTag + " ("+p.tier +")";
         }
         
         if (maxScorePlayerID == p.playerID) {
@@ -113,13 +118,16 @@ var playerStats = function (device, region, player, rawDate, callback) {
       
       //right
       for (var p of rosterRight) {
+        
+        const player = fetchPlayer(json,p.playerID);
+        
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor + " ("+p.tier +") [x]";
+          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag +  " ("+p.tier +") [x]";
         } else {
-          text = text + "" + p.actor + " ("+p.tier +")";
+          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag +  " ("+p.tier +")";
         }
         if (maxScorePlayerID == p.playerID) {
-          text = text + " M";
+          text = text + " [*]";
         }
         
         text = text + "\n";
@@ -215,7 +223,6 @@ function fetchParticipants(json, participantID) {
 	
 	var participant = null;
 	
-
 	for (var included of json.included) {
 
 		// fetch item attributes
@@ -255,8 +262,30 @@ function fetchPlayerID(json, playerName) {
 	
 		if ('player' == included.type) {
 			if (playerName == attributes.name) {
-        //console.log("name:"+attributes.name + "| id: "+included.id);
 			  return included.id;
+			}
+		}
+	}
+	return null;
+}
+
+function fetchPlayer(json, playerId) {
+	
+	for (var included of json.included) {
+		// fetch item attributes
+		var attributes = included.attributes;
+	
+		if ('player' == included.type) {
+			if (playerId == included.id) {
+  			var player = {
+  				"id": included.id,
+  				"name": attributes.name,
+  				"skillTier": getTier(attributes.stats.skillTier),
+          "rankPoints":attributes.stats.rankPoints.ranked,
+          "guildTag":attributes.stats.guildTag
+  			};
+        
+			  return player;
 			}
 		}
 	}
