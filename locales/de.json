@@ -1,6 +1,7 @@
 {
 	"AvailableCommands": "Folgende Befehle sind verfügbar:",
 	"BotReady": "Bot is bereit!",
+  "ClearCmd":"Letzte Nachrichten entfernen",
   "DisplayWeaknessHero":"Anzeige der Helden, die diesen Helden überlegen sind (Heldennamen)",
   "DisplayWeaknessHeroCode":"Anzeige der Helden, die diesen Helden überlegen sind (Code)",
   "DisplayStrengthHero":"Anzeige der Helden, wo dieser Held unterlegen ist (Heldennamen)",
@@ -12,6 +13,8 @@
   "InvalidHeroCode": "Ungültiger Code!",
   "IsStrongAgainst":"ist gut gegen",
   "IsWeakAgainst":"ist schwach gegen",
+  "LastMatchDetails":"Anzeige des letzten Spiels",
   "ListAvailableHeroes":"Liste verfügbarer Helden",
-  "NotFound":"wurde nicht gefunden!"
+  "NotFound":"wurde nicht gefunden!",
+  "Player":"Spieler"
 }

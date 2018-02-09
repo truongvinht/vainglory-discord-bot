@@ -32,6 +32,15 @@ bot.on("message", async message => {
   let messageArray = message.content.split(" ");
   let command = messageArray[0];
    
+  var hasRole = false;
+  
+  for (var reqRole of botSettings.restricted) {
+    if (message.member.roles.find("name", reqRole)) {
+      hasRole = true;
+      break;
+    }
+  }
+  
   if (command === `${botSettings.prefix}help`) {
     let embed = new Discord.RichEmbed()
     .setAuthor(message.author.username)
@@ -43,8 +52,9 @@ bot.on("message", async message => {
     .addField(`${botSettings.prefix}HERO-CODE`,`${i18n.get('DisplayInfoHeroCode')}`)
     .addField(`${botSettings.prefix}hero`,`${i18n.get('DisplayListHero')}`);
     
-    if(message.member.roles.find("name", "Admin") || message.member.roles.find("name", "Mod")) {
-      embed.addField(`${botSettings.prefix}match Player [server]`,`${i18n.get('Last match details')}`);
+    if(hasRole) {
+      embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`,`${i18n.get('LastMatchDetails')}`);
+      embed.addField(`${botSettings.prefix}clear`,`${i18n.get('ClearCmd')}`);
     }
     
     message.channel.send(embed);
@@ -71,6 +81,8 @@ bot.on("message", async message => {
         let resultSupport = cp.getSupport(heroName.toLowerCase());
   
         if (result != null) {
+          console.log(`http://vaingloryEuE.com/bot/images/${heroName.toLowerCase()}.png`);
+          d = d.setThumbnail(`http://vaingloryEuE.com/bot/images/${heroName.toLowerCase()}.png`)
           d = d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result)
           .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`,resultSupport);
           message.channel.send(d);
@@ -177,15 +189,6 @@ bot.on("message", async message => {
     //only allow users with roles
     if (command.toLowerCase() === `${botSettings.prefix}match` ) {
 
-      var hasRole = false;
-      
-      for (var reqRole of botSettings.restricted) {
-        if (message.member.roles.find("name", reqRole)) {
-          hasRole = true;
-          break;
-        }
-      }
-      
       if (hasRole){
         // restricted actions
         console.log("user has role");
@@ -236,6 +239,25 @@ bot.on("message", async message => {
       
       let keyValueMap = cp.getHeroes();
       message.channel.send(d.addField(keyValueMap.title,keyValueMap.content));
+    } else if (command === `${botSettings.prefix}clear` && hasRole) {
+      async function clear() {
+        //remove clear command (last 50 messages)
+        message.delete();
+      
+        message.channel.fetchMessages({limit: 50}).then(messages => {
+        
+          for (const msg of messages.array()) {
+             if (msg.author.id === bot.user.id) {
+               msg.delete();
+             } else {
+               if (msg.content.startsWith(`${botSettings.prefix}`)) {
+                 msg.delete();
+               }
+             }
+          }
+        }).catch(console.error);;
+      }
+      clear();
     }
   }
 });

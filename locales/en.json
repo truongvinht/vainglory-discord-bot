@@ -1,6 +1,7 @@
 {
   "AvailableCommands":"Following commands are available:",
   "BotReady":"Bot is ready!",
+  "ClearCmd":"Clear the recent messages",
   "DisplayWeaknessHero":"Display weakness for given hero name",
   "DisplayWeaknessHeroCode":"Display weakness for given hero code",
   "DisplayStrengthHero":"Display strength for given hero name",
@@ -12,6 +13,8 @@
   "InvalidHeroCode": "Invalid hero code!",
   "IsStrongAgainst":"is strong against",
   "IsWeakAgainst":"is weak against",
+  "LastMatchDetails":"Display last match",
   "ListAvailableHeroes":"List of available heroes",
-  "NotFound":"not found!"
+  "NotFound":"not found!",
+  "Player":"Player"
 }
