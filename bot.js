@@ -212,19 +212,19 @@ bot.on("message", async message => {
         }
 
         var callback = function(text, matchID, matchDate, dbKey, device) {
+
+          var d = new Discord.RichEmbed()
+          .setAuthor(message.author.username)
+          .setColor("#000000");
+          
           if(text!=null) {
-
-            var d = new Discord.RichEmbed()
-            .setAuthor(message.author.username)
-            .setColor("#000000");
-
             message.channel.send(d.setDescription(`${text}`));
+          }else {
+          message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
           }
         };
-
         vg.setToken(vgToken);
         vg.getPlayerStats("device",serverCode,playerName,new Date(), callback);
-        
       }
       
     }

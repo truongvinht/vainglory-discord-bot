@@ -71,7 +71,12 @@ var playerStats = function (device, region, player, rawDate, callback) {
 			for (var rosterID of match.roster) {
 				//text = text + "\n";
 				var roster = fetchRoster(json,rosterID);
-        
+
+        if (roster.won == "true" && roster.side == 'left/blue') {
+          text = text + "Left win \n";
+        } else if (roster.won == "true"){
+          text = text + "Right win \n";
+        }
         
 				//text = text + ""+roster.side+":" + "\n";
 				for (var part of roster.participants) {
@@ -102,9 +107,9 @@ var playerStats = function (device, region, player, rawDate, callback) {
         const player = fetchPlayer(json,p.playerID);
         
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor + "/"+ player.name + " - " + player.guildTag + " ("+p.tier +") [x]";
+          text = text + "" + p.actor + "/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints + " ("+p.tier +")";
         } else {
-          text = text + "" + p.actor +  "/"+ player.name + " - " + player.guildTag + " ("+p.tier +")";
+          text = text + "" + p.actor +  "/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints + " ("+p.tier +")";
         }
         
         if (maxScorePlayerID == p.playerID) {
@@ -122,9 +127,9 @@ var playerStats = function (device, region, player, rawDate, callback) {
         const player = fetchPlayer(json,p.playerID);
         
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag +  " ("+p.tier +") [x]";
+          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints +  " ("+p.tier +")";
         } else {
-          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag +  " ("+p.tier +")";
+          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints +  " ("+p.tier +")";
         }
         if (maxScorePlayerID == p.playerID) {
           text = text + " [*]";
@@ -210,7 +215,8 @@ function fetchRoster(json, rosterID) {
 			roster = {
 				"id": included.id,
 				"side": attributes.stats.side,
-				"participants": list
+				"participants": list,
+        "won":attributes.won
 			};
 			}
 		}
@@ -281,8 +287,8 @@ function fetchPlayer(json, playerId) {
   				"id": included.id,
   				"name": attributes.name,
   				"skillTier": getTier(attributes.stats.skillTier),
-          "rankPoints":attributes.stats.rankPoints.ranked,
-          "guildTag":attributes.stats.guildTag
+          "rankPoints": attributes.stats.rankPoints.ranked.toFixed(2),
+          "guildTag":attributes.stats.guildTag,
   			};
         
 			  return player;
