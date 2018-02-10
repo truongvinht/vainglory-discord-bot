@@ -1,6 +1,6 @@
 {
-	"AvailableCommands": "Folgende Befehle sind verfügbar:",
-	"BotReady": "Bot is bereit!",
+  "AvailableCommands": "Folgende Befehle sind verfügbar:",
+  "BotReady": "Bot is bereit!",
   "ClearCmd":"Letzte Nachrichten entfernen",
   "DisplayWeaknessHero":"Anzeige der Helden, die diesen Helden überlegen sind (Heldennamen)",
   "DisplayWeaknessHeroCode":"Anzeige der Helden, die diesen Helden überlegen sind (Code)",

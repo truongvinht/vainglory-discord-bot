@@ -24,7 +24,9 @@ var playerStats = function (device, region, player, rawDate, callback) {
 	var since_date = getTimeStamp(rawDate);
    
 	console.log("Requesting "+player+" ...");
+  
 	var requestURL = VG_URL + region + "/matches?filter[createdAt-start]="+since_date+"&filter[playerNames]="+player;
+  console.log(requestURL);
 	var reqOption = {
 		url: requestURL,
 		headers: {
@@ -107,13 +109,13 @@ var playerStats = function (device, region, player, rawDate, callback) {
         const player = fetchPlayer(json,p.playerID);
         
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor + "/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints + " ("+p.tier +")";
+          text = text + "- " + p.actor + " / "+ player.name + " [" + player.guildTag  + "] ("+p.tier +")";
         } else {
-          text = text + "" + p.actor +  "/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints + " ("+p.tier +")";
+          text = text + "- " + p.actor +  " / "+ player.name + " [" + player.guildTag + "] ("+p.tier +")";
         }
         
         if (maxScorePlayerID == p.playerID) {
-          text = text + " [*]";
+          text = text + " *";
         }
         
         text = text + "\n";
@@ -127,12 +129,12 @@ var playerStats = function (device, region, player, rawDate, callback) {
         const player = fetchPlayer(json,p.playerID);
         
         if (p.playerID == ownPlayerID) {
-          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints +  " ("+p.tier +")";
+          text = text + "- " + p.actor +" / "+ player.name + " [" + player.guildTag +  "] ("+p.tier +")";
         } else {
-          text = text + "" + p.actor +"/"+ player.name + " - " + player.guildTag + " / " + player.rankPoints +  " ("+p.tier +")";
+          text = text + "- " + p.actor +" / "+ player.name + " [" + player.guildTag +  "] ("+p.tier +")";
         }
         if (maxScorePlayerID == p.playerID) {
-          text = text + " [*]";
+          text = text + " *";
         }
         
         text = text + "\n";
@@ -311,8 +313,6 @@ function fetchVictoryGames(json) {
 		
 		//fetch game information
 		var attributes = game.attributes;
-		
-		console.log("MATCH: "+attributes);
 		var gameInfo = {
 			"id": game.id,
 			"createdAt": attributes.createdAt,

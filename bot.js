@@ -191,7 +191,6 @@ bot.on("message", async message => {
 
       if (hasRole){
         // restricted actions
-        console.log("user has role");
         const playerName = messageArray[1];
         
         var serverCode = botSettings.vaingloryAPIServer;
