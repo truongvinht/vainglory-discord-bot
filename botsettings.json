@@ -2,6 +2,7 @@
   "token":"",
   "prefix":"?",
   "lang": "de",
+  "imageURL":"",
   "restricted":["Leader","Moderator"],
   "vgAPIToken":"",
   "vaingloryAPIServer": "eu"
