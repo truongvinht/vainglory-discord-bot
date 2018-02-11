@@ -139,7 +139,7 @@ bot.on("message", async message => {
         let result = cp.getCounter(heroName.toLowerCase());
       
         if (result != null) {
-          d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
+          d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
           message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result));
         } else {
           message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
@@ -168,7 +168,7 @@ bot.on("message", async message => {
       }
     }
 
-    // quick counter pick
+    // quick support pick
     if (command.toLowerCase() === `${botSettings.prefix}s` ) {
       
       var d = new Discord.RichEmbed()
@@ -183,7 +183,8 @@ bot.on("message", async message => {
         let result = cp.getSupport(heroName.toLowerCase());
       
         if (result != null) {
-          message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result));
+        d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
+          message.channel.send(d.addField(`${heroName} ${i18n.get('IsStrongAgainst')}`,result));
         } else {
           message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
         }
