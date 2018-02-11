@@ -12,7 +12,7 @@ const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 // request token for VG API
 var requestToken = '';
 
-var playerStats = function (device, region, player, rawDate, callback) {
+var matchStats = function (device, region, player, rawDate, callback) {
 
 	//check for non-empty VG key
     var key = requestToken;
@@ -140,7 +140,7 @@ var playerStats = function (device, region, player, rawDate, callback) {
         text = text + "\n";
       }
       
-			callback(text, match.id,match.createdAt, ""+ device + region + player, device);
+      callback(text, match.id,match.createdAt, ""+ device + region + player, device);
 	  } else {
 
 		if(response != null) {
@@ -154,6 +154,69 @@ var playerStats = function (device, region, player, rawDate, callback) {
 		callback(null,player);
 	  }
 	});
+}
+
+// function to get player stats
+var playerStats = function (region, playerName, callback) {
+
+  //check for non-empty VG key
+  var key = requestToken;
+  if (key==null || key == '') {
+    console.log("Error: API Key is empty");
+    return null;
+  }
+
+  var requestURL = VG_URL + region + "/players?filter[playerNames]="+playerName;
+  
+  var reqOption = {
+    url: requestURL,
+    headers: {
+      'User-Agent':'request',
+      'Authorization': key,
+      'X-TITLE-ID': 'semc-vainglory',
+      'Accept': 'application/json',
+      'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+      'Expires': '-1',
+      'Pragma': 'no-cache'
+    }
+  };
+
+  request(reqOption,function (error, response, body){
+
+    if (!error && response.statusCode == 200) {
+      var json = JSON.parse(body);
+      
+      if (json.data.length > 0) {
+      
+        //parse first item
+        const anyPlayer = json.data[0];
+        var player = {
+          "id": anyPlayer.id,
+          "name": anyPlayer.attributes.name,
+          "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
+          "rankPoints": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2),
+          "guildTag":anyPlayer.attributes.stats.guildTag,
+          "level":anyPlayer.attributes.stats.level
+        };
+        callback(playerName,player);
+      } else {
+        // no result
+        callback(playerName,null);
+      }
+      
+    } else {
+
+      if(response != null) {
+        console.log("# # # # #");
+        console.log("URL: "+requestURL);
+        console.log("Status: "+response.statusCode);
+        console.log("Header: "+response.rawHeaders);
+        console.log("Body: "+body);
+        console.log("Failed: "+error);
+      }
+      callback(playerName,null);
+    }
+  });
 }
 
 // function for getting latest match
@@ -445,6 +508,7 @@ var updateToken = function(token) {
 }
 
 module.exports = {
-	getPlayerStats: playerStats,
+	getMatchStats: matchStats,
+  getPlayerStats: playerStats,
   setToken: updateToken
 };

@@ -233,11 +233,49 @@ bot.on("message", async message => {
           }
         };
         vg.setToken(vgToken);
-        vg.getPlayerStats("device",serverCode,playerName,new Date(), callback);
+        vg.getMatchStats("device",serverCode,playerName,new Date(), callback);
       }
-      
     }
     
+    //show player stats
+    if (command.toLowerCase() === `${botSettings.prefix}player` ) {
+      if (hasRole) {
+        // restricted actions
+        const playerName = messageArray[1];
+        
+        var serverCode = botSettings.vaingloryAPIServer;
+        
+        //override default server
+        if (messageArray.length===3 && messageArray[2].length > 1 && messageArray[2].length < 4){
+          serverCode = messageArray[2];
+        }
+        
+        // prepare VG API token
+        var vgToken = "";
+        if (botSettings.vgAPIToken != "") {
+          // use local TOKEN from settings
+          vgToken = botSettings.vgAPIToken;
+        } else {
+          // Heroku ENV token
+          vgToken = process.env.vgAPIToken;
+        }
+
+        var callback = function(playerName,player) {
+
+          var d = new Discord.RichEmbed()
+          .setColor("#FFD700");
+          
+          if(player!=null) {
+            d = d.addField(`${player.name}`,`${i18n.get('Skilltier')}: ${player.skillTier}\n${i18n.get('guildTag')}: ${player.guildTag} \n${i18n.get('rankPoints')}: ${player.rankPoints} \n${i18n.get('level')}: ${player.level}`)
+            message.channel.send(d);
+          }else {
+            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+          }
+        };
+        vg.setToken(vgToken);
+        vg.getPlayerStats(serverCode,playerName, callback);
+      }
+    }
 
   } else {
     // show heroes list
