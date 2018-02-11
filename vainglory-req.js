@@ -151,7 +151,7 @@ var playerStats = function (device, region, player, rawDate, callback) {
 			console.log("Body: "+body);
 	    console.log("Failed: "+error);
 		}
-		callback(null);
+		callback(null,player);
 	  }
 	});
 }

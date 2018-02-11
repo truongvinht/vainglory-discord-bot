@@ -8,6 +8,13 @@ const cp = require('./vgCounterPicker');
 
 const bot = new Discord.Client({disableEveryone: true});
 
+//Image source
+var imageURL = botSettings.imageURL;
+if (imageURL == "") {
+  // Heroku ENV token
+  imageURL = process.env.IMAGE_URL;
+}
+
 bot.on("ready", async () => {
   
   console.log(`${i18n.get('BotReady')} ${bot.user.username}`);
@@ -81,8 +88,7 @@ bot.on("message", async message => {
         let resultSupport = cp.getSupport(heroName.toLowerCase());
   
         if (result != null) {
-          console.log(`http://vaingloryEuE.com/bot/images/${heroName.toLowerCase()}.png`);
-          d = d.setThumbnail(`http://vaingloryEuE.com/bot/images/${heroName.toLowerCase()}.png`)
+          d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
           d = d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result)
           .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`,resultSupport);
           message.channel.send(d);
@@ -109,6 +115,7 @@ bot.on("message", async message => {
       let result = cp.getCounter(hero);
       
       if (result != null) {
+        d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
         message.channel.send(d.addField(`${hero} ${i18n.get('IsWeakAgainst')}`,result));
       } else {
         message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
@@ -132,6 +139,7 @@ bot.on("message", async message => {
         let result = cp.getCounter(heroName.toLowerCase());
       
         if (result != null) {
+          d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
           message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`,result));
         } else {
           message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
@@ -153,6 +161,7 @@ bot.on("message", async message => {
       let result = cp.getSupport(hero);
       
       if (result != null) {
+        d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
         message.channel.send(d.addField(`${hero} ${i18n.get('IsStrongAgainst')}`,result));
       } else {
         message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`))
