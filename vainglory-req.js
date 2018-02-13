@@ -149,9 +149,11 @@ var matchStats = function (device, region, player, rawDate, callback) {
 			console.log("Status: "+response.statusCode);
 			console.log("Header: "+response.rawHeaders);
 			console.log("Body: "+body);
-	    console.log("Failed: "+error);
+			console.log("Failed: "+error);
+			
+			var text = response.statusCode + " " + response.headers +" " + body + " " + error;
 		}
-		callback(null,player);
+		callback(text,player);
 	  }
 	});
 }
