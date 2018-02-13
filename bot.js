@@ -61,6 +61,7 @@ bot.on("message", async message => {
     
     if(hasRole) {
       embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`,`${i18n.get('LastMatchDetails')}`);
+      embed.addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`,`${i18n.get('LastPlayerDetails')}`);
       embed.addField(`${botSettings.prefix}clear`,`${i18n.get('ClearCmd')}`);
     }
     
