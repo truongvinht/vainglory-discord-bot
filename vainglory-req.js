@@ -24,9 +24,9 @@ var matchStats = function (device, region, player, rawDate, callback) {
 	var since_date = getTimeStamp(rawDate);
    
 	console.log("Requesting "+player+" ...");
-  
-	var requestURL = VG_URL + region + "/matches?filter[createdAt-start]="+since_date+"&filter[playerNames]="+player;
-  console.log(requestURL);
+  	var requestURL = VG_URL + region + "/matches?filter[playerNames]="+player;
+	//var requestURL = VG_URL + region + "/matches?filter[createdAt-start]="+since_date+"&filter[playerNames]="+player;
+  	//console.log(requestURL);
 	var reqOption = {
 		url: requestURL,
 		headers: {
