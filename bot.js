@@ -67,7 +67,7 @@ bot.on("message", async message => {
     
     message.channel.send(embed);
   }
-  
+
   if (messageArray.length == 1) {
     //hero commands
     if (command.length == 3) {
@@ -235,6 +235,47 @@ bot.on("message", async message => {
         };
         vg.setToken(vgToken);
         vg.getMatchStats("device",serverCode,playerName,new Date(), callback);
+      }
+    }
+	
+     //only allow users with roles
+    if (command.toLowerCase() === `${botSettings.prefix}recent` ) {
+
+      if (hasRole){
+        // restricted actions
+        const playerName = messageArray[1];
+        
+        var serverCode = botSettings.vaingloryAPIServer;
+        
+        //override default server
+        if (messageArray.length===3 && messageArray[2].length > 1 && messageArray[2].length < 4){
+          serverCode = messageArray[2];
+        }
+        
+        // prepare VG API token
+        var vgToken = "";
+        if (botSettings.vgAPIToken != "") {
+          // use local TOKEN from settings
+          vgToken = botSettings.vgAPIToken;
+        } else {
+          // Heroku ENV token
+          vgToken = process.env.vgAPIToken;
+        }
+
+        var callback = function(text, matchID, matchDate, dbKey, device) {
+
+          var d = new Discord.RichEmbed()
+          .setAuthor(message.author.username)
+          .setColor("#0000FF");
+          
+          if(text!=null) {
+            message.channel.send(d.setDescription(`${text}`));
+          }else {
+            message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
+          }
+        };
+        vg.setToken(vgToken);
+        vg.getRecentPlayedHeroes("device",serverCode,playerName,new Date(), callback);
       }
     }
     
