@@ -289,7 +289,7 @@ bot.on("message", async message => {
     }
     
     //show player stats
-    if (command.toLowerCase() === `${botSettings.prefix}player` ) {
+    if (command.toLowerCase() === `${botSettings.prefix}player`) {
       if (hasRole) {
         // restricted actions
         var playerName = messageArray[1];
@@ -341,6 +341,43 @@ bot.on("message", async message => {
         vg.setToken(vgToken);
         vg.getPlayerStats(serverCode,playerName, callback);
       }
+    }
+    
+    //hidden feature to fetch player IDs
+    if (command === `${botSettings.prefix}afk`) {
+        if (hasRole) {
+            var list = messageArray.slice(1,messageArray.length);
+            var callback = function(content) {
+                var d = new Discord.RichEmbed().setColor("#FFFFFF");
+                
+                if (content!=null) {
+                    for (var p of content) {
+                        //${p.id}
+                        var diff = dateDiff(new Date(p.createdAt));
+                        d = d.addField(`${p.name}`,`Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
+                    }
+                    message.channel.send(d);
+                } else {
+                    message.channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+                }
+                return;
+            }
+        
+            // prepare VG API token
+            var vgToken = "";
+            if (botSettings.vgAPIToken != "") {
+              // use local TOKEN from settings
+              vgToken = botSettings.vgAPIToken;
+            } else {
+              // Heroku ENV token
+              vgToken = process.env.vgAPIToken;
+            }
+            
+            vg.setToken(vgToken);
+            
+            //needs to figure out for more than 6 ids
+            vg.getPlayersInfo(botSettings.vaingloryAPIServer,list, callback);
+        }
     }
 
   } else {
@@ -407,6 +444,20 @@ function getClassColor(classification) {
     return "#FFFFFF";
 }
 
+function dateDiff(date) {
+    
+    var days, hours, minutes;
+    
+    const today = new Date();
+    
+    var differenceTravel = today.getTime() - date.getTime();
+    var totalMinutes = Math.floor((differenceTravel) / ((1000) * 60));
+    minutes = totalMinutes % 60;
+    days =(totalMinutes - (totalMinutes % (24*60)))/(24*60);
+    hours = (totalMinutes - (24 * days * 60 ) - minutes) / 60 ;
+    
+    return {days: days, hours:hours, minutes:minutes};
+}
 
 if (botSettings.token != "") {
   // use local TOKEN from settings

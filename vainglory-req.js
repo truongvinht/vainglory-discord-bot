@@ -345,6 +345,119 @@ var playerStats = function (region, playerName, callback) {
   });
 }
 
+// function to get quick info about the players
+var playersQuickInfo = function (region, playerNames, callback) {
+
+  //check for non-empty VG key
+  var key = requestToken;
+  if (key==null || key == '') {
+    console.log("Error: API Key is empty");
+    return null;
+  }
+
+  //fill a batch of player names, VG allows 6 for each request
+  var requestBatch = [];
+  
+  var playerRequest = "";
+  
+  if (requestBatch.length > 6) {
+    //not fully implemented yet
+    
+    //limit to max 50 entries
+    if (requestBatch.length > 50) {
+      callback(null);
+    }
+    
+    var subCallback = function(content) {
+
+      playersQuickInfo(region,otherList,callback);
+    }
+    
+    var otherList = playerNames.slice(6,playerNames.list);
+    var subList = playerNames.slice(0,6);
+    
+    //request first 6 items
+    playersQuickInfo(region,subList,callback);
+    
+  } else {
+    //list fits into single request
+    for (var n of playerNames) {
+      
+      //init first player
+      if (playerRequest.length == 0) {
+        playerRequest = n;
+      } else {
+        playerRequest = playerRequest + "," + n;
+      }
+    }
+  }
+  
+  var requestURL = VG_URL + region + "/players?filter[playerNames]="+playerRequest;
+
+  var reqOption = {
+    url: requestURL,
+    headers: {
+      'User-Agent':'request',
+      'Authorization': key,
+      'X-TITLE-ID': 'semc-vainglory',
+      'Accept': 'application/json',
+      'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+      'Expires': '-1',
+      'Pragma': 'no-cache'
+    }
+  };
+
+  request(reqOption,function (error, response, body){
+
+    if (!error && response.statusCode == 200) {
+        
+        //body content
+        var json = JSON.parse(body);
+       
+        if (json.data.length > 0) {
+          
+          var players = [];
+          
+          for (var anyPlayer of json.data) {
+        
+            var guildTag = "";
+            if (anyPlayer.attributes.stats.hasOwnProperty('guildTag')) {
+              guildTag = anyPlayer.attributes.stats.guildTag;
+            }
+            
+            var player = {
+                       "id": anyPlayer.id,
+                      "name": anyPlayer.attributes.name,
+                      "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
+                      "rankPoints": {
+                        "blitz":anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
+                        "ranked":anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                      },
+                      "createdAt":anyPlayer.attributes.createdAt,
+                      "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
+                      "karmaLevel":anyPlayer.attributes.stats.karmaLevel,
+                      "guildTag": guildTag,
+                      "level":anyPlayer.attributes.stats.level,
+                      "wins":anyPlayer.attributes.stats.wins,
+                      "xp":anyPlayer.attributes.stats.xp
+                    };
+                    players.push(player);
+          }
+          callback(players);
+    } else {
+      if(response != null) {
+        console.log("# # # # #");
+        console.log("URL: "+requestURL);
+        console.log("Status: "+response.statusCode);
+        console.log("Header: "+response.rawHeaders);
+        console.log("Body: "+body);
+        console.log("Failed: "+error);
+      }
+    }
+    }
+  });
+}
+
 // function for getting latest match
 function fetchLastMatch(json) {
     
@@ -574,6 +687,7 @@ var updateToken = function(token) {
 module.exports = {
     getMatchStats: matchStats,
     getPlayerStats: playerStats,
+    getPlayersInfo: playersQuickInfo,
     getRecentPlayedHeroes: recentPlayedHeroes,
     setToken: updateToken
 };
