@@ -10,11 +10,22 @@
   "DisplayListHero":"Anzeige der verfügbaren Helden",
   "EnteredHeroDoesntExist": "Eingegebener Held existiert nicht!",
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
+  "GamesPlayed":"Gespielte Spiele",
+  "GuildTag":"Gildentag",
   "InvalidHeroCode": "Ungültiger Code!",
   "IsStrongAgainst":"ist gut gegen",
   "IsWeakAgainst":"ist schwach gegen",
+  "Karma":"Karma",
+  "KarmaBad":"Schlechtes Karma",
+  "KarmaGood":"Gutes Karma",
+  "KarmaGreat":"Großartiges Karma",
   "LastMatchDetails":"Anzeige des letzten Spiels",
+  "LastActive":"Zuletzt aktiv",
+  "Level":"Level",
   "ListAvailableHeroes":"Liste verfügbarer Helden",
   "NotFound":"wurde nicht gefunden!",
-  "Player":"Spieler"
+  "Player":"Spieler",
+  "RankPoints":"Rankpunkte",
+  "SkillTier":"Könnenstufe",
+  "Victory":"Siege"
 }

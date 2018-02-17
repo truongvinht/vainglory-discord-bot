@@ -10,11 +10,22 @@
   "DisplayListHero":"Display list of available heroes",
   "EnteredHeroDoesntExist": "Entered hero doesn't exist!",
   "FollowingCommands":"Following commands are available:",
+  "GamesPlayed":"Games played",
+  "GuildTag":"Guild tag",
   "InvalidHeroCode": "Invalid hero code!",
   "IsStrongAgainst":"is strong against",
   "IsWeakAgainst":"is weak against",
+  "Karma":"Karma",
+  "KarmaBad":"Bad Karma",
+  "KarmaGood":"Good Karma",
+  "KarmaGreat":"Great Karma",
   "LastMatchDetails":"Display last match",
+  "LastActive":"Recent activity",
+  "Level":"Level",
   "ListAvailableHeroes":"List of available heroes",
   "NotFound":"not found!",
-  "Player":"Player"
+  "Player":"Player",
+  "RankedPoints":"Ranked points",
+  "SkillTier":"Skill tier",
+  "victory":"Siege"
 }

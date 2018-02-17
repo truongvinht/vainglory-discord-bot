@@ -1,6 +1,7 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
 const i18n = require('./langSupport');
+const vgBase = require('./vainglory-base');
 var vg = require('./vainglory-req');
 
 //counter picker
@@ -67,7 +68,7 @@ bot.on("message", async message => {
     
     message.channel.send(embed);
   }
-  
+
   if (messageArray.length == 1) {
     //hero commands
     if (command.length == 3) {
@@ -202,7 +203,11 @@ bot.on("message", async message => {
 
       if (hasRole){
         // restricted actions
-        const playerName = messageArray[1];
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
         
         var serverCode = botSettings.vaingloryAPIServer;
         
@@ -237,12 +242,61 @@ bot.on("message", async message => {
         vg.getMatchStats("device",serverCode,playerName,new Date(), callback);
       }
     }
+	
+     //only allow users with roles
+    if (command.toLowerCase() === `${botSettings.prefix}recent` ) {
+
+      if (hasRole){
+        // restricted actions
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
+        
+        var serverCode = botSettings.vaingloryAPIServer;
+        
+        //override default server
+        if (messageArray.length===3 && messageArray[2].length > 1 && messageArray[2].length < 4){
+          serverCode = messageArray[2];
+        }
+        
+        // prepare VG API token
+        var vgToken = "";
+        if (botSettings.vgAPIToken != "") {
+          // use local TOKEN from settings
+          vgToken = botSettings.vgAPIToken;
+        } else {
+          // Heroku ENV token
+          vgToken = process.env.vgAPIToken;
+        }
+
+        var callback = function(text, matchID, matchDate, dbKey, device) {
+
+          var d = new Discord.RichEmbed()
+          .setAuthor(message.author.username)
+          .setColor("#0000FF");
+          
+          if(text!=null) {
+            message.channel.send(d.setDescription(`${text}`));
+          }else {
+            message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
+          }
+        };
+        vg.setToken(vgToken);
+        vg.getRecentPlayedHeroes("device",serverCode,playerName,new Date(), callback);
+      }
+    }
     
     //show player stats
-    if (command.toLowerCase() === `${botSettings.prefix}player` ) {
+    if (command.toLowerCase() === `${botSettings.prefix}player`) {
       if (hasRole) {
         // restricted actions
-        const playerName = messageArray[1];
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
         
         var serverCode = botSettings.vaingloryAPIServer;
         
@@ -263,19 +317,67 @@ bot.on("message", async message => {
 
         var callback = function(playerName,player) {
 
-          var d = new Discord.RichEmbed()
-          .setColor("#FFD700");
+            var d = new Discord.RichEmbed();
           
           if(player!=null) {
-            d = d.addField(`${player.name}`,`${i18n.get('Skilltier')}: ${player.skillTier}\n${i18n.get('guildTag')}: ${player.guildTag} \n${i18n.get('rankPoints')}: ${player.rankPoints} \n${i18n.get('level')}: ${player.level}`)
-            message.channel.send(d);
+            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`,`${player.level} (${player.xp})`)
+              .addField(`${i18n.get('Skilltier')}`,`${player.skillTier}`)
+              .setColor(getClassColor(`${player.skillTier}`));
+            
+              if (player.guildTag != "") {
+                  d = d.addField(`${i18n.get('GuildTag')}`,`${player.guildTag}`);
+             }
+            
+             d = d.addField(`${i18n.get('RankPoints')}`,`Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+              .addField(`${i18n.get('GamesPlayed')}`,`Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
+              .addField(`${i18n.get('Karma')}`,`${vgBase.getKarma(player.karmaLevel)}`)
+              .addField(`${i18n.get('Victory')}`,`${player.wins}`)
+              .addField(`${i18n.get('LastActive')}`,`${player.createdAt}`)
+            message.channel.send(d.setAuthor(`${player.name}`));
           }else {
-            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
           }
         };
         vg.setToken(vgToken);
         vg.getPlayerStats(serverCode,playerName, callback);
       }
+    }
+    
+    //hidden feature to fetch player IDs
+    if (command === `${botSettings.prefix}afk`) {
+        if (hasRole) {
+            var list = messageArray.slice(1,messageArray.length);
+            var callback = function(content) {
+                var d = new Discord.RichEmbed().setColor("#FFFFFF");
+                
+                if (content!=null) {
+                    for (var p of content) {
+                        //${p.id}
+                        var diff = dateDiff(new Date(p.createdAt));
+                        d = d.addField(`${p.name}`,`Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
+                    }
+                    message.channel.send(d);
+                } else {
+                    message.channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+                }
+                return;
+            }
+        
+            // prepare VG API token
+            var vgToken = "";
+            if (botSettings.vgAPIToken != "") {
+              // use local TOKEN from settings
+              vgToken = botSettings.vgAPIToken;
+            } else {
+              // Heroku ENV token
+              vgToken = process.env.vgAPIToken;
+            }
+            
+            vg.setToken(vgToken);
+            
+            //needs to figure out for more than 6 ids
+            vg.getPlayersInfo(botSettings.vaingloryAPIServer,list, callback);
+        }
     }
 
   } else {
@@ -310,6 +412,9 @@ bot.on("message", async message => {
   }
 });
 
+function countSpaces(string) {
+    return (string.match(new RegExp(" ", "g")) || []).length;
+}
 
 function getGeneralInfo(heroName) {
   
@@ -327,6 +432,32 @@ function getGeneralInfo(heroName) {
   }
 }
 
+function getClassColor(classification) {
+    if (classification.toLowerCase().includes("gold")) {
+        return "#FFD700";
+    } else if (classification.toLowerCase().includes("silve")) {
+        return "#C0C0C0";
+    } else if (classification.toLowerCase().includes("bronze")) {
+        return "#cd7f32";
+    }
+    
+    return "#FFFFFF";
+}
+
+function dateDiff(date) {
+    
+    var days, hours, minutes;
+    
+    const today = new Date();
+    
+    var differenceTravel = today.getTime() - date.getTime();
+    var totalMinutes = Math.floor((differenceTravel) / ((1000) * 60));
+    minutes = totalMinutes % 60;
+    days =(totalMinutes - (totalMinutes % (24*60)))/(24*60);
+    hours = (totalMinutes - (24 * days * 60 ) - minutes) / 60 ;
+    
+    return {days: days, hours:hours, minutes:minutes};
+}
 
 if (botSettings.token != "") {
   // use local TOKEN from settings
