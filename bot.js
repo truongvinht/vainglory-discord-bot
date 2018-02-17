@@ -1,6 +1,7 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
 const i18n = require('./langSupport');
+const vgBase = require('./vainglory-base');
 var vg = require('./vainglory-req');
 
 //counter picker
@@ -202,7 +203,11 @@ bot.on("message", async message => {
 
       if (hasRole){
         // restricted actions
-        const playerName = messageArray[1];
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
         
         var serverCode = botSettings.vaingloryAPIServer;
         
@@ -243,7 +248,11 @@ bot.on("message", async message => {
 
       if (hasRole){
         // restricted actions
-        const playerName = messageArray[1];
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
         
         var serverCode = botSettings.vaingloryAPIServer;
         
@@ -283,7 +292,11 @@ bot.on("message", async message => {
     if (command.toLowerCase() === `${botSettings.prefix}player` ) {
       if (hasRole) {
         // restricted actions
-        const playerName = messageArray[1];
+        var playerName = messageArray[1];
+        
+        if (playerName.length == 0) {
+            playerName = messageArray[countSpaces(message.content)];
+        }
         
         var serverCode = botSettings.vaingloryAPIServer;
         
@@ -308,8 +321,17 @@ bot.on("message", async message => {
           .setColor("#FFD700");
           
           if(player!=null) {
-            d = d.addField(`${player.name}`,`${i18n.get('Skilltier')}: ${player.skillTier}\n${i18n.get('guildTag')}: ${player.guildTag} \n${i18n.get('rankPoints')}: ${player.rankPoints} \n${i18n.get('level')}: ${player.level}`)
-            message.channel.send(d);
+            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`,`${player.level} (${player.xp})`)
+              .addField(`${i18n.get('Skilltier')}`,`${player.skillTier}`);
+            
+              if (player.guildTag != "") {
+                  d = d.addField(`${i18n.get('GuildTag')}`,`${player.guildTag}`);
+             }
+            
+             d = d.addField(`${i18n.get('RankPoints')}`,`Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+              .addField(`${i18n.get('GamesPlayed')}`,`Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
+              .addField(`${i18n.get('Karma')}`,`${vgBase.getKarma(player.karmaLevel)}`)
+            message.channel.send(d.setAuthor(`${player.name}`));
           }else {
             message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
           }
@@ -351,6 +373,9 @@ bot.on("message", async message => {
   }
 });
 
+function countSpaces(string) {
+    return (string.match(new RegExp(" ", "g")) || []).length;
+}
 
 function getGeneralInfo(heroName) {
   

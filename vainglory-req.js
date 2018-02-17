@@ -5,6 +5,8 @@
 var request = require( 'request' );
 var fs = require ( 'fs' );
 
+var vgbase = require('./vainglory-base.js');
+
 // constant
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 //const VG_URL = 'http://192.168.178.22:8080/'
@@ -300,15 +302,26 @@ var playerStats = function (region, playerName, callback) {
       
         //parse first item
         const anyPlayer = json.data[0];
+        
+        var guildTag = "";
+        if (anyPlayer.attributes.stats.hasOwnProperty('guildTag')) {
+          guildTag = anyPlayer.attributes.stats.guildTag;
+        }
+        
         var player = {
           "id": anyPlayer.id,
           "name": anyPlayer.attributes.name,
           "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
-          "rankPoints": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2),
-          "guildTag":anyPlayer.attributes.stats.guildTag,
-          "level":anyPlayer.attributes.stats.level
+          "rankPoints": {
+            "blitz":anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
+            "ranked":anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+          },
+          "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
+          "karmaLevel":anyPlayer.attributes.stats.karmaLevel,
+          "guildTag": guildTag,
+          "level":anyPlayer.attributes.stats.level,
+          "xp":anyPlayer.attributes.stats.xp
         };
-        console.log(JSON.stringify(json));
         callback(playerName,player);
       } else {
         // no result
@@ -361,7 +374,7 @@ function prepareMatchContent(game) {
         "id": game.id,
         "createdAt": game.attributes.createdAt,
         "duration": game.attributes.duration,
-        "gameMode":game.attributes.gameMode,
+        "gameMode": vgbase.getMode(game.attributes.gameMode),
         "queue":game.attributes.stats.queue,
         "roster":[roster1.id,roster2.id]
     };
@@ -492,7 +505,7 @@ function fetchVictoryGames(json) {
             "id": game.id,
             "createdAt": attributes.createdAt,
             "duration": attributes.duration,
-            "gameMode":attributes.gameMode,
+            "gameMode":vgbase.getMode(attributes.gameMode),
             "queue":attributes.stats.queue
         };
         
@@ -537,72 +550,7 @@ function calculateManOfMatch(details) {
 }
 
 function getTier(skillTier) {
-    switch(skillTier) {
-    case -1:
-        return "T0";
-    case 0:
-        return "T1B";
-    case 1:
-        return "T1S";
-    case 2:
-        return "T1G";
-    case 3:
-        return "T2B";
-    case 4:
-        return "T2S";
-    case 5:
-        return "T2G";
-    case 6:
-        return "T3B";
-    case 7:
-        return "T3S";
-    case 8:
-        return "T3G";
-    case 9:
-        return "T4B";
-    case 10:
-        return "T4S";
-    case 11:
-        return "T4G";
-    case 12:
-        return "T5B";
-    case 13:
-        return "T5S";
-    case 14:
-        return "T5G";
-    case 15:
-        return "T6B";
-    case 16:
-        return "T6S";
-    case 17:
-        return "T6G";
-    case 18:
-        return "T7B";
-    case 19:
-        return "T7S";
-    case 20:
-        return "T7G";
-    case 21:
-        return "T8B";
-    case 22:
-        return "T8S";
-    case 23:
-        return "T8G";
-    case 24:
-        return "T9B";
-    case 25:
-        return "T9S";
-    case 26:
-        return "T9G";
-    case 27:
-        return "T10B";
-    case 28:
-        return "T10S";
-    case 29:
-        return "T10G";
-    default:
-        return "?";
-    }
+  return vgbase.getTier(skillTier);
 }
 
 
