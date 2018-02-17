@@ -20,10 +20,12 @@
   "KarmaGood":"Gutes Karma",
   "KarmaGreat":"Großartiges Karma",
   "LastMatchDetails":"Anzeige des letzten Spiels",
+  "LastActive":"Zuletzt aktiv",
   "Level":"Level",
   "ListAvailableHeroes":"Liste verfügbarer Helden",
   "NotFound":"wurde nicht gefunden!",
   "Player":"Spieler",
   "RankPoints":"Rankpunkte",
-  "SkillTier":"Könnenstufe"
+  "SkillTier":"Könnenstufe",
+  "Victory":"Siege"
 }

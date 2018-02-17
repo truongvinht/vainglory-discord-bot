@@ -317,12 +317,12 @@ bot.on("message", async message => {
 
         var callback = function(playerName,player) {
 
-          var d = new Discord.RichEmbed()
-          .setColor("#FFD700");
+            var d = new Discord.RichEmbed();
           
           if(player!=null) {
             d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`,`${player.level} (${player.xp})`)
-              .addField(`${i18n.get('Skilltier')}`,`${player.skillTier}`);
+              .addField(`${i18n.get('Skilltier')}`,`${player.skillTier}`)
+              .setColor(getClassColor(`${player.skillTier}`));
             
               if (player.guildTag != "") {
                   d = d.addField(`${i18n.get('GuildTag')}`,`${player.guildTag}`);
@@ -331,9 +331,11 @@ bot.on("message", async message => {
              d = d.addField(`${i18n.get('RankPoints')}`,`Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
               .addField(`${i18n.get('GamesPlayed')}`,`Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
               .addField(`${i18n.get('Karma')}`,`${vgBase.getKarma(player.karmaLevel)}`)
+              .addField(`${i18n.get('Victory')}`,`${player.wins}`)
+              .addField(`${i18n.get('LastActive')}`,`${player.createdAt}`)
             message.channel.send(d.setAuthor(`${player.name}`));
           }else {
-            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
           }
         };
         vg.setToken(vgToken);
@@ -391,6 +393,18 @@ function getGeneralInfo(heroName) {
   } else {
     return null;
   }
+}
+
+function getClassColor(classification) {
+    if (classification.toLowerCase().includes("gold")) {
+        return "#FFD700";
+    } else if (classification.toLowerCase().includes("silve")) {
+        return "#C0C0C0";
+    } else if (classification.toLowerCase().includes("bronze")) {
+        return "#cd7f32";
+    }
+    
+    return "#FFFFFF";
 }
 
 

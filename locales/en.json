@@ -20,10 +20,12 @@
   "KarmaGood":"Good Karma",
   "KarmaGreat":"Great Karma",
   "LastMatchDetails":"Display last match",
+  "LastActive":"Recent activity",
   "Level":"Level",
   "ListAvailableHeroes":"List of available heroes",
   "NotFound":"not found!",
   "Player":"Player",
   "RankedPoints":"Ranked points",
-  "SkillTier":"Skill tier"
+  "SkillTier":"Skill tier",
+  "victory":"Siege"
 }

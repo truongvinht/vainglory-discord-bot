@@ -316,10 +316,12 @@ var playerStats = function (region, playerName, callback) {
             "blitz":anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
             "ranked":anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
           },
+          "createdAt":anyPlayer.attributes.createdAt,
           "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
           "karmaLevel":anyPlayer.attributes.stats.karmaLevel,
           "guildTag": guildTag,
           "level":anyPlayer.attributes.stats.level,
+          "wins":anyPlayer.attributes.stats.wins,
           "xp":anyPlayer.attributes.stats.xp
         };
         callback(playerName,player);
