@@ -203,8 +203,7 @@ bot.on("message", async message => {
                     .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
             }
         }
-
-
+        
         //only allow users with roles
         if (command.toLowerCase() === `${botSettings.prefix}match`) {
 
@@ -233,7 +232,7 @@ bot.on("message", async message => {
                     vgToken = process.env.vgAPIToken;
                 }
 
-                var callback = function(text, matchID, matchDate, dbKey, device) {
+                var callback = function(text, matchID, matchDate, dbKey) {
 
                     var d = new Discord.RichEmbed()
                         .setAuthor(message.author.username)
@@ -246,131 +245,118 @@ bot.on("message", async message => {
                     }
                 };
                 vg.setToken(vgToken);
-                vg.getMatchStats("device", serverCode, playerName, new Date(), callback);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
-            }
+                vg.getMatchStats(serverCode, playerName, callback);
+            } 
         }
 
-        //only allow users with roles
+        // show recent played heroes
         if (command.toLowerCase() === `${botSettings.prefix}recent`) {
+            var playerName = messageArray[1];
 
-            if (hasRole) {
-                // restricted actions
-                var playerName = messageArray[1];
-
-                if (playerName.length == 0) {
-                    playerName = messageArray[countSpaces(message.content)];
-                }
-
-                var serverCode = botSettings.vaingloryAPIServer;
-
-                //override default server
-                if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
-                    serverCode = messageArray[2];
-                }
-
-                // prepare VG API token
-                var vgToken = "";
-                if (botSettings.vgAPIToken != "") {
-                    // use local TOKEN from settings
-                    vgToken = botSettings.vgAPIToken;
-                } else {
-                    // Heroku ENV token
-                    vgToken = process.env.vgAPIToken;
-                }
-
-                var callback = function(list,matches) {
-
-                    var d = new Discord.RichEmbed()
-                        .setAuthor(message.author.username)
-                        .setColor("#0000FF");
-
-                    if (list.length > 0) {
-
-                        // count output
-                        var count = 0;
-                        var text = "";
-                    
-                        for (var obj of list) {
-                            if (count++ < 5) {
-                                text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
-                            }
-                        }
-                        
-                        //top pick as avatar
-                        const topPickHero = list[0].name;
-                        
-                        d = d.setThumbnail(`${imageURL}/${topPickHero.toLowerCase()}.png`)
-                        .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
-                        
-                        message.channel.send(d);
-                    } else {
-                        message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
-                    }
-                };
-                vg.setToken(vgToken);
-                vg.getRecentPlayedHeroes(serverCode, playerName, callback);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+            if (playerName.length == 0) {
+                playerName = messageArray[countSpaces(message.content)];
             }
+
+            var serverCode = botSettings.vaingloryAPIServer;
+
+            //override default server
+            if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
+                serverCode = messageArray[2];
+            }
+
+            // prepare VG API token
+            var vgToken = "";
+            if (botSettings.vgAPIToken != "") {
+                // use local TOKEN from settings
+                vgToken = botSettings.vgAPIToken;
+            } else {
+                // Heroku ENV token
+                vgToken = process.env.vgAPIToken;
+            }
+
+            var callback = function(list,matches) {
+
+                var d = new Discord.RichEmbed()
+                    .setAuthor(message.author.username)
+                    .setColor("#0000FF");
+
+                if (list.length > 0) {
+
+                    // count output
+                    var count = 0;
+                    var text = "";
+                
+                    for (var obj of list) {
+                        if (count++ < 5) {
+                            text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
+                        }
+                    }
+                    
+                    //top pick as avatar
+                    const topPickHero = list[0].name;
+                    
+                    d = d.setThumbnail(`${imageURL}/${topPickHero.toLowerCase()}.png`)
+                    .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
+                    
+                    message.channel.send(d);
+                } else {
+                    message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+                }
+            };
+            vg.setToken(vgToken);
+            vg.getRecentPlayedHeroes(serverCode, playerName, callback);
         }
 
         //show player stats
         if (command.toLowerCase() === `${botSettings.prefix}player`) {
-            if (hasRole) {
-                // restricted actions
-                var playerName = messageArray[1];
+            var playerName = messageArray[1];
 
-                if (playerName.length == 0) {
-                    playerName = messageArray[countSpaces(message.content)];
-                }
-
-                var serverCode = botSettings.vaingloryAPIServer;
-
-                //override default server
-                if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
-                    serverCode = messageArray[2];
-                }
-
-                // prepare VG API token
-                var vgToken = "";
-                if (botSettings.vgAPIToken != "") {
-                    // use local TOKEN from settings
-                    vgToken = botSettings.vgAPIToken;
-                } else {
-                    // Heroku ENV token
-                    vgToken = process.env.vgAPIToken;
-                }
-
-                var callback = function(playerName, player) {
-
-                    var d = new Discord.RichEmbed();
-
-                    if (player != null) {
-                        d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
-                            .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
-                            .setColor(getClassColor(`${player.skillTier}`));
-
-                        if (player.guildTag != "") {
-                            d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
-                        }
-
-                        d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
-                            .addField(`${i18n.get('GamesPlayed')}`, `Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
-                            .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
-                            .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                            .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
-                        message.channel.send(d.setAuthor(`${player.name}`));
-                    } else {
-                        message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
-                    }
-                };
-                vg.setToken(vgToken);
-                vg.getPlayerStats(serverCode, playerName, callback);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+            if (playerName.length == 0) {
+                playerName = messageArray[countSpaces(message.content)];
             }
+
+            var serverCode = botSettings.vaingloryAPIServer;
+
+            //override default server
+            if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
+                serverCode = messageArray[2];
+            }
+
+            // prepare VG API token
+            var vgToken = "";
+            if (botSettings.vgAPIToken != "") {
+                // use local TOKEN from settings
+                vgToken = botSettings.vgAPIToken;
+            } else {
+                // Heroku ENV token
+                vgToken = process.env.vgAPIToken;
+            }
+
+            var callback = function(playerName, player) {
+
+                var d = new Discord.RichEmbed();
+
+                if (player != null) {
+                    d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
+                        .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+                        .setColor(getClassColor(`${player.skillTier}`));
+
+                    if (player.guildTag != "") {
+                        d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
+                    }
+
+                    d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+                        .addField(`${i18n.get('GamesPlayed')}`, `Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
+                        .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
+                        .addField(`${i18n.get('Victory')}`, `${player.wins}`)
+                        .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
+                    message.channel.send(d.setAuthor(`${player.name}`));
+                } else {
+                    message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+                }
+            };
+            vg.setToken(vgToken);
+            vg.getPlayerStats(serverCode, playerName, callback);
         }
 
         //hidden feature to fetch player IDs
@@ -429,15 +415,8 @@ bot.on("message", async message => {
                 message.channel.fetchMessages({
                     limit: 50
                 }).then(messages => {
-
                     for (const msg of messages.array()) {
-                        if (msg.author.id === bot.user.id) {
-                            msg.delete();
-                        } else {
-                            if (msg.content.startsWith(`${botSettings.prefix}`)) {
-                                msg.delete();
-                            }
-                        }
+                        msg.delete();
                     }
                 }).catch(console.error);;
             }

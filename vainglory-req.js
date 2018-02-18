@@ -13,14 +13,13 @@ const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 // request token for VG API
 var requestToken = '';
 
-var matchStats = function(device, region, player, rawDate, callback) {
+var matchStats = function(region, player, callback) {
     //check for non-empty VG key
     var key = requestToken;
     if (key == null || key == '') {
         console.log("Error: API Key is empty");
         return null;
     }
-    var since_date = getTimeStamp(rawDate);
     var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt&page[limit]=1&page[offset]=0";
     console.log(requestURL);
     var reqOption = {
@@ -47,9 +46,19 @@ var matchStats = function(device, region, player, rawDate, callback) {
                 ownPlayerID = fetchPlayerID(json, player)
             }
             var totalCountGames = json.data.length;
-            var month = (rawDate.getMonth() + 1);
-
+            
+            //prepare match data
             var match = fetchLastMatch(json)
+
+            var matchContent = {};
+            
+            matchContent['match'] = match;
+            matchContent['createdAt'] = getFormattedDate(match.createdAt);
+            matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
+            
+            // roster for match
+            var rosterLeftMap = {};
+            var rosterRightMap = {};
 
             var text = player + ": " + getFormattedDate(match.createdAt) + "\n";
 
@@ -67,11 +76,13 @@ var matchStats = function(device, region, player, rawDate, callback) {
                 var roster = fetchRoster(json, rosterID);
 
                 if (roster.won == "true" && roster.side == 'left/blue') {
-                    text = text + "Left win \n";
+                    matchContent["won"] = 'left/blue';
+                    //text = text + "Left win \n";
                 } else if (roster.won == "true") {
-                    text = text + "Right win \n";
+                    //text = text + "Right win \n";
+                    matchContent["won"] = 'right/red';
                 }
-
+                
                 //text = text + ""+roster.side+":" + "\n";
                 for (var part of roster.participants) {
                     var p = fetchParticipants(json, part);
@@ -88,9 +99,10 @@ var matchStats = function(device, region, player, rawDate, callback) {
                     } else if (roster.side == 'right/red') {
                         rosterRight.push(p);
                     }
-
                 }
             }
+            
+            
 
             // prepare output
             text = text + "\nLeft:\n";
@@ -144,7 +156,7 @@ var matchStats = function(device, region, player, rawDate, callback) {
                 text = text + "\n";
             }
 
-            callback(text, match.id, match.createdAt, "" + device + region + player, device);
+            callback(text, match.id, match.createdAt, "" + region + player);
         } else {
 
             if (response != null) {
@@ -540,7 +552,8 @@ function fetchParticipants(json, participantID) {
                     "turretCaptures": attributes.stats.turretCaptures,
                     "minionKills": attributes.stats.minionKills,
                     "goldMineCaptures": attributes.stats.goldMineCaptures,
-                    "crystalMineCaptures": attributes.stats.crystalMineCaptures
+                    "crystalMineCaptures": attributes.stats.crystalMineCaptures,
+                    "items":attributes.stats.items
                 };
             }
         }
@@ -667,7 +680,7 @@ function getTimeStamp(date) {
 }
 
 function getFormattedDate(date) {
-    return date.replace("T", "\n").replace("Z", "");
+    return date.replace("T", " ").replace("Z", "");
 }
 
 var updateToken = function(token) {
