@@ -96,9 +96,21 @@ const tier = function(skillTier) {
     }
 }
 
+const convertTier = function(skillTier) {
+    var output = skillTier.replace(" Bronze","a")
+        .replace(" Silver","b")
+        .replace(" Gold","c")
+        .replace("T0","unranked")
+        .replace("?","unranked")
+        .replace("T10","tier_10")
+    .replace("T","tier_0");
+    return output
+}
+
 // export
 module.exports = {
     getMode: gameMode,
     getKarma: karma,
-    getTier: tier
+    getTier: tier,
+    convertTier: convertTier
 };
