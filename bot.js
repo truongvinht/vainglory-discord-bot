@@ -22,6 +22,9 @@ if (imageURL == "") {
     imageURL = process.env.IMAGE_URL;
 }
 
+// github image url for Tier
+const tierImageURL = process.env.TIER_IMAGE_URL;
+
 // prepare invite code
 bot.on("ready", async() => {
     console.log(`${i18n.get('BotReady')} ${bot.user.username}`);
@@ -344,7 +347,12 @@ bot.on("message", async message => {
                     if (player.guildTag != "") {
                         d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
                     }
-
+                    
+                    //load image from parameter
+                    if (tierImageURL!=null && tierImageURL!="") {
+                         d = d.setThumbnail(`${tierImageURL}/${player.skillTierImg}.png?raw=true`);
+                    }
+                    
                     d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
                         .addField(`${i18n.get('GamesPlayed')}`, `Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
                         .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)

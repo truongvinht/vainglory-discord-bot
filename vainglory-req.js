@@ -311,6 +311,7 @@ var playerStats = function(region, playerName, callback) {
                     "id": anyPlayer.id,
                     "name": anyPlayer.attributes.name,
                     "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
+                    "skillTierImg":vgbase.convertTier(getTier(anyPlayer.attributes.stats.skillTier)),
                     "rankPoints": {
                         "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
                         "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
