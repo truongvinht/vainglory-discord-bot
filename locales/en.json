@@ -24,8 +24,10 @@
   "Level":"Level",
   "ListAvailableHeroes":"List of available heroes",
   "NotFound":"not found!",
+  "NoPermissionCommand":"You don't have permission to run this command.",
   "Player":"Player",
   "RankedPoints":"Ranked points",
+  "RecentHeroes":"Recent played heroes",
   "SkillTier":"Skill tier",
   "victory":"Siege"
 }

@@ -45,8 +45,6 @@ var matchStats = function(device, region, player, rawDate, callback) {
             if (player.indexOf(',') == -1) {
                 //only for single player info
                 ownPlayerID = fetchPlayerID(json, player)
-                    // console.log(ownPlayerID);
-                    // console.log(player);
             }
             var totalCountGames = json.data.length;
             var month = (rawDate.getMonth() + 1);
@@ -164,17 +162,20 @@ var matchStats = function(device, region, player, rawDate, callback) {
     });
 }
 
-
-var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, callback) {
+/**
+ * Getting recent played heroes
+ * @private
+ * @param {String|Object|Array|Boolean|Number} paramName Describe this parameter
+ */
+const recentPlayedHeroes = function(region, player, callback) {
+    
     //check for non-empty VG key
     var key = requestToken;
     if (key == null || key == '') {
         console.log("Error: API Key is empty");
         return null;
     }
-    var since_date = getTimeStamp(rawDate);
 
-    console.log("Requesting " + player + " ...");
     var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
     console.log(requestURL);
     var reqOption = {
@@ -190,17 +191,14 @@ var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, call
         }
     };
     request(reqOption, function(error, response, body) {
-
         if (!error && response.statusCode == 200) {
             var json = JSON.parse(body);
-
             var ownPlayerID = "";
+            
             //fetch own player id
             if (player.indexOf(',') == -1) {
                 //only for single player info
-                ownPlayerID = fetchPlayerID(json, player)
-                    // console.log(ownPlayerID);
-                    // console.log(player);
+                ownPlayerID = fetchPlayerID(json, player);
             }
 
             var playersMap = {};
@@ -210,24 +208,17 @@ var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, call
                 //find my roster
 
                 for (var rosterID of[match.relationships.rosters.data[0], match.relationships.rosters.data[1]]) {
-
-                    //console.log("ID " + JSON.stringify(rosterID.id)); 
-
                     //check roster
                     var roster = fetchRoster(json, rosterID.id);
 
                     for (var part of roster.participants) {
                         var p = fetchParticipants(json, part);
-
                         if (p.playerID == ownPlayerID) {
-                            //text = text + " " + p.actor + "\n";
-
                             if (playersMap[p.actor] != undefined) {
                                 playersMap[p.actor] = playersMap[p.actor] + 1;
                             } else {
                                 playersMap[p.actor] = 1;
                             }
-
                             break;
                         }
                     }
@@ -236,9 +227,6 @@ var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, call
             }
 
             var playerList = [];
-
-            // count output
-            var count = 0;
 
             for (var k of Object.keys(playersMap)) {
                 playerList.push({
@@ -250,19 +238,7 @@ var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, call
             playerList.sort(function(a, b) {
                 return b.value - a.value;
             });
-
-
-            for (var obj of playerList) {
-                if (count++ < maxPick) {
-                    text = text + obj.name + ": " + obj.value + "\n";
-                }
-            }
-
-            var totalCountGames = json.data.length;
-
-            var match = fetchLastMatch(json)
-
-            callback(text, match.id, match.createdAt, "" + device + region + player, device);
+            callback(playerList,json.data.length);
         } else {
 
             if (response != null) {
@@ -273,9 +249,8 @@ var recentPlayedHeroes = function(device, region, player, rawDate, maxPick, call
                 console.log("Body: " + body);
                 console.log("Failed: " + error);
 
-                var text = response.statusCode + " " + response.headers + " " + body + " " + error;
             }
-            callback(text, player);
+            callback([],0);
         }
     });
 }
@@ -381,7 +356,6 @@ var playersQuickInfo = function(region, playerNames, callback) {
         }
 
         var subCallback = function(content) {
-
             playersQuickInfo(region, otherList, callback);
         }
 
@@ -574,9 +548,6 @@ function fetchParticipants(json, participantID) {
     return participant;
 }
 
-function fetchParticipantWithPlayerID(json, playerID) {
-
-}
 
 function fetchPlayerID(json, playerName) {
 
@@ -666,23 +637,27 @@ function calculateManOfMatch(details) {
     // assist
     var sumAssists = details.assists * 300;
 
+    // kraken captured
     var sumKraken = details.krakenCaptures * 500;
 
+    //turrets destroyed
     var sumTurret = details.turretCaptures * 300;
-
+    
+    // minions killed
     var sumMinion = details.minionKills * 10;
 
+    // captured gold miner
     var sumGoldMiner = details.goldMineCaptures * 400;
 
+    // captured crystal miner
     var sumCrystalMiner = details.crystalMineCaptures + 300;
-
+    
     return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
 }
 
 function getTier(skillTier) {
     return vgbase.getTier(skillTier);
 }
-
 
 // function to get formatted time stamp
 function getTimeStamp(date) {
@@ -699,6 +674,7 @@ var updateToken = function(token) {
     requestToken = token;
 }
 
+//export
 module.exports = {
     getMatchStats: matchStats,
     getPlayerStats: playerStats,

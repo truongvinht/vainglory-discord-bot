@@ -5,7 +5,7 @@
 const modeUtility = require(`./data/gameMode.json`);
 const i18n = require('./langSupport');
 
-var gameMode = function(mode) {
+const gameMode = function(mode) {
     if (modeUtility.hasOwnProperty(mode)) {
       return modeUtility[mode];
     } else {
@@ -13,7 +13,7 @@ var gameMode = function(mode) {
     }
 }
 
-var karma = function(mode) {
+const karma = function(mode) {
     switch(mode) {
     case 0:
         return `${i18n.get('KarmaBad')}`;
@@ -27,7 +27,7 @@ var karma = function(mode) {
 }
 
 // tier list
-var tier = function(skillTier) {
+const tier = function(skillTier) {
     switch(skillTier) {
     case -1:
         return "T0";

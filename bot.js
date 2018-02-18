@@ -69,6 +69,7 @@ bot.on("message", async message => {
         if (hasRole) {
             embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
             embed.addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`, `${i18n.get('LastPlayerDetails')}`);
+            embed.addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`);
             embed.addField(`${botSettings.prefix}clear`, `${i18n.get('ClearCmd')}`);
         }
 
@@ -246,6 +247,8 @@ bot.on("message", async message => {
                 };
                 vg.setToken(vgToken);
                 vg.getMatchStats("device", serverCode, playerName, new Date(), callback);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
         }
 
@@ -277,19 +280,39 @@ bot.on("message", async message => {
                     vgToken = process.env.vgAPIToken;
                 }
 
-                var callback = function(text, matchID, matchDate, dbKey, device) {
+                var callback = function(list,matches) {
 
                     var d = new Discord.RichEmbed()
+                        .setAuthor(message.author.username)
                         .setColor("#0000FF");
 
-                    if (text != null) {
-                        message.channel.send(d.setDescription(`${text}`));
+                    if (list.length > 0) {
+
+                        // count output
+                        var count = 0;
+                        var text = "";
+                    
+                        for (var obj of list) {
+                            if (count++ < 5) {
+                                text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
+                            }
+                        }
+                        
+                        //top pick as avatar
+                        const topPickHero = list[0].name;
+                        
+                        d = d.setThumbnail(`${imageURL}/${topPickHero.toLowerCase()}.png`)
+                        .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
+                        
+                        message.channel.send(d);
                     } else {
-                        message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
+                        message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
                     }
                 };
                 vg.setToken(vgToken);
-                vg.getRecentPlayedHeroes("device", serverCode, playerName, new Date(), 5, callback);
+                vg.getRecentPlayedHeroes(serverCode, playerName, callback);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
         }
 
@@ -345,6 +368,8 @@ bot.on("message", async message => {
                 };
                 vg.setToken(vgToken);
                 vg.getPlayerStats(serverCode, playerName, callback);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
         }
 
@@ -382,6 +407,8 @@ bot.on("message", async message => {
 
                 //needs to figure out for more than 6 ids
                 vg.getPlayersInfo(botSettings.vaingloryAPIServer, list, callback);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
         }
 
@@ -451,6 +478,13 @@ function getClassColor(classification) {
     return "#FFFFFF";
 }
 
+/**
+ * Calculate the difference between given date and today
+ * @private
+ * @param {Date} date target date for calculating difference
+ * @returns map with days, hours, minutes
+ * @type Map with Number
+ */
 function dateDiff(date) {
 
     var days, hours, minutes;
