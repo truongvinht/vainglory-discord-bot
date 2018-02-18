@@ -2,3 +2,4 @@
 node_modules
 botsettings.json
 .DS_Store
+package-lock.json
