@@ -77,9 +77,9 @@ var matchStats = function(region, player, callback) {
 
                 if (roster.won == "true" && roster.side == 'left/blue') {
                     matchContent["won"] = 'left/blue';
-                    //text = text + "Left win \n";
+                    text = text + "Left win \n";
                 } else if (roster.won == "true") {
-                    //text = text + "Right win \n";
+                    text = text + "Right win \n";
                     matchContent["won"] = 'right/red';
                 }
                 
