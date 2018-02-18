@@ -24,8 +24,10 @@
   "Level":"Level",
   "ListAvailableHeroes":"Liste verfügbarer Helden",
   "NotFound":"wurde nicht gefunden!",
+  "NoPermissionCommand":"Du hast keine Berechtigung um diesen Befehl auszuführen.",
   "Player":"Spieler",
   "RankPoints":"Rankpunkte",
+  "RecentHeroes":"Zuletzt gespielte Helden",
   "SkillTier":"Könnenstufe",
   "Victory":"Siege"
 }
