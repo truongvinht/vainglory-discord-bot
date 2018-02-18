@@ -64,12 +64,12 @@ bot.on("message", async message => {
             .addField(`${botSettings.prefix}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
             .addField(`${botSettings.prefix}s HERO-CODE`, `${i18n.get('DisplayStrengthHeroCode')}`)
             .addField(`${botSettings.prefix}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
-            .addField(`${botSettings.prefix}hero`, `${i18n.get('DisplayListHero')}`);
+            .addField(`${botSettings.prefix}hero`, `${i18n.get('DisplayListHero')}`)
+            .addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`, `${i18n.get('LastPlayerDetails')}`)
+            .addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`);
 
         if (hasRole) {
             embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
-            embed.addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`, `${i18n.get('LastPlayerDetails')}`);
-            embed.addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`);
             embed.addField(`${botSettings.prefix}clear`, `${i18n.get('ClearCmd')}`);
         }
 
