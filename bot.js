@@ -10,6 +10,8 @@ var vg = require('./vainglory-req');
 
 //counter picker
 const cp = require('./vgCounterPicker');
+const eloCalc = require('./eloCalculator');
+eloCalc.initURL("https://raw.githubusercontent.com/gamelocker/vainglory-assets/master/dictionaries/numerical_vst.json");
 
 const bot = new Discord.Client({
     disableEveryone: true
@@ -23,7 +25,12 @@ if (imageURL == "") {
 }
 
 // github image url for Tier
-const tierImageURL = process.env.TIER_IMAGE_URL;
+var tierImageURL = botSettings.TIER_IMAGE_URL;
+
+if (tierImageURL == "") {
+    // Heroku ENV token
+    tierImageURL = process.env.TIER_IMAGE_URL;
+}
 
 // prepare invite code
 bot.on("ready", async() => {
@@ -69,7 +76,8 @@ bot.on("message", async message => {
             .addField(`${botSettings.prefix}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
             .addField(`${botSettings.prefix}hero`, `${i18n.get('DisplayListHero')}`)
             .addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
-            .addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`);
+            .addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
+            .addField(`${botSettings.prefix}elo ELO`, `${i18n.get('EloDetails')}`);
 
         if (hasRole) {
             embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
@@ -309,9 +317,30 @@ bot.on("message", async message => {
             vg.setToken(vgToken);
             vg.getRecentPlayedHeroes(serverCode, playerName, callback);
         }
+        
+        //elo overview
+        if (command.toLowerCase() === `${botSettings.prefix}elo`) {
+            var points = messageArray[1];
+
+            var d = new Discord.RichEmbed();
+            
+            if (points.length > 0) {
+                var info = eloCalc.getResult(points);
+                
+                //load image from parameter
+                if (tierImageURL!=null && tierImageURL!="") {
+                    const img = vgBase.convertTier(vgBase.getTier(info.elo));
+                     d = d.setThumbnail(`${tierImageURL}/${img}.png?raw=true`);
+                }
+                
+                message.channel.send(d.addField(`${info.title}`, `${randomTierMessage(info.missing)}`));
+            } else {
+                message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
+            }
+        }
 
         //show player stats
-        if (command.toLowerCase() === `${botSettings.prefix}player`) {
+        if (command.toLowerCase() === `${botSettings.prefix}player` || command.toLowerCase() === `${botSettings.prefix}p`) {
             var playerName = messageArray[1];
 
             if (playerName.length == 0) {
@@ -489,6 +518,12 @@ function dateDiff(date) {
         hours: hours,
         minutes: minutes
     };
+}
+
+// function to get random message for tier
+function randomTierMessage(value) {
+    const random = Math.floor((Math.random() * 12) + 1);
+    return i18n.get(`Random${random}`).replace("$1",value);
 }
 
 if (botSettings.token != "") {
