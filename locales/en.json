@@ -1,6 +1,7 @@
 {
   "AvailableCommands":"Following commands are available:",
   "BotReady":"Bot is ready!",
+  "BetterImpossible":"You are one of the best player!",
   "ClearCmd":"Clear the recent messages",
   "DisplayWeaknessHero":"Display weakness for given hero name",
   "DisplayWeaknessHeroCode":"Display weakness for given hero code",
@@ -40,6 +41,8 @@
   "Random10":"Grumpjaw will laugh about you, if you can't get $1 elo soon!",
   "Random11":"Scaarf will kick your but to get $1 elo!",
   "Random12":"Lance bow low, if you get $1 elo in the next match!",
+  "Random13":"Flicker won't hide, if you get $1 elo soon!",
+  "Random14":"After the next $1 elo Lorelai will prepare a bath for you.",
   "RankedPoints":"Ranked points",
   "RecentHeroes":"Recent played heroes",
   "SkillTier":"Skill tier",

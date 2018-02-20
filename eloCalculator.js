@@ -73,6 +73,9 @@ var EloManager = (function () {
                 }
                 
                 return null;
+            },
+            score: function(index) {
+                return data[index];
             }
         }
     }
@@ -97,9 +100,15 @@ const calculate = function(points) {
     return instance.calculate(points);
 }
 
+const score = function(index) {
+    var instance = EloManager.getInstance();
+    return instance.score(index);
+}
+
 
 // export
 module.exports = {
     initURL: prepUrl,
-    getResult: calculate
+    getResult: calculate,
+    getScore: score
 };

@@ -119,6 +119,28 @@ bot.on("message", async message => {
                 message.channel.send(d.setDescription(`'${hName}': ${i18n.get('EnteredHeroDoesntExist')}`));
             }
         }
+
+        
+        //elo list
+        if (message.content.toLowerCase() === `${botSettings.prefix}elo`) {
+            var d = new Discord.RichEmbed();
+            for (var i=0;i<20;i++) {
+                
+                 var info = eloCalc.getScore(i);
+                 d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
+                 
+            }
+            message.channel.send(d);
+
+            d = new Discord.RichEmbed();
+            for (var i=20;i<30;i++) {
+                
+                 var info = eloCalc.getScore(i);
+                 d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
+                 
+            }
+            message.channel.send(d);
+        }
     }
 
     if (messageArray.length >= 2) {
@@ -321,19 +343,29 @@ bot.on("message", async message => {
         //elo overview
         if (command.toLowerCase() === `${botSettings.prefix}elo`) {
             var points = messageArray[1];
-
             var d = new Discord.RichEmbed();
             
             if (points.length > 0) {
                 var info = eloCalc.getResult(points);
+
+                if (info == null) {
+                    message.channel.send(d.setDescription(`'${points}' ${i18n.get('NotFound')}`));
+                } else {
                 
-                //load image from parameter
-                if (tierImageURL!=null && tierImageURL!="") {
-                    const img = vgBase.convertTier(vgBase.getTier(info.elo));
-                     d = d.setThumbnail(`${tierImageURL}/${img}.png?raw=true`);
+                    //load image from parameter
+                    if (tierImageURL!=null && tierImageURL!="") {
+                        const img = vgBase.convertTier(vgBase.getTier(info.elo));
+                         d = d.setThumbnail(`${tierImageURL}/${img}.png?raw=true`);
+                    }
+                
+                    if (info.missing == -1) {
+                        message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
+                    } else {
+                        message.channel.send(d.addField(`${info.title}`, `${randomTierMessage(info.missing)}`));
+                    }
                 }
                 
-                message.channel.send(d.addField(`${info.title}`, `${randomTierMessage(info.missing)}`));
+                
             } else {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }
@@ -522,7 +554,7 @@ function dateDiff(date) {
 
 // function to get random message for tier
 function randomTierMessage(value) {
-    const random = Math.floor((Math.random() * 12) + 1);
+    const random = Math.floor((Math.random() * 14) + 1);
     return i18n.get(`Random${random}`).replace("$1",value);
 }
 
