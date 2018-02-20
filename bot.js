@@ -554,7 +554,7 @@ function dateDiff(date) {
 
 // function to get random message for tier
 function randomTierMessage(value) {
-    const random = Math.floor((Math.random() * 14) + 1);
+    const random = Math.floor((Math.random() * 15) + 1);
     return i18n.get(`Random${random}`).replace("$1",value);
 }
 
