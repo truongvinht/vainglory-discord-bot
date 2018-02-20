@@ -156,7 +156,81 @@ var matchStats = function(region, player, callback) {
                 text = text + "\n";
             }
 
-            callback(text, match.id, match.createdAt, "" + region + player);
+            callback(text, match.id);
+            
+
+            
+            for (var included of json.included) {
+
+                // fetch item attributes
+                var attributes = included.attributes;
+
+                if ('asset' == included.type) {
+                    
+                    //found asset URL
+                    const assetURL = included.attributes.URL;
+                    
+                     var reqAssetsOption = {
+                            url: assetURL,
+                            headers: {
+                                'User-Agent': 'request',
+                                'Accept': 'application/json'
+                            }
+                        }
+                    
+                    request(reqAssetsOption, function(err, resp, assetbody) {
+
+                        if (!err && resp.statusCode == 200) {
+                            var json = JSON.parse(assetbody);
+                            
+                            var output = "Hero selection\n";
+                            
+                            var left = [];
+                            var right = [];
+                            
+                            var leftBan = "";
+                            var rightBan = "";
+                            
+                            for (var entry of json) {
+                                if (entry.type == 'HeroBan') {
+                                    if (entry.payload.Team == 1) {
+                                        leftBan = "Left Ban: " + entry.payload.Hero + "\n";
+                                    } else {
+                                        rightBan = "Right Ban: " + entry.payload.Hero + "\n";
+                                    }
+                                }
+                                
+                                if (entry.type == 'HeroSelect') {
+                                    if (entry.payload.Team == 1) {
+                                        left.push(entry.payload);
+                                    } else {
+                                        right.push(entry.payload);
+                                    }
+                                }
+                            }
+                            
+                            
+                            
+                            output = output + "Left: ";
+                            for (var l of left) {
+                                output = output + l.Hero + " ";
+                            }
+                            output = output + "\nRight: ";
+                            for (var r of right) {
+                                output = output + r.Hero + " ";
+                            }
+                            
+                            output = leftBan + rightBan + output;
+                            
+                            callback(output,match.id)
+                        }
+                    });
+                    
+                    break;
+                }
+                
+            }
+            
         } else {
 
             if (response != null) {

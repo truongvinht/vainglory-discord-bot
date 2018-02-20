@@ -265,7 +265,7 @@ bot.on("message", async message => {
                     vgToken = process.env.vgAPIToken;
                 }
 
-                var callback = function(text, matchID, matchDate, dbKey) {
+                var callback = function(text, matchID) {
 
                     var d = new Discord.RichEmbed()
                         .setAuthor(message.author.username)
