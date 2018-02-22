@@ -11,6 +11,7 @@
   "DisplayListHero":"Anzeige der verfügbaren Helden",
   "EloDetails":"Zeigt die Spielerstufe und die fehlenden Elo-Punkte für die nächste Stufe an",
   "EnteredHeroDoesntExist": "Eingegebener Held existiert nicht!",
+  "ErrorInvalidElo":"Ungültiger Elo-Wert. Bitte Wert angeben!",
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
   "GamesPlayed":"Gespielte Spiele",
   "GuildTag":"Gildentag",

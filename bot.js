@@ -286,7 +286,7 @@ bot.on("message", async message => {
                 var info = eloCalc.getResult(points);
 
                 if (info == null) {
-                    message.channel.send(d.setDescription(`'${points}' ${i18n.get('NotFound')}`));
+                    message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                 } else {
                 
                     //load image from parameter

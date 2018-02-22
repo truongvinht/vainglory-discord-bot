@@ -10,6 +10,7 @@
   "DisplayInfoHeroCode":"Display strength and weakness for given hero code",
   "DisplayListHero":"Display list of available heroes",
   "EnteredHeroDoesntExist": "Entered hero doesn't exist!",
+  "ErrorInvalidElo":"Invalid elo value. Please only insert numeric value!",
   "EloDetails":"Display player tier and missing elo for next tier",
   "FollowingCommands":"Following commands are available:",
   "GamesPlayed":"Games played",
