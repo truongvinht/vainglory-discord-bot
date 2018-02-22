@@ -350,9 +350,21 @@ bot.on("message", async message => {
             vg.setToken(VG_TOKEN);
             vg.getPlayerStats(serverCode, playerName, callback);
         }
+        
+        // // full information
+        // if (command.toLowerCase() === `${PREFIX}full`) {
+        //     if (hasRole) {
+        //         var playerName = messageArray[1];
+        //
+        //         if (playerName.length == 0) {
+        //             playerName = messageArray[countSpaces(message.content)];
+        //             message.channel.send("it works!");
+        //         }
+        //     }
+        // }
 
         //hidden feature to fetch player IDs
-        if (command === `${PREFIX}afk`) {
+        if (command.toLowerCase() === `${PREFIX}afk`) {
             if (hasRole) {
                 var list = messageArray.slice(1, messageArray.length);
                 var callback = function(content) {
