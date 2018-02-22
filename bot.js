@@ -2,35 +2,28 @@
 // main class to run discord bot
 // ================
 
-const botSettings = require("./botsettings.json");
+//import
 const Discord = require("discord.js");
+const c = require("./constLoader");
 const i18n = require('./langSupport');
 const vgBase = require('./vainglory-base');
 var vg = require('./vainglory-req');
 
 //counter picker
 const cp = require('./vgCounterPicker');
+
+//elo calculator
 const eloCalc = require('./eloCalculator');
-eloCalc.initURL("https://raw.githubusercontent.com/gamelocker/vainglory-assets/master/dictionaries/numerical_vst.json");
+
+// CONSTANTS
+
+// prefix for commands
+const PREFIX = c.prefix();
+const VG_TOKEN = c.vgToken();
 
 const bot = new Discord.Client({
     disableEveryone: true
 });
-
-//Image source
-var imageURL = botSettings.imageURL;
-if (imageURL == "") {
-    // Heroku ENV token
-    imageURL = process.env.IMAGE_URL;
-}
-
-// github image url for Tier
-var tierImageURL = botSettings.TIER_IMAGE_URL;
-
-if (tierImageURL == "") {
-    // Heroku ENV token
-    tierImageURL = process.env.TIER_IMAGE_URL;
-}
 
 // prepare invite code
 bot.on("ready", async() => {
@@ -38,6 +31,9 @@ bot.on("ready", async() => {
     try {
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         console.log(link);
+        
+        //load URL
+        eloCalc.initURL(`${c.eloListURL()}`);
     } catch (e) {
         console.log(e.stack);
     }
@@ -45,45 +41,48 @@ bot.on("ready", async() => {
 
 // reaction for message
 bot.on("message", async message => {
-
+    
+    //ignore own messages
     if (message.author.bot) return;
 
-    if (!message.content.startsWith(botSettings.prefix)) return;
+    //ignore commands without prefix
+    if (!message.content.startsWith(PREFIX)) return;
 
-    //check for direct message
+    //prevent direct message
     if (message.channel.type === "dm") return;
 
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
 
+    // user has role
     var hasRole = false;
 
-    for (var reqRole of botSettings.restricted) {
+    for (var reqRole of c.restriction()) {
         if (message.member.roles.find("name", reqRole)) {
             hasRole = true;
             break;
         }
     }
 
-    if (command === `${botSettings.prefix}help`) {
+    //HELP
+    if (command === `${PREFIX}help`) {
         let embed = new Discord.RichEmbed()
             .setAuthor(message.author.username)
             .setDescription(`${i18n.get('FollowingCommands')}`)
-            .addField(`${botSettings.prefix}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
-            .addField(`${botSettings.prefix}c HERO-CODE`, `${i18n.get('DisplayWeaknessHeroCode')}`)
-            .addField(`${botSettings.prefix}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
-            .addField(`${botSettings.prefix}s HERO-CODE`, `${i18n.get('DisplayStrengthHeroCode')}`)
-            .addField(`${botSettings.prefix}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
-            .addField(`${botSettings.prefix}hero`, `${i18n.get('DisplayListHero')}`)
-            .addField(`${botSettings.prefix}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
-            .addField(`${botSettings.prefix}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
-            .addField(`${botSettings.prefix}elo ELO`, `${i18n.get('EloDetails')}`);
+            .addField(`${PREFIX}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
+            .addField(`${PREFIX}c HERO-CODE`, `${i18n.get('DisplayWeaknessHeroCode')}`)
+            .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
+            .addField(`${PREFIX}s HERO-CODE`, `${i18n.get('DisplayStrengthHeroCode')}`)
+            .addField(`${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
+            .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
+            .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
+            .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
+            .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`);
 
         if (hasRole) {
-            embed.addField(`${botSettings.prefix}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
-            embed.addField(`${botSettings.prefix}clear`, `${i18n.get('ClearCmd')}`);
+            embed.addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
+            embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
         }
-
         message.channel.send(embed);
     }
 
@@ -108,10 +107,10 @@ bot.on("message", async message => {
                 let resultSupport = cp.getSupport(heroName.toLowerCase());
 
                 if (result != null) {
-                    d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
-                    d = d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
-                        .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport);
-                    message.channel.send(d);
+                    message.channel.send( 
+                        d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
+                        .addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
+                        .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport));
                 } else {
                     message.channel.send(d.setDescription(`'${heroName}': ${i18n.get('EnteredHeroDoesntExist')}`));
                 }
@@ -120,24 +119,22 @@ bot.on("message", async message => {
             }
         }
 
-        
         //elo list
-        if (message.content.toLowerCase() === `${botSettings.prefix}elo`) {
+        if (message.content.toLowerCase() === `${PREFIX}elo`) {
             var d = new Discord.RichEmbed();
-            for (var i=0;i<20;i++) {
-                
-                 var info = eloCalc.getScore(i);
+            
+            const MAX_SPLIT = 20;
+            
+            for (var i=0;i<MAX_SPLIT;i++) {
+                 const info = eloCalc.getScore(i);
                  d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
-                 
             }
             message.channel.send(d);
 
             d = new Discord.RichEmbed();
-            for (var i=20;i<30;i++) {
-                
-                 var info = eloCalc.getScore(i);
+            for (var i=MAX_SPLIT;i<30;i++) {
+                 const info = eloCalc.getScore(i);
                  d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
-                 
             }
             message.channel.send(d);
         }
@@ -148,24 +145,15 @@ bot.on("message", async message => {
         let hero = messageArray[1].toLowerCase();
 
         // counter pick
-        if (command === `${botSettings.prefix}counter`) {
-
+        if (command === `${PREFIX}counter`) {
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
                 .setColor("#ff0000");
-
-            let result = cp.getCounter(hero);
-
-            if (result != null) {
-                d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
-                message.channel.send(d.addField(`${hero} ${i18n.get('IsWeakAgainst')}`, result));
-            } else {
-                message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
-            }
+            sendCounter(message,d, hero);
         }
 
         // quick counter pick
-        if (command.toLowerCase() === `${botSettings.prefix}c`) {
+        if (command.toLowerCase() === `${PREFIX}c`) {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
@@ -173,19 +161,10 @@ bot.on("message", async message => {
 
             //hero quick name
             let hName = messageArray[1].toLowerCase();
-
             let heroName = cp.getHeroName(hName);
 
             if (heroName != null) {
-
-                let result = cp.getCounter(heroName.toLowerCase());
-
-                if (result != null) {
-                    d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
-                    message.channel.send(d.addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result));
-                } else {
-                    message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
-                }
+                sendCounter(message,d, heroName);
             } else {
                 message.channel.send(new Discord.RichEmbed()
                     .setAuthor(message.author.username)
@@ -194,24 +173,15 @@ bot.on("message", async message => {
         }
 
         // support pick
-        if (command === `${botSettings.prefix}support`) {
-
+        if (command === `${PREFIX}support`) {
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
                 .setColor("#008000");
-
-            let result = cp.getSupport(hero);
-
-            if (result != null) {
-                d = d.setThumbnail(`${imageURL}/${hero.toLowerCase()}.png`);
-                message.channel.send(d.addField(`${hero} ${i18n.get('IsStrongAgainst')}`, result));
-            } else {
-                message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`))
-            }
+            sendSupport(message,d, hero);
         }
 
         // quick support pick
-        if (command.toLowerCase() === `${botSettings.prefix}s`) {
+        if (command.toLowerCase() === `${PREFIX}s`) {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
@@ -222,14 +192,7 @@ bot.on("message", async message => {
             let heroName = cp.getHeroName(hName);
 
             if (heroName != null) {
-                let result = cp.getSupport(heroName.toLowerCase());
-
-                if (result != null) {
-                    d = d.setThumbnail(`${imageURL}/${heroName.toLowerCase()}.png`);
-                    message.channel.send(d.addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, result));
-                } else {
-                    message.channel.send(d.setDescription(`'${heroName}' ${i18n.get('NotFound')}`));
-                }
+                sendSupport(message,d, heroName);
             } else {
                 message.channel.send(new Discord.RichEmbed()
                     .setAuthor(message.author.username)
@@ -238,7 +201,7 @@ bot.on("message", async message => {
         }
         
         //only allow users with roles
-        if (command.toLowerCase() === `${botSettings.prefix}match`) {
+        if (command.toLowerCase() === `${PREFIX}match` || command.toLowerCase() === `${PREFIX}m`) {
 
             if (hasRole) {
                 // restricted actions
@@ -248,22 +211,9 @@ bot.on("message", async message => {
                     playerName = messageArray[countSpaces(message.content)];
                 }
 
-                var serverCode = botSettings.vaingloryAPIServer;
-
                 //override default server
-                if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
-                    serverCode = messageArray[2];
-                }
-
-                // prepare VG API token
-                var vgToken = "";
-                if (botSettings.vgAPIToken != "") {
-                    // use local TOKEN from settings
-                    vgToken = botSettings.vgAPIToken;
-                } else {
-                    // Heroku ENV token
-                    vgToken = process.env.vgAPIToken;
-                }
+                const code = messageArray.length === 3?messageArray[2]:null;
+                const serverCode = c.vgServerCode(code);
 
                 var callback = function(text, matchID) {
 
@@ -277,35 +227,22 @@ bot.on("message", async message => {
                         message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
                     }
                 };
-                vg.setToken(vgToken);
+                vg.setToken(VG_TOKEN);
                 vg.getMatchStats(serverCode, playerName, callback);
             } 
         }
 
         // show recent played heroes
-        if (command.toLowerCase() === `${botSettings.prefix}recent`) {
+        if (command.toLowerCase() === `${PREFIX}recent`) {
             var playerName = messageArray[1];
 
             if (playerName.length == 0) {
                 playerName = messageArray[countSpaces(message.content)];
             }
 
-            var serverCode = botSettings.vaingloryAPIServer;
-
             //override default server
-            if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
-                serverCode = messageArray[2];
-            }
-
-            // prepare VG API token
-            var vgToken = "";
-            if (botSettings.vgAPIToken != "") {
-                // use local TOKEN from settings
-                vgToken = botSettings.vgAPIToken;
-            } else {
-                // Heroku ENV token
-                vgToken = process.env.vgAPIToken;
-            }
+            const code = messageArray.length === 3?messageArray[2]:null;
+            const serverCode = c.vgServerCode(code);
 
             var callback = function(list,matches) {
 
@@ -328,7 +265,7 @@ bot.on("message", async message => {
                     //top pick as avatar
                     const topPickHero = list[0].name;
                     
-                    d = d.setThumbnail(`${imageURL}/${topPickHero.toLowerCase()}.png`)
+                    d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
                     .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
                     
                     message.channel.send(d);
@@ -336,12 +273,12 @@ bot.on("message", async message => {
                     message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
                 }
             };
-            vg.setToken(vgToken);
+            vg.setToken(VG_TOKEN);
             vg.getRecentPlayedHeroes(serverCode, playerName, callback);
         }
         
         //elo overview
-        if (command.toLowerCase() === `${botSettings.prefix}elo`) {
+        if (command.toLowerCase() === `${PREFIX}elo`) {
             var points = messageArray[1];
             var d = new Discord.RichEmbed();
             
@@ -353,9 +290,9 @@ bot.on("message", async message => {
                 } else {
                 
                     //load image from parameter
-                    if (tierImageURL!=null && tierImageURL!="") {
+                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
                         const img = vgBase.convertTier(vgBase.getTier(info.elo));
-                         d = d.setThumbnail(`${tierImageURL}/${img}.png?raw=true`);
+                         d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
                     }
                 
                     if (info.missing == -1) {
@@ -365,36 +302,22 @@ bot.on("message", async message => {
                     }
                 }
                 
-                
             } else {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }
         }
 
         //show player stats
-        if (command.toLowerCase() === `${botSettings.prefix}player` || command.toLowerCase() === `${botSettings.prefix}p`) {
+        if (command.toLowerCase() === `${PREFIX}player` || command.toLowerCase() === `${PREFIX}p`) {
             var playerName = messageArray[1];
 
             if (playerName.length == 0) {
                 playerName = messageArray[countSpaces(message.content)];
             }
 
-            var serverCode = botSettings.vaingloryAPIServer;
-
             //override default server
-            if (messageArray.length === 3 && messageArray[2].length > 1 && messageArray[2].length < 4) {
-                serverCode = messageArray[2];
-            }
-
-            // prepare VG API token
-            var vgToken = "";
-            if (botSettings.vgAPIToken != "") {
-                // use local TOKEN from settings
-                vgToken = botSettings.vgAPIToken;
-            } else {
-                // Heroku ENV token
-                vgToken = process.env.vgAPIToken;
-            }
+            const code = messageArray.length === 3?messageArray[2]:null;
+            const serverCode = c.vgServerCode(code);
 
             var callback = function(playerName, player) {
 
@@ -410,8 +333,8 @@ bot.on("message", async message => {
                     }
                     
                     //load image from parameter
-                    if (tierImageURL!=null && tierImageURL!="") {
-                         d = d.setThumbnail(`${tierImageURL}/${player.skillTierImg}.png?raw=true`);
+                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                         d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
                     }
                     
                     d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
@@ -424,12 +347,12 @@ bot.on("message", async message => {
                     message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
                 }
             };
-            vg.setToken(vgToken);
+            vg.setToken(VG_TOKEN);
             vg.getPlayerStats(serverCode, playerName, callback);
         }
 
         //hidden feature to fetch player IDs
-        if (command === `${botSettings.prefix}afk`) {
+        if (command === `${PREFIX}afk`) {
             if (hasRole) {
                 var list = messageArray.slice(1, messageArray.length);
                 var callback = function(content) {
@@ -448,20 +371,13 @@ bot.on("message", async message => {
                     return;
                 }
 
-                // prepare VG API token
-                var vgToken = "";
-                if (botSettings.vgAPIToken != "") {
-                    // use local TOKEN from settings
-                    vgToken = botSettings.vgAPIToken;
-                } else {
-                    // Heroku ENV token
-                    vgToken = process.env.vgAPIToken;
-                }
-
-                vg.setToken(vgToken);
-
+                vg.setToken(VG_TOKEN);
+                
+                const code = messageArray.length === 3?messageArray[2]:null;
+                const serverCode = c.vgServerCode(code);
+                
                 //needs to figure out for more than 6 ids
-                vg.getPlayersInfo(botSettings.vaingloryAPIServer, list, callback);
+                vg.getPlayersInfo(serverCode, list, callback);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
@@ -469,14 +385,14 @@ bot.on("message", async message => {
 
     } else {
         // show heroes list
-        if (command === `${botSettings.prefix}hero`) {
+        if (command === `${PREFIX}hero`) {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username);
 
             let keyValueMap = cp.getHeroes();
             message.channel.send(d.addField(keyValueMap.title, keyValueMap.content));
-        } else if (command === `${botSettings.prefix}clear` && hasRole) {
+        } else if (command === `${PREFIX}clear` && hasRole) {
             async function clear() {
                 //remove clear command (last 50 messages)
                 message.delete();
@@ -493,6 +409,30 @@ bot.on("message", async message => {
         }
     }
 });
+
+//send message regarding counter pick
+function sendCounter(message, embeded, hero) {
+    
+    let result = cp.getCounter(hero.toLowerCase());
+    if (result != null) {
+        embeded = embeded.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`);
+        message.channel.send(embeded.addField(`${hero} ${i18n.get('IsWeakAgainst')}`, result));
+    } else {
+        message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`));
+    }
+}
+
+//send message regarding support pick
+function sendSupport(message, embeded, hero) {
+
+    let result = cp.getSupport(hero.toLowerCase());
+    if (result != null) {
+        embeded = embeded.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`);
+        message.channel.send(embeded.addField(`${hero} ${i18n.get('IsStrongAgainst')}`, result));
+    } else {
+        message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`))
+    }
+}
 
 function countSpaces(string) {
     return (string.match(new RegExp(" ", "g")) || []).length;
@@ -558,10 +498,5 @@ function randomTierMessage(value) {
     return i18n.get(`Random${random}`).replace("$1",value);
 }
 
-if (botSettings.token != "") {
-    // use local TOKEN from settings
-    bot.login(botSettings.token);
-} else {
-    // Heroku ENV token
-    bot.login(process.env.BOT_TOKEN);
-}
+// login bot into discord
+bot.login(c.botToken());
