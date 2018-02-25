@@ -269,7 +269,7 @@ bot.on("message", async message => {
 
         // show recent played heroes
         if (command.toLowerCase() === `${PREFIX}recent`) {
-            requestRecentPlayedHeroes(message, messageArray);
+            requestRecentPlayedHeroes(message, null);
             return;
         }
         
@@ -304,7 +304,7 @@ bot.on("message", async message => {
 
         //show player stats
         if (command.toLowerCase() === `${PREFIX}player` || command.toLowerCase() === `${PREFIX}p`) {
-            requestPlayerDetails(message, messageArray);
+            requestPlayerDetails(message, null);
         }
         
         //information
