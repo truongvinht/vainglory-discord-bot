@@ -48,11 +48,45 @@ bot.on("message", async message => {
     //ignore commands without prefix
     if (!message.content.startsWith(PREFIX)) return;
 
-    //prevent direct message
-    if (message.channel.type === "dm") return;
-
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
+
+    //prevent direct message
+    if (message.channel.type === "dm"){ 
+        
+        //var bh = require('./botHelper');
+        //bh.getData(bot);
+        // // send message to a target channel
+        // if (command.toLowerCase() === `${PREFIX}msg`) {
+        //     if(messageArray.length <= 2){
+        //         return;
+        //     }
+        //
+        //     for (var c of bot.channels.array()) {
+        //
+        //         //text channel with name
+        //         if (c.type == "text") {
+        //             if (messageArray[1] === c.name) {
+        //                 c.send(message.content.substring(
+        //                     messageArray[0].length + messageArray[1].length + 2, message.content.length));
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+        
+        // channel access overview
+        // if (command.toLowerCase() === `${PREFIX}chan`) {
+        //     let embed = new Discord.RichEmbed();
+        //
+        //     for (var c of bot.channels.array()) {
+        //     }
+        //     message.channel.send()
+        // }
+
+        return;
+    }
+    
 
     // user has role
     var hasRole = false;
@@ -63,7 +97,7 @@ bot.on("message", async message => {
             break;
         }
     }
-
+    
     //HELP
     if (command === `${PREFIX}help`) {
         let embed = new Discord.RichEmbed()
@@ -77,6 +111,7 @@ bot.on("message", async message => {
             .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
             .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
             .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
+            .addField(`${PREFIX}info ${i18n.get('Player')} / ${PREFIX}i ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`)
             .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`);
 
         if (hasRole) {
@@ -234,47 +269,8 @@ bot.on("message", async message => {
 
         // show recent played heroes
         if (command.toLowerCase() === `${PREFIX}recent`) {
-            var playerName = messageArray[1];
-
-            if (playerName.length == 0) {
-                playerName = messageArray[countSpaces(message.content)];
-            }
-
-            //override default server
-            const code = messageArray.length === 3?messageArray[2]:null;
-            const serverCode = c.vgServerCode(code);
-
-            var callback = function(list,matches) {
-
-                var d = new Discord.RichEmbed()
-                    .setAuthor(message.author.username)
-                    .setColor("#0000FF");
-
-                if (list.length > 0) {
-
-                    // count output
-                    var count = 0;
-                    var text = "";
-                
-                    for (var obj of list) {
-                        if (count++ < 5) {
-                            text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
-                        }
-                    }
-                    
-                    //top pick as avatar
-                    const topPickHero = list[0].name;
-                    
-                    d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
-                    .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
-                    
-                    message.channel.send(d);
-                } else {
-                    message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
-                }
-            };
-            vg.setToken(VG_TOKEN);
-            vg.getRecentPlayedHeroes(serverCode, playerName, callback);
+            requestRecentPlayedHeroes(message, messageArray);
+            return;
         }
         
         //elo overview
@@ -294,14 +290,13 @@ bot.on("message", async message => {
                         const img = vgBase.convertTier(vgBase.getTier(info.elo));
                          d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
                     }
-                
+                    
                     if (info.missing == -1) {
                         message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
                     } else {
                         message.channel.send(d.addField(`${info.title}`, `${randomTierMessage(info.missing)}`));
                     }
                 }
-                
             } else {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }
@@ -309,59 +304,21 @@ bot.on("message", async message => {
 
         //show player stats
         if (command.toLowerCase() === `${PREFIX}player` || command.toLowerCase() === `${PREFIX}p`) {
-            var playerName = messageArray[1];
-
-            if (playerName.length == 0) {
-                playerName = messageArray[countSpaces(message.content)];
-            }
-
-            //override default server
-            const code = messageArray.length === 3?messageArray[2]:null;
-            const serverCode = c.vgServerCode(code);
-
-            var callback = function(playerName, player) {
-
-                var d = new Discord.RichEmbed();
-
-                if (player != null) {
-                    d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
-                        .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
-                        .setColor(getClassColor(`${player.skillTier}`));
-
-                    if (player.guildTag != "") {
-                        d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
-                    }
-                    
-                    //load image from parameter
-                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                         d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
-                    }
-                    
-                    d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
-                        .addField(`${i18n.get('GamesPlayed')}`, `Casual 5v5: ${player.gamesPlayed.casual_5v5}\nCasual 3v3: ${player.gamesPlayed.casual}\nRanked: ${player.gamesPlayed.ranked}\nBlitz: ${player.gamesPlayed.blitz}\nBattle Royal: ${player.gamesPlayed.aral}`)
-                        .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
-                        .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                        .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
-                    message.channel.send(d.setAuthor(`${player.name}`));
-                } else {
-                    message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
-                }
-            };
-            vg.setToken(VG_TOKEN);
-            vg.getPlayerStats(serverCode, playerName, callback);
+            requestPlayerDetails(message, messageArray);
         }
         
-        // // full information
-        // if (command.toLowerCase() === `${PREFIX}full`) {
-        //     if (hasRole) {
-        //         var playerName = messageArray[1];
-        //
-        //         if (playerName.length == 0) {
-        //             playerName = messageArray[countSpaces(message.content)];
-        //             message.channel.send("it works!");
-        //         }
-        //     }
-        // }
+        //information
+        if (command.toLowerCase() === `${PREFIX}info` || command.toLowerCase() === `${PREFIX}i`) {
+            const callbackRecentHeroes = function(message, playerName) {
+                const callbackMatch = function(message, playerName) {
+                    if (hasRole) {
+                        requestMatch(message);
+                    }
+                }
+                requestRecentPlayedHeroes(message, callbackMatch);
+            }
+            requestPlayerDetails(message, callbackRecentHeroes);
+        }
 
         //hidden feature to fetch player IDs
         if (command.toLowerCase() === `${PREFIX}afk`) {
@@ -421,6 +378,144 @@ bot.on("message", async message => {
         }
     }
 });
+
+
+function requestPlayerDetails(message, nextCaller){
+    
+    const messageArray = message.content.split(" ");
+    
+    var playerName = messageArray[1];
+
+    if (playerName.length == 0) {
+        playerName = messageArray[countSpaces(message.content)];
+    }
+
+    //override default server
+    const code = messageArray.length === 3?messageArray[2]:null;
+    const serverCode = c.vgServerCode(code);
+
+    var callback = function(playerName, player) {
+
+        var d = new Discord.RichEmbed();
+
+        if (player != null) {
+            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
+                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+                .setColor(getClassColor(`${player.skillTier}`));
+
+            if (player.guildTag != "") {
+                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
+            }
+            
+            //load image from parameter
+            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
+            }
+            
+            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
+                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
+                                      `Battle Royal: ${player.gamesPlayed.aral}`;
+            
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
+                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
+                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
+                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
+            message.channel.send(d.setAuthor(`${player.name}`));
+            
+            if (nextCaller !=null) {
+                nextCaller(message,playerName);
+            }
+        } else {
+            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+        }
+    };
+    vg.setToken(VG_TOKEN);
+    vg.getPlayerStats(serverCode, playerName, callback);
+}
+
+function requestRecentPlayedHeroes(message, nextCaller) {
+    
+    const messageArray = message.content.split(" ");
+    
+    var playerName = messageArray[1];
+
+    if (playerName.length == 0) {
+        playerName = messageArray[countSpaces(message.content)];
+    }
+
+    //override default server
+    const code = messageArray.length === 3?messageArray[2]:null;
+    const serverCode = c.vgServerCode(code);
+
+    var callback = function(list,matches) {
+
+        var d = new Discord.RichEmbed()
+            .setAuthor(message.author.username)
+            .setColor("#0000FF");
+
+        if (list.length > 0) {
+            // count output
+            var count = 0;
+            var text = "";
+        
+            for (var obj of list) {
+                if (count++ < 5) {
+                    text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
+                }
+            }
+            
+            //top pick as avatar
+            const topPickHero = list[0].name;
+            
+            d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
+            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
+            
+            message.channel.send(d);
+            
+            if (nextCaller !=null) {
+                nextCaller(message,playerName);
+            }
+        } else {
+            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+        }
+    };
+    vg.setToken(VG_TOKEN);
+    vg.getRecentPlayedHeroes(serverCode, playerName, callback);
+}
+
+function requestMatch(message) {
+    
+    const messageArray = message.content.split(" ");
+    
+    // restricted actions
+    var playerName = messageArray[1];
+
+    if (playerName.length == 0) {
+        playerName = messageArray[countSpaces(message.content)];
+    }
+
+    //override default server
+    const code = messageArray.length === 3?messageArray[2]:null;
+    const serverCode = c.vgServerCode(code);
+
+    var callback = function(text, matchID) {
+
+        var d = new Discord.RichEmbed()
+            .setAuthor(message.author.username)
+            .setColor("#000000");
+
+        if (text != null) {
+            message.channel.send(d.setDescription(`${text}`));
+        } else {
+            message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
+        }
+    };
+    vg.setToken(VG_TOKEN);
+    vg.getMatchStats(serverCode, playerName, callback);
+}
 
 //send message regarding counter pick
 function sendCounter(message, embeded, hero) {
