@@ -237,38 +237,15 @@ bot.on("message", async message => {
         
         //only allow users with roles
         if (command.toLowerCase() === `${PREFIX}match` || command.toLowerCase() === `${PREFIX}m`) {
-
             if (hasRole) {
-                // restricted actions
-                var playerName = messageArray[1];
-
-                if (playerName.length == 0) {
-                    playerName = messageArray[countSpaces(message.content)];
-                }
-
-                //override default server
-                const code = messageArray.length === 3?messageArray[2]:null;
-                const serverCode = c.vgServerCode(code);
-
-                var callback = function(text, matchID) {
-
-                    var d = new Discord.RichEmbed()
-                        .setAuthor(message.author.username)
-                        .setColor("#000000");
-
-                    if (text != null) {
-                        message.channel.send(d.setDescription(`${text}`));
-                    } else {
-                        message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
-                    }
-                };
-                vg.setToken(VG_TOKEN);
-                vg.getMatchStats(serverCode, playerName, callback);
-            } 
+                requestMatch(message);
+            } else {
+                message.channel.send(`${NoPermissionCommand}`);
+            }
         }
 
         // show recent played heroes
-        if (command.toLowerCase() === `${PREFIX}recent`) {
+        if (command.toLowerCase() === `${PREFIX}recent` || command.toLowerCase() === `${PREFIX}r`) {
             requestRecentPlayedHeroes(message, null);
             return;
         }
