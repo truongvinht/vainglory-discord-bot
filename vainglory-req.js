@@ -301,9 +301,15 @@ const recentPlayedHeroes = function(region, player, callback) {
                         var p = fetchParticipants(json, part);
                         if (p.playerID == ownPlayerID) {
                             if (playersMap[p.actor] != undefined) {
-                                playersMap[p.actor] = playersMap[p.actor] + 1;
+                                playersMap[p.actor] = {
+                                    "played":playersMap[p.actor].played + 1,
+                                    "victory":(roster.won==="true")? playersMap[p.actor].victory+1:playersMap[p.actor].victory
+                                }
                             } else {
-                                playersMap[p.actor] = 1;
+                                playersMap[p.actor] = {
+                                    "played":1,
+                                    "victory":(roster.won==="true")?1:0
+                                };
                             }
                             break;
                         }
@@ -322,7 +328,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             }
 
             playerList.sort(function(a, b) {
-                return b.value - a.value;
+                return b.value.played - a.value.played;
             });
             callback(playerList,json.data.length);
         } else {
@@ -340,6 +346,8 @@ const recentPlayedHeroes = function(region, player, callback) {
         }
     });
 }
+
+
 
 // function to get player stats
 var playerStats = function(region, playerName, callback) {

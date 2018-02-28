@@ -50,5 +50,6 @@
   "RankPoints":"Rankpunkte",
   "RecentHeroes":"Zuletzt gespielte Helden",
   "SkillTier":"Könnenstufe",
-  "Victory":"Siege"
+  "Victory":"Siege",
+  "WinningChance":"Gewinnerquote"
 }

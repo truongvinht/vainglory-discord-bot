@@ -54,8 +54,9 @@ bot.on("message", async message => {
     //prevent direct message
     if (message.channel.type === "dm"){ 
         
-        //var bh = require('./botHelper');
-        //bh.getData(bot);
+        // var bh = require('./botHelper');
+        // bh.getData(bot);
+        //
         // // send message to a target channel
         // if (command.toLowerCase() === `${PREFIX}msg`) {
         //     if(messageArray.length <= 2){
@@ -73,6 +74,7 @@ bot.on("message", async message => {
         //             }
         //         }
         //     }
+        //     return;
         // }
         
         // channel access overview
@@ -92,6 +94,8 @@ bot.on("message", async message => {
     var hasRole = false;
 
     for (var reqRole of c.restriction()) {
+        console.log(reqRole);
+        
         if (message.member.roles.find("name", reqRole)) {
             hasRole = true;
             break;
@@ -434,13 +438,22 @@ function requestRecentPlayedHeroes(message, nextCaller) {
             .setColor("#0000FF");
 
         if (list.length > 0) {
+            //console.log(JSON.stringify(list));
             // count output
             var count = 0;
             var text = "";
         
             for (var obj of list) {
                 if (count++ < 5) {
-                    text = text + obj.name + ": " + (obj.value/matches*100).toFixed(0) + "% \n";
+                    text = text + obj.name + ": " + (obj.value.played/matches*100).toFixed(0) + "% \n";
+                }
+            }
+            
+            var victoryRate = "";
+            count = 0;
+            for (var obj of list) {
+                if (count++ < 5) {
+                    victoryRate = victoryRate + obj.name + ": " + (obj.value.victory/matches*100).toFixed(0) + "% \n";
                 }
             }
             
@@ -448,7 +461,8 @@ function requestRecentPlayedHeroes(message, nextCaller) {
             const topPickHero = list[0].name;
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
-            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`);
+            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`)
+            .addField(`${playerName}: ${i18n.get('WinningChance')}`, `${victoryRate}`);
             
             message.channel.send(d);
             
