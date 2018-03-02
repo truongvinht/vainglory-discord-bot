@@ -232,16 +232,16 @@ var matchStats = function(region, player, callback) {
             }
             
         } else {
-
+            var text = "";
+            
             if (response != null) {
-                console.log("# # # # #");
-                console.log("URL: " + requestURL);
-                console.log("Status: " + response.statusCode);
-                console.log("Header: " + response.rawHeaders);
-                console.log("Body: " + body);
-                console.log("Failed: " + error);
-
-                var text = response.statusCode + " " + response.headers + " " + body + " " + error;
+                // console.log("# # # # #");
+                // console.log("URL: " + requestURL);
+                // console.log("Status: " + response.statusCode);
+                // console.log("Header: " + response.rawHeaders);
+                // console.log("Body: " + body);
+                // console.log("Failed: " + error);
+                text = response.statusCode + " " + response.headers + " " + body + " " + error;
             }
             callback(text, player);
         }
@@ -333,15 +333,14 @@ const recentPlayedHeroes = function(region, player, callback) {
             callback(playerList,json.data.length);
         } else {
 
-            if (response != null) {
-                console.log("# # # # #");
-                console.log("URL: " + requestURL);
-                console.log("Status: " + response.statusCode);
-                console.log("Header: " + response.rawHeaders);
-                console.log("Body: " + body);
-                console.log("Failed: " + error);
-
-            }
+            // if (response != null) {
+            //     console.log("# # # # #");
+            //     console.log("URL: " + requestURL);
+            //     console.log("Status: " + response.statusCode);
+            //     console.log("Header: " + response.rawHeaders);
+            //     console.log("Body: " + body);
+            //     console.log("Failed: " + error);
+            // }
             callback([],0);
         }
     });
@@ -414,14 +413,14 @@ var playerStats = function(region, playerName, callback) {
 
         } else {
 
-            if (response != null) {
-                console.log("# # # # #");
-                console.log("URL: " + requestURL);
-                console.log("Status: " + response.statusCode);
-                console.log("Header: " + response.rawHeaders);
-                console.log("Body: " + body);
-                console.log("Failed: " + error);
-            }
+            // if (response != null) {
+            //     console.log("# # # # #");
+            //     console.log("URL: " + requestURL);
+            //     console.log("Status: " + response.statusCode);
+            //     console.log("Header: " + response.rawHeaders);
+            //     console.log("Body: " + body);
+            //     console.log("Failed: " + error);
+            // }
             callback(playerName, null);
         }
     });
@@ -526,14 +525,14 @@ var playersQuickInfo = function(region, playerNames, callback) {
                 }
                 callback(players);
             } else {
-                if (response != null) {
-                    console.log("# # # # #");
-                    console.log("URL: " + requestURL);
-                    console.log("Status: " + response.statusCode);
-                    console.log("Header: " + response.rawHeaders);
-                    console.log("Body: " + body);
-                    console.log("Failed: " + error);
-                }
+                // if (response != null) {
+                //     console.log("# # # # #");
+                //     console.log("URL: " + requestURL);
+                //     console.log("Status: " + response.statusCode);
+                //     console.log("Header: " + response.rawHeaders);
+                //     console.log("Body: " + body);
+                //     console.log("Failed: " + error);
+                // }
             }
         }
     });

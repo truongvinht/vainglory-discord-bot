@@ -27,7 +27,7 @@ const bot = new Discord.Client({
 
 // prepare invite code
 bot.on("ready", async() => {
-    console.log(`${i18n.get('BotReady')} ${bot.user.username}`);
+    console.log(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}`);
     try {
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         console.log(link);
@@ -39,8 +39,10 @@ bot.on("ready", async() => {
     }
 });
 
+
 // reaction for message
 bot.on("message", async message => {
+    
     
     //ignore own messages
     if (message.author.bot) return;
@@ -50,6 +52,15 @@ bot.on("message", async message => {
 
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
+
+    // if(command === `${PREFIX}add`) {
+    //     // Create a reaction collector
+    //     const filter = (reaction, user) => reaction.emoji.name === '👌'
+    //     const collector = message.createReactionCollector(filter, { time: 15000 });
+    //     collector.on('collect', r => console.log(`Collected ${r.emoji.name}`));
+    //     collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+    //     return;
+    // }
 
     //prevent direct message
     if (message.channel.type === "dm"){ 
@@ -89,13 +100,13 @@ bot.on("message", async message => {
         return;
     }
     
+    console.log(`${new Date()}|${message.channel.name}|${message.author.username}: ${message.content}`);
+    
 
     // user has role
     var hasRole = false;
 
     for (var reqRole of c.restriction()) {
-        console.log(reqRole);
-        
         if (message.member.roles.find("name", reqRole)) {
             hasRole = true;
             break;
@@ -107,6 +118,7 @@ bot.on("message", async message => {
         let embed = new Discord.RichEmbed()
             .setAuthor(message.author.username)
             .setDescription(`${i18n.get('FollowingCommands')}`)
+            .addField(`${PREFIX}about`, `${i18n.get('AboutBot')}`)
             .addField(`${PREFIX}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
             .addField(`${PREFIX}c HERO-CODE`, `${i18n.get('DisplayWeaknessHeroCode')}`)
             .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
@@ -123,6 +135,7 @@ bot.on("message", async message => {
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
         }
         message.channel.send(embed);
+        return;
     }
 
     if (messageArray.length == 1) {
@@ -156,6 +169,7 @@ bot.on("message", async message => {
             } else {
                 message.channel.send(d.setDescription(`'${hName}': ${i18n.get('EnteredHeroDoesntExist')}`));
             }
+            return;
         }
 
         //elo list
@@ -176,6 +190,7 @@ bot.on("message", async message => {
                  d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
             }
             message.channel.send(d);
+            return;
         }
     }
 
@@ -207,7 +222,7 @@ bot.on("message", async message => {
             } else {
                 message.channel.send(new Discord.RichEmbed()
                     .setAuthor(message.author.username)
-                    .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
+                    .setDescription(`'${hName}': ${i18n.get('InvalidHeroCode')}`));
             }
         }
 
@@ -244,7 +259,7 @@ bot.on("message", async message => {
             if (hasRole) {
                 requestMatch(message);
             } else {
-                message.channel.send(`${NoPermissionCommand}`);
+                message.channel.send(`${i18n.get('NoPermissionCommand')}`);
             }
         }
 
@@ -356,10 +371,23 @@ bot.on("message", async message => {
                 }).catch(console.error);;
             }
             clear();
+        } else if (command.toLowerCase() === `${PREFIX}about`) {
+
+            var d = new Discord.RichEmbed()
+                .setAuthor(message.author.username);
+
+            message.channel.send(d.addField(`${i18n.get('AboutBot')}`, "Creator: B3nB, roest, C4CW & EuE Community"));
+        } else {
+            var d = new Discord.RichEmbed();
+            message.channel.send(d.addField(`${i18n.get('Help')}`, `${i18n.get('HelpDetails')}`));
         }
     }
 });
 
+
+bot.on('messageReactionAdd', (reaction, user) => {
+    //console.log(reaction.count);
+});
 
 function requestPlayerDetails(message, nextCaller){
     
@@ -453,7 +481,7 @@ function requestRecentPlayedHeroes(message, nextCaller) {
             count = 0;
             for (var obj of list) {
                 if (count++ < 5) {
-                    victoryRate = victoryRate + obj.name + ": " + (obj.value.victory/matches*100).toFixed(0) + "% \n";
+                    victoryRate = victoryRate + obj.name + ": " + (obj.value.victory/obj.value.played*100).toFixed(0) + "% \n";
                 }
             }
             
@@ -462,7 +490,7 @@ function requestRecentPlayedHeroes(message, nextCaller) {
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
             .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`)
-            .addField(`${playerName}: ${i18n.get('WinningChance')}`, `${victoryRate}`);
+            .addField(`${i18n.get('WinningChance')}`, `${victoryRate}`);
             
             message.channel.send(d);
             

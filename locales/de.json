@@ -1,4 +1,5 @@
 {
+  "AboutBot":"Informationen über den Bot",
   "AvailableCommands": "Folgende Befehle sind verfügbar:",
   "BotReady": "Bot is bereit!",
   "BetterImpossible":"Besser geht es kaum noch!",
@@ -15,6 +16,8 @@
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
   "GamesPlayed":"Gespielte Spiele",
   "GuildTag":"Gildentag",
+  "Help":"Hilfe",
+  "HelpDetails":"Tippe !help für mehr Informationen",
   "HelpPlayerDetails":"Informationen zum Spieler",
   "HelpPlayerDetailsFull":"Vollständige Informationen zum Spieler",
   "InvalidHeroCode": "Ungültiger Code!",
