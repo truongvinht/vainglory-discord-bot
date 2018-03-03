@@ -378,16 +378,21 @@ bot.on("message", async message => {
                 .setAuthor(message.author.username);
 
             message.channel.send(d.addField(`${i18n.get('AboutBot')}`, "Creator: B3nB, roest, C4CW & EuE Community"));
-        } else 
-            if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
-            
-                const callbackRecentHeroes = function(message, playerName) {
-                    const callbackMatch = function(message, playerName) {}
-                    requestRecentPlayedHeroesForName(message, playerName, callbackMatch);
+        } else if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
+            const callbackRecentHeroes = function(message, playerName) {
+                const callbackMatch = function(message, playerName) {
+                    if (hasRole) {
+                        requestMatchForPlayer(message, playerName);
+                    }
                 }
-                requestPlayerDetailsForName(message,message.author.username ,callbackRecentHeroes);
-                return;
-            }else {
+                requestRecentPlayedHeroesForName(message, playerName, callbackMatch);
+            }
+            requestPlayerDetailsForName(message,message.author.username ,callbackRecentHeroes);
+            return;
+        }else if(command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
+            requestMatchForPlayer(message,message.author.username);
+            return;
+        } else {
             var d = new Discord.RichEmbed();
             message.channel.send(d.addField(`${i18n.get('Help')}`, `${i18n.get('HelpDetails')}`));
         }
@@ -536,9 +541,16 @@ function requestMatch(message) {
     if (playerName.length == 0) {
         playerName = messageArray[countSpaces(message.content)];
     }
+    
+    requestMatchForPlayer(message, playerName);
+}
 
+function requestMatchForPlayer(message, playerName) {
+    
+    const messageArray = message.content.split(" ");
+    
     //override default server
-    const code = messageArray.length === 3?messageArray[2]:null;
+    const code = messageArray.length === 2?messageArray[1]:null;
     const serverCode = c.vgServerCode(code);
 
     var callback = function(text, matchID) {
@@ -556,6 +568,7 @@ function requestMatch(message) {
     vg.setToken(VG_TOKEN);
     vg.getMatchStats(serverCode, playerName, callback);
 }
+
 
 //send message regarding counter pick
 function sendCounter(message, embeded, hero) {
