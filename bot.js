@@ -27,7 +27,7 @@ const bot = new Discord.Client({
 
 // prepare invite code
 bot.on("ready", async() => {
-    console.log(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}`);
+    console.log(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}\n# # # # # # # # # #`);
     try {
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         console.log(link);
@@ -660,4 +660,8 @@ function randomTierMessage(value) {
 }
 
 // login bot into discord
-bot.login(c.botToken());
+if (!(c.botToken() == null || c.botToken().length == 0)) {
+    bot.login(c.botToken());
+} else {
+    console.log('Invalid Discord Token')
+}

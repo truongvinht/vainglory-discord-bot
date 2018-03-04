@@ -1,5 +1,5 @@
 #ignore following files
 node_modules
-botsettings.json
+settings.json
 .DS_Store
 package-lock.json

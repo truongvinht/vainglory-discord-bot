@@ -2,7 +2,17 @@
 // handle environment variable
 // ==================
 
-const botSettings = require("./botsettings.json");
+//load settings => auto fallback to example for heroku
+var botSettings = {};
+try {
+    botSettings = require("./data/settings.json");
+} catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') {
+        throw e;
+    }
+    console.log('settings.json not found. Loading default example_settings.json...');
+    botSettings = require("./data/example_settings.json");
+}
 
 //Bot Token
 var botToken = botSettings.token;
@@ -37,6 +47,19 @@ var vgApiToken = botSettings.vgAPIToken;
 if (vgApiToken == "") {
     // Heroku ENV token
     vgApiToken = process.env.vgAPIToken;
+}
+
+// default language
+var language = botSettings.lang;
+if (language == "") {
+    if (process.env.LANG != null && process.env.LANG != "") {
+        // Heroku ENV token
+        language = process.env.LANG;
+    } else {
+        //default language EN
+        language = 'en';
+    }
+    
 }
 
 const getBotToken = () => {
@@ -81,6 +104,10 @@ const getVgToken = () => {
     return vgApiToken;
 }
 
+const lang = () => {
+    return language;
+}
+
 // export
 module.exports = {
     botToken: getBotToken,
@@ -90,5 +117,6 @@ module.exports = {
     prefix: getPrefix,
     vgServerCode: getVgServerCode,
     restriction: getRestrictedRoles,
-    vgToken: getVgToken
+    vgToken: getVgToken,
+    language: lang
 };
