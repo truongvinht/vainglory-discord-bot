@@ -132,9 +132,9 @@ bot.on("message", async message => {
             .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`);
 
         if (hasRole) {
+            embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
             embed.addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
-            embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
         }
         message.channel.send(embed);
         return;
