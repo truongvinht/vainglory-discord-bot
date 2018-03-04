@@ -11,7 +11,7 @@ try {
         throw e;
     }
     console.log('settings.json not found. Loading default example_settings.json...');
-    botSettings = require("./config/example_settings.json");
+    botSettings = require("../config/example_settings.json");
 }
 
 //Bot Token
