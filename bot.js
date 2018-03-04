@@ -15,6 +15,10 @@ const cp = require('./controllers/vgCounterPicker');
 //elo calculator
 const eloCalc = require('./controllers/eloCalculator');
 
+//logger
+var log =require('loglevel');
+log.setLevel('info');
+
 // CONSTANTS
 
 // prefix for commands
@@ -27,15 +31,15 @@ const bot = new Discord.Client({
 
 // prepare invite code
 bot.on("ready", async() => {
-    console.log(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}\n# # # # # # # # # #`);
+    log.info(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}\n# # # # # # # # # #`);
     try {
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
-        console.log(link);
+        log.info(link);
         
         //load URL
         eloCalc.initURL(`${c.eloListURL()}`);
     } catch (e) {
-        console.log(e.stack);
+        log.error(e.stack);
     }
 });
 
@@ -495,21 +499,18 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
 
         if (list.length > 0) {
             //console.log(JSON.stringify(list));
-            // count output
+            
             var count = 0;
-            var text = "";
+            
+            var recentRate = "";
+            var victoryRate = "";
+            var totalVictory = 0;
         
             for (var obj of list) {
                 if (count++ < 5) {
-                    text = text + obj.name + ": " + (obj.value.played/matches*100).toFixed(0) + "% \n";
-                }
-            }
-            
-            var victoryRate = "";
-            count = 0;
-            for (var obj of list) {
-                if (count++ < 5) {
+                    recentRate = recentRate + obj.name + ": " + (obj.value.played/matches*100).toFixed(0) + "% \n";
                     victoryRate = victoryRate + obj.name + ": " + (obj.value.victory/obj.value.played*100).toFixed(0) + "% \n";
+                    totalVictory = totalVictory + obj.value.victory;
                 }
             }
             
@@ -517,8 +518,8 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
             const topPickHero = list[0].name;
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
-            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${text}`)
-            .addField(`${i18n.get('WinningChance')}`, `${victoryRate}`);
+            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${recentRate}`)
+            .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/50).toFixed(0)}%]`, `${victoryRate}`);
             
             message.channel.send(d);
             

@@ -4,6 +4,7 @@
 //dependency
 var request = require('request');
 var fs = require('fs');
+var log =require('loglevel');
 
 var vgbase = require('../models/vainglory-base.js');
 
@@ -235,12 +236,12 @@ var matchStats = function(region, player, callback) {
             var text = "";
             
             if (response != null) {
-                // console.log("# # # # #");
-                // console.log("URL: " + requestURL);
-                // console.log("Status: " + response.statusCode);
-                // console.log("Header: " + response.rawHeaders);
-                // console.log("Body: " + body);
-                // console.log("Failed: " + error);
+                log.debug("# # # # #");
+                log.debug("URL: " + requestURL);
+                log.debug("Status: " + response.statusCode);
+                log.debug("Header: " + response.rawHeaders);
+                log.debug("Body: " + body);
+                log.debug("Failed: " + error);
                 text = response.statusCode + " " + response.headers + " " + body + " " + error;
             }
             callback(text, player);
@@ -314,7 +315,6 @@ const recentPlayedHeroes = function(region, player, callback) {
                             break;
                         }
                     }
-
                 }
             }
 
@@ -333,14 +333,14 @@ const recentPlayedHeroes = function(region, player, callback) {
             callback(playerList,json.data.length);
         } else {
 
-            // if (response != null) {
-            //     console.log("# # # # #");
-            //     console.log("URL: " + requestURL);
-            //     console.log("Status: " + response.statusCode);
-            //     console.log("Header: " + response.rawHeaders);
-            //     console.log("Body: " + body);
-            //     console.log("Failed: " + error);
-            // }
+            if (response != null) {
+                log.debug("# # # # #");
+                log.debug("URL: " + requestURL);
+                log.debug("Status: " + response.statusCode);
+                log.debug("Header: " + response.rawHeaders);
+                log.debug("Body: " + body);
+                log.debug("Failed: " + error);
+            }
             callback([],0);
         }
     });
@@ -413,14 +413,14 @@ var playerStats = function(region, playerName, callback) {
 
         } else {
 
-            // if (response != null) {
-            //     console.log("# # # # #");
-            //     console.log("URL: " + requestURL);
-            //     console.log("Status: " + response.statusCode);
-            //     console.log("Header: " + response.rawHeaders);
-            //     console.log("Body: " + body);
-            //     console.log("Failed: " + error);
-            // }
+            if (response != null) {
+                log.debug("# # # # #");
+                log.debug("URL: " + requestURL);
+                log.debug("Status: " + response.statusCode);
+                log.debug("Header: " + response.rawHeaders);
+                log.debug("Body: " + body);
+                log.debug("Failed: " + error);
+            }
             callback(playerName, null);
         }
     });
@@ -525,14 +525,14 @@ var playersQuickInfo = function(region, playerNames, callback) {
                 }
                 callback(players);
             } else {
-                // if (response != null) {
-                //     console.log("# # # # #");
-                //     console.log("URL: " + requestURL);
-                //     console.log("Status: " + response.statusCode);
-                //     console.log("Header: " + response.rawHeaders);
-                //     console.log("Body: " + body);
-                //     console.log("Failed: " + error);
-                // }
+                if (response != null) {
+                    log.debug("# # # # #");
+                    log.debug("URL: " + requestURL);
+                    log.debug("Status: " + response.statusCode);
+                    log.debug("Header: " + response.rawHeaders);
+                    log.debug("Body: " + body);
+                    log.debug("Failed: " + error);
+                }
             }
         }
     });
