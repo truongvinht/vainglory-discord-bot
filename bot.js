@@ -375,8 +375,10 @@ bot.on("message", async message => {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username);
+            
+            const version = c.version();
 
-            message.channel.send(d.addField(`${i18n.get('AboutBot')}`, `Creator: ${c.author()}`));
+            message.channel.send(d.addField(`${i18n.get('AboutBot')} [${version}]`, `Creator: ${c.author()}`));
         } else if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
             const callbackRecentHeroes = function(message, playerName) {
                 const callbackMatch = function(message, playerName) {

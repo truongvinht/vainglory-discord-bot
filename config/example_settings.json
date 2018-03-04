@@ -8,5 +8,6 @@
   "vgAPIToken":"",
   "ELO_LIST_URL":"",
   "vaingloryAPIServer": "eu",
-  "author":"B3nB, roest, C4CW & EuE Community"
+  "author":"B3nB, roest, C4CW & EuE Community",
+  "version":"1.0.0"
 }

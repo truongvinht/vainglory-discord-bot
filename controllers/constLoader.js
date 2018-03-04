@@ -118,6 +118,10 @@ const author = () => {
     return creator
 }
 
+const getVersion = () => {
+    return botSettings.version;
+} 
+
 // export
 module.exports = {
     botToken: getBotToken,
@@ -129,5 +133,6 @@ module.exports = {
     restriction: getRestrictedRoles,
     vgToken: getVgToken,
     language: lang,
-    author: author
+    author: author,
+    version: getVersion
 };
