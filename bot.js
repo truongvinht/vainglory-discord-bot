@@ -128,12 +128,13 @@ bot.on("message", async message => {
             .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
             .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
             .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
-            .addField(`${PREFIX}info ${i18n.get('Player')} / ${PREFIX}i ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`)
+            .addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`)
             .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`);
 
         if (hasRole) {
             embed.addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
+            embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
         }
         message.channel.send(embed);
         return;
@@ -395,6 +396,8 @@ bot.on("message", async message => {
         }else if(command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
             requestMatchForPlayer(message,message.author.username);
             return;
+        }else if(command.toLowerCase() === `${PREFIX}p` || command.toLowerCase() === `${PREFIX}player`) {
+            requestPlayerDetailsForName(message,message.author.username,null);
         } else {
             var d = new Discord.RichEmbed();
             const helpdestails = i18n.get(`HelpDetails`).replace("$1",`${PREFIX}`)
