@@ -7,5 +7,6 @@
   "restricted":["Leader","Moderator"],
   "vgAPIToken":"",
   "ELO_LIST_URL":"",
-  "vaingloryAPIServer": "eu"
+  "vaingloryAPIServer": "eu",
+  "author":"B3nB, roest, C4CW & EuE Community"
 }

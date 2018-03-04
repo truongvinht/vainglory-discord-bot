@@ -4,7 +4,7 @@
 
 
 // import 
-const vgCounter = require("./data/heroes.json");
+const vgCounter = require("../data/heroes.json");
 const i18n = require('./langSupport');
 
 // weak against

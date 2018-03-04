@@ -14,7 +14,7 @@ var LangService = (function() {
         var lang = c.language();
         
         //load language file
-        const language = require(`./locales/${lang}.json`);
+        const language = require(`../data/locales/${lang}.json`);
     
         return {
             get: function(string) {

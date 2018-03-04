@@ -4,16 +4,16 @@
 
 //import
 const Discord = require("discord.js");
-const c = require("./constLoader");
-const i18n = require('./langSupport');
-const vgBase = require('./vainglory-base');
-var vg = require('./vainglory-req');
+const c = require("./controllers/constLoader");
+const i18n = require('./controllers/langSupport');
+const vgBase = require('./models/vainglory-base');
+var vg = require('./controllers/vainglory-req');
 
 //counter picker
-const cp = require('./vgCounterPicker');
+const cp = require('./controllers/vgCounterPicker');
 
 //elo calculator
-const eloCalc = require('./eloCalculator');
+const eloCalc = require('./controllers/eloCalculator');
 
 // CONSTANTS
 
@@ -42,7 +42,6 @@ bot.on("ready", async() => {
 
 // reaction for message
 bot.on("message", async message => {
-    
     
     //ignore own messages
     if (message.author.bot) return;
@@ -377,7 +376,7 @@ bot.on("message", async message => {
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username);
 
-            message.channel.send(d.addField(`${i18n.get('AboutBot')}`, "Creator: B3nB, roest, C4CW & EuE Community"));
+            message.channel.send(d.addField(`${i18n.get('AboutBot')}`, `Creator: ${c.author()}`));
         } else if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
             const callbackRecentHeroes = function(message, playerName) {
                 const callbackMatch = function(message, playerName) {

@@ -2,8 +2,8 @@
 // Helper function for getting details
 // ================
 
-const modeUtility = require(`./data/gameMode.json`);
-const i18n = require('./langSupport');
+const modeUtility = require(`../data/gameMode.json`);
+const i18n = require('../controllers/langSupport');
 
 const gameMode = function(mode) {
     if (modeUtility.hasOwnProperty(mode)) {

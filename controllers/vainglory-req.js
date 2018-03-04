@@ -5,7 +5,7 @@
 var request = require('request');
 var fs = require('fs');
 
-var vgbase = require('./vainglory-base.js');
+var vgbase = require('../models/vainglory-base.js');
 
 // constant
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'

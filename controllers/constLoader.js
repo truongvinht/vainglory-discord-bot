@@ -5,13 +5,13 @@
 //load settings => auto fallback to example for heroku
 var botSettings = {};
 try {
-    botSettings = require("./data/settings.json");
+    botSettings = require("../config/settings.json");
 } catch (e) {
     if (e.code !== 'MODULE_NOT_FOUND') {
         throw e;
     }
     console.log('settings.json not found. Loading default example_settings.json...');
-    botSettings = require("./data/example_settings.json");
+    botSettings = require("./config/example_settings.json");
 }
 
 //Bot Token
@@ -59,7 +59,13 @@ if (language == "") {
         //default language EN
         language = 'en';
     }
-    
+}
+
+// author information
+var creator = botSettings.author;
+if (creator == "") {
+    // Heroku ENV token
+    creator = process.env.AUTHOR;
 }
 
 const getBotToken = () => {
@@ -108,6 +114,10 @@ const lang = () => {
     return language;
 }
 
+const author = () => {
+    return creator
+}
+
 // export
 module.exports = {
     botToken: getBotToken,
@@ -118,5 +128,6 @@ module.exports = {
     vgServerCode: getVgServerCode,
     restriction: getRestrictedRoles,
     vgToken: getVgToken,
-    language: lang
+    language: lang,
+    author: author
 };
