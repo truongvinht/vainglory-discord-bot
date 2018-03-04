@@ -17,7 +17,7 @@
   "GamesPlayed":"Games played",
   "GuildTag":"Guild tag",
   "Help":"Help",
-  "HelpDetails":"Type !help for more information",
+  "HelpDetails":"Type $1help for more information",
   "HelpPlayerDetails":"Details for player",
   "HelpPlayerDetailsFull":"Full details for player",
   "InvalidHeroCode": "Invalid hero code!",

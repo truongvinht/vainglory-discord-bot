@@ -17,7 +17,7 @@
   "GamesPlayed":"Gespielte Spiele",
   "GuildTag":"Gildentag",
   "Help":"Hilfe",
-  "HelpDetails":"Tippe !help für mehr Informationen",
+  "HelpDetails":"Tippe $1help für mehr Informationen",
   "HelpPlayerDetails":"Informationen zum Spieler",
   "HelpPlayerDetailsFull":"Vollständige Informationen zum Spieler",
   "InvalidHeroCode": "Ungültiger Code!",

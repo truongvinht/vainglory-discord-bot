@@ -394,7 +394,8 @@ bot.on("message", async message => {
             return;
         } else {
             var d = new Discord.RichEmbed();
-            message.channel.send(d.addField(`${i18n.get('Help')}`, `${i18n.get('HelpDetails')}`));
+            const helpdestails = i18n.get(`HelpDetails`).replace("$1",`${PREFIX}`)
+            message.channel.send(d.addField(`${i18n.get('Help')}`, `${helpdestails}`));
         }
     }
 });
