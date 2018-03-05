@@ -14,8 +14,8 @@ const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 // request token for VG API
 var requestToken = '';
 
-var matchStats = function(region, player, callback) {
-    const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt&page[limit]=1&page[offset]=0";
+var matchStats = function(region, playerName, callback) {
+    const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]=1&page[offset]=0";
     console.log(requestURL);
 
     const reqOption = getRequestHeader(requestURL);
@@ -29,12 +29,8 @@ var matchStats = function(region, player, callback) {
         if (!error && response.statusCode == 200) {
             var json = JSON.parse(body);
 
-            var ownPlayerID = "";
             //fetch own player id
-            if (player.indexOf(',') == -1) {
-                //only for single player info
-                ownPlayerID = fetchPlayerID(json, player)
-            }
+            var ownPlayerID = ownPlayerID = fetchPlayerID(json, playerName);
             var totalCountGames = json.data.length;
 
             //prepare match data
@@ -46,11 +42,7 @@ var matchStats = function(region, player, callback) {
             matchContent['createdAt'] = getFormattedDate(match.createdAt);
             matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
 
-            // roster for match
-            var rosterLeftMap = {};
-            var rosterRightMap = {};
-
-            var text = player + ": " + getFormattedDate(match.createdAt) + "\n";
+            var text = playerName + ": " + getFormattedDate(match.createdAt) + "\n";
 
             text = text + match.gameMode + ": " + (match.duration - (match.duration % 60)) / 60 + "mins \n";
 
@@ -60,7 +52,8 @@ var matchStats = function(region, player, callback) {
 
             var maxScorePlayerValue = 0;
             var maxScorePlayerID = "";
-
+            var manOfMatch = null;
+            
             for (var rosterID of match.roster) {
 
                 var roster = fetchRoster(json, rosterID);
@@ -82,6 +75,7 @@ var matchStats = function(region, player, callback) {
                     if (maxScorePlayerValue < mom) {
                         maxScorePlayerValue = mom;
                         maxScorePlayerID = p.playerID;
+                        manOfMatch = p;
                     }
 
                     if (roster.side == 'left/blue') {
@@ -92,14 +86,21 @@ var matchStats = function(region, player, callback) {
                 }
             }
 
+            matchContent["mom"] = manOfMatch;
+            
             // prepare output
             text = text + "\nLeft:\n";
-
+            
+            var mom = null;
+            
+            var leftTeam = [];
+            
             //left
             for (var p of rosterLeft) {
 
-                const player = fetchPlayer(json, p.playerID);
-
+                var player = fetchPlayer(json, p.playerID);
+                player["participant"] = p;
+                leftTeam.push(player);
                 var guild = "";
 
                 if (player.guildTag != "") {
@@ -110,17 +111,23 @@ var matchStats = function(region, player, callback) {
                 // man of the match
                 if (maxScorePlayerID == p.playerID) {
                     text = text + " *";
+                    mom = player;
                 }
 
                 text = text + "\n";
             }
+            matchContent["left"] = leftTeam;
 
             text = text + "\nRight:\n";
+            
+            var rightTeam = [];
 
             //right
             for (var p of rosterRight) {
 
-                const player = fetchPlayer(json, p.playerID);
+                var player = fetchPlayer(json, p.playerID);
+                player["participant"] = p;
+                rightTeam.push(player);
 
                 var guild = "";
 
@@ -132,10 +139,12 @@ var matchStats = function(region, player, callback) {
                 // man of the match
                 if (maxScorePlayerID == p.playerID) {
                     text = text + " *";
+                    mom = player;
                 }
 
                 text = text + "\n";
             }
+            matchContent["right"] = rightTeam;
 
             // show match details
             callback(text, match.id,matchContent);

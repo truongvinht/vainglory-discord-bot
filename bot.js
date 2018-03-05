@@ -559,8 +559,63 @@ function requestMatchForPlayer(message, playerName) {
 
     var callback = function(text, matchID, data) {
         
-        if (data!=null) {
-            console.log(JSON.stringify(data));
+        if (data != null) {
+            
+            console.log()
+            var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${data.won} `; 
+            var d = new Discord.RichEmbed()
+                 .setAuthor(message.author.username)
+                 .setColor("#000000")
+                 .setDescription(header);
+            
+            const leftRoster = data.left; 
+            const rightRoster = data.right;
+            
+            var manOfMatch = null;
+
+            d = d.addField('\u200B',`${i18n.get('Left')}:`);
+            for (let player of leftRoster) {
+            
+                var guildTag = "";
+            
+                if (player.guildTag != "") {
+                    guildTag = ` [${player.guildTag}]`
+                }
+                
+                if (player.id == data.mom.playerID) {
+                    manOfMatchName = player;
+                }
+            
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
+            }
+            
+            d = d.addField('\u200B',`${i18n.get('Right')}:`);
+            for (let player of rightRoster) {
+            
+                var guildTag = "";
+
+                
+                if (player.id == data.mom.playerID) {
+                    manOfMatchName = player;
+                }
+                
+                if (player.guildTag != "") {
+                    guildTag = ` [${player.guildTag}]`
+                }
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
+            }
+            
+            //man of the match
+            
+            if (manOfMatchName != null) {
+                const mom = i18n.get(`Mom`).replace("$1",manOfMatchName.name);
+                d = d.setFooter(`${mom}`, `${c.imageURL()}/${manOfMatchName.participant.actor.toLowerCase()}.png`);
+            }
+            
+            message.channel.send(d);
+            
+  
+            return;
         }
         
         var d = new Discord.RichEmbed()
