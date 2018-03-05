@@ -138,7 +138,7 @@ var matchStats = function(region, player, callback) {
             }
 
             // show match details
-            callback(text, match.id);
+            callback(text, match.id,matchContent);
 
             //continue with hero pick
             for (var included of json.included) {
@@ -333,8 +333,8 @@ var playerStats = function(region, playerName, callback) {
                 var player = {
                     "id": anyPlayer.id,
                     "name": anyPlayer.attributes.name,
-                    "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
-                    "skillTierImg": vgbase.convertTier(getTier(anyPlayer.attributes.stats.skillTier)),
+                    "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
+                    "skillTierImg": vgbase.convertTier(vgbase.getTier(anyPlayer.attributes.stats.skillTier)),
                     "rankPoints": {
                         "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
                         "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
@@ -436,7 +436,7 @@ var playersQuickInfo = function(region, playerNames, callback) {
                     var player = {
                         "id": anyPlayer.id,
                         "name": anyPlayer.attributes.name,
-                        "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
+                        "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                         "rankPoints": {
                             "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
                             "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
@@ -554,7 +554,7 @@ function fetchParticipants(json, participantID) {
                     "id": included.id,
                     "actor": actor.replace('\*', '').replace('\*', ''),
                     "kills": attributes.stats.kills,
-                    "tier": getTier(attributes.stats.skillTier),
+                    "tier": vgbase.getTier(attributes.stats.skillTier),
                     "playerID": included.relationships.player.data.id,
                     "deaths": attributes.stats.deaths,
                     "assists": attributes.stats.assists,
@@ -598,7 +598,7 @@ function fetchPlayer(json, playerId) {
                 var player = {
                     "id": included.id,
                     "name": attributes.name,
-                    "skillTier": getTier(attributes.stats.skillTier),
+                    "skillTier": vgbase.getTier(attributes.stats.skillTier),
                     "rankPoints": attributes.stats.rankPoints.ranked.toFixed(2),
                     "guildTag": attributes.stats.guildTag,
                 };
@@ -609,32 +609,6 @@ function fetchPlayer(json, playerId) {
     return null;
 }
 
-
-// function for parsing relevant game data
-function fetchVictoryGames(json) {
-
-    //result
-    var result = null;
-
-    var gameList = json.data;
-
-    for (var game of gameList) {
-
-        //fetch game information
-        var attributes = game.attributes;
-        var gameInfo = {
-            "id": game.id,
-            "createdAt": attributes.createdAt,
-            "duration": attributes.duration,
-            "gameMode": vgbase.getMode(attributes.gameMode),
-            "queue": attributes.stats.queue
-        };
-
-        //console.log(gameInfo);
-        result = gameInfo;
-    }
-    return result;
-}
 
 function countGameTypes(gameList, type) {
     var count = 0;
@@ -676,10 +650,6 @@ function calculateManOfMatch(details) {
     var sumCrystalMiner = details.crystalMineCaptures + 300;
 
     return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
-}
-
-function getTier(skillTier) {
-    return vgbase.getTier(skillTier);
 }
 
 // function to get formatted time stamp

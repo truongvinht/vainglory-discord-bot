@@ -557,8 +557,12 @@ function requestMatchForPlayer(message, playerName) {
     const code = messageArray.length === 2?messageArray[1]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(text, matchID) {
-
+    var callback = function(text, matchID, data) {
+        
+        if (data!=null) {
+            console.log(JSON.stringify(data));
+        }
+        
         var d = new Discord.RichEmbed()
             .setAuthor(message.author.username)
             .setColor("#000000");
