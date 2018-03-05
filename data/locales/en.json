@@ -58,6 +58,9 @@
   "Right":"Right",
   "SkillTier":"Skill tier",
   "Version":"Version",
-  "victory":"Siege",
-  "WinningChance":"Winning chance"
+  "victory":"Victory",
+  "Winner":"Winner",
+  "WinningChance":"Winning chance",
+  "right/red":"Right/Red",
+  "left/blue":"Left/Blue"
 }

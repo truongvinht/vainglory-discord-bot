@@ -59,5 +59,8 @@
   "SkillTier":"Könnenstufe",
   "Version":"Version",
   "Victory":"Siege",
-  "WinningChance":"Gewinnerquote"
+  "Winner":"Gewinner",
+  "WinningChance":"Gewinnerquote",
+  "right/red":"Rechts/Rot",
+  "left/blue":"Links/Blau"
 }

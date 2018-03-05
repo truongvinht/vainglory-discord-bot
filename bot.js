@@ -282,7 +282,6 @@ bot.on("message", async message => {
                 if (info == null) {
                     message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                 } else {
-                
                     //load image from parameter
                     if (c.tierImageURL()!=null && c.tierImageURL()!="") {
                         const img = vgBase.convertTier(vgBase.getTier(info.elo));
@@ -562,9 +561,9 @@ function requestMatchForPlayer(message, playerName) {
         if (data != null) {
             
             console.log()
-            var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${data.won} `; 
+            var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
-                 .setAuthor(message.author.username)
+                 .setAuthor(playerName)
                  .setColor("#000000")
                  .setDescription(header);
             
@@ -572,6 +571,7 @@ function requestMatchForPlayer(message, playerName) {
             const rightRoster = data.right;
             
             var manOfMatch = null;
+            var heroName = null;
 
             d = d.addField('\u200B',`${i18n.get('Left')}:`);
             for (let player of leftRoster) {
@@ -584,6 +584,10 @@ function requestMatchForPlayer(message, playerName) {
                 
                 if (player.id == data.mom.playerID) {
                     manOfMatchName = player;
+                }
+                
+                if (playerName==player.name) {
+                    heroName = player.participant.actor;
                 }
             
                 d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
@@ -602,11 +606,18 @@ function requestMatchForPlayer(message, playerName) {
                 if (player.guildTag != "") {
                     guildTag = ` [${player.guildTag}]`
                 }
+                
+                if (playerName==player.name) {
+                    heroName = player.participant.actor;
+                }
                 d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
             }
             
-            //man of the match
+            if (heroName!=null) {
+                d = d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
+            }
             
+            //man of the match
             if (manOfMatchName != null) {
                 const mom = i18n.get(`Mom`).replace("$1",manOfMatchName.name);
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${manOfMatchName.participant.actor.toLowerCase()}.png`);
