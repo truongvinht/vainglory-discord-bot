@@ -4,37 +4,26 @@
 //dependency
 var request = require('request');
 var fs = require('fs');
-var log =require('loglevel');
+var log = require('loglevel');
 
 var vgbase = require('../models/vainglory-base.js');
 
-// constant
+// URL for Vainglory developer API
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 
 // request token for VG API
 var requestToken = '';
 
 var matchStats = function(region, player, callback) {
-    //check for non-empty VG key
-    var key = requestToken;
-    if (key == null || key == '') {
-        console.log("Error: API Key is empty");
+    const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt&page[limit]=1&page[offset]=0";
+    console.log(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+
+    if (reqOption == null) {
         return null;
     }
-    var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt&page[limit]=1&page[offset]=0";
-    console.log(requestURL);
-    var reqOption = {
-        url: requestURL,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': key,
-            'X-TITLE-ID': 'semc-vainglory',
-            'Accept': 'application/json',
-            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
-            'Expires': '-1',
-            'Pragma': 'no-cache'
-        }
-    };
+
     request(reqOption, function(error, response, body) {
 
         if (!error && response.statusCode == 200) {
@@ -47,16 +36,16 @@ var matchStats = function(region, player, callback) {
                 ownPlayerID = fetchPlayerID(json, player)
             }
             var totalCountGames = json.data.length;
-            
+
             //prepare match data
             var match = fetchLastMatch(json)
 
             var matchContent = {};
-            
+
             matchContent['match'] = match;
             matchContent['createdAt'] = getFormattedDate(match.createdAt);
             matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
-            
+
             // roster for match
             var rosterLeftMap = {};
             var rosterRightMap = {};
@@ -83,7 +72,7 @@ var matchStats = function(region, player, callback) {
                     text = text + "Right win \n";
                     matchContent["won"] = 'right/red';
                 }
-                
+
                 //text = text + ""+roster.side+":" + "\n";
                 for (var part of roster.participants) {
                     var p = fetchParticipants(json, part);
@@ -102,8 +91,6 @@ var matchStats = function(region, player, callback) {
                     }
                 }
             }
-            
-            
 
             // prepare output
             text = text + "\nLeft:\n";
@@ -112,19 +99,15 @@ var matchStats = function(region, player, callback) {
             for (var p of rosterLeft) {
 
                 const player = fetchPlayer(json, p.playerID);
-                
+
                 var guild = "";
-                
-                if (player.guildTag!="") {
+
+                if (player.guildTag != "") {
                     guild = "[" + player.guildTag + "]";
                 }
+                text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
                 
-                if (p.playerID == ownPlayerID) {
-                    text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
-                } else {
-                    text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
-                }
-
+                // man of the match
                 if (maxScorePlayerID == p.playerID) {
                     text = text + " *";
                 }
@@ -138,18 +121,15 @@ var matchStats = function(region, player, callback) {
             for (var p of rosterRight) {
 
                 const player = fetchPlayer(json, p.playerID);
-                
+
                 var guild = "";
-                
-                if (player.guildTag!="") {
+
+                if (player.guildTag != "") {
                     guild = "[" + player.guildTag + "]";
                 }
+                text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
                 
-                if (p.playerID == ownPlayerID) {
-                    text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
-                } else {
-                    text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
-                }
+                // man of the match
                 if (maxScorePlayerID == p.playerID) {
                     text = text + " *";
                 }
@@ -157,41 +137,37 @@ var matchStats = function(region, player, callback) {
                 text = text + "\n";
             }
 
+            // show match details
             callback(text, match.id);
-            
 
-            
+            //continue with hero pick
             for (var included of json.included) {
 
                 // fetch item attributes
                 var attributes = included.attributes;
 
                 if ('asset' == included.type) {
-                    
+
                     //found asset URL
                     const assetURL = included.attributes.URL;
-                    
-                     var reqAssetsOption = {
-                            url: assetURL,
-                            headers: {
-                                'User-Agent': 'request',
-                                'Accept': 'application/json'
-                            }
+
+                    var reqAssetsOption = {
+                        url: assetURL,
+                        headers: {
+                            'User-Agent': 'request',
+                            'Accept': 'application/json'
                         }
-                    
+                    }
+
                     request(reqAssetsOption, function(err, resp, assetbody) {
 
                         if (!err && resp.statusCode == 200) {
                             var json = JSON.parse(assetbody);
-                            
                             var output = "Hero selection\n";
-                            
                             var left = [];
                             var right = [];
-                            
                             var leftBan = "";
                             var rightBan = "";
-                            
                             for (var entry of json) {
                                 if (entry.type == 'HeroBan') {
                                     if (entry.payload.Team == 1) {
@@ -200,7 +176,6 @@ var matchStats = function(region, player, callback) {
                                         rightBan = "Right Ban: " + entry.payload.Hero + "\n";
                                     }
                                 }
-                                
                                 if (entry.type == 'HeroSelect') {
                                     if (entry.payload.Team == 1) {
                                         left.push(entry.payload);
@@ -209,9 +184,6 @@ var matchStats = function(region, player, callback) {
                                     }
                                 }
                             }
-                            
-                            
-                            
                             output = output + "Left: ";
                             for (var l of left) {
                                 output = output + l.Hero + " ";
@@ -220,21 +192,18 @@ var matchStats = function(region, player, callback) {
                             for (var r of right) {
                                 output = output + r.Hero + " ";
                             }
-                            
+
                             output = leftBan + rightBan + output;
-                            
-                            callback(output,match.id)
+                            callback(output, match.id)
                         }
                     });
-                    
                     break;
                 }
-                
             }
-            
+
         } else {
             var text = "";
-            
+
             if (response != null) {
                 log.debug("# # # # #");
                 log.debug("URL: " + requestURL);
@@ -255,33 +224,19 @@ var matchStats = function(region, player, callback) {
  * @param {String|Object|Array|Boolean|Number} paramName Describe this parameter
  */
 const recentPlayedHeroes = function(region, player, callback) {
+
+    var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
+    const reqOption = getRequestHeader(requestURL);
     
-    //check for non-empty VG key
-    var key = requestToken;
-    if (key == null || key == '') {
-        console.log("Error: API Key is empty");
+    if (reqOption==null) {
         return null;
     }
 
-    var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
-    console.log(requestURL);
-    var reqOption = {
-        url: requestURL,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': key,
-            'X-TITLE-ID': 'semc-vainglory',
-            'Accept': 'application/json',
-            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
-            'Expires': '-1',
-            'Pragma': 'no-cache'
-        }
-    };
     request(reqOption, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             var json = JSON.parse(body);
             var ownPlayerID = "";
-            
+
             //fetch own player id
             if (player.indexOf(',') == -1) {
                 //only for single player info
@@ -293,8 +248,11 @@ const recentPlayedHeroes = function(region, player, callback) {
             var text = player + ": " + "\n";
             for (var match of json.data) {
                 //find my roster
+                
+                const rosterA = match.relationships.rosters.data[0];
+                const rosterB = match.relationships.rosters.data[1];
 
-                for (var rosterID of[match.relationships.rosters.data[0], match.relationships.rosters.data[1]]) {
+                for (var rosterID of[rosterA, rosterB]) {
                     //check roster
                     var roster = fetchRoster(json, rosterID.id);
 
@@ -303,13 +261,13 @@ const recentPlayedHeroes = function(region, player, callback) {
                         if (p.playerID == ownPlayerID) {
                             if (playersMap[p.actor] != undefined) {
                                 playersMap[p.actor] = {
-                                    "played":playersMap[p.actor].played + 1,
-                                    "victory":(roster.won==="true")? playersMap[p.actor].victory+1:playersMap[p.actor].victory
+                                    "played": playersMap[p.actor].played + 1,
+                                    "victory": (roster.won === "true") ? playersMap[p.actor].victory + 1 : playersMap[p.actor].victory
                                 }
                             } else {
                                 playersMap[p.actor] = {
-                                    "played":1,
-                                    "victory":(roster.won==="true")?1:0
+                                    "played": 1,
+                                    "victory": (roster.won === "true") ? 1 : 0
                                 };
                             }
                             break;
@@ -330,7 +288,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             playerList.sort(function(a, b) {
                 return b.value.played - a.value.played;
             });
-            callback(playerList,json.data.length);
+            callback(playerList, json.data.length);
         } else {
 
             if (response != null) {
@@ -341,37 +299,21 @@ const recentPlayedHeroes = function(region, player, callback) {
                 log.debug("Body: " + body);
                 log.debug("Failed: " + error);
             }
-            callback([],0);
+            callback([], 0);
         }
     });
 }
 
 
-
 // function to get player stats
 var playerStats = function(region, playerName, callback) {
 
-    //check for non-empty VG key
-    var key = requestToken;
-    if (key == null || key == '') {
-        console.log("Error: API Key is empty");
+    var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerName;
+    const reqOption = getRequestHeader(requestURL);
+    
+    if (reqOption==null) {
         return null;
     }
-
-    var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerName;
-
-    var reqOption = {
-        url: requestURL,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': key,
-            'X-TITLE-ID': 'semc-vainglory',
-            'Accept': 'application/json',
-            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
-            'Expires': '-1',
-            'Pragma': 'no-cache'
-        }
-    };
 
     request(reqOption, function(error, response, body) {
 
@@ -392,7 +334,7 @@ var playerStats = function(region, playerName, callback) {
                     "id": anyPlayer.id,
                     "name": anyPlayer.attributes.name,
                     "skillTier": getTier(anyPlayer.attributes.stats.skillTier),
-                    "skillTierImg":vgbase.convertTier(getTier(anyPlayer.attributes.stats.skillTier)),
+                    "skillTierImg": vgbase.convertTier(getTier(anyPlayer.attributes.stats.skillTier)),
                     "rankPoints": {
                         "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
                         "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
@@ -426,15 +368,8 @@ var playerStats = function(region, playerName, callback) {
     });
 }
 
-// function to get quick info about the players
+// function to get quick info about the players (afk feature)
 var playersQuickInfo = function(region, playerNames, callback) {
-
-    //check for non-empty VG key
-    var key = requestToken;
-    if (key == null || key == '') {
-        console.log("Error: API Key is empty");
-        return null;
-    }
 
     //fill a batch of player names, VG allows 6 for each request
     var requestBatch = [];
@@ -474,18 +409,11 @@ var playersQuickInfo = function(region, playerNames, callback) {
 
     var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerRequest;
 
-    var reqOption = {
-        url: requestURL,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': key,
-            'X-TITLE-ID': 'semc-vainglory',
-            'Accept': 'application/json',
-            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
-            'Expires': '-1',
-            'Pragma': 'no-cache'
-        }
-    };
+    const reqOption = getRequestHeader(requestURL);
+    
+    if (reqOption==null) {
+        return null;
+    }
 
     request(reqOption, function(error, response, body) {
 
@@ -635,7 +563,7 @@ function fetchParticipants(json, participantID) {
                     "minionKills": attributes.stats.minionKills,
                     "goldMineCaptures": attributes.stats.goldMineCaptures,
                     "crystalMineCaptures": attributes.stats.crystalMineCaptures,
-                    "items":attributes.stats.items
+                    "items": attributes.stats.items
                 };
             }
         }
@@ -737,7 +665,7 @@ function calculateManOfMatch(details) {
 
     //turrets destroyed
     var sumTurret = details.turretCaptures * 300;
-    
+
     // minions killed
     var sumMinion = details.minionKills * 10;
 
@@ -746,7 +674,7 @@ function calculateManOfMatch(details) {
 
     // captured crystal miner
     var sumCrystalMiner = details.crystalMineCaptures + 300;
-    
+
     return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
 }
 
@@ -767,6 +695,35 @@ function getFormattedDate(date) {
 
 var updateToken = function(token) {
     requestToken = token;
+}
+
+/**
+ * Method for generating header for request
+ * @private
+ * @param {String} url url for request
+ * @returns header with request information
+ * @type Object
+ */
+function getRequestHeader(url) {
+    //check for non-empty VG key
+    var key = requestToken;
+    if (key == null || key == '') {
+        console.log("Error: API Key is empty");
+        return null;
+    }
+
+    return {
+        url: url,
+        headers: {
+            'User-Agent': 'request',
+            'Authorization': key,
+            'X-TITLE-ID': 'semc-vainglory',
+            'Accept': 'application/json',
+            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+            'Expires': '-1',
+            'Pragma': 'no-cache'
+        }
+    };
 }
 
 //export
