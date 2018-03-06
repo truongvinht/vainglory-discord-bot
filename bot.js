@@ -48,7 +48,9 @@ bot.on("ready", async() => {
 bot.on("message", async message => {
     
     //ignore own messages
-    if (message.author.bot) return;
+    if (message.author.bot) {
+        return;
+    } 
 
     //ignore commands without prefix
     if (!message.content.startsWith(PREFIX)) return;
@@ -56,40 +58,50 @@ bot.on("message", async message => {
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
 
-    // if(command === `${PREFIX}add`) {
-    //     // Create a reaction collector
-    //     const filter = (reaction, user) => reaction.emoji.name === '👌'
-    //     const collector = message.createReactionCollector(filter, { time: 15000 });
-    //     collector.on('collect', r => console.log(`Collected ${r.emoji.name}`));
-    //     collector.on('end', collected => console.log(`Collected ${collected.size} items`));
-    //     return;
-    // }
-
     //prevent direct message
     if (message.channel.type === "dm"){ 
-        
-        // var bh = require('./botHelper');
-        // bh.getData(bot);
-        //
-        // // send message to a target channel
-        // if (command.toLowerCase() === `${PREFIX}msg`) {
-        //     if(messageArray.length <= 2){
-        //         return;
-        //     }
-        //
-        //     for (var c of bot.channels.array()) {
-        //
-        //         //text channel with name
-        //         if (c.type == "text") {
-        //             if (messageArray[1] === c.name) {
-        //                 c.send(message.content.substring(
-        //                     messageArray[0].length + messageArray[1].length + 2, message.content.length));
-        //                 break;
-        //             }
-        //         }
-        //     }
-        //     return;
-        // }
+
+        // send message to a target channel
+        if (command.toLowerCase() === `${PREFIX}msg`) {
+            if(messageArray.length <= 2){
+                return;
+            }
+
+            for (var channel of bot.channels.array()) {
+
+                //text channel with name
+                if (channel.type == "text") {
+                    if (messageArray[1] === channel.name) {
+                        
+                        //check whether triggered user has special rights
+                        for(var guildMember of channel.members.array()) {
+                            
+                            if (message.author.username === guildMember.user.username) {
+                                
+                                // user has permission
+                                var permission = false;
+                                
+                                for (var reqRole of c.restriction()) {
+                                    if (guildMember.roles.find("name", reqRole)) {
+                                        permission = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (permission) {
+                                    channel.send(message.content.substring(
+                                        messageArray[0].length + messageArray[1].length + 2, message.content.length));
+                                } else {
+                                    message.channel.send(`${i18n.get('NoPermissionCommand')}`);
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            return;
+        }
         
         // channel access overview
         // if (command.toLowerCase() === `${PREFIX}chan`) {
@@ -184,7 +196,7 @@ bot.on("message", async message => {
                  const info = eloCalc.getScore(i);
                  d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
             }
-            message.channel.send(d);
+            message.channel.send(d); 
 
             d = new Discord.RichEmbed();
             for (var i=MAX_SPLIT;i<30;i++) {
@@ -271,7 +283,7 @@ bot.on("message", async message => {
             return;
         }
         
-        //elo overview
+        //elo info for given value
         if (command.toLowerCase() === `${PREFIX}elo`) {
             var points = messageArray[1];
             var d = new Discord.RichEmbed();
@@ -405,11 +417,6 @@ bot.on("message", async message => {
     }
 });
 
-
-bot.on('messageReactionAdd', (reaction, user) => {
-    //console.log(reaction.count);
-});
-
 function requestPlayerDetails(message, nextCaller){
     
     const messageArray = message.content.split(" ");
@@ -423,7 +430,9 @@ function requestPlayerDetails(message, nextCaller){
 }
 
 function requestPlayerDetailsForName(message, playerName, nextCaller) {
-
+    
+    message.channel.startTyping();
+    
     //override default server
     const messageArray = message.content.split(" ");
     const code = messageArray.length === 2?messageArray[1]:null;
@@ -466,6 +475,8 @@ function requestPlayerDetailsForName(message, playerName, nextCaller) {
         } else {
             message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
         }
+    
+        message.channel.stopTyping();
     };
     vg.setToken(VG_TOKEN);
     vg.getPlayerStats(serverCode, playerName, callback);
@@ -485,6 +496,7 @@ function requestRecentPlayedHeroes(message, nextCaller) {
 
 function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
     
+    message.channel.startTyping();
     const messageArray = message.content.split(" ");
 
     //override default server
@@ -529,6 +541,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
         } else {
             message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
         }
+        message.channel.stopTyping();
     };
     vg.setToken(VG_TOKEN);
     vg.getRecentPlayedHeroes(serverCode, playerName, callback);
@@ -550,6 +563,7 @@ function requestMatch(message) {
 
 function requestMatchForPlayer(message, playerName) {
     
+    message.channel.startTyping();
     const messageArray = message.content.split(" ");
     
     //override default server
@@ -620,6 +634,7 @@ function requestMatchForPlayer(message, playerName) {
         } else {
             message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
         }
+        message.channel.stopTyping();
     };
     vg.setToken(VG_TOKEN);
     vg.getMatchStats(serverCode, playerName, callback);
