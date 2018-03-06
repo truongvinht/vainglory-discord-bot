@@ -141,11 +141,11 @@ bot.on("message", async message => {
             .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
             .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
             .addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`)
-            .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`);
+            .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`)
+            .addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
 
         if (hasRole) {
             embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
-            embed.addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
         }
         message.channel.send(embed);
@@ -270,11 +270,7 @@ bot.on("message", async message => {
         
         //only allow users with roles
         if (command.toLowerCase() === `${PREFIX}match` || command.toLowerCase() === `${PREFIX}m`) {
-            if (hasRole) {
-                requestMatch(message);
-            } else {
-                message.channel.send(`${i18n.get('NoPermissionCommand')}`);
-            }
+            requestMatch(message);
         }
 
         // show recent played heroes
@@ -470,6 +466,7 @@ function requestPlayerDetailsForName(message, playerName, nextCaller) {
             message.channel.send(d.setAuthor(`${player.name}`));
             
             if (nextCaller !=null) {
+                message.channel.stopTyping();
                 nextCaller(message,playerName);
             }
         } else {
@@ -536,6 +533,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
             message.channel.send(d);
             
             if (nextCaller !=null) {
+                message.channel.stopTyping();
                 nextCaller(message,playerName);
             }
         } else {
@@ -621,19 +619,33 @@ function requestMatchForPlayer(message, playerName) {
             }
             
             message.channel.send(d);
-            
+            message.channel.stopTyping();
             return;
         }
-        
-        var d = new Discord.RichEmbed()
-            .setAuthor(message.author.username)
-            .setColor("#000000");
 
-        if (text != null) {
-            message.channel.send(d.setDescription(`${text}`));
-        } else {
-            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+        // user has role
+        var hasRole = false;
+
+        for (var reqRole of c.restriction()) {
+            if (message.member.roles.find("name", reqRole)) {
+                hasRole = true;
+                break;
+            }
         }
+        
+        if (hasRole) {
+        
+            var d = new Discord.RichEmbed()
+                .setAuthor(message.author.username)
+                .setColor("#000000");
+
+            if (text != null) {
+                    message.channel.send(d.setDescription(`${text}`));
+            } else {
+                message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+            }
+        }
+        
         message.channel.stopTyping();
     };
     vg.setToken(VG_TOKEN);
