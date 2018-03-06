@@ -19,6 +19,9 @@ const eloCalc = require('./controllers/eloCalculator');
 var log =require('loglevel');
 log.setLevel('info');
 
+// helper variable for mapping details
+var matchMap = {};
+
 // CONSTANTS
 
 // prefix for commands
@@ -43,6 +46,55 @@ bot.on("ready", async() => {
     }
 });
 
+bot.on('messageReactionAdd', (reaction, user) => {
+    
+    if (reaction.count > 1 && reaction.emoji == 'ℹ') {
+        
+        const matchUrl = matchMap[reaction.message.id];
+        
+        if (matchUrl !=null) {
+            
+            const channel = reaction.message.channel;
+            
+            channel.startTyping();
+            var callback = function(data) {
+                var d = new Discord.RichEmbed().setColor("#000000").setTitle(`${i18n.get('HeroSelection')}`);
+                
+                var ban = "";
+                
+                for (var banned of data.banned.left) {
+                    ban = ban + `${i18n.get('HeroBanned').replace('$1',banned)}\n`;
+                }
+                
+                for (var selected of data.left) {
+                    ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
+                }
+                
+                d = d.addField(`${i18n.get('Left')}`,`${ban}`);
+                
+                ban = "";
+                for (var banned of data.banned.right) {
+                    ban = ban + `${i18n.get('HeroBanned').replace('$1',banned)}\n`;
+                }
+                for (var selected of data.right) {
+                    ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
+                }
+                d = d.addField(`${i18n.get('Right')}`,`${ban}`);
+                
+                
+                
+                channel.send(d);
+                
+                channel.stopTyping(true);
+            };
+            
+            vg.getMatchDetails(matchUrl,callback)
+            
+            delete matchMap[reaction.message.id];
+            reaction.message.clearReactions();
+        }
+    }
+});
 
 // reaction for message
 bot.on("message", async message => {
@@ -102,15 +154,6 @@ bot.on("message", async message => {
             }
             return;
         }
-        
-        // channel access overview
-        // if (command.toLowerCase() === `${PREFIX}chan`) {
-        //     let embed = new Discord.RichEmbed();
-        //
-        //     for (var c of bot.channels.array()) {
-        //     }
-        //     message.channel.send()
-        // }
 
         return;
     }
@@ -618,7 +661,13 @@ function requestMatchForPlayer(message, playerName) {
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             
-            message.channel.send(d);
+            message.channel.send(d)
+            .then(message => {
+                message.react('ℹ');
+                matchMap[`${message.id}`] = data.asset;
+            }
+            
+            );
             message.channel.stopTyping();
             return;
         }
@@ -651,6 +700,7 @@ function requestMatchForPlayer(message, playerName) {
     vg.setToken(VG_TOKEN);
     vg.getMatchStats(serverCode, playerName, callback);
 }
+
 
 
 //send message regarding counter pick

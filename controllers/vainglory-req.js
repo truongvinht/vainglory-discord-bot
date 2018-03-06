@@ -133,8 +133,6 @@ var matchStats = function(region, playerName, callback) {
             matchContent["right"] = rightTeam;
             matchContent["hero"] = ownPlayedHero;
 
-            // show match details
-            callback("", matchContent);
 
             //continue with hero pick
             for (var included of json.included) {
@@ -146,53 +144,11 @@ var matchStats = function(region, playerName, callback) {
 
                     //found asset URL
                     const assetURL = included.attributes.URL;
-
-                    var reqAssetsOption = {
-                        url: assetURL,
-                        headers: {
-                            'User-Agent': 'request',
-                            'Accept': 'application/json'
-                        }
-                    }
-
-                    request(reqAssetsOption, function(err, resp, assetbody) {
-
-                        if (!err && resp.statusCode == 200) {
-                            var json = JSON.parse(assetbody);
-                            var output = "Hero selection\n";
-                            var left = [];
-                            var right = [];
-                            var leftBan = "";
-                            var rightBan = "";
-                            for (var entry of json) {
-                                if (entry.type == 'HeroBan') {
-                                    if (entry.payload.Team == 1) {
-                                        leftBan = "Left Ban: " + entry.payload.Hero + "\n";
-                                    } else {
-                                        rightBan = "Right Ban: " + entry.payload.Hero + "\n";
-                                    }
-                                }
-                                if (entry.type == 'HeroSelect') {
-                                    if (entry.payload.Team == 1) {
-                                        left.push(entry.payload);
-                                    } else {
-                                        right.push(entry.payload);
-                                    }
-                                }
-                            }
-                            output = output + "Left: ";
-                            for (var l of left) {
-                                output = output + l.Hero + " ";
-                            }
-                            output = output + "\nRight: ";
-                            for (var r of right) {
-                                output = output + r.Hero + " ";
-                            }
-
-                            output = leftBan + rightBan + output;
-                            callback(output)
-                        }
-                    });
+                    
+                    matchContent["asset"] = assetURL;
+                    
+                    // show match details
+                    callback("", matchContent);
                     break;
                 }
             }
@@ -216,6 +172,59 @@ var matchStats = function(region, playerName, callback) {
                 }
             }
             callback(text, player);
+        }
+    });
+}
+
+/**
+ * Request for match details
+ * @private
+ * @param {String} url match url
+ * @type Object
+ */
+const matchDetails = function(url, callback) {
+    var reqAssetsOption = {
+        url: url,
+        headers: {
+            'User-Agent': 'request',
+            'Accept': 'application/json'
+        }
+    }
+
+    request(reqAssetsOption, function(err, resp, assetbody) {
+
+        if (!err && resp.statusCode == 200) {
+            var json = JSON.parse(assetbody);
+            var leftBan = [];
+            var rightBan = [];
+            var left = [];
+            var right = [];
+            
+            var heroSelections = {};
+            
+            var bannedHero = {};
+            
+            for (var entry of json) {
+                if (entry.type == 'HeroBan') {
+                    if (entry.payload.Team == 1) {
+                        leftBan.push(entry.payload.Hero);
+                    } else {
+                        rightBan.push(entry.payload.Hero);
+                    }
+                }
+                if (entry.type == 'HeroSelect') {
+                    if (entry.payload.Team == 1) {
+                        left.push(entry.payload);
+                    } else {
+                        right.push(entry.payload);
+                    }
+                }
+            }
+            
+            heroSelections['left'] = left;
+            heroSelections['right'] = right;
+            heroSelections['banned'] = {'left':leftBan,'right':rightBan};
+            callback(heroSelections)
         }
     });
 }
@@ -704,5 +713,6 @@ module.exports = {
     getPlayerStats: playerStats,
     getPlayersInfo: playersQuickInfo,
     getRecentPlayedHeroes: recentPlayedHeroes,
+    getMatchDetails: matchDetails,
     setToken: updateToken
 };
