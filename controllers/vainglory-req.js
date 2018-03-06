@@ -30,21 +30,19 @@ var matchStats = function(region, playerName, callback) {
             var json = JSON.parse(body);
 
             //fetch own player id
-            var ownPlayerID = ownPlayerID = fetchPlayerID(json, playerName);
+            var ownPlayerID = fetchPlayerID(json, playerName);
+            var ownPlayedHero = "";
             var totalCountGames = json.data.length;
 
             //prepare match data
             var match = fetchLastMatch(json)
 
+            //map for callback
             var matchContent = {};
 
             matchContent['match'] = match;
             matchContent['createdAt'] = getFormattedDate(match.createdAt);
             matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
-
-            var text = playerName + ": " + getFormattedDate(match.createdAt) + "\n";
-
-            text = text + match.gameMode + ": " + (match.duration - (match.duration % 60)) / 60 + "mins \n";
 
             // Helper list with all players grouped by roster
             var rosterLeft = [];
@@ -53,6 +51,7 @@ var matchStats = function(region, playerName, callback) {
             var maxScorePlayerValue = 0;
             var maxScorePlayerID = "";
             var manOfMatch = null;
+            var momHero = null;
             
             for (var rosterID of match.roster) {
 
@@ -60,13 +59,10 @@ var matchStats = function(region, playerName, callback) {
 
                 if (roster.won == "true" && roster.side == 'left/blue') {
                     matchContent["won"] = 'left/blue';
-                    text = text + "Left win \n";
                 } else if (roster.won == "true") {
-                    text = text + "Right win \n";
                     matchContent["won"] = 'right/red';
                 }
 
-                //text = text + ""+roster.side+":" + "\n";
                 for (var part of roster.participants) {
                     var p = fetchParticipants(json, part);
 
@@ -75,7 +71,11 @@ var matchStats = function(region, playerName, callback) {
                     if (maxScorePlayerValue < mom) {
                         maxScorePlayerValue = mom;
                         maxScorePlayerID = p.playerID;
-                        manOfMatch = p;
+                        momHero = p.actor;
+                    }
+                    
+                    if (p.playerID == ownPlayerID) {
+                        ownPlayedHero = p.actor;
                     }
 
                     if (roster.side == 'left/blue') {
@@ -85,13 +85,6 @@ var matchStats = function(region, playerName, callback) {
                     }
                 }
             }
-
-            matchContent["mom"] = manOfMatch;
-            
-            // prepare output
-            text = text + "\nLeft:\n";
-            
-            var mom = null;
             
             var leftTeam = [];
             
@@ -106,19 +99,14 @@ var matchStats = function(region, playerName, callback) {
                 if (player.guildTag != "") {
                     guild = "[" + player.guildTag + "]";
                 }
-                text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
                 
                 // man of the match
                 if (maxScorePlayerID == p.playerID) {
-                    text = text + " *";
-                    mom = player;
+                    manOfMatch = player;
                 }
 
-                text = text + "\n";
             }
             matchContent["left"] = leftTeam;
-
-            text = text + "\nRight:\n";
             
             var rightTeam = [];
 
@@ -134,20 +122,19 @@ var matchStats = function(region, playerName, callback) {
                 if (player.guildTag != "") {
                     guild = "[" + player.guildTag + "]";
                 }
-                text = text + "- " + p.actor + " / " + player.name + " " + guild + " (" + p.tier + ")";
                 
                 // man of the match
                 if (maxScorePlayerID == p.playerID) {
-                    text = text + " *";
-                    mom = player;
+                    manOfMatch = player;
                 }
-
-                text = text + "\n";
             }
+            manOfMatch["actor"] = momHero;
+            matchContent["mom"] = manOfMatch;
             matchContent["right"] = rightTeam;
+            matchContent["hero"] = ownPlayedHero;
 
             // show match details
-            callback(text, match.id,matchContent);
+            callback("", matchContent);
 
             //continue with hero pick
             for (var included of json.included) {
@@ -203,7 +190,7 @@ var matchStats = function(region, playerName, callback) {
                             }
 
                             output = leftBan + rightBan + output;
-                            callback(output, match.id)
+                            callback(output)
                         }
                     });
                     break;
@@ -220,7 +207,13 @@ var matchStats = function(region, playerName, callback) {
                 log.debug("Header: " + response.rawHeaders);
                 log.debug("Body: " + body);
                 log.debug("Failed: " + error);
-                text = response.statusCode + " " + response.headers + " " + body + " " + error;
+                
+                if (response.statusCode==404) {
+                    callback(null, player);
+                    return;
+                } else {
+                    text = response.statusCode + " " + response.headers + " " + body + " " + error;
+                }
             }
             callback(text, player);
         }

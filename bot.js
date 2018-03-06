@@ -494,7 +494,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
     var callback = function(list,matches) {
 
         var d = new Discord.RichEmbed()
-            .setAuthor(message.author.username)
+            .setAuthor(playerName)
             .setColor("#0000FF");
 
         if (list.length > 0) {
@@ -518,7 +518,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
             const topPickHero = list[0].name;
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
-            .addField(`${playerName}: ${i18n.get('RecentHeroes')}`, `${recentRate}`)
+            .addField(`${i18n.get('RecentHeroes')}`, `${recentRate}`)
             .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/50).toFixed(0)}%]`, `${victoryRate}`);
             
             message.channel.send(d);
@@ -556,11 +556,9 @@ function requestMatchForPlayer(message, playerName) {
     const code = messageArray.length === 2?messageArray[1]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(text, matchID, data) {
-        
+    var callback = function(text, data) {
+        //console.log(JSON.stringify(data));
         if (data != null) {
-            
-            console.log()
             var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
                  .setAuthor(playerName)
@@ -570,7 +568,6 @@ function requestMatchForPlayer(message, playerName) {
             const leftRoster = data.left; 
             const rightRoster = data.right;
             
-            var manOfMatch = null;
             var heroName = null;
 
             d = d.addField('\u200B',`${i18n.get('Left')}:`);
@@ -582,50 +579,35 @@ function requestMatchForPlayer(message, playerName) {
                     guildTag = ` [${player.guildTag}]`
                 }
                 
-                if (player.id == data.mom.playerID) {
-                    manOfMatchName = player;
-                }
+                const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
                 
-                if (playerName==player.name) {
-                    heroName = player.participant.actor;
-                }
-            
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`, `${player.participant.actor} | KDA ${kda}`);
             }
             
             d = d.addField('\u200B',`${i18n.get('Right')}:`);
             for (let player of rightRoster) {
             
                 var guildTag = "";
-
-                
-                if (player.id == data.mom.playerID) {
-                    manOfMatchName = player;
-                }
                 
                 if (player.guildTag != "") {
                     guildTag = ` [${player.guildTag}]`
                 }
                 
-                if (playerName==player.name) {
-                    heroName = player.participant.actor;
-                }
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`,`${player.participant.actor}`);
+                const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
+                
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`, `${player.participant.actor} | KDA ${kda}`);
             }
             
-            if (heroName!=null) {
-                d = d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
-            }
+            d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
             
             //man of the match
-            if (manOfMatchName != null) {
-                const mom = i18n.get(`Mom`).replace("$1",manOfMatchName.name);
-                d = d.setFooter(`${mom}`, `${c.imageURL()}/${manOfMatchName.participant.actor.toLowerCase()}.png`);
+            if (data.mom != null) {
+                const mom = i18n.get(`Mom`).replace("$1",data.mom.name);
+                d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             
             message.channel.send(d);
             
-  
             return;
         }
         
@@ -636,7 +618,7 @@ function requestMatchForPlayer(message, playerName) {
         if (text != null) {
             message.channel.send(d.setDescription(`${text}`));
         } else {
-            message.channel.send(d.setDescription(`'${matchID}' ${i18n.get('NotFound')}`));
+            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
         }
     };
     vg.setToken(VG_TOKEN);
@@ -667,6 +649,7 @@ function sendSupport(message, embeded, hero) {
         message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`))
     }
 }
+
 
 function countSpaces(string) {
     return (string.match(new RegExp(" ", "g")) || []).length;
