@@ -12,6 +12,8 @@ var vg = require('./controllers/vainglory-req');
 //counter picker
 const cp = require('./controllers/vgCounterPicker');
 
+const item = require('./controllers/itemHandler');
+
 //elo calculator
 const eloCalc = require('./controllers/eloCalculator');
 
@@ -192,6 +194,12 @@ bot.on("message", async message => {
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
         }
         message.channel.send(embed);
+        return;
+    }
+    
+    // command to show items: ITEM CATEGORY TIER INDEX
+    if (command.toLowerCase() === `${PREFIX}item`) {
+        showItem(message);
         return;
     }
 
@@ -701,6 +709,131 @@ function requestMatchForPlayer(message, playerName) {
     vg.getMatchStats(serverCode, playerName, callback);
 }
 
+function showItem(message) {
+
+    let messageArray = message.content.split(" ");
+    var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+    if (messageArray.length == 1) {
+
+        let categoryMap = item.getCategories();
+        message.channel.send(d.addField(categoryMap.title, categoryMap.content));
+    } else if (messageArray.length == 2) {
+        // ITEM + CATEGORY
+        const category = messageArray[1];
+
+        let categoryMap = item.getCategories();
+        if (!isNaN(category)) {
+            if (category>0&&category<=categoryMap.count) {
+                //TIER SELECTION
+                let tierMap = item.getTierList();
+                message.channel.send(d.addField(tierMap.title, tierMap.content));
+            } else {
+                d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                message.channel.send(d.addField(categoryMap.title, categoryMap.content));
+            }
+        } else {
+            message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        }
+    } else if (messageArray.length == 3) {
+        // ITEM + CATEGORY + TIER
+        const category = messageArray[1];
+
+        let categoryMap = item.getCategories();
+        if (!isNaN(category)) {
+            if (category>0&&category<=categoryMap.count) {
+                
+                const tier = messageArray[2];
+                let tierMap = item.getTierList();
+                
+                if (!isNaN(tier)) {
+                    
+                    if (tier>0&&tier<=tierMap.count) {
+                        // show items for category and tier
+                        const list = item.getItems(category,tier);
+                        message.channel.send(d.addField(list.title, list.content));
+
+                    } else {
+                        d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                        message.channel.send(d.addField(tierMap.title, tierMap.content));
+                    }
+                } else {
+                    message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+                }
+            } else {
+                d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                message.channel.send(d.addField(categoryMap.title, categoryMap.content));
+            }
+        } else {
+            message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        }
+    } else  if (messageArray.length == 4) {
+        // ITEM + CATEGORY + TIER
+        const category = messageArray[1];
+
+        let categoryMap = item.getCategories();
+        if (!isNaN(category)) {
+            if (category>0&&category<=categoryMap.count) {
+                
+                const tier = messageArray[2];
+                let tierMap = item.getTierList();
+
+                if (!isNaN(tier)) {
+                    if (tier>0&&tier<=tierMap.count) {
+                        // show items for category and tier
+                        const itemList = item.getItems(category,tier);
+                        
+                        let selectedIndex = messageArray[3];
+                        
+                        if (!isNaN(selectedIndex)) {
+                        
+                            if (selectedIndex>=0&&selectedIndex<itemList.items.length) {
+                                let selectedItem = itemList.items[selectedIndex-1];
+                                
+                                var dependency = "";
+                                
+                                if (selectedItem.hasOwnProperty("depending")) {
+                                    
+                                    var depend = "";
+                                    
+                                    for (var de of selectedItem.depending) {
+                                        depend = depend + de + " ";
+                                    }
+                                    
+                                    dependency = `| ${i18n.get('Dependency')}: ${depend}`;
+                                }
+                            
+                                d = d.setTitle(selectedItem.name)
+                                    .setDescription(`${i18n.get('Gold')}: ${selectedItem.price} ${dependency}`)
+                                    .addField('\u200B',`${selectedItem.description}`)
+                                    .setFooter(`${categoryMap.items[category-1]} | ${tierMap.items[tier-1]}`);
+                                
+                                message.channel.send(d);
+                            } else {
+                                d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                                message.channel.send(d.addField(itemList.title, itemList.items.length));
+                            }
+                        } else {
+                            message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+                        }
+                    } else {
+                        d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                        message.channel.send(d.addField(tierMap.title, tierMap.content));
+                    }
+                } else {
+                    message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+                }
+            } else {
+                d = d.setDescription(`${i18n.get('InvalidInput')}`);
+                message.channel.send(d.addField(categoryMap.title, categoryMap.content));
+            }
+        } else {
+            message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        }
+    } else {
+        message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+    }
+}
 
 
 //send message regarding counter pick

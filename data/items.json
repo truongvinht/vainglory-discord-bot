@@ -1,0 +1,266 @@
+{
+  "category" : {
+    "1" : "WEAPON",
+    "2" : "CRYSTAL",
+    "3" : "DEFENSE",
+    "4" : "UTILITY",
+    "5" : "OTHERS"
+  },
+  "item" : {
+    "*1002_Item_WeaponBlade*" : {
+      "name" : "Weapon Blade",
+      "price" : 300,
+      "description" : "+15 Weapon Power",
+      "category" : [
+        "1"
+      ],
+      "tier" : 1
+    },
+    "*1059_Item_BookOfEulogies*" : {
+      "name" : "Book of Eulogies",
+      "price" : 300,
+      "description" : "Passive: Restores 25 health whenever you kill a minion or monster (65 if using a melee default attack). Vampirism: 4% lifesteal (does not stack with other Vampirism) +5 Weapon Power",
+      "category" : [
+        "1"
+      ],
+      "tier" : 1
+    },
+    "*1004_Item_SwiftShooter*" : {
+      "name" : "Swift Shooter",
+      "price" : 300,
+      "description" : "+10% Attack Speed",
+      "category" : [
+        "1",
+        "2"
+      ],
+      "tier" : 1
+    },
+    "*1080_Item_MinionsFoot*" : {
+      "name" : "Minion's Foot",
+      "price" : 300,
+      "description" : "Passive: After buying this item, your very first attack on enemy hero will crit. +10% Critical Chance +5% Critical Damage",
+      "category" : [
+        "1"
+      ],
+      "tier" : 1
+    },
+    "*1026_Item_Hourglass*" : {
+      "name" : "Hourglass",
+      "price" : 250,
+      "description" : "+10% Cooldown Speed +1.5 Energy Recharge",
+      "category" : [
+        "1",
+        "2"
+      ],
+      "tier" : 1
+    },
+    "*1065_Item_HeavySteel*" : {
+      "name" : "Heavy Steel",
+      "price" : 1150,
+      "description" : "+55 Weapon Power",
+      "depending" : [
+        "Weapon Blade"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1005_Item_SixSins*" : {
+      "name" : "Six Sins",
+      "price" : 650,
+      "description" : "+30 Weapon Power",
+      "depending" : [
+        "Weapon Blade"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1060_Item_BarbedNeedle*" : {
+      "name" : "Barbed Needle",
+      "price" : 800,
+      "description" : "Vampirism: 8% lifesteal (does not stack with other Vampirism) +12 Weapon Power",
+      "depending" : [
+        "Book of Eulogies"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1066_Item_PiercingSpear*" : {
+      "name" : "Piercing Spear",
+      "price" : 900,
+      "description" : "Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +15 Weapon Power",
+      "depending" : [
+        "Weapon Blade"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1010_Item_BlazingSalvo*" : {
+      "name" : "Blazing Salvo",
+      "price" : 700,
+      "description" : "+20% Attack Speed",
+      "depending" : [
+        "Swift Shooter"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1068_Item_LuckyStrike*" : {
+      "name" : "Lucky Strike",
+      "price" : 900,
+      "description" : "+20% Critical Chance +8% Critical Damage",
+      "depending" : [
+        "Minion's Foot"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 2
+    },
+    "*1028_Item_Chronograph*" : {
+      "name" : "Chronograph",
+      "price" : 800,
+      "description" : "+20% Cooldown Speed +2.5 Energy Recharge",
+      "depending" : [
+        "Hourglass"
+      ],
+      "category" : [
+        "1",
+        "2"
+      ],
+      "tier" : 2
+    },
+    "*1012_Item_Sorrowblade*" : {
+      "name" : "Sorrowblade",
+      "price" : 3100,
+      "description" : "+150 Weapon Power",
+      "depending" : [
+        "Heavy Steel",
+        "Six Sins"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1034_Item_SerpentMask*" : {
+      "name" : "Serpent Mask",
+      "price" : 2800,
+      "description" : "Passive: Your next 600-1200 (level 1-12) points of weapon damage to enemy heroes has +25% lifesteal, recharges over 40s. Vampirism: +10% lifesteal (does not stack with other Vampirism) Passive: Book of Eulogies +100 Weapon Power",
+      "depending" : [
+        "Heavy Steel",
+        "Barbed Needle"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "spellsword" : {
+      "name" : "Spellsword",
+      "price" : 2700,
+      "description" : "Passive: Every basic attack grants you 4 energy (12 on heroes). +100 Weapon Power +35% Cooldown Speed +3 Energy Recharge",
+      "depending" : [
+        "Heavy Steel",
+        "Chronograph"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1092_Item_PoisonedShiv*" : {
+      "name" : "Poisoned Shiv",
+      "price" : 2250,
+      "description" : "Passive: Every 2 basic attacks will apply a mortal wound for 2s. Vampirism: +8% lifesteal (does not stack with other Vampirisim) Passive: Book of Eulogies +40 Weapon Power +30% Attack Speed",
+      "depending" : [
+        "Barbed Needle",
+        "Blazing Salvo"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1067_Item_BreakingPoint*" : {
+      "name" : "Breaking Point",
+      "price" : 2600,
+      "description" : "Passive: Gain 10 weapon power for every 160 weapon damage done to enemy heroes +5/10 (Melee/Ranged) damage needed for each stack thereafter. 25 stacks max. Decays 3 stacks per second after you've stopped stacking for 2.5s. +20% Attack Speed +55 Weapon Power",
+      "depending" : [
+        "Heavy Steel",
+        "Blazing Salvo"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1035_Item_TensionBow*" : {
+      "name" : "Tension Bow",
+      "price" : 2150,
+      "description" : "Passive: Every 6s, your next basic attack will deal 240 bonus damage. Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +60 Weapon Power",
+      "depending" : [
+        "Six Sins",
+        "Piercing Spear"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1039_Item_Bonesaw*" : {
+      "name" : "Bonesaw",
+      "price" : 2700,
+      "description" : "Passive: Your basic attacks shred 5% of the target's armor for 3s. Max 8 stacks. Armorbreaker: +18% armor pierce (does not stack with other Armorbreakers) +15 Weapon Power +25% Attack Speed",
+      "depending" : [
+        "Piercing Spear",
+        "Blazing Salvo"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*1014_Item_TornadoTrigger*" : {
+      "name" : "Tornado Trigger",
+      "price" : 2700,
+      "description" : "Passive: Your basic attacks shred 5% of the target's armor for 3s. Max 8 stacks. Armorbreaker: +18% armor pierce (does not stack with other Armorbreakers) +15 Weapon Power +25% Attack Speed",
+      "depending" : [
+        "Piercing Spear",
+        "Blazing Salvo"
+      ],
+      "category" : [
+        "1"
+      ],
+      "tier" : 3
+    },
+    "*Oak_Heart*" : {
+      "name" : "Oak Heart",
+      "price" : 300,
+      "description" : "Test",
+      "category" : [
+        "3",
+        "4"
+      ],
+      "tier" : 1
+    },
+    "*Flare*" : {
+      "name" : "Flare",
+      "price" : 25,
+      "description" : "Test",
+      "category" : [
+        "5"
+      ],
+      "tier" : 1
+    }
+  }
+}
