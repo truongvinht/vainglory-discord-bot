@@ -3,7 +3,6 @@
   "prefix":"?",
   "lang": "de",
   "imageURL":"",
-  "TIER_IMAGE_URL":"",
   "restricted":["Leader","Moderator"],
   "vgAPIToken":"",
   "ELO_LIST_URL":"",

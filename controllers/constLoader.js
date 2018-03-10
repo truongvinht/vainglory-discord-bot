@@ -28,13 +28,6 @@ if (imageURL == "") {
     imageURL = process.env.IMAGE_URL;
 }
 
-// github image url for Tier
-var tierImageURL = botSettings.TIER_IMAGE_URL;
-if (tierImageURL == "") {
-    // Heroku ENV token
-    tierImageURL = process.env.TIER_IMAGE_URL;
-}
-
 // link to elo point list
 var eloListURL = botSettings.ELO_LIST_URL;
 if (eloListURL == "") {
@@ -73,11 +66,11 @@ const getBotToken = () => {
 }
 
 const getImageURL = () => {
-    return imageURL;
+    return imageURL + "/heroes";
 }
 
 const getTierImageURL = () => {
-    return tierImageURL;
+    return imageURL + "/skill_tiers";
 }
 
 const getEloListURL = () => {
