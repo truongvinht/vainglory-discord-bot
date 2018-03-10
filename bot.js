@@ -717,7 +717,8 @@ function showItem(message) {
     if (messageArray.length == 1) {
 
         let categoryMap = item.getCategories();
-        message.channel.send(d.addField(categoryMap.title, categoryMap.content));
+        message.channel.send(d.addField(categoryMap.title, categoryMap.content)
+        .setFooter(`=> ${PREFIX}item [INDEX]`));
     } else if (messageArray.length == 2) {
         // ITEM + CATEGORY
         const category = messageArray[1];
@@ -727,7 +728,10 @@ function showItem(message) {
             if (category>0&&category<=categoryMap.count) {
                 //TIER SELECTION
                 let tierMap = item.getTierList();
-                message.channel.send(d.addField(tierMap.title, tierMap.content));
+                
+                
+                message.channel.send(d.addField(tierMap.title, tierMap.content)
+                .setFooter(`${categoryMap.items[category-1]} => ${PREFIX}item ${category} [INDEX]`));
             } else {
                 d = d.setDescription(`${i18n.get('InvalidInput')}`);
                 message.channel.send(d.addField(categoryMap.title, categoryMap.content));
@@ -751,7 +755,8 @@ function showItem(message) {
                     if (tier>0&&tier<=tierMap.count) {
                         // show items for category and tier
                         const list = item.getItems(category,tier);
-                        message.channel.send(d.addField(list.title, list.content));
+                        message.channel.send(d.addField(list.title, list.content)
+                        .setFooter(`${categoryMap.items[category-1]} | ${tierMap.items[tier-1]} => ${PREFIX}item ${category} ${tier} [INDEX]`));
 
                     } else {
                         d = d.setDescription(`${i18n.get('InvalidInput')}`);
@@ -787,7 +792,7 @@ function showItem(message) {
                         
                         if (!isNaN(selectedIndex)) {
                         
-                            if (selectedIndex>=0&&selectedIndex<itemList.items.length) {
+                            if (selectedIndex>0&&selectedIndex<=itemList.items.length) {
                                 let selectedItem = itemList.items[selectedIndex-1];
                                 
                                 var dependency = "";
@@ -797,7 +802,12 @@ function showItem(message) {
                                     var depend = "";
                                     
                                     for (var de of selectedItem.depending) {
-                                        depend = depend + de + " ";
+                                        
+                                        if (depend == "") {
+                                            depend = de;
+                                        } else {
+                                            depend = depend +", " + de;
+                                        }
                                     }
                                     
                                     dependency = `| ${i18n.get('Dependency')}: ${depend}`;
