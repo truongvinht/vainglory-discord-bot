@@ -30,6 +30,7 @@
   "InvalidInput":"Invalid input!",
   "IsStrongAgainst":"is strong against",
   "IsWeakAgainst":"is weak against",
+  "ItemDescription":"Information regarding items",
   "Karma":"Karma",
   "KarmaBad":"Bad Karma",
   "KarmaGood":"Good Karma",

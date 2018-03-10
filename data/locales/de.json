@@ -30,6 +30,7 @@
   "InvalidInput":"Ungültige Eingabe!",
   "IsStrongAgainst":"ist gut gegen",
   "IsWeakAgainst":"ist schwach gegen",
+  "ItemDescription":"Informationen über die Gegenstände",
   "Karma":"Karma",
   "KarmaBad":"Schlechtes Karma",
   "KarmaGood":"Gutes Karma",

@@ -185,11 +185,12 @@ bot.on("message", async message => {
             .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
             .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
             .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
-            .addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`)
             .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`)
             .addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
 
         if (hasRole) {
+            embed.addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`);
+            embed.addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`);
             embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
             embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
         }
@@ -199,7 +200,11 @@ bot.on("message", async message => {
     
     // command to show items: ITEM CATEGORY TIER INDEX
     if (command.toLowerCase() === `${PREFIX}item`) {
-        showItem(message);
+        if (hasRole) {
+            showItem(message);
+        } else {
+            message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+        }
         return;
     }
 
@@ -365,7 +370,7 @@ bot.on("message", async message => {
         
         //information
         if (command.toLowerCase() === `${PREFIX}info` || command.toLowerCase() === `${PREFIX}i`) {
-            
+            if (hasRole) {
             const callbackRecentHeroes = function(message, playerName) {
                 const callbackMatch = function(message, playerName) {
                     if (hasRole) {
@@ -375,6 +380,9 @@ bot.on("message", async message => {
                 requestRecentPlayedHeroes(message, callbackMatch);
             }
             requestPlayerDetails(message, callbackRecentHeroes);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+            }
         }
 
         //hidden feature to fetch player IDs
@@ -441,15 +449,19 @@ bot.on("message", async message => {
 
             message.channel.send(d.addField(`${i18n.get('AboutBot')} [${version}]`, `Creator: ${c.author()}`));
         } else if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
-            const callbackRecentHeroes = function(message, playerName) {
-                const callbackMatch = function(message, playerName) {
-                    if (hasRole) {
-                        requestMatchForPlayer(message, playerName);
+            if (hasRole) {
+                const callbackRecentHeroes = function(message, playerName) {
+                    const callbackMatch = function(message, playerName) {
+                        if (hasRole) {
+                            requestMatchForPlayer(message, playerName);
+                        }
                     }
+                    requestRecentPlayedHeroesForName(message, playerName, callbackMatch);
                 }
-                requestRecentPlayedHeroesForName(message, playerName, callbackMatch);
+                requestPlayerDetailsForName(message,message.author.username ,callbackRecentHeroes);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
-            requestPlayerDetailsForName(message,message.author.username ,callbackRecentHeroes);
             return;
         }else if(command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
             requestMatchForPlayer(message,message.author.username);
