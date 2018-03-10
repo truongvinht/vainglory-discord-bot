@@ -824,6 +824,11 @@ function showItem(message) {
                                     
                                     dependency = `| ${i18n.get('Dependency')}: ${depend}`;
                                 }
+                                console.log(selectedItem.name);
+                                if (selectedItem.hasOwnProperty("image")) {
+                                    console.log(`${c.itemURL()}/${selectedItem.image}.png`);
+                                    d = d.setThumbnail(`${c.itemURL()}/${selectedItem.image}.png`);
+                                }
                             
                                 d = d.setTitle(selectedItem.name)
                                     .setDescription(`${i18n.get('Gold')}: ${selectedItem.price} ${dependency}`)

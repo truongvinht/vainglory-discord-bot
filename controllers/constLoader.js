@@ -73,6 +73,11 @@ const getTierImageURL = () => {
     return imageURL + "/skill_tiers";
 }
 
+
+const getItemURL = () => {
+    return imageURL + "/items";
+}
+
 const getEloListURL = () => {
     return eloListURL;
 }
@@ -120,6 +125,7 @@ module.exports = {
     botToken: getBotToken,
     imageURL: getImageURL,
     tierImageURL: getTierImageURL,
+    itemURL: getItemURL,
     eloListURL: getEloListURL,
     prefix: getPrefix,
     vgServerCode: getVgServerCode,

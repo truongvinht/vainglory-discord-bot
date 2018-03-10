@@ -14,7 +14,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "weapon-blade"
     },
     "*1059_Item_BookOfEulogies*" : {
       "name" : "Book of Eulogies",
@@ -23,7 +24,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "book-of-eulogies"
     },
     "*1004_Item_SwiftShooter*" : {
       "name" : "Swift Shooter",
@@ -34,7 +36,8 @@
         "2",
         "4"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "swift-shooter"
     },
     "*1080_Item_MinionsFoot*" : {
       "name" : "Minion's Foot",
@@ -43,7 +46,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "minions-foot"
     },
     "*1003_Item_CrystalBit*" : {
       "name" : "Crystal Bit",
@@ -52,7 +56,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "crystal-bit"
     },
     "*1025_Item_EnergyBattery*" : {
       "name" : "Energy Battery",
@@ -62,7 +67,8 @@
         "2",
         "4"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "energy-battery"
     },
     "*1026_Item_Hourglass*" : {
       "name" : "Hourglass",
@@ -74,7 +80,8 @@
         "4",
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "hourglass"
     },
     "*1065_Item_HeavySteel*" : {
       "name" : "Heavy Steel",
@@ -86,7 +93,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "heavy-steel"
     },
     "*1005_Item_SixSins*" : {
       "name" : "Six Sins",
@@ -98,7 +106,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "six-sins"
     },
     "*1060_Item_BarbedNeedle*" : {
       "name" : "Barbed Needle",
@@ -110,7 +119,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "barbed-needle"
     },
     "*1066_Item_PiercingSpear*" : {
       "name" : "Piercing Spear",
@@ -122,7 +132,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "piercing-spear"
     },
     "*1010_Item_BlazingSalvo*" : {
       "name" : "Blazing Salvo",
@@ -136,7 +147,8 @@
         "2",
         "4"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "blazing-salvo"
     },
     "*1068_Item_LuckyStrike*" : {
       "name" : "Lucky Strike",
@@ -148,7 +160,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "lucky-strike"
     },
     "*1028_Item_Chronograph*" : {
       "name" : "Chronograph",
@@ -162,7 +175,8 @@
         "2",
         "4"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "chronograph"
     },
     "*1012_Item_Sorrowblade*" : {
       "name" : "Sorrowblade",
@@ -175,7 +189,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "sorrowblade"
     },
     "*1034_Item_SerpentMask*" : {
       "name" : "Serpent Mask",
@@ -188,7 +203,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "serpent-mask"
     },
     "spellsword" : {
       "name" : "Spellsword",
@@ -201,7 +217,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "spellsword"
     },
     "*1092_Item_PoisonedShiv*" : {
       "name" : "Poisoned Shiv",
@@ -214,7 +231,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "poisoned-shiv"
     },
     "*1067_Item_BreakingPoint*" : {
       "name" : "Breaking Point",
@@ -227,7 +245,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "breaking-point"
     },
     "*1035_Item_TensionBow*" : {
       "name" : "Tension Bow",
@@ -240,7 +259,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "tension-bow"
     },
     "*1039_Item_Bonesaw*" : {
       "name" : "Bonesaw",
@@ -253,7 +273,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "bonesaw"
     },
     "*1014_Item_TornadoTrigger*" : {
       "name" : "Tornado Trigger",
@@ -266,7 +287,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "tornado-trigger"
     },
     "*1049_Item_TyrantsMonocle*" : {
       "name" : "Tyrant's Monocle",
@@ -279,7 +301,8 @@
       "category" : [
         "1"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "tyrants-monocle"
     },
     "*1072_Item_HeavyPrism*" : {
       "name" : "Heavy Prism",
@@ -291,7 +314,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "heavy-prism"
     },
     "*1009_Item_EclipsePrism*" : {
       "name" : "Eclipse Prism",
@@ -303,7 +327,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "eclipse-prism"
     },
     "*1070_Item_PiercingShard*" : {
       "name" : "Piercing Shard",
@@ -315,7 +340,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "eclipse-prism"
     },
     "*1027_Item_VoidBattery*" : {
       "name" : "Void Battery",
@@ -327,7 +353,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "void-battery"
     },
     "*1013_Item_Shatterglass*" : {
       "name" : "Shatterglass",
@@ -340,7 +367,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "shatterglass"
     },
     "*Spellfire*" : {
       "name" : "Spellfire",
@@ -353,7 +381,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "spellfire"
     },
     "*1044_Item_Frostburn*" : {
       "name" : "Frostburn",
@@ -366,7 +395,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "frostburn"
     },
     "*DragonsEye*" : {
       "name" : "Dragon's Eye",
@@ -379,7 +409,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "dragons-eye"
     },
     "*1029_Item_Clockwork*" : {
       "name" : "Clockwork",
@@ -392,7 +423,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "clockwork"
     },
     "*1055_Item_BrokenMyth*" : {
       "name" : "Broken Myth",
@@ -405,7 +437,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "broken-myth"
     },
     "*1071_Item_EveOfHarvest*" : {
       "name" : "Eve of Harvest",
@@ -418,7 +451,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "eve-of-harvest"
     },
     "*1050_Item_Aftershock*" : {
       "name" : "Aftershock",
@@ -431,7 +465,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "aftershock"
     },
     "*1069_Item_AlternatingCurrent*" : {
       "name" : "Alternating Current",
@@ -444,7 +479,8 @@
       "category" : [
         "2"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "alternating-current"
     },
     "*1015_Item_Oakheart*" : {
       "name" : "Oakheart",
@@ -454,7 +490,8 @@
         "3",
         "4"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "oakheart"
     },
     "*1061_Item_LightShield*" : {
       "name" : "Light Shield",
@@ -463,7 +500,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "light-shield"
     },
     "*1017_Item_LightArmor*" : {
       "name" : "Light Armor",
@@ -472,7 +510,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "light-armor"
     },
     "*1016_Item_Dragonheart*" : {
       "name" : "Dragonheart",
@@ -484,7 +523,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "dragonheart"
     },
     "*1064_Item_Lifespring*" : {
       "name" : "Lifespring",
@@ -496,7 +536,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "lifespring"
     },
     "*1043_Item_ReflexBlock*" : {
       "name" : "Reflex Block",
@@ -508,7 +549,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "reflex-block"
     },
     "*1062_Item_KineticShield*" : {
       "name" : "Kinetic Shield",
@@ -520,7 +562,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "kinetic-shield"
     },
     "*1022_Item_CoatOfPlates*" : {
       "name" : "Coat of Plates",
@@ -532,7 +575,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "coat-of-plates"
     },
     "*1105_Item_SlumberingHusk*" : {
       "name" : "Slumbering Husk",
@@ -544,7 +588,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "slumbering-husk"
     },
     "*1046_Item_Crucible*" : {
       "name" : "Crucible",
@@ -557,7 +602,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "crucible"
     },
     "*1045_Item_FountainOfRenewal*" : {
       "name" : "Fountain of Renewal",
@@ -570,7 +616,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "fountain-of-renewal"
     },
     "*1063_Item_Aegis*" : {
       "name" : "Aegis",
@@ -583,7 +630,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "aegis"
     },
     "*1024_Item_MetalJacket*" : {
       "name" : "Metal Jacket",
@@ -595,7 +643,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "metal-jacket"
     },
     "*1057_Item_AtlasPauldron*" : {
       "name" : "Atlas Pauldron",
@@ -607,7 +656,8 @@
       "category" : [
         "3"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "atlas-pauldron"
     },
     "*1030_Item_SprintBoots*" : {
       "name" : "Sprint Boots",
@@ -616,7 +666,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "sprint-boots"
     },
     "*1032_Item_TravelBoots*" : {
       "name" : "Travel Boots",
@@ -628,7 +679,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "travel-boots"
     },
     "*1088_Item_Flaregun*" : {
       "name" : "Flare Gun",
@@ -640,7 +692,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "flare-gun"
     },
     "*1074_Item_StormguardBanner*" : {
       "name" : "Stormguard Banner",
@@ -652,7 +705,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 2
+      "tier" : 2,
+      "image" : "stormguard-banner"
     },
     "*1047_Item_JourneyBoots*" : {
       "name" : "Journey Boots",
@@ -664,7 +718,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "journey-boots"
     },
     "*1056_Item_WarTreads*" : {
       "name" : "War Treads",
@@ -677,7 +732,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "war-treads"
     },
     "*1087_Item_HalcyonChargers*" : {
       "name" : "Halcyon Chargers",
@@ -690,7 +746,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "halcyon-chargers"
     },
     "*1097_Item_Echo*" : {
       "name" : "Echo",
@@ -702,7 +759,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "echo"
     },
     "*1079_Item_Contraption*" : {
       "name" : "Contraption",
@@ -715,7 +773,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "contraption"
     },
     "*1090_Item_Stormcrown*" : {
       "name" : "Stormcrown",
@@ -728,7 +787,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "stormcrown"
     },
     "*1095_Item_NullwaveGauntlet*" : {
       "name" : "Nullwave Gauntlet",
@@ -741,7 +801,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "nullwave-gauntlet"
     },
     "*1042_Item_Shiversteel*" : {
       "name" : "Shiversteel",
@@ -754,7 +815,8 @@
       "category" : [
         "4"
       ],
-      "tier" : 3
+      "tier" : 3,
+      "image" : "shiversteel"
     },
     "Healing Flask" : {
       "name" : "Healing Flask",
@@ -763,7 +825,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "healing-flask"
     },
     "*1038_Item_Flare*" : {
       "name" : "Flare",
@@ -772,7 +835,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "flare"
     },
     "*1054_Item_ScoutTrap*" : {
       "name" : "Scout Trap",
@@ -781,7 +845,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "scout-trap"
     },
     "*1041_Item_MinionCandy*" : {
       "name" : "Minion Candy",
@@ -790,7 +855,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "minion-candy"
     },
     "*1073_Item_IronguardContract*" : {
       "name" : "Ironguard Contract",
@@ -799,7 +865,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "ironguard-contract"
     },
     "1084_Item_ProtectorContract*" : {
       "name" : "Protector Contract",
@@ -808,7 +875,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "protector-contract"
     },
     "DragonbloodContract" : {
       "name" : "Dragonblood Contract",
@@ -817,7 +885,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "dragonblood-contract"
     },
     "*1052_Item_WeaponInfusion*" : {
       "name" : "Weapon Infusion",
@@ -826,7 +895,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "weapon-infusion"
     },
     "*1053_Item_CrystalInfusion*" : {
       "name" : "Crystal Infusion",
@@ -835,7 +905,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "crystal-infusion"
     },
     "Flare Loader" : {
       "name" : "Flare Loader",
@@ -844,7 +915,8 @@
       "category" : [
         "5"
       ],
-      "tier" : 1
+      "tier" : 1,
+      "image" : "flare-gun"
     },
     "ScoutPak" : {
       "name" : "Scout Pak",
