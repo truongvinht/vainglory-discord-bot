@@ -574,6 +574,8 @@ function fetchParticipants(json, participantID) {
                     "minionKills": attributes.stats.minionKills,
                     "goldMineCaptures": attributes.stats.goldMineCaptures,
                     "crystalMineCaptures": attributes.stats.crystalMineCaptures,
+                    "wentafk":attributes.stats.wentAfk,
+                    "skinKey": attributes.stats.skinKey,
                     "items": attributes.stats.items
                 };
             }

@@ -83,8 +83,6 @@ bot.on('messageReactionAdd', (reaction, user) => {
                 }
                 d = d.addField(`${i18n.get('Right')}`,`${ban}`);
                 
-                
-                
                 channel.send(d);
                 
                 channel.stopTyping(true);
@@ -114,45 +112,50 @@ bot.on("message", async message => {
 
     //prevent direct message
     if (message.channel.type === "dm"){ 
-
+        
         // send message to a target channel
         if (command.toLowerCase() === `${PREFIX}msg`) {
             if(messageArray.length <= 2){
                 return;
             }
-
-            for (var channel of bot.channels.array()) {
-
-                //text channel with name
-                if (channel.type == "text") {
-                    if (messageArray[1] === channel.name) {
-                        
-                        //check whether triggered user has special rights
-                        for(var guildMember of channel.members.array()) {
-                            
-                            if (message.author.username === guildMember.user.username) {
-                                
-                                // user has permission
-                                var permission = false;
-                                
-                                for (var reqRole of c.restriction()) {
-                                    if (guildMember.roles.find("name", reqRole)) {
-                                        permission = true;
-                                        break;
-                                    }
-                                }
-                                
-                                if (permission) {
-                                    channel.send(message.content.substring(
-                                        messageArray[0].length + messageArray[1].length + 2, message.content.length));
-                                } else {
-                                    message.channel.send(`${i18n.get('NoPermissionCommand')}`);
-                                }
-                            }
-                        }
-                        break;
-                    }
+            
+            let channel = findChannelByName(messageArray[1]);
+            let permission = userHasPermissionForChannel(channel, message.author.username);
+            
+            if (permission) {
+                channel.send(message.content.substring(
+                    messageArray[0].length + messageArray[1].length + 2, message.content.length));
+            }else {
+                message.channel.send(`${i18n.get('NoPermissionCommand')}`);
+            }
+            return;
+        }
+        if (command.toLowerCase() === `${PREFIX}cmd`) {
+            if(messageArray.length <= 2){
+                return;
+            }
+            let channel = findChannelByName(messageArray[1]);
+            let permission = userHasPermissionForChannel(channel, message.author.username);
+            
+            if (permission) {
+                //execute command into channel
+                let subCommand = messageArray[2];
+                
+                //player command
+                if (subCommand.toLowerCase() === `${PREFIX}player` && messageArray.length > 3) {
+                    let playerName = messageArray[3];
+                    requestPlayerDetailsInChannel(channel,playerName,messageArray.length > 4? messageArray[4]: null);
+                    return;
                 }
+                
+                // help command
+                if (subCommand.toLowerCase() === `${PREFIX}help`) {
+                    let embed = helpMessage(bot.user.username, false);
+                    channel.send(embed);
+                }
+                
+            }else {
+                message.channel.send(`${i18n.get('NoPermissionCommand')}`);
             }
             return;
         }
@@ -175,25 +178,7 @@ bot.on("message", async message => {
     
     //HELP
     if (command === `${PREFIX}help`) {
-        let embed = new Discord.RichEmbed()
-            .setAuthor(message.author.username)
-            .setDescription(`${i18n.get('FollowingCommands')}`)
-            .addField(`${PREFIX}about`, `${i18n.get('AboutBot')}`)
-            .addField(`${PREFIX}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
-            .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
-            .addField(`${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
-            .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
-            .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
-            .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
-            .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`)
-            .addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
-
-        if (hasRole) {
-            embed.addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`);
-            embed.addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`);
-            embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
-            embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
-        }
+        let embed = helpMessage(message.author.username, hasRole);
         message.channel.send(embed);
         return;
     }
@@ -542,6 +527,52 @@ function requestPlayerDetailsForName(message, playerName, nextCaller) {
     vg.getPlayerStats(serverCode, playerName, callback);
 }
 
+function requestPlayerDetailsInChannel(channel,playerName, code) {
+    channel.startTyping();
+    
+    const serverCode = c.vgServerCode(code);
+
+    var callback = function(playerName, player) {
+
+        var d = new Discord.RichEmbed();
+
+        if (player != null) {
+            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
+                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+                .setColor(getClassColor(`${player.skillTier}`));
+
+            if (player.guildTag != "") {
+                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
+            }
+            
+            //load image from parameter
+            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
+            }
+            
+            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
+                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
+                                      `Battle Royal: ${player.gamesPlayed.aral}`;
+            
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
+                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
+                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
+                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
+            channel.send(d.setAuthor(`${player.name}`));
+            
+        } else {
+            channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+        }
+    
+        channel.stopTyping();
+    };
+    vg.setToken(VG_TOKEN);
+    vg.getPlayerStats(serverCode, playerName, callback);
+}
+
 function requestRecentPlayedHeroes(message, nextCaller) {
     
     const messageArray = message.content.split(" ");
@@ -647,16 +678,20 @@ function requestMatchForPlayer(message, playerName) {
 
             d = d.addField('\u200B',`${i18n.get('Left')}:`);
             for (let player of leftRoster) {
-            
                 var guildTag = "";
             
                 if (player.guildTag != "") {
                     guildTag = ` [${player.guildTag}]`
                 }
                 
+                var afk = '';
+                if (player.participant.wentafk) {
+                    afk = "AFK";
+                }
+                
                 const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
                 
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`, `${player.participant.actor} | KDA ${kda}`);
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier}) ${afk}`, `${player.participant.actor} | KDA ${kda} | CS ${player.participant.minionKills}`);
             }
             
             d = d.addField('\u200B',`${i18n.get('Right')}:`);
@@ -668,9 +703,15 @@ function requestMatchForPlayer(message, playerName) {
                     guildTag = ` [${player.guildTag}]`
                 }
                 
+                var afk = '';
+                if (player.participant.wentafk) {
+                    afk = "AFK";
+                }
+                
+                
                 const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
                 
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier})`, `${player.participant.actor} | KDA ${kda}`);
+                d = d.addField(`${player.name}${guildTag} (${player.skillTier}) ${afk}`, `${player.participant.actor} | KDA ${kda} | CS ${player.participant.minionKills}`);
             }
             
             d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
@@ -727,7 +768,6 @@ function showItem(message) {
     var d = new Discord.RichEmbed()
         .setAuthor(message.author.username);
     if (messageArray.length == 1) {
-
         let categoryMap = item.getCategories();
         message.channel.send(d.addField(categoryMap.title, categoryMap.content)
         .setFooter(`=> ${PREFIX}item [INDEX]`));
@@ -824,9 +864,7 @@ function showItem(message) {
                                     
                                     dependency = `| ${i18n.get('Dependency')}: ${depend}`;
                                 }
-                                console.log(selectedItem.name);
                                 if (selectedItem.hasOwnProperty("image")) {
-                                    console.log(`${c.itemURL()}/${selectedItem.image}.png`);
                                     d = d.setThumbnail(`${c.itemURL()}/${selectedItem.image}.png`);
                                 }
                             
@@ -885,6 +923,61 @@ function sendSupport(message, embeded, hero) {
     } else {
         message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`))
     }
+}
+
+function helpMessage(author, hasRole) {
+    let embed = new Discord.RichEmbed()
+    .setAuthor(`${author}`)
+    .setDescription(`${i18n.get('FollowingCommands')}`)
+    .addField(`${PREFIX}about`, `${i18n.get('AboutBot')}`)
+    .addField(`${PREFIX}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
+    .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
+    .addField(`${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
+    .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
+    .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
+    .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
+    .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`)
+    .addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
+
+    if (hasRole) {
+        embed.addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`);
+        embed.addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`);
+        embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
+        embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
+    }
+    return embed;
+}
+
+// method to get bot channel
+function findChannelByName(channelName) {
+    for (var channel of bot.channels.array()) {
+        // only text channel 
+        if (channel.type == "text") {
+            if (channelName === channel.name) {
+                return channel;
+            }
+        }
+    }
+    return null;
+}
+
+//check whether triggered user has special rights
+function userHasPermissionForChannel(channel, userName) {
+    for(var guildMember of channel.members.array()) {
+        
+        if (userName === guildMember.user.username) {
+            
+            // user has permission
+            var permission = false;
+            
+            for (var reqRole of c.restriction()) {
+                if (guildMember.roles.find("name", reqRole)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 
