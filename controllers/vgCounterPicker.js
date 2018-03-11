@@ -22,6 +22,10 @@ var counter = function(hero) {
                     list = list + (`- ${fullName}`) + "\n";
                 } else {
                     log.error(`- ${name}`)
+                    
+                    if (name === '?') {
+                        list = list + (`- ${name}`) + "\n";
+                    }
                 }
             }
             return list;
@@ -47,6 +51,10 @@ var support = function(hero) {
                     list = list + (`+ ${fullName}`) + "\n";
                 } else {
                     log.error(`+ ${name}`)
+                    
+                    if (name === '?') {
+                        list = list + (`+ ${name}`) + "\n";
+                    }
                 }
             }
 
