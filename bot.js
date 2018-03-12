@@ -154,6 +154,39 @@ bot.on("message", async message => {
                     channel.send(embed);
                 }
                 
+                // hero command
+                if (subCommand.length == 3) {
+
+                    var d = new Discord.RichEmbed()
+                        .setAuthor(bot.user.username)
+                        .setColor("#123456");
+
+                    let cmd = subCommand.substring(1, 3);
+
+                    //hero quick name
+                    let hName = cmd.toLowerCase();
+                    let heroName = cp.getHeroName(hName);
+
+                    let result = getGeneralInfo(heroName);
+
+                    if (heroName != null) {
+                        let result = cp.getCounter(heroName.toLowerCase());
+                        let resultSupport = cp.getSupport(heroName.toLowerCase());
+
+                        if (result != null) {
+                            channel.send( 
+                                d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
+                                .addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
+                                .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport));
+                        } else {
+                            message.channel.send(d.setDescription(`'${heroName}': ${i18n.get('EnteredHeroDoesntExist')}`));
+                        }
+                    } else {
+                        message.channel.send(d.setDescription(`'${hName}': ${i18n.get('EnteredHeroDoesntExist')}`));
+                    }
+                    return;
+                }
+                
             }else {
                 message.channel.send(`${i18n.get('NoPermissionCommand')}`);
             }
