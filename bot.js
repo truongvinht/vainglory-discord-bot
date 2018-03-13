@@ -481,10 +481,12 @@ bot.on("message", async message => {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
             return;
-        }else if(command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
+        } else if (command.toLowerCase() === `${PREFIX}r` || command.toLowerCase() === `${PREFIX}recent`) {
+            requestRecentPlayedHeroesForName(message, playerName, null);
+        }else if (command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
             requestMatchForPlayer(message,message.author.username);
             return;
-        }else if(command.toLowerCase() === `${PREFIX}p` || command.toLowerCase() === `${PREFIX}player`) {
+        }else if (command.toLowerCase() === `${PREFIX}p` || command.toLowerCase() === `${PREFIX}player`) {
             requestPlayerDetailsForName(message,message.author.username,null);
         } else {
             var d = new Discord.RichEmbed();
