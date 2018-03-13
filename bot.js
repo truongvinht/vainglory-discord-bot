@@ -482,7 +482,7 @@ bot.on("message", async message => {
             }
             return;
         } else if (command.toLowerCase() === `${PREFIX}r` || command.toLowerCase() === `${PREFIX}recent`) {
-            requestRecentPlayedHeroesForName(message, playerName, null);
+            requestRecentPlayedHeroesForName(message,message.author.username);
         }else if (command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
             requestMatchForPlayer(message,message.author.username);
             return;
