@@ -254,7 +254,8 @@ const recentPlayedHeroes = function(region, player, callback) {
                 ownPlayerID = fetchPlayerID(json, player);
             }
 
-            var playersMap = {};
+            var heroSelectionMap = {};
+            var playerMatchingMap = {};
 
             var text = player + ": " + "\n";
             for (var match of json.data) {
@@ -270,36 +271,72 @@ const recentPlayedHeroes = function(region, player, callback) {
                     for (var part of roster.participants) {
                         var p = fetchParticipants(json, part);
                         if (p.playerID == ownPlayerID) {
-                            if (playersMap[p.actor] != undefined) {
-                                playersMap[p.actor] = {
-                                    "played": playersMap[p.actor].played + 1,
-                                    "victory": (roster.won === "true") ? playersMap[p.actor].victory + 1 : playersMap[p.actor].victory
+                            if (heroSelectionMap[p.actor] != undefined) {
+                                let victory = heroSelectionMap[p.actor].victory;
+                                
+                                heroSelectionMap[p.actor] = {
+                                    "played": heroSelectionMap[p.actor].played + 1,
+                                    "victory": (roster.won === "true") ? victory + 1 : victory
                                 }
                             } else {
-                                playersMap[p.actor] = {
+                                heroSelectionMap[p.actor] = {
                                     "played": 1,
                                     "victory": (roster.won === "true") ? 1 : 0
                                 };
                             }
-                            break;
+                            continue;
+                        } else {
+                            
+                            if (playerMatchingMap[p.playerID] != undefined) {
+                                let victory = playerMatchingMap[p.playerID].victory;
+                                
+                                playerMatchingMap[p.playerID] = {
+                                    "played": playerMatchingMap[p.playerID].played + 1,
+                                    "victory": (roster.won === "true") ? victory + 1 : victory
+                                }
+                            } else {
+                                playerMatchingMap[p.playerID] = {
+                                    "played": 1,
+                                    "victory": (roster.won === "true") ? 1 : 0
+                                };
+                            }
                         }
                     }
                 }
             }
 
-            var playerList = [];
+            var heroesList = [];
 
-            for (var k of Object.keys(playersMap)) {
-                playerList.push({
+            for (var k of Object.keys(heroSelectionMap)) {
+                heroesList.push({
                     name: k,
-                    value: playersMap[k]
+                    value: heroSelectionMap[k]
                 });
             }
 
+            heroesList.sort(function(a, b) {
+                return b.value.played - a.value.played;
+            });
+            
+            var playerList = [];
+
+            for (var p of Object.keys(playerMatchingMap)) {
+                var playerData = fetchPlayer(json,p);
+            
+                playerList.push({
+                    name: playerData.name,
+                    value: playerMatchingMap[p],
+
+                });
+            }
+            
             playerList.sort(function(a, b) {
                 return b.value.played - a.value.played;
             });
-            callback(playerList, json.data.length);
+            
+            //fetch player names
+            callback(heroesList, playerList, json.data.length);
+            
         } else {
 
             if (response != null) {

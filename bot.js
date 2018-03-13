@@ -627,7 +627,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
     const code = messageArray.length === 2?messageArray[1]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(list,matches) {
+    var callback = function(list,playerList,matches) {
 
         var d = new Discord.RichEmbed()
             .setAuthor(playerName)
@@ -650,12 +650,27 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
                 }
             }
             
+            //prepare player list
+            count = 0;
+            var recentNameRate = "";
+            for (var pObj of playerList) {
+                if (count++ < 10) {
+                    recentNameRate = `${recentNameRate}${pObj.name}: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} \n`
+                    
+                }
+            }
+            
             //top pick as avatar
             const topPickHero = list[0].name;
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
             .addField(`${i18n.get('RecentHeroes')}`, `${recentRate}`)
             .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/50).toFixed(0)}%]`, `${victoryRate}`);
+            
+            if (recentNameRate != "") {
+                d = d.addField(`${i18n.get('PlayedWith')}`, `${recentNameRate}`);
+            }
+            
             
             message.channel.send(d);
             
