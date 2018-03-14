@@ -179,12 +179,12 @@ var matchStats = function(region, playerName, callback) {
 /**
  * Request for match details
  * @private
- * @param {String} url match url
+ * @param {String} data with match url
  * @type Object
  */
-const matchDetails = function(url, callback) {
+const matchDetails = function(data, callback) {
     var reqAssetsOption = {
-        url: url,
+        url: data.asset,
         headers: {
             'User-Agent': 'request',
             'Accept': 'application/json'
@@ -224,6 +224,7 @@ const matchDetails = function(url, callback) {
             heroSelections['left'] = left;
             heroSelections['right'] = right;
             heroSelections['banned'] = {'left':leftBan,'right':rightBan};
+            heroSelections['data'] = data;
             callback(heroSelections)
         }
     });

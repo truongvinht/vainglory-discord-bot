@@ -52,9 +52,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
     
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         
-        const matchUrl = matchMap[reaction.message.id];
-        
-        if (matchUrl !=null) {
+        if (matchMap[reaction.message.id].asset !=null) {
             
             const channel = reaction.message.channel;
             
@@ -83,12 +81,55 @@ bot.on('messageReactionAdd', (reaction, user) => {
                 }
                 d = d.addField(`${i18n.get('Right')}`,`${ban}`);
                 
+                d = d.addField('\u200B',`${i18n.get('Items')}:`);
+                //items
+                let infoData = data['data'];
+                
+                var builds = "";
+                let leftTeam = infoData["left"];
+                
+                for (var p of leftTeam) {
+                    
+                    var items = "";
+                    if (p.participant.items.length > 0) {
+                        for (var i of p.participant.items) {
+                            
+                            if (items==="") {
+                                items = i;
+                                continue;
+                            }
+                            items = items + ", " + i;
+                        }
+                    }
+                    d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
+                }
+                
+                let rightTeam = infoData["right"];
+                
+                for (var p of rightTeam) {
+                    
+                    var items = "";
+                    if (p.participant.items.length > 0) {
+                        for (var i of p.participant.items) {
+                            
+                            if (items==="") {
+                                items = i;
+                                continue;
+                            }
+                            
+                            items = items + ", " + i;
+                        }
+                    }
+                    d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
+                }
+                
+                
                 channel.send(d);
                 
                 channel.stopTyping(true);
             };
             
-            vg.getMatchDetails(matchUrl,callback)
+            vg.getMatchDetails(matchMap[reaction.message.id],callback)
             
             delete matchMap[reaction.message.id];
             reaction.message.clearReactions();
@@ -713,7 +754,6 @@ function requestMatchForPlayer(message, playerName) {
     const serverCode = c.vgServerCode(code);
 
     var callback = function(text, data) {
-        //console.log(JSON.stringify(data));
         if (data != null) {
             var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
@@ -772,10 +812,9 @@ function requestMatchForPlayer(message, playerName) {
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             
-            message.channel.send(d)
-            .then(message => {
+            message.channel.send(d).then(message => {
                 message.react('ℹ');
-                matchMap[`${message.id}`] = data.asset;
+                matchMap[`${message.id}`] = data;
             }
             
             );
