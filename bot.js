@@ -656,7 +656,7 @@ function requestRecentPlayedHeroesForName(message, playerName, nextCaller) {
             count = 0;
             var recentNameRate = "";
             for (var pObj of playerList) {
-                if (count++ < 10) {
+                if (count++ < 5) {
                     recentNameRate = `${recentNameRate}${pObj.name}: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} \n`
                     
                 }
@@ -794,7 +794,6 @@ function requestMatchForPlayer(message, playerName) {
         }
         
         if (hasRole) {
-        
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
                 .setColor("#000000");
@@ -1054,7 +1053,7 @@ function getGeneralInfo(heroName) {
 function getClassColor(classification) {
     if (classification.toLowerCase().includes("gold")) {
         return "#FFD700";
-    } else if (classification.toLowerCase().includes("silve")) {
+    } else if (classification.toLowerCase().includes("silver")) {
         return "#C0C0C0";
     } else if (classification.toLowerCase().includes("bronze")) {
         return "#cd7f32";
