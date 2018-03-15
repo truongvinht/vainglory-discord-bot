@@ -3,7 +3,7 @@
 // ================
 
 const modeUtility = require(`../data/gameMode.json`);
-const i18n = require('../controllers/langSupport');
+const i18n = require('../general/langSupport');
 
 const gameMode = function(mode) {
     if (modeUtility.hasOwnProperty(mode)) {

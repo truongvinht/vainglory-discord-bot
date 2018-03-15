@@ -5,7 +5,7 @@
 
 // import 
 const itemList = require("../data/items.json");
-const i18n = require('./langSupport');
+const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];

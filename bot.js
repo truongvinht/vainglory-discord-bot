@@ -4,10 +4,15 @@
 
 //import
 const Discord = require("discord.js");
-const c = require("./controllers/constLoader");
-const i18n = require('./controllers/langSupport');
+const c = require("./general/constLoader");
+const i18n = require('./general/langSupport');
 const vgBase = require('./models/vainglory-base');
 var vg = require('./controllers/vainglory-req');
+const fm = require('./general/contentFormatter');
+const strH = require('./general/stringHelper');
+
+// VIEW
+const helpMsg = require('./View/helpMessage');
 
 //counter picker
 const cp = require('./controllers/vgCounterPicker');
@@ -154,6 +159,11 @@ bot.on("message", async message => {
     //prevent direct message
     if (message.channel.type === "dm"){ 
         
+        if (command.toLowerCase() === `${PREFIX}help`) {
+            let embed = helpMsg.getDmHelp(PREFIX,message.author.username);
+            message.channel.send(embed);
+        }
+
         // send message to a target channel
         if (command.toLowerCase() === `${PREFIX}msg`) {
             if(messageArray.length <= 2){
@@ -191,7 +201,7 @@ bot.on("message", async message => {
                 
                 // help command
                 if (subCommand.toLowerCase() === `${PREFIX}help`) {
-                    let embed = helpMessage(bot.user.username, false);
+                    let embed = helpMsg.getChannelHelp(PREFIX,bot.user.username, false);
                     channel.send(embed);
                 }
                 
@@ -252,7 +262,7 @@ bot.on("message", async message => {
     
     //HELP
     if (command === `${PREFIX}help`) {
-        let embed = helpMessage(message.author.username, hasRole);
+        let embed = helpMsg.getChannelHelp(PREFIX,message.author.username, hasRole);
         message.channel.send(embed);
         return;
     }
@@ -414,7 +424,10 @@ bot.on("message", async message => {
                     if (info.missing == -1) {
                         message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
                     } else {
-                        message.channel.send(d.addField(`${info.title}`, `${randomTierMessage(info.missing)}`));
+                        
+                        const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
+                        message.channel.send(d.addField(`${info.title}`, `${msg}`));
+                        
                     }
                 }
             } else {
@@ -454,7 +467,7 @@ bot.on("message", async message => {
                     if (content != null) {
                         for (var p of content) {
                             //${p.id}
-                            var diff = dateDiff(new Date(p.createdAt));
+                            var diff = fm.timeToNow(new Date(p.createdAt));
                             d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
                         }
                         message.channel.send(d);
@@ -544,7 +557,7 @@ function requestPlayerDetails(message, nextCaller){
     var playerName = messageArray[1];
 
     if (playerName.length == 0) {
-        playerName = messageArray[countSpaces(message.content)];
+        playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
     requestPlayerDetailsForName(message, playerName, nextCaller);
 }
@@ -656,7 +669,7 @@ function requestRecentPlayedHeroes(message, nextCaller) {
     var playerName = messageArray[1];
 
     if (playerName.length == 0) {
-        playerName = messageArray[countSpaces(message.content)];
+        playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
     requestRecentPlayedHeroesForName(message, playerName, nextCaller);
 }
@@ -738,7 +751,7 @@ function requestMatch(message) {
     var playerName = messageArray[1];
 
     if (playerName.length == 0) {
-        playerName = messageArray[countSpaces(message.content)];
+        playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
     
     requestMatchForPlayer(message, playerName);
@@ -1013,29 +1026,6 @@ function sendSupport(message, embeded, hero) {
     }
 }
 
-function helpMessage(author, hasRole) {
-    let embed = new Discord.RichEmbed()
-    .setAuthor(`${author}`)
-    .setDescription(`${i18n.get('FollowingCommands')}`)
-    .addField(`${PREFIX}about`, `${i18n.get('AboutBot')}`)
-    .addField(`${PREFIX}counter HERO`, `${i18n.get('DisplayWeaknessHero')}`)
-    .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
-    .addField(`${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
-    .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
-    .addField(`${PREFIX}player ${i18n.get('Player')} [server]`, `${i18n.get('HelpPlayerDetails')}`)
-    .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
-    .addField(`${PREFIX}elo ELO`, `${i18n.get('EloDetails')}`)
-    .addField(`${PREFIX}match ${i18n.get('Player')} [server]`, `${i18n.get('LastMatchDetails')}`);
-
-    if (hasRole) {
-        embed.addField(`${PREFIX}info ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetailsFull')}`);
-        embed.addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`);
-        embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
-        embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
-    }
-    return embed;
-}
-
 // method to get bot channel
 function findChannelByName(channelName) {
     for (var channel of bot.channels.array()) {
@@ -1068,11 +1058,6 @@ function userHasPermissionForChannel(channel, userName) {
     return false;
 }
 
-
-function countSpaces(string) {
-    return (string.match(new RegExp(" ", "g")) || []).length;
-}
-
 function getGeneralInfo(heroName) {
 
     if (heroName != null) {
@@ -1099,38 +1084,6 @@ function getClassColor(classification) {
     }
 
     return "#FFFFFF";
-}
-
-/**
- * Calculate the difference between given date and today
- * @private
- * @param {Date} date target date for calculating difference
- * @returns map with days, hours, minutes
- * @type Map with Number
- */
-function dateDiff(date) {
-
-    var days, hours, minutes;
-
-    const today = new Date();
-
-    var differenceTravel = today.getTime() - date.getTime();
-    var totalMinutes = Math.floor((differenceTravel) / ((1000) * 60));
-    minutes = totalMinutes % 60;
-    days = (totalMinutes - (totalMinutes % (24 * 60))) / (24 * 60);
-    hours = (totalMinutes - (24 * days * 60) - minutes) / 60;
-
-    return {
-        days: days,
-        hours: hours,
-        minutes: minutes
-    };
-}
-
-// function to get random message for tier
-function randomTierMessage(value) {
-    const random = Math.floor((Math.random() * 16) + 1);
-    return i18n.get(`Random${random}`).replace("$1",value);
 }
 
 // login bot into discord

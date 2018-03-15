@@ -24,6 +24,7 @@
   "HelpDetails":"Tippe $1help für mehr Informationen",
   "HelpPlayerDetails":"Informationen zum Spieler",
   "HelpPlayerDetailsFull":"Vollständige Informationen zum Spieler",
+  "HelpSendMessage":"Senden einer Nachricht in einem Channel (vom Bot)",
   "HeroSelection":"Heldenauswahl",
   "HeroBanned": "$1 gesperrt",
   "InvalidHeroCode": "Ungültiger Code!",

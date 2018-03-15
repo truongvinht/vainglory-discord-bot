@@ -5,7 +5,7 @@
 
 // import 
 const vgCounter = require("../data/heroes.json");
-const i18n = require('./langSupport');
+const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 // weak against
