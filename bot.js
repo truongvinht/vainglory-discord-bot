@@ -12,6 +12,7 @@ const access = require('./general/accessRightManager');
 
 // VIEW
 const helpMsg = require('./View/helpMessage');
+const cntMsg = require('./View/counterPickMessage');
 const itemMsg = require('./View/itemMessage');
 const vgMsg = require('./View/vgMessage');
 const eloMsg = require('./View/eloMessage');
@@ -246,10 +247,8 @@ bot.on("message", async message => {
 
         // counter pick
         if (command === `${PREFIX}counter`) {
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username)
-                .setColor("#ff0000");
-            sendCounter(message,d, hero);
+            let d = cntMsg.getCounter(hero).setAuthor(message.author.username);
+            message.channel.send(d);
         }
 
         // quick counter pick
@@ -264,7 +263,8 @@ bot.on("message", async message => {
             let heroName = cp.getHeroName(hName);
 
             if (heroName != null) {
-                sendCounter(message,d, heroName);
+                let d = cntMsg.getCounter(heroName).setAuthor(message.author.username);
+                message.channel.send(d);
             } else {
                 message.channel.send(new Discord.RichEmbed()
                     .setAuthor(message.author.username)
@@ -301,12 +301,13 @@ bot.on("message", async message => {
         }
         
         //only allow users with roles
-        if (command.toLowerCase() === `${PREFIX}match` || command.toLowerCase() === `${PREFIX}m`) {
+        if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
             vgMsg.requestMatch(message);
+            return;
         }
 
         // show recent played heroes
-        if (command.toLowerCase() === `${PREFIX}recent` || command.toLowerCase() === `${PREFIX}r`) {
+        if (strH.hasCmds(command,[`${PREFIX}recent`,`${PREFIX}r`])) {
             vgMsg.requestRecentPlayedHeroes(message, null);
             return;
         }
@@ -456,20 +457,6 @@ bot.on("message", async message => {
         }
     }
 });
-
-
-
-//send message regarding counter pick
-function sendCounter(message, embeded, hero) {
-    
-    let result = cp.getCounter(hero.toLowerCase());
-    if (result != null) {
-        embeded = embeded.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`);
-        message.channel.send(embeded.addField(`${hero} ${i18n.get('IsWeakAgainst')}`, result));
-    } else {
-        message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`));
-    }
-}
 
 //send message regarding support pick
 function sendSupport(message, embeded, hero) {
