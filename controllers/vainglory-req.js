@@ -238,6 +238,7 @@ const matchDetails = function(data, callback) {
 const recentPlayedHeroes = function(region, player, callback) {
 
     var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
+    console.log(requestURL);
     const reqOption = getRequestHeader(requestURL);
     
     if (reqOption==null) {
@@ -650,9 +651,16 @@ function fetchPlayer(json, playerId) {
                     "id": included.id,
                     "name": attributes.name,
                     "skillTier": vgbase.getTier(attributes.stats.skillTier),
-                    "rankPoints": attributes.stats.rankPoints.ranked.toFixed(2),
                     "guildTag": attributes.stats.guildTag,
                 };
+                
+                //prevent broken data for rank points
+                if (attributes.stats.hasOwnProperty('rankPoints')) {
+                    if (attributes.stats.rankPoints.hasOwnProperty('ranked')) {
+                        player["rankPoints"] = attributes.stats.rankPoints.ranked.toFixed(2);
+                    }
+                }
+                
                 return player;
             }
         }
