@@ -2,6 +2,8 @@
 // Handle user rights
 // ================
 
+//import
+const c = require("../general/constLoader");
 
 var AccessRightManager = (function () {
     var instance;
@@ -55,10 +57,31 @@ const hasAccess = function(nameId) {
     AccessRightManager.getInstance().hasAccessRight(nameId);
 }
 
+
+//check whether triggered user has special rights
+const userHasPermissionForChannel = function(channel, userName) {
+    for(var guildMember of channel.members.array()) {
+        
+        if (userName === guildMember.user.username) {
+            
+            // user has permission
+            var permission = false;
+            
+            for (var reqRole of c.restriction()) {
+                if (guildMember.roles.find("name", reqRole)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 // export
 module.exports = {
     addAccess: addAccessRight,
     removeAccess: removeAccessRight,
     accessRights: list,
-    hasAccess: hasAccess
+    hasAccess: hasAccess,
+    hasAccess: userHasPermissionForChannel
 };

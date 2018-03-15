@@ -8,10 +8,13 @@ const c = require("./general/constLoader");
 const i18n = require('./general/langSupport');
 const fm = require('./general/contentFormatter');
 const strH = require('./general/stringHelper');
+const access = require('./general/accessRightManager');
 
 // VIEW
 const helpMsg = require('./View/helpMessage');
 const itemMsg = require('./View/itemMessage');
+const vgMsg = require('./View/vgMessage');
+const eloMsg = require('./View/eloMessage');
 
 //counter picker
 const cp = require('./controllers/vgCounterPicker');
@@ -29,10 +32,6 @@ log.setLevel('info');
 const PREFIX = c.prefix();
 const VG_TOKEN = c.vgToken();
 
-
-const vgMsg = require('./View/vgMessage');
-vgMsg.setToken(VG_TOKEN);
-
 const bot = new Discord.Client({
     disableEveryone: true
 });
@@ -46,18 +45,22 @@ bot.on("ready", async() => {
         
         //load URL
         eloCalc.initURL(`${c.eloListURL()}`);
+        
+        //init vainglory API token for the bot
+        vgMsg.setToken(VG_TOKEN);
     } catch (e) {
         log.error(e.stack);
     }
 });
 
+// reactions added
 bot.on('messageReactionAdd', (reaction, user) => {
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
     }
 });
 
-// reaction for message
+// messages
 bot.on("message", async message => {
     
     //ignore own messages
@@ -74,19 +77,19 @@ bot.on("message", async message => {
     //prevent direct message
     if (message.channel.type === "dm"){ 
         
-        if (command.toLowerCase() === `${PREFIX}help`) {
+        if (strH.hasCmd(command,`${PREFIX}help`)) {
             let embed = helpMsg.getDmHelp(PREFIX,message.author.username);
             message.channel.send(embed);
         }
 
         // send message to a target channel
-        if (command.toLowerCase() === `${PREFIX}msg`) {
+        if (strH.hasCmd(command,`${PREFIX}msg`)) {
             if(messageArray.length <= 2){
                 return;
             }
             
             let channel = findChannelByName(messageArray[1]);
-            let permission = userHasPermissionForChannel(channel, message.author.username);
+            let permission = access.hasAccess(channel, message.author.username);
             
             if (permission) {
                 channel.send(message.content.substring(
@@ -96,26 +99,28 @@ bot.on("message", async message => {
             }
             return;
         }
-        if (command.toLowerCase() === `${PREFIX}cmd`) {
+        
+        // commands
+        if (strH.hasCmd(command,`${PREFIX}cmd`)) {
             if(messageArray.length <= 2){
                 return;
             }
             let channel = findChannelByName(messageArray[1]);
-            let permission = userHasPermissionForChannel(channel, message.author.username);
+            let permission = access.hasAccess(channel, message.author.username);
             
             if (permission) {
                 //execute command into channel
                 let subCommand = messageArray[2];
                 
                 //player command
-                if (subCommand.toLowerCase() === `${PREFIX}player` && messageArray.length > 3) {
+                if (strH.hasCmd(subCommand,`${PREFIX}player`) && messageArray.length > 3) {
                     let playerName = messageArray[3];
                     vgMsg.requestPlayerDetailsInChannel(channel,playerName,messageArray.length > 4? messageArray[4]: null);
                     return;
                 }
                 
                 // help command
-                if (subCommand.toLowerCase() === `${PREFIX}help`) {
+                if (strH.hasCmd(subCommand,`${PREFIX}help`)) {
                     let embed = helpMsg.getChannelHelp(PREFIX,bot.user.username, false);
                     channel.send(embed);
                 }
@@ -176,14 +181,14 @@ bot.on("message", async message => {
     }
     
     //HELP
-    if (command === `${PREFIX}help`) {
+    if (strH.hasCmd(command,`${PREFIX}help`)) {
         let embed = helpMsg.getChannelHelp(PREFIX,message.author.username, hasRole);
         message.channel.send(embed);
         return;
     }
     
     // command to show items: ITEM CATEGORY TIER INDEX
-    if (command.toLowerCase() === `${PREFIX}item`) {
+    if (strH.hasCmd(command,`${PREFIX}item`)) {
         if (hasRole) {
             itemMsg.showItem(PREFIX, message);
         } else {
@@ -228,22 +233,9 @@ bot.on("message", async message => {
 
         //elo list
         if (message.content.toLowerCase() === `${PREFIX}elo`) {
-            var d = new Discord.RichEmbed();
-            
-            const MAX_SPLIT = 20;
-            
-            for (var i=0;i<MAX_SPLIT;i++) {
-                 const info = eloCalc.getScore(i);
-                 d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
+            for (var eloItem of eloMsg.getList()) {
+                message.channel.send(eloItem); 
             }
-            message.channel.send(d); 
-
-            d = new Discord.RichEmbed();
-            for (var i=MAX_SPLIT;i<30;i++) {
-                 const info = eloCalc.getScore(i);
-                 d = d.addField(`${info.title}`, `${info.starts} - ${info.ends}`);
-            }
-            message.channel.send(d);
             return;
         }
     }
@@ -504,25 +496,6 @@ function findChannelByName(channelName) {
     return null;
 }
 
-//check whether triggered user has special rights
-function userHasPermissionForChannel(channel, userName) {
-    for(var guildMember of channel.members.array()) {
-        
-        if (userName === guildMember.user.username) {
-            
-            // user has permission
-            var permission = false;
-            
-            for (var reqRole of c.restriction()) {
-                if (guildMember.roles.find("name", reqRole)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
 function getGeneralInfo(heroName) {
 
     if (heroName != null) {
@@ -543,5 +516,5 @@ function getGeneralInfo(heroName) {
 if (!(c.botToken() == null || c.botToken().length == 0)) {
     bot.login(c.botToken());
 } else {
-    console.log('Invalid Discord Token')
+    log.error('Invalid Discord Token')
 }
