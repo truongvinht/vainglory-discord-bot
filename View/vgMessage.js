@@ -6,6 +6,7 @@
 const Discord = require("discord.js");
 const i18n = require('../general/langSupport');
 const c = require("../general/constLoader");
+const fm = require('../general/contentFormatter');
 
 // CONTROLLERS
 var vg = require('../controllers/vainglory-req');
@@ -462,6 +463,32 @@ const matchDetails = (message) => {
     }
 }
 
+let afkDetails = function(list, channel) {
+    
+    var callback = function(content) {
+        var d = new Discord.RichEmbed().setColor("#FFFFFF");
+
+        if (content != null) {
+            for (var p of content) {
+                //${p.id}
+                var diff = fm.timeToNow(new Date(p.createdAt));
+                d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
+            }
+            channel.send(d);
+        } else {
+            channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+        }
+        return;
+    }
+
+    vg.setToken(VaingloryToken.getInstance().token());
+    
+    const serverCode = c.vgServerCode(null);
+    
+    //needs to figure out for more than 6 ids
+    vg.getPlayersInfo(serverCode, list, callback);
+}
+
 function getClassColor(classification) {
     if (classification.toLowerCase().includes("gold")) {
         return "#FFD700";
@@ -503,5 +530,6 @@ module.exports = {
     requestRecentPlayedHeroesForName:requestRecentPlayedHeroesForName,
     requestMatch: requestMatch,
     requestMatchForPlayer: requestMatchForPlayer,
-    getMatchDetails:matchDetails
+    getMatchDetails:matchDetails,
+    afkInfo: afkDetails
 };

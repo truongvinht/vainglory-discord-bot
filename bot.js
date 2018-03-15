@@ -41,6 +41,7 @@ const bot = new Discord.Client({
 bot.on("ready", async() => {
     log.info(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}\n# # # # # # # # # #`);
     try {
+        // show link for inviting
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         log.info(link);
         
@@ -139,7 +140,7 @@ bot.on("message", async message => {
                     let hName = cmd.toLowerCase();
                     let heroName = cp.getHeroName(hName);
 
-                    let result = getGeneralInfo(heroName);
+                    let result = cntMsg.getGeneral(heroName);
 
                     if (heroName != null) {
                         let result = cp.getCounter(heroName.toLowerCase());
@@ -212,7 +213,7 @@ bot.on("message", async message => {
             let hName = cmd.toLowerCase();
             let heroName = cp.getHeroName(hName);
 
-            let result = getGeneralInfo(heroName);
+            let result = cntMsg.getGeneral(heroName);
 
             if (heroName != null) {
                 let result = cp.getCounter(heroName.toLowerCase());
@@ -246,58 +247,31 @@ bot.on("message", async message => {
         let hero = messageArray[1].toLowerCase();
 
         // counter pick
-        if (command === `${PREFIX}counter`) {
+        if (strH.hasCmd(command,`${PREFIX}counter`)) {
             let d = cntMsg.getCounter(hero).setAuthor(message.author.username);
             message.channel.send(d);
+            return;
         }
 
         // quick counter pick
-        if (command.toLowerCase() === `${PREFIX}c`) {
-
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username)
-                .setColor("#ff0000");
-
-            //hero quick name
-            let hName = messageArray[1].toLowerCase();
-            let heroName = cp.getHeroName(hName);
-
-            if (heroName != null) {
-                let d = cntMsg.getCounter(heroName).setAuthor(message.author.username);
-                message.channel.send(d);
-            } else {
-                message.channel.send(new Discord.RichEmbed()
-                    .setAuthor(message.author.username)
-                    .setDescription(`'${hName}': ${i18n.get('InvalidHeroCode')}`));
-            }
+        if (strH.hasCmd(command,`${PREFIX}c`)) {
+            let d = cntMsg.getQuickCounter(hero).setAuthor(message.author.username);
+            message.channel.send(d);
+            return;
         }
 
         // support pick
-        if (command === `${PREFIX}support`) {
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username)
-                .setColor("#008000");
-            sendSupport(message,d, hero);
+        if (strH.hasCmd(command,`${PREFIX}support`)) {
+            let d = cntMsg.getSupport(hero).setAuthor(message.author.username);
+            message.channel.send(d);
+            return;
         }
 
         // quick support pick
-        if (command.toLowerCase() === `${PREFIX}s`) {
-
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username)
-                .setColor("#008000");
-
-            //hero quick name
-            let hName = messageArray[1].toLowerCase();
-            let heroName = cp.getHeroName(hName);
-
-            if (heroName != null) {
-                sendSupport(message,d, heroName);
-            } else {
-                message.channel.send(new Discord.RichEmbed()
-                    .setAuthor(message.author.username)
-                    .setDescription(`'${heroName}': ${i18n.get('InvalidHeroCode')}`));
-            }
+        if (strH.hasCmd(command,`${PREFIX}s`)) {
+            let d = cntMsg.getQuickSupport(hero).setAuthor(message.author.username);
+            message.channel.send(d);
+            return;
         }
         
         //only allow users with roles
@@ -344,12 +318,12 @@ bot.on("message", async message => {
         }
 
         //show player stats
-        if (command.toLowerCase() === `${PREFIX}player` || command.toLowerCase() === `${PREFIX}p`) {
+        if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetails(message, null);
         }
         
         //information
-        if (command.toLowerCase() === `${PREFIX}info` || command.toLowerCase() === `${PREFIX}i`) {
+        if (strH.hasCmds(command,[`${PREFIX}info`,`${PREFIX}i`])) {
             if (hasRole) {
             const callbackRecentHeroes = function(message, playerName) {
                 const callbackMatch = function(message, playerName) {
@@ -366,32 +340,10 @@ bot.on("message", async message => {
         }
 
         //hidden feature to fetch player IDs
-        if (command.toLowerCase() === `${PREFIX}afk`) {
+        if (strH.hasCmds(command,[`${PREFIX}afk`])) {
             if (hasRole) {
                 var list = messageArray.slice(1, messageArray.length);
-                var callback = function(content) {
-                    var d = new Discord.RichEmbed().setColor("#FFFFFF");
-
-                    if (content != null) {
-                        for (var p of content) {
-                            //${p.id}
-                            var diff = fm.timeToNow(new Date(p.createdAt));
-                            d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
-                        }
-                        message.channel.send(d);
-                    } else {
-                        message.channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
-                    }
-                    return;
-                }
-
-                vg.setToken(VG_TOKEN);
-                
-                const code = messageArray.length === 3?messageArray[2]:null;
-                const serverCode = c.vgServerCode(code);
-                
-                //needs to figure out for more than 6 ids
-                vg.getPlayersInfo(serverCode, list, callback);
+                vgMsg.afkInfo(list, message.channel);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
@@ -399,18 +351,12 @@ bot.on("message", async message => {
 
     } else {
         // show heroes list
-        if (command === `${PREFIX}hero`) {
-
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username);
-
-            let keyValueMap = cp.getHeroes();
-            message.channel.send(d.addField(keyValueMap.title, keyValueMap.content));
+        if (strH.hasCmds(command,[`${PREFIX}hero`])) {
+            message.channel.send(cntMsg.getHeroes().setAuthor(message.author.username));
         } else if (command === `${PREFIX}clear` && hasRole) {
             async function clear() {
                 //remove clear command (last 50 messages)
                 message.delete();
-
                 message.channel.fetchMessages({
                     limit: 50
                 }).then(messages => {
@@ -420,7 +366,7 @@ bot.on("message", async message => {
                 }).catch(console.error);;
             }
             clear();
-        } else if (command.toLowerCase() === `${PREFIX}about`) {
+        } else if (strH.hasCmds(command,[`${PREFIX}about`])) {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username);
@@ -428,7 +374,7 @@ bot.on("message", async message => {
             const version = c.version();
 
             message.channel.send(d.addField(`${i18n.get('AboutBot')} [${version}]`, `Creator: ${c.author()}`));
-        } else if (command.toLowerCase() === `${PREFIX}i` || command.toLowerCase() === `${PREFIX}info`) {
+        } else if (strH.hasCmds(command,[`${PREFIX}info`,`${PREFIX}i`])) {
             if (hasRole) {
                 const callbackRecentHeroes = function(message, playerName) {
                     const callbackMatch = function(message, playerName) {
@@ -443,12 +389,13 @@ bot.on("message", async message => {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
             return;
-        } else if (command.toLowerCase() === `${PREFIX}r` || command.toLowerCase() === `${PREFIX}recent`) {
+        } else if (strH.hasCmds(command,[`${PREFIX}recent`,`${PREFIX}r`])){
             vgMsg.requestRecentPlayedHeroesForName(message,message.author.username);
-        }else if (command.toLowerCase() === `${PREFIX}m` || command.toLowerCase() === `${PREFIX}match`) {
+        }
+        else if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
             vgMsg.requestMatchForPlayer(message,message.author.username);
             return;
-        }else if (command.toLowerCase() === `${PREFIX}p` || command.toLowerCase() === `${PREFIX}player`) {
+        }else if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetailsForName(message,message.author.username,null);
         } else {
             var d = new Discord.RichEmbed();
@@ -457,18 +404,6 @@ bot.on("message", async message => {
         }
     }
 });
-
-//send message regarding support pick
-function sendSupport(message, embeded, hero) {
-
-    let result = cp.getSupport(hero.toLowerCase());
-    if (result != null) {
-        embeded = embeded.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`);
-        message.channel.send(embeded.addField(`${hero} ${i18n.get('IsStrongAgainst')}`, result));
-    } else {
-        message.channel.send(embeded.setDescription(`'${hero}' ${i18n.get('NotFound')}`))
-    }
-}
 
 // method to get bot channel
 function findChannelByName(channelName) {
@@ -481,22 +416,6 @@ function findChannelByName(channelName) {
         }
     }
     return null;
-}
-
-function getGeneralInfo(heroName) {
-
-    if (heroName != null) {
-        let result = cp.getCounter(heroName.toLowerCase());
-        let resultSupport = cp.getSupport(heroName.toLowerCase());
-
-        if (result != null) {
-            return result;
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
 }
 
 // login bot into discord

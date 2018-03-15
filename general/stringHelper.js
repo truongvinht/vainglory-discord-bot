@@ -33,6 +33,10 @@ const containsCommand = (inputString, command) => {
  */
 const containsCommands = (inputString, commands) => {
     
+    if (commands.length == 1) {
+        return containsCommand(inputString, commands[0]);
+    }
+    
     for (var c of commands) {
         if (inputString.toLowerCase() === c) {
             return true;
