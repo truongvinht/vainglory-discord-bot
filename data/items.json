@@ -8,952 +8,1249 @@
   },
   "item" : {
     "*1002_Item_WeaponBlade*" : {
-      "name" : "Weapon Blade",
-      "price" : 300,
-      "description" : "+15 Weapon Power",
-      "category" : [
-        "1"
-      ],
-      "tier" : 1,
-      "image" : "weapon-blade"
+      "3.0" : {
+        "name" : "Weapon Blade",
+        "price" : 300,
+        "description" : "+15 Weapon Power",
+        "category" : [
+          "1"
+        ],
+        "tier" : 1,
+        "image" : "weapon-blade"
+      },
+      "3.1" : {}
     },
     "*1059_Item_BookOfEulogies*" : {
-      "name" : "Book of Eulogies",
-      "price" : 300,
-      "description" : "Passive: Restores 25 health whenever you kill a minion or monster (65 if using a melee default attack). Vampirism: 4% lifesteal (does not stack with other Vampirism) +5 Weapon Power",
-      "category" : [
-        "1"
-      ],
-      "tier" : 1,
-      "image" : "book-of-eulogies"
+      "3.0" : {
+        "name" : "Book of Eulogies",
+        "price" : 300,
+        "description" : "Passive: Restores 25 health whenever you kill a minion or monster (65 if using a melee default attack). Vampirism: 4% lifesteal (does not stack with other Vampirism) +5 Weapon Power",
+        "category" : [
+          "1"
+        ],
+        "tier" : 1,
+        "image" : "book-of-eulogies"
+      },
+      "3.1" : {
+        "name" : "Book of Eulogies",
+        "price" : 300,
+        "description" : "Passive: Restores 25 health whenever you kill a minion or monster (60 if using a melee default attack). Vampirism: 4% lifesteal (does not stack with other Vampirism) +5 Weapon Power",
+        "category" : [
+          "1"
+        ],
+        "tier" : 1,
+        "image" : "book-of-eulogies"
+      }
     },
     "*1004_Item_SwiftShooter*" : {
-      "name" : "Swift Shooter",
-      "price" : 300,
-      "description" : "+10% Attack Speed",
-      "category" : [
-        "1",
-        "2",
-        "4"
-      ],
-      "tier" : 1,
-      "image" : "swift-shooter"
+      "3.0" : {
+        "name" : "Swift Shooter",
+        "price" : 300,
+        "description" : "+10% Attack Speed",
+        "category" : [
+          "1",
+          "2",
+          "4"
+        ],
+        "tier" : 1,
+        "image" : "swift-shooter"
+      },
+      "3.1" : {}
     },
     "*1080_Item_MinionsFoot*" : {
-      "name" : "Minion's Foot",
-      "price" : 300,
-      "description" : "Passive: After buying this item, your very first attack on enemy hero will crit. +10% Critical Chance +5% Critical Damage",
-      "category" : [
-        "1"
-      ],
-      "tier" : 1,
-      "image" : "minions-foot"
+      "3.0" : {
+        "name" : "Minion's Foot",
+        "price" : 300,
+        "description" : "Passive: After buying this item, your very first attack on enemy hero will crit. +10% Critical Chance +5% Critical Damage",
+        "category" : [],
+        "Item[0]" : "1",
+        "tier" : 1,
+        "image" : "minions-foot"
+      },
+      "3.1" : {}
     },
     "*1003_Item_CrystalBit*" : {
-      "name" : "Crystal Bit",
-      "price" : 300,
-      "description" : "+20 Crystal Power",
-      "category" : [
-        "2"
-      ],
-      "tier" : 1,
-      "image" : "crystal-bit"
+      "3.0" : {
+        "name" : "Crystal Bit",
+        "price" : 300,
+        "description" : "+20 Crystal Power",
+        "category" : [
+          "2"
+        ],
+        "tier" : 1,
+        "image" : "crystal-bit"
+      },
+      "3.1" : {}
     },
     "*1025_Item_EnergyBattery*" : {
-      "name" : "Energy Battery",
-      "price" : 300,
-      "description" : "+200 Max Energy +4 Energy Recharge",
-      "category" : [
-        "2",
-        "4"
-      ],
-      "tier" : 1,
-      "image" : "energy-battery"
+      "3.0" : {
+        "name" : "Energy Battery",
+        "price" : 300,
+        "description" : "+200 Max Energy +4 Energy Recharge",
+        "category" : [
+          "2",
+          "4"
+        ],
+        "tier" : 1,
+        "image" : "energy-battery"
+      },
+      "3.1" : {}
     },
     "*1026_Item_Hourglass*" : {
-      "name" : "Hourglass",
-      "price" : 250,
-      "description" : "+10% Cooldown Speed +1.5 Energy Recharge",
-      "category" : [
-        "1",
-        "2",
-        "4",
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "hourglass"
+      "3.0" : {
+        "name" : "Hourglass",
+        "price" : 250,
+        "description" : "+10% Cooldown Speed +1.5 Energy Recharge",
+        "category" : [
+          "1",
+          "2",
+          "4",
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "hourglass"
+      },
+      "3.1" : {}
     },
     "*1065_Item_HeavySteel*" : {
-      "name" : "Heavy Steel",
-      "price" : 1150,
-      "description" : "+55 Weapon Power",
-      "depending" : [
-        "Weapon Blade"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 2,
-      "image" : "heavy-steel"
+      "3.0" : {
+        "name" : "Heavy Steel",
+        "price" : 1150,
+        "description" : "+55 Weapon Power",
+        "depending" : [
+          "Weapon Blade"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 2,
+        "image" : "heavy-steel"
+      },
+      "3.1" : {}
     },
     "*1005_Item_SixSins*" : {
-      "name" : "Six Sins",
-      "price" : 650,
-      "description" : "+30 Weapon Power",
-      "depending" : [
-        "Weapon Blade"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 2,
-      "image" : "six-sins"
+      "3.0" : {
+        "name" : "Six Sins",
+        "price" : 650,
+        "description" : "+30 Weapon Power",
+        "depending" : [
+          "Weapon Blade"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 2,
+        "image" : "six-sins"
+      },
+      "3.1" : {}
     },
     "*1060_Item_BarbedNeedle*" : {
-      "name" : "Barbed Needle",
-      "price" : 800,
-      "description" : "Vampirism: 8% lifesteal (does not stack with other Vampirism) +12 Weapon Power",
-      "depending" : [
-        "Book of Eulogies"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 2,
-      "image" : "barbed-needle"
+      "3.0" : {
+        "name" : "Barbed Needle",
+        "price" : 800,
+        "description" : "Vampirism: 8% lifesteal (does not stack with other Vampirism) +12 Weapon Power",
+        "depending" : [
+          "Book of Eulogies"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 2,
+        "image" : "barbed-needle"
+      },
+      "3.1" : {}
     },
     "*1066_Item_PiercingSpear*" : {
-      "name" : "Piercing Spear",
-      "price" : 900,
-      "description" : "Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +15 Weapon Power",
-      "depending" : [
-        "Weapon Blade"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 2,
-      "image" : "piercing-spear"
+      "3.0" : {
+        "name" : "Piercing Spear",
+        "price" : 900,
+        "description" : "Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +15 Weapon Power",
+        "depending" : [
+          "Weapon Blade"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 2,
+        "image" : "piercing-spear"
+      },
+      "3.1" : {}
     },
     "*1010_Item_BlazingSalvo*" : {
-      "name" : "Blazing Salvo",
-      "price" : 700,
-      "description" : "+20% Attack Speed",
-      "depending" : [
-        "Swift Shooter"
-      ],
-      "category" : [
-        "1",
-        "2",
-        "4"
-      ],
-      "tier" : 2,
-      "image" : "blazing-salvo"
+      "3.0" : {
+        "name" : "Blazing Salvo",
+        "price" : 700,
+        "description" : "+20% Attack Speed",
+        "depending" : [
+          "Swift Shooter"
+        ],
+        "category" : [
+          "1",
+          "2",
+          "4"
+        ],
+        "tier" : 2,
+        "image" : "blazing-salvo"
+      },
+      "3.1" : {}
     },
     "*1068_Item_LuckyStrike*" : {
-      "name" : "Lucky Strike",
-      "price" : 900,
-      "description" : "+20% Critical Chance +8% Critical Damage",
-      "depending" : [
-        "Minion's Foot"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 2,
-      "image" : "lucky-strike"
+      "3.0" : {
+        "name" : "Lucky Strike",
+        "price" : 900,
+        "description" : "+20% Critical Chance +8% Critical Damage",
+        "depending" : [
+          "Minion's Foot"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 2,
+        "image" : "lucky-strike"
+      },
+      "3.1" : {}
     },
     "*1028_Item_Chronograph*" : {
-      "name" : "Chronograph",
-      "price" : 800,
-      "description" : "+20% Cooldown Speed +2.5 Energy Recharge",
-      "depending" : [
-        "Hourglass"
-      ],
-      "category" : [
-        "1",
-        "2",
-        "4"
-      ],
-      "tier" : 2,
-      "image" : "chronograph"
+      "3.0" : {
+        "name" : "Chronograph",
+        "price" : 800,
+        "description" : "+20% Cooldown Speed +2.5 Energy Recharge",
+        "depending" : [
+          "Hourglass"
+        ],
+        "category" : [
+          "1",
+          "2",
+          "4"
+        ],
+        "tier" : 2,
+        "image" : "chronograph"
+      },
+      "3.1" : {}
     },
     "*1012_Item_Sorrowblade*" : {
-      "name" : "Sorrowblade",
-      "price" : 3100,
-      "description" : "+150 Weapon Power",
-      "depending" : [
-        "Heavy Steel",
-        "Six Sins"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "sorrowblade"
+      "3.0" : {
+        "name" : "Sorrowblade",
+        "price" : 3100,
+        "description" : "+150 Weapon Power",
+        "depending" : [
+          "Heavy Steel",
+          "Six Sins"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "sorrowblade"
+      },
+      "3.1" : {}
     },
     "*1034_Item_SerpentMask*" : {
-      "name" : "Serpent Mask",
-      "price" : 2800,
-      "description" : "Passive: Your next 600-1200 (level 1-12) points of weapon damage to enemy heroes has +25% lifesteal, recharges over 40s. Vampirism: +10% lifesteal (does not stack with other Vampirism) Passive: Book of Eulogies +100 Weapon Power",
-      "depending" : [
-        "Heavy Steel",
-        "Barbed Needle"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "serpent-mask"
+      "3.0" : {
+        "name" : "Serpent Mask",
+        "price" : 2800,
+        "description" : "Passive: Your next 600-1200 (level 1-12) points of weapon damage to enemy heroes has +25% lifesteal, recharges over 40s. Vampirism: +10% lifesteal (does not stack with other Vampirism) Passive: Book of Eulogies +100 Weapon Power",
+        "depending" : [
+          "Heavy Steel",
+          "Barbed Needle"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "serpent-mask"
+      },
+      "3.1" : {}
     },
     "spellsword" : {
-      "name" : "Spellsword",
-      "price" : 2700,
-      "description" : "Passive: Every basic attack grants you 4 energy (12 on heroes). +100 Weapon Power +35% Cooldown Speed +3 Energy Recharge",
-      "depending" : [
-        "Heavy Steel",
-        "Chronograph"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "spellsword"
+      "3.0" : {
+        "name" : "Spellsword",
+        "price" : 2700,
+        "description" : "Passive: Every basic attack grants you 4 energy (12 on heroes). +100 Weapon Power +35% Cooldown Speed +3 Energy Recharge",
+        "depending" : [
+          "Heavy Steel",
+          "Chronograph"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "spellsword"
+      },
+      "3.1" : {}
     },
     "*1092_Item_PoisonedShiv*" : {
-      "name" : "Poisoned Shiv",
-      "price" : 2250,
-      "description" : "Passive: Every 2 basic attacks will apply a mortal wound for 2s. Vampirism: +8% lifesteal (does not stack with other Vampirisim) Passive: Book of Eulogies +40 Weapon Power +30% Attack Speed",
-      "depending" : [
-        "Barbed Needle",
-        "Blazing Salvo"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "poisoned-shiv"
+      "3.0" : {
+        "name" : "Poisoned Shiv",
+        "price" : 2250,
+        "description" : "Passive: Every 2 basic attacks will apply a mortal wound for 2s. Vampirism: +8% lifesteal (does not stack with other Vampirisim) Passive: Book of Eulogies +40 Weapon Power +30% Attack Speed",
+        "depending" : [
+          "Barbed Needle",
+          "Blazing Salvo"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "poisoned-shiv"
+      },
+      "3.1" : {}
     },
     "*1067_Item_BreakingPoint*" : {
-      "name" : "Breaking Point",
-      "price" : 2600,
-      "description" : "Passive: Gain 10 weapon power for every 160 weapon damage done to enemy heroes +5/10 (Melee/Ranged) damage needed for each stack thereafter. 25 stacks max. Decays 3 stacks per second after you've stopped stacking for 2.5s. +20% Attack Speed +55 Weapon Power",
-      "depending" : [
-        "Heavy Steel",
-        "Blazing Salvo"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "breaking-point"
+      "3.0" : {
+        "name" : "Breaking Point",
+        "price" : 2600,
+        "description" : "Passive: Gain 10 weapon power for every 160 weapon damage done to enemy heroes +5/10 (Melee/Ranged) damage needed for each stack thereafter. 25 stacks max. Decays 3 stacks per second after you've stopped stacking for 2.5s. +20% Attack Speed +55 Weapon Power",
+        "depending" : [
+          "Heavy Steel",
+          "Blazing Salvo"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "breaking-point"
+      },
+      "3.1" : {}
     },
     "*1035_Item_TensionBow*" : {
-      "name" : "Tension Bow",
-      "price" : 2150,
-      "description" : "Passive: Every 6s, your next basic attack will deal 240 bonus damage. Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +60 Weapon Power",
-      "depending" : [
-        "Six Sins",
-        "Piercing Spear"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "tension-bow"
+      "3.0" : {
+        "name" : "Tension Bow",
+        "price" : 2150,
+        "description" : "Passive: Every 6s, your next basic attack will deal 240 bonus damage. Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +60 Weapon Power",
+        "depending" : [
+          "Six Sins",
+          "Piercing Spear"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tension-bow"
+      },
+      "3.1" : {
+        "name" : "Tension Bow",
+        "price" : 2150,
+        "description" : "Passive: Every 6s, your next basic attack will deal 240 bonus damage. Armorbreaker: +10% armor pierce (does not stack with other Armorbreaker) +50 Weapon Power",
+        "depending" : [
+          "Six Sins",
+          "Piercing Spear"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tension-bow"
+      }
     },
     "*1039_Item_Bonesaw*" : {
-      "name" : "Bonesaw",
-      "price" : 2700,
-      "description" : "Passive: Your basic attacks shred 5% of the target's armor for 3s. Max 8 stacks. Armorbreaker: +18% armor pierce (does not stack with other Armorbreakers) +15 Weapon Power +25% Attack Speed",
-      "depending" : [
-        "Piercing Spear",
-        "Blazing Salvo"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "bonesaw"
+      "3.0" : {
+        "name" : "Bonesaw",
+        "price" : 2700,
+        "description" : "Passive: Your basic attacks shred 5% of the target's armor for 3s. Max 8 stacks. Armorbreaker: +18% armor pierce (does not stack with other Armorbreakers) +15 Weapon Power +25% Attack Speed",
+        "depending" : [
+          "Piercing Spear",
+          "Blazing Salvo"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "bonesaw"
+      },
+      "3.1" : {}
     },
     "*1014_Item_TornadoTrigger*" : {
-      "name" : "Tornado Trigger",
-      "price" : 2700,
-      "description" : "Passive: Your basic attacks shred 5% of the target's armor for 3s. Max 8 stacks. Armorbreaker: +18% armor pierce (does not stack with other Armorbreakers) +15 Weapon Power +25% Attack Speed",
-      "depending" : [
-        "Piercing Spear",
-        "Blazing Salvo"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "tornado-trigger"
+      "3.0" : {
+        "name" : "Tornado Trigger",
+        "price" : 2600,
+        "description" : "+50% Attack Speed +35% Critical Chance +10% Critical Damage",
+        "depending" : [
+          "Blazing Salvo",
+          "Lucky Strike"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tornado-trigger"
+      },
+      "3.1" : {
+        "name" : "Tornado Trigger",
+        "price" : 2600,
+        "description" : "+45% Attack Speed +35% Critical Chance +10% Critical Damage",
+        "depending" : [
+          "Blazing Salvo",
+          "Lucky Strike"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tornado-trigger"
+      }
     },
     "*1049_Item_TyrantsMonocle*" : {
-      "name" : "Tyrant's Monocle",
-      "price" : 2750,
-      "description" : "+35% Critical Chance +10% Critical Damage +80 Weapon Power",
-      "depending" : [
-        "Six Sins",
-        "Lucky Strike"
-      ],
-      "category" : [
-        "1"
-      ],
-      "tier" : 3,
-      "image" : "tyrants-monocle"
+      "3.0" : {
+        "name" : "Tyrant's Monocle",
+        "price" : 2750,
+        "description" : "+35% Critical Chance +10% Critical Damage +80 Weapon Power",
+        "depending" : [
+          "Six Sins",
+          "Lucky Strike"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tyrants-monocle"
+      },
+      "3.1" : {
+        "name" : "Tyrant's Monocle",
+        "price" : 2750,
+        "description" : "+35% Critical Chance +10% Critical Damage +70 Weapon Power",
+        "depending" : [
+          "Six Sins",
+          "Lucky Strike"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "tyrants-monocle"
+      }
     },
     "*1072_Item_HeavyPrism*" : {
-      "name" : "Heavy Prism",
-      "price" : 1050,
-      "description" : "+50 Crystal Power",
-      "depending" : [
-        "Crystal Bit"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 2,
-      "image" : "heavy-prism"
+      "3.0" : {
+        "name" : "Heavy Prism",
+        "price" : 1050,
+        "description" : "+50 Crystal Power",
+        "depending" : [
+          "Crystal Bit"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 2,
+        "image" : "heavy-prism"
+      },
+      "3.1" : {}
     },
     "*1009_Item_EclipsePrism*" : {
-      "name" : "Eclipse Prism",
-      "price" : 650,
-      "description" : "+35 Crystal Power",
-      "depending" : [
-        "Crystal Bit"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 2,
-      "image" : "eclipse-prism"
+      "3.0" : {
+        "name" : "Eclipse Prism",
+        "price" : 650,
+        "description" : "+35 Crystal Power",
+        "depending" : [
+          "Crystal Bit"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 2,
+        "image" : "eclipse-prism"
+      },
+      "3.1" : {}
     },
     "*1070_Item_PiercingShard*" : {
-      "name" : "Piercing Shard",
-      "price" : 900,
-      "description" : "Shieldbreaker: +18% shield pierce (does not stack with other Shieldbreaker) +20 Crystal Power",
-      "depending" : [
-        "Crystal Bit"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 2,
-      "image" : "eclipse-prism"
+      "3.0" : {
+        "name" : "Piercing Shard",
+        "price" : 900,
+        "description" : "Shieldbreaker: +18% shield pierce (does not stack with other Shieldbreaker) +20 Crystal Power",
+        "depending" : [
+          "Crystal Bit"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 2,
+        "image" : "eclipse-prism"
+      },
+      "3.1" : {}
     },
     "*1027_Item_VoidBattery*" : {
-      "name" : "Void Battery",
-      "price" : 700,
-      "description" : "+350 Max Energy +6 Energy Recharge",
-      "depending" : [
-        "Energy Battery"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 2,
-      "image" : "void-battery"
+      "3.0" : {
+        "name" : "Void Battery",
+        "price" : 700,
+        "description" : "+350 Max Energy +6 Energy Recharge",
+        "depending" : [
+          "Energy Battery"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 2,
+        "image" : "void-battery"
+      },
+      "3.1" : {}
     },
     "*1013_Item_Shatterglass*" : {
-      "name" : "Shatterglass",
-      "price" : 3000,
-      "description" : "+150 Crystal Power",
-      "depending" : [
-        "Heavy Prism",
-        "Eclipse Prism"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "shatterglass"
+      "3.0" : {
+        "name" : "Shatterglass",
+        "price" : 3000,
+        "description" : "+150 Crystal Power",
+        "depending" : [
+          "Heavy Prism",
+          "Eclipse Prism"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "shatterglass"
+      },
+      "3.1" : {}
     },
     "*Spellfire*" : {
-      "name" : "Spellfire",
-      "price" : 2700,
-      "description" : "Passive: Abilities dealing crystal damage to enemies (excluding lane minions) deal 15-50 (level 1-12) + 100% of your cryrstal power as bonus crystal damage over 3s and apply Mortal Wounds for the duration. +90 Crystal Power",
-      "depending" : [
-        "Heavy Prismn",
-        "Eclipse Prism"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "spellfire"
+      "3.0" : {
+        "name" : "Spellfire",
+        "price" : 2700,
+        "description" : "Passive: Abilities dealing crystal damage to enemies (excluding lane minions) deal 15-50 (level 1-12) + 100% of your cryrstal power as bonus crystal damage over 3s and apply Mortal Wounds for the duration. +90 Crystal Power",
+        "depending" : [
+          "Heavy Prismn",
+          "Eclipse Prism"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "spellfire"
+      },
+      "3.1" : {}
     },
     "*1044_Item_Frostburn*" : {
-      "name" : "Frostburn",
-      "price" : 2600,
-      "description" : "Passive: Crystal damage abilities slow enemy heroes by 30% for 1s. +85 Crystal Power",
-      "depending" : [
-        "Heavy Prismn",
-        "Eclipse Prism"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "frostburn"
+      "3.0" : {
+        "name" : "Frostburn",
+        "price" : 2600,
+        "description" : "Passive: Crystal damage abilities slow enemy heroes by 30% for 1s. +85 Crystal Power",
+        "depending" : [
+          "Heavy Prismn",
+          "Eclipse Prism"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "frostburn"
+      },
+      "3.1" : {}
     },
     "*DragonsEye*" : {
-      "name" : "Dragon's Eye",
-      "price" : 3000,
-      "description" : "Passive: Gain 12 crystal power each second you damage enemy heroes. After 4s, lose 1 stack per second. 18 stacks max. +85 Crystal Power",
-      "depending" : [
-        "Heavy Prismn",
-        "Eclipse Prism"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "dragons-eye"
+      "3.0" : {
+        "name" : "Dragon's Eye",
+        "price" : 3000,
+        "description" : "Passive: Gain 12 crystal power each second you damage enemy heroes. After 4s, lose 1 stack per second. 18 stacks max. +85 Crystal Power",
+        "depending" : [
+          "Heavy Prismn",
+          "Eclipse Prism"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "dragons-eye"
+      },
+      "3.1" : {}
     },
     "*1029_Item_Clockwork*" : {
-      "name" : "Clockwork",
-      "price" : 2400,
-      "description" : "Passive: Upon damaging an enemy hero with an ability, reduce all cooldown by 6%. This can only occur once every 2s. +40 Crystal Power +35% Cooldown Speed +600 Max Energy +10 Energy Recharge",
-      "depending" : [
-        "Void Battery",
-        "Chronograph"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "clockwork"
+      "3.0" : {
+        "name" : "Clockwork",
+        "price" : 2400,
+        "description" : "Passive: Upon damaging an enemy hero with an ability, reduce all cooldown by 6%. This can only occur once every 2s. +40 Crystal Power +35% Cooldown Speed +600 Max Energy +10 Energy Recharge",
+        "depending" : [
+          "Void Battery",
+          "Chronograph"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "clockwork"
+      },
+      "3.1" : {}
     },
     "*1055_Item_BrokenMyth*" : {
-      "name" : "Broken Myth",
-      "price" : 2700,
-      "description" : "Shieldbreaker: +30% shield pierce(does not stack with other Shieldbreakers) +80 Crystal Power",
-      "depending" : [
-        "Heavy Prism",
-        "Piercing Shard"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "broken-myth"
+      "3.0" : {
+        "name" : "Broken Myth",
+        "price" : 2700,
+        "description" : "Shieldbreaker: +30% shield pierce(does not stack with other Shieldbreakers) +80 Crystal Power",
+        "depending" : [
+          "Heavy Prism",
+          "Piercing Shard"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "broken-myth"
+      },
+      "3.1" : {}
     },
     "*1071_Item_EveOfHarvest*" : {
-      "name" : "Eve of Harvest",
-      "price" : 2600,
-      "description" : "Passive: Your next 600-1200 (1-12) points of crystal damage to enemy heroes has +25% lifesteal, recharges over 40s. Vamirism: +10% lifesteal (does not stack with other Vampirism) +55 Crystal Power +400 Max Energy +7 Energy Recharge",
-      "depending" : [
-        "Heavy Prism",
-        "Void Battery"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "eve-of-harvest"
+      "3.0" : {
+        "name" : "Eve of Harvest",
+        "price" : 2600,
+        "description" : "Passive: Your next 600-1200 (1-12) points of crystal damage to enemy heroes has +25% lifesteal, recharges over 40s. Vamirism: +10% lifesteal (does not stack with other Vampirism) +55 Crystal Power +400 Max Energy +7 Energy Recharge",
+        "depending" : [
+          "Heavy Prism",
+          "Void Battery"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "eve-of-harvest"
+      },
+      "3.1" : {}
     },
     "*1050_Item_Aftershock*" : {
-      "name" : "Aftershock",
-      "price" : 2400,
-      "description" : "Passive: After using an ability, your next basic attack deals 14% of target's max health as damage with +50% lifesteal. Max 400 damage vs non-heroes. 1.5s cooldown. +25% Cooldown Speed +2.5 Energy Recharge +35 Crystal Power",
-      "depending" : [
-        "Heavy Prism",
-        "Void Battery"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "aftershock"
+      "3.0" : {
+        "name" : "Aftershock",
+        "price" : 2400,
+        "description" : "Passive: After using an ability, your next basic attack deals 14% of target's max health as damage with +50% lifesteal. Max 400 damage vs non-heroes. 1.5s cooldown. +25% Cooldown Speed +2.5 Energy Recharge +35 Crystal Power",
+        "depending" : [
+          "Heavy Prism",
+          "Void Battery"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "aftershock"
+      },
+      "3.1" : {}
     },
     "*1069_Item_AlternatingCurrent*" : {
-      "name" : "Alternating Current",
-      "price" : 2800,
-      "description" : "Passive: Every other basic attack deals 70% of your crystal power as bonus damage. +60 Crystal Power +35% Attack Speed",
-      "depending" : [
-        "Heavy Prism",
-        "Blazing Salvo"
-      ],
-      "category" : [
-        "2"
-      ],
-      "tier" : 3,
-      "image" : "alternating-current"
+      "3.0" : {
+        "name" : "Alternating Current",
+        "price" : 2800,
+        "description" : "Passive: Every other basic attack deals 70% of your crystal power as bonus damage. +60 Crystal Power +35% Attack Speed",
+        "depending" : [
+          "Heavy Prism",
+          "Blazing Salvo"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "alternating-current"
+      },
+      "3.1" : {}
     },
     "*1015_Item_Oakheart*" : {
-      "name" : "Oakheart",
-      "price" : 300,
-      "description" : "+250 Max Health",
-      "category" : [
-        "3",
-        "4"
-      ],
-      "tier" : 1,
-      "image" : "oakheart"
+      "3.0" : {
+        "name" : "Oakheart",
+        "price" : 300,
+        "description" : "+250 Max Health",
+        "category" : [
+          "3",
+          "4"
+        ],
+        "tier" : 1,
+        "image" : "oakheart"
+      },
+      "3.1" : {}
     },
     "*1061_Item_LightShield*" : {
-      "name" : "Light Shield",
-      "price" : 250,
-      "description" : "+30 Shield +5 Armor",
-      "category" : [
-        "3"
-      ],
-      "tier" : 1,
-      "image" : "light-shield"
+      "3.0" : {
+        "name" : "Light Shield",
+        "price" : 250,
+        "description" : "+30 Shield +5 Armor",
+        "category" : [
+          "3"
+        ],
+        "tier" : 1,
+        "image" : "light-shield"
+      },
+      "3.1" : {}
     },
     "*1017_Item_LightArmor*" : {
-      "name" : "Light Armor",
-      "price" : 250,
-      "description" : "+30 Armor +5 Shield",
-      "category" : [
-        "3"
-      ],
-      "tier" : 1,
-      "image" : "light-armor"
+      "3.0" : {
+        "name" : "Light Armor",
+        "price" : 250,
+        "description" : "+30 Armor +5 Shield",
+        "category" : [
+          "3"
+        ],
+        "tier" : 1,
+        "image" : "light-armor"
+      },
+      "3.1" : {}
     },
     "*1016_Item_Dragonheart*" : {
-      "name" : "Dragonheart",
-      "price" : 650,
-      "description" : "+450 Max Health",
-      "depending" : [
-        "Oakheart"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 2,
-      "image" : "dragonheart"
+      "3.0" : {
+        "name" : "Dragonheart",
+        "price" : 650,
+        "description" : "+450 Max Health",
+        "depending" : [
+          "Oakheart"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 2,
+        "image" : "dragonheart"
+      },
+      "3.1" : {}
     },
     "*1064_Item_Lifespring*" : {
-      "name" : "Lifespring",
-      "price" : 800,
-      "description" : "Passive: Regenerate 1.5% of your missing health per second whenever you are out of combat with enemy heroes for 5s. +300 Max Health",
-      "depending" : [
-        "Oakheart"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 2,
-      "image" : "lifespring"
+      "3.0" : {
+        "name" : "Lifespring",
+        "price" : 800,
+        "description" : "Passive: Regenerate 1.5% of your missing health per second whenever you are out of combat with enemy heroes for 5s. +300 Max Health",
+        "depending" : [
+          "Oakheart"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 2,
+        "image" : "lifespring"
+      },
+      "3.1" : {}
     },
     "*1043_Item_ReflexBlock*" : {
-      "name" : "Reflex Block",
-      "price" : 700,
-      "description" : "ActivateL Gain a barrier worth 25% of your missing health and block all debuffs for 1.5s. (45s cooldown) Can activate while stunned. +250 Max Health",
-      "depending" : [
-        "Oakheart"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 2,
-      "image" : "reflex-block"
+      "3.0" : {
+        "name" : "Reflex Block",
+        "price" : 700,
+        "description" : "ActivateL Gain a barrier worth 25% of your missing health and block all debuffs for 1.5s. (45s cooldown) Can activate while stunned. +250 Max Health",
+        "depending" : [
+          "Oakheart"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 2,
+        "image" : "reflex-block"
+      },
+      "3.1" : {}
     },
     "*1062_Item_KineticShield*" : {
-      "name" : "Kinetic Shield",
-      "price" : 800,
-      "description" : "+65 Shield +20 Armor",
-      "depending" : [
-        "Light Shield"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 2,
-      "image" : "kinetic-shield"
+      "3.0" : {
+        "name" : "Kinetic Shield",
+        "price" : 800,
+        "description" : "+65 Shield +20 Armor",
+        "depending" : [
+          "Light Shield"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 2,
+        "image" : "kinetic-shield"
+      },
+      "3.1" : {}
     },
     "*1022_Item_CoatOfPlates*" : {
-      "name" : "Coat of Plates",
-      "price" : 800,
-      "description" : "+65 Armor +20 Shield",
-      "depending" : [
-        "Light Armor"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 2,
-      "image" : "coat-of-plates"
+      "3.0" : {
+        "name" : "Coat of Plates",
+        "price" : 800,
+        "description" : "+65 Armor +20 Shield",
+        "depending" : [
+          "Light Armor"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 2,
+        "image" : "coat-of-plates"
+      },
+      "3.1" : {}
     },
     "*1105_Item_SlumberingHusk*" : {
-      "name" : "Slumbering Husk",
-      "price" : 1700,
-      "description" : "Passive: Taking 25% of your max health in damage over 1.5 fortifies your remaining health for 2 (25 cooldown). +650 Max Health",
-      "depending" : [
-        "Dragonheart"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "slumbering-husk"
+      "3.0" : {
+        "name" : "Slumbering Husk",
+        "price" : 1700,
+        "description" : "Passive: Taking 25% of your max health in damage over 1.5 fortifies your remaining health for 2 (25 cooldown). +650 Max Health",
+        "depending" : [
+          "Dragonheart"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "slumbering-husk"
+      },
+      "3.1" : {}
     },
     "*1046_Item_Crucible*" : {
-      "name" : "Crucible",
-      "price" : 1850,
-      "description" : "Activate: Trigger Reflex Block for you and nearby teammates. (45s cooldown) +700 Max Health",
-      "depending" : [
-        "Dragonheart",
-        "Reflex Block"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "crucible"
+      "3.0" : {
+        "name" : "Crucible",
+        "price" : 1850,
+        "description" : "Activate: Trigger Reflex Block for you and nearby teammates. (45s cooldown) +700 Max Health",
+        "depending" : [
+          "Dragonheart",
+          "Reflex Block"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "crucible"
+      },
+      "3.1" : {}
     },
     "*1045_Item_FountainOfRenewal*" : {
-      "name" : "Fountain of Renewal",
-      "price" : 2300,
-      "description" : "Passive: Lifespring Activate: Heals you and nearby allies for 2.5 health for each % missing health per second for 3s. (65s cooldown) +300 Max Health +65 Shield +20 Armor",
-      "depending" : [
-        "Lifespring",
-        "Kinetic Shield"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "fountain-of-renewal"
+      "3.0" : {
+        "name" : "Fountain of Renewal",
+        "price" : 2300,
+        "description" : "Passive: Lifespring Activate: Heals you and nearby allies for 2.5 health for each % missing health per second for 3s. (65s cooldown) +300 Max Health +65 Shield +20 Armor",
+        "depending" : [
+          "Lifespring",
+          "Kinetic Shield"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "fountain-of-renewal"
+      },
+      "3.1" : {}
     },
     "*1063_Item_Aegis*" : {
-      "name" : "Aegis",
-      "price" : 2250,
-      "description" : "Activate: Reflex Block (35s cooldown) +85 Shield +25 Armor +250 Max Health",
-      "depending" : [
-        "Reflex Block",
-        "Kinetic Shield"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "aegis"
+      "3.0" : {
+        "name" : "Aegis",
+        "price" : 2250,
+        "description" : "Activate: Reflex Block (35s cooldown) +85 Shield +25 Armor +250 Max Health",
+        "depending" : [
+          "Reflex Block",
+          "Kinetic Shield"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "aegis"
+      },
+      "3.1" : {
+        "name" : "Aegis",
+        "price" : 2150,
+        "description" : "Activate: Reflex Block (35s cooldown) +85 Shield +25 Armor +250 Max Health",
+        "depending" : [
+          "Reflex Block",
+          "Kinetic Shield"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "aegis"
+      }
     },
     "*1024_Item_MetalJacket*" : {
-      "name" : "Metal Jacket",
-      "price" : 2100,
-      "description" : "+120 Armor +25 Shield",
-      "depending" : [
-        "Coat of Plates"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "metal-jacket"
+      "3.0" : {
+        "name" : "Metal Jacket",
+        "price" : 2100,
+        "description" : "+120 Armor +25 Shield",
+        "depending" : [
+          "Coat of Plates"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "metal-jacket"
+      },
+      "3.1" : {
+        "name" : "Metal Jacket",
+        "price" : 2000,
+        "description" : "+120 Armor +25 Shield",
+        "depending" : [
+          "Coat of Plates"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "metal-jacket"
+      }
     },
     "*1057_Item_AtlasPauldron*" : {
-      "name" : "Atlas Pauldron",
-      "price" : 1900,
-      "description" : "Activate: Maim nearby enemies, lowering their attack speed by 50% of their total for 4s in a 4-meter range. (20s cooldown) +80 Armor + 25 Shield",
-      "depending" : [
-        "Coat of Plates"
-      ],
-      "category" : [
-        "3"
-      ],
-      "tier" : 3,
-      "image" : "atlas-pauldron"
+      "3.0" : {
+        "name" : "Atlas Pauldron",
+        "price" : 1900,
+        "description" : "Activate: Maim nearby enemies, lowering their attack speed by 50% of their total for 4s in a 4-meter range. (20s cooldown) +80 Armor + 25 Shield",
+        "depending" : [
+          "Coat of Plates"
+        ],
+        "category" : [
+          "3"
+        ],
+        "tier" : 3,
+        "image" : "atlas-pauldron"
+      },
+      "3.1" : {}
     },
     "*1030_Item_SprintBoots*" : {
-      "name" : "Sprint Boots",
-      "price" : 300,
-      "description" : "Boots: +0.4 move speed (does not stack) Activate: Sprint for 2s (150s cooldown).",
-      "category" : [
-        "4"
-      ],
-      "tier" : 1,
-      "image" : "sprint-boots"
+      "3.0" : {
+        "name" : "Sprint Boots",
+        "price" : 300,
+        "description" : "Boots: +0.4 move speed (does not stack) Activate: Sprint for 2s (150s cooldown).",
+        "category" : [
+          "4"
+        ],
+        "tier" : 1,
+        "image" : "sprint-boots"
+      },
+      "3.1" : {}
     },
     "*1032_Item_TravelBoots*" : {
-      "name" : "Travel Boots",
-      "price" : 800,
-      "description" : "Boots: +0.4 move speed (does not stack) Travel Boots: +1 move speed when not in combat. Activate: Spring for 2 (90s cooldown). +100 Max Health",
-      "depending" : [
-        "Sprint Boots"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 2,
-      "image" : "travel-boots"
+      "3.0" : {
+        "name" : "Travel Boots",
+        "price" : 800,
+        "description" : "Boots: +0.4 move speed (does not stack) Travel Boots: +1 move speed when not in combat. Activate: Spring for 2 (90s cooldown). +100 Max Health",
+        "depending" : [
+          "Sprint Boots"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 2,
+        "image" : "travel-boots"
+      },
+      "3.1" : {}
     },
     "*1088_Item_Flaregun*" : {
-      "name" : "Flare Gun",
-      "price" : 600,
-      "description" : "Activate: Fire a flare. 5s cooldown. 2 charges Max. 20s per charge. +300 Max Health",
-      "depending" : [
-        "Oakheart"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 2,
-      "image" : "flare-gun"
+      "3.0" : {
+        "name" : "Flare Gun",
+        "price" : 600,
+        "description" : "Activate: Fire a flare. 5s cooldown. 2 charges Max. 20s per charge. +300 Max Health",
+        "depending" : [
+          "Oakheart"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 2,
+        "image" : "flare-gun"
+      },
+      "3.1" : {}
     },
     "*1074_Item_StormguardBanner*" : {
-      "name" : "Stormguard Banner",
-      "price" : 600,
-      "description" : "Stormguard: Basic attacks deal 10-60 (level 1-12) bonus true damage per second. 15% effectiveness against heroes and structures. (Does not stack with other Stormguard) +250 Max Health",
-      "depending" : [
-        "Oakheart"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 2,
-      "image" : "stormguard-banner"
+      "3.0" : {
+        "name" : "Stormguard Banner",
+        "price" : 600,
+        "description" : "Stormguard: Basic attacks deal 10-60 (level 1-12) bonus true damage per second. 15% effectiveness against heroes and structures. (Does not stack with other Stormguard) +250 Max Health",
+        "depending" : [
+          "Oakheart"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 2,
+        "image" : "stormguard-banner"
+      },
+      "3.1" : {}
     },
     "*1047_Item_JourneyBoots*" : {
-      "name" : "Journey Boots",
-      "price" : 1700,
-      "description" : "Boots: +0.6 move speed (does not stack) Passive: Travel Boots Activate: Sprint for 2s (60s cooldown). Damaging heroes instantly sets the cooldown to 12s if it is above it. +250 Max Health",
-      "depending" : [
-        "Travel Boots"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "journey-boots"
+      "3.0" : {
+        "name" : "Journey Boots",
+        "price" : 1700,
+        "description" : "Boots: +0.6 move speed (does not stack) Passive: Travel Boots Activate: Sprint for 2s (60s cooldown). Damaging heroes instantly sets the cooldown to 12s if it is above it. +250 Max Health",
+        "depending" : [
+          "Travel Boots"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "journey-boots"
+      },
+      "3.1" : {}
     },
     "*1056_Item_WarTreads*" : {
-      "name" : "War Treads",
-      "price" : 1900,
-      "description" : "Boots: +0.4 move speed (does not stack) Passive: Travel Boots Activate: Grant a sprint to all nearby teammates for 2s (60s cooldown). +500 Max Health",
-      "depending" : [
-        "Travel Boots",
-        "Dragonsheart"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "war-treads"
+      "3.0" : {
+        "name" : "War Treads",
+        "price" : 1900,
+        "description" : "Boots: +0.4 move speed (does not stack) Passive: Travel Boots Activate: Grant a sprint to all nearby teammates for 2s (60s cooldown). +500 Max Health",
+        "depending" : [
+          "Travel Boots",
+          "Dragonsheart"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "war-treads"
+      },
+      "3.1" : {}
     },
     "*1087_Item_HalcyonChargers*" : {
-      "name" : "Halcyon Chargers",
-      "price" : 1700,
-      "description" : "Boots: +0.5 move speed (does not stack) Passive: Travel Boots Activate: Sprint for 3s (50s cooldown). +150 Max Health +15% Cooldown Speed +350 Max Energy +6 Energy Recharge",
-      "depending" : [
-        "Travel Boots",
-        "Void Battery"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "halcyon-chargers"
+      "3.0" : {
+        "name" : "Halcyon Chargers",
+        "price" : 1700,
+        "description" : "Boots: +0.5 move speed (does not stack) Passive: Travel Boots Activate: Sprint for 3s (50s cooldown). +150 Max Health +15% Cooldown Speed +350 Max Energy +6 Energy Recharge",
+        "depending" : [
+          "Travel Boots",
+          "Void Battery"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "halcyon-chargers"
+      },
+      "3.1" : {}
     },
     "*1097_Item_Echo*" : {
-      "name" : "Echo",
-      "price" : 2200,
-      "description" : "Activate: The last ability to be put on cooldown is refreshed  (150% of ability's cooldown +10s cooldown). +350 Max Energy +6 Energy Recharge",
-      "depending" : [
-        "Void Battery"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "echo"
+      "3.0" : {
+        "name" : "Echo",
+        "price" : 2200,
+        "description" : "Activate: The last ability to be put on cooldown is refreshed  (150% of ability's cooldown +10s cooldown). +350 Max Energy +6 Energy Recharge",
+        "depending" : [
+          "Void Battery"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "echo"
+      },
+      "3.1" : {}
     },
     "*1079_Item_Contraption*" : {
-      "name" : "Contraption",
-      "price" : 2100,
-      "description" : "Activate: Target yourself to palce a Scout Trap. Target the ground farther away to fire a Flare. 5s cooldown. 4 charges max. 20s per charge. +450 Max Health +30% Cooldown Speed +3 Energy Recharge",
-      "depending" : [
-        "Flare Gun",
-        "Chronograph"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "contraption"
+      "3.0" : {
+        "name" : "Contraption",
+        "price" : 2100,
+        "description" : "Activate: Target yourself to palce a Scout Trap. Target the ground farther away to fire a Flare. 5s cooldown. 4 charges max. 20s per charge. +450 Max Health +30% Cooldown Speed +3 Energy Recharge",
+        "depending" : [
+          "Flare Gun",
+          "Chronograph"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "contraption"
+      },
+      "3.1" : {}
     },
     "*1090_Item_Stormcrown*" : {
-      "name" : "Stormcrown",
-      "price" : 2000,
-      "description" : "Stormguard: Basic attacks deal 50-160 (level 1-12) bonus true damage per second. 25% effectiveness against heroes and structures. (Does not stack with other Stormguard) +20% Cooldown Speed +4 Energy Recharge +300 Max Health",
-      "depending" : [
-        "Stormguard Banner",
-        "Chronograph"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "stormcrown"
+      "3.0" : {
+        "name" : "Stormcrown",
+        "price" : 2000,
+        "description" : "Stormguard: Basic attacks deal 50-160 (level 1-12) bonus true damage per second. 25% effectiveness against heroes and structures. (Does not stack with other Stormguard) +20% Cooldown Speed +4 Energy Recharge +300 Max Health",
+        "depending" : [
+          "Stormguard Banner",
+          "Chronograph"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "stormcrown"
+      },
+      "3.1" : {}
     },
     "*1095_Item_NullwaveGauntlet*" : {
-      "name" : "Nullwave Gauntlet",
-      "price" : 2200,
-      "description" : "Activate: Fires a blast at an enemy hero whih explodes shortly after hitting its target, item silencing for 4s and dealing 50-100 + 15% max health in crystal damage (35s cooldown) +500 Max Health +25% Cooldown Speed +4 Energy Recharge",
-      "depending" : [
-        "Chronograph",
-        "Dragonheart"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "nullwave-gauntlet"
+      "3.0" : {
+        "name" : "Nullwave Gauntlet",
+        "price" : 2200,
+        "description" : "Activate: Fires a blast at an enemy hero whih explodes shortly after hitting its target, item silencing for 4s and dealing 50-100 + 15% max health in crystal damage (35s cooldown) +500 Max Health +25% Cooldown Speed +4 Energy Recharge",
+        "depending" : [
+          "Chronograph",
+          "Dragonheart"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "nullwave-gauntlet"
+      },
+      "3.1" : {}
     },
     "*1042_Item_Shiversteel*" : {
-      "name" : "Shiversteel",
-      "price" : 1950,
-      "description" : "Activate: For the next 4s (6s if you are melee), your basic attacks slow enemy heroes by 40% for 1.4s. (12s cooldown) +650 Max Health +30% Attack Speed",
-      "depending" : [
-        "Blazing Salvo",
-        "Dragonheart"
-      ],
-      "category" : [
-        "4"
-      ],
-      "tier" : 3,
-      "image" : "shiversteel"
+      "3.0" : {
+        "name" : "Shiversteel",
+        "price" : 1950,
+        "description" : "Activate: For the next 4s (6s if you are melee), your basic attacks slow enemy heroes by 40% for 1.4s. (12s cooldown) +650 Max Health +30% Attack Speed",
+        "depending" : [
+          "Blazing Salvo",
+          "Dragonheart"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "shiversteel"
+      },
+      "3.1" : {}
     },
     "Healing Flask" : {
-      "name" : "Healing Flask",
-      "price" : 300,
-      "description" : "Activate: Block 115-500 (level 1-12) damage and recover 200-475 (level1-12) health and 30% energy over the next 5s (120s cooldown)",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "healing-flask"
+      "3.0" : {
+        "name" : "Healing Flask",
+        "price" : 300,
+        "description" : "Activate: Block 115-500 (level 1-12) damage and recover 200-475 (level1-12) health and 30% energy over the next 5s (120s cooldown)",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "healing-flask"
+      },
+      "3.1" : {}
     },
     "*1038_Item_Flare*" : {
-      "name" : "Flare",
-      "price" : 25,
-      "description" : "Consume: Reveal an area for 5s. Can see over walls, into brush, and stealthed units. Scout Traps within this area are permanently revealed.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "flare"
+      "3.0" : {
+        "name" : "Flare",
+        "price" : 25,
+        "description" : "Consume: Reveal an area for 5s. Can see over walls, into brush, and stealthed units. Scout Traps within this area are permanently revealed.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "flare"
+      },
+      "3.1" : {}
     },
     "*1054_Item_ScoutTrap*" : {
-      "name" : "Scout Trap",
-      "price" : 50,
-      "description" : "Consume: Place a trap at your feet. Trap grants vision & will explode on contact with enemy heroes after a short delay. Deals splash damage and reveals affected enemies for 5s.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "scout-trap"
+      "3.0" : {
+        "name" : "Scout Trap",
+        "price" : 50,
+        "description" : "Consume: Place a trap at your feet. Trap grants vision & will explode on contact with enemy heroes after a short delay. Deals splash damage and reveals affected enemies for 5s.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "scout-trap"
+      },
+      "3.1" : {}
     },
     "*1041_Item_MinionCandy*" : {
-      "name" : "Minion Candy",
-      "price" : 100,
-      "description" : "Consumer: Emporers nearby friendly minions for 60s and friendly jungle bosses for 30s. They are granted 40% increased damage, 120 armor, 60 shield, and 0.5 increased movement speed.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "minion-candy"
+      "3.0" : {
+        "name" : "Minion Candy",
+        "price" : 100,
+        "description" : "Consumer: Emporers nearby friendly minions for 60s and friendly jungle bosses for 30s. They are granted 40% increased damage, 120 armor, 60 shield, and 0.5 increased movement speed.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "minion-candy"
+      },
+      "3.1" : {}
     },
     "*1073_Item_IronguardContract*" : {
-      "name" : "Ironguard Contract",
-      "price" : 250,
-      "description" : "Passive: When a nearby ally kills a jungle monster or large lane minion, it heals you and your ally by 75 health and 10 energy each.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "ironguard-contract"
+      "3.0" : {
+        "name" : "Ironguard Contract",
+        "price" : 250,
+        "description" : "Passive: When a nearby ally kills a jungle monster or large lane minion, it heals you and your ally by 75 health and 10 energy each.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "ironguard-contract"
+      },
+      "3.1" : {}
     },
     "1084_Item_ProtectorContract*" : {
-      "name" : "Protector Contract",
-      "price" : 250,
-      "description" : "Activate: Grant an 120 health barrier to nearby allied heroes for 2s. 5s cooldown. 2 max charges, 15s per charge.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "protector-contract"
+      "3.0" : {
+        "name" : "Protector Contract",
+        "price" : 250,
+        "description" : "Activate: Grant an 120 health barrier to nearby allied heroes for 2s. 5s cooldown. 2 max charges, 15s per charge.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "protector-contract"
+      },
+      "3.1" : {}
     },
     "DragonbloodContract" : {
-      "name" : "Dragonblood Contract",
-      "price" : 250,
-      "description" : "Activate: After a brief delay, neary enemy heroes are marked for 3s. The next basic attack from an ally consumes the mark, slowing by 30% for 2s and dealing 100 bonus crystal damage. 10s cooldown. 2 max charges. 25s per charge",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "dragonblood-contract"
+      "3.0" : {
+        "name" : "Dragonblood Contract",
+        "price" : 250,
+        "description" : "Activate: After a brief delay, neary enemy heroes are marked for 3s. The next basic attack from an ally consumes the mark, slowing by 30% for 2s and dealing 100 bonus crystal damage. 10s cooldown. 2 max charges. 25s per charge",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "dragonblood-contract"
+      },
+      "3.1" : {}
     },
     "*1052_Item_WeaponInfusion*" : {
-      "name" : "Weapon Infusion",
-      "price" : 500,
-      "description" : "Consume: Temporarily gain 20-80 weapon power, 5%-20% attack speed, and 0-15 armor & shield based on your level. Last 150s. Can only have one infusion at a time.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "weapon-infusion"
+      "3.0" : {
+        "name" : "Weapon Infusion",
+        "price" : 500,
+        "description" : "Consume: Temporarily gain 20-80 weapon power, 5%-20% attack speed, and 0-15 armor & shield based on your level. Last 150s. Can only have one infusion at a time.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "weapon-infusion"
+      },
+      "3.1" : {}
     },
     "*1053_Item_CrystalInfusion*" : {
-      "name" : "Crystal Infusion",
-      "price" : 500,
-      "description" : "Consume: Temporarily gain 20-80 crystal power, 10%-30% cooldown speed, and 0-15 armor & shield based on your level. Last 150s. Can only have one infusion at a time.",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "crystal-infusion"
+      "3.0" : {
+        "name" : "Crystal Infusion",
+        "price" : 500,
+        "description" : "Consume: Temporarily gain 20-80 crystal power, 10%-30% cooldown speed, and 0-15 armor & shield based on your level. Last 150s. Can only have one infusion at a time.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "crystal-infusion"
+      },
+      "3.1" : {}
     },
     "Flare Loader" : {
-      "name" : "Flare Loader",
-      "price" : 300,
-      "description" : "Activate: Fires a Flare that last 3s, granting vision and true sight in the area. Flares have 3 max charges and recover 1 charge every 75s. +150 Max Health",
-      "category" : [
-        "5"
-      ],
-      "tier" : 1,
-      "image" : "flare-gun"
+      "3.0" : {
+        "name" : "Flare Loader",
+        "price" : 300,
+        "description" : "Activate: Fires a Flare that last 3s, granting vision and true sight in the area. Flares have 3 max charges and recover 1 charge every 75s. +150 Max Health",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "flare-gun"
+      },
+      "3.1" : {}
     },
     "ScoutPak" : {
-      "name" : "Scout Pak",
-      "price" : 500,
-      "description" : "Breadth: You can hold 1 additional Scout Cam(s) and obtain charges 30s faster per Scout Cam. +20% Cooldown Speed +2.5 Energy Recharge",
-      "depending" : [
-        "Hourglass"
-      ],
-      "category" : [
-        "5"
-      ],
-      "tier" : 2
+      "3.0" : {
+        "name" : "Scout Pak",
+        "price" : 500,
+        "description" : "Breadth: You can hold 1 additional Scout Cam(s) and obtain charges 30s faster per Scout Cam. +20% Cooldown Speed +2.5 Energy Recharge",
+        "depending" : [
+          "Hourglass"
+        ],
+        "category" : [
+          "5"
+        ],
+        "tier" : 2
+      },
+      "3.1" : {}
     },
     "ScoutTuff" : {
-      "name" : "Scout Tuff",
-      "price" : 500,
-      "description" : "Depth: Scout Cam last 30s longer and take 1 extra hit(s) to kill +250 max Health",
-      "depending" : [
-        "Flare Loader"
-      ],
-      "category" : [
-        "5"
-      ],
-      "tier" : 2
+      "3.0" : {
+        "name" : "Scout Tuff",
+        "price" : 500,
+        "description" : "Depth: Scout Cam last 30s longer and take 1 extra hit(s) to kill +250 max Health",
+        "depending" : [
+          "Flare Loader"
+        ],
+        "category" : [
+          "5"
+        ],
+        "tier" : 2
+      },
+      "3.1" : {}
     },
     "SuperScout" : {
-      "name" : "SuperScout",
-      "price" : 2000,
-      "description" : "Breadth: You can hold 3 additional Scout Cam(s) and obtain charges 60s faster per Scout Cam. Depth: Scout Cam last 60s longer and take 3 extra hit(s) to kill. +500 Max Health +25% Cooldown Speed +5 Energy Recharge",
-      "depending" : [
-        "ScoutPak",
-        "ScoutTuff"
-      ],
-      "category" : [
-        "5"
-      ],
-      "tier" : 3
+      "3.0" : {
+        "name" : "SuperScout",
+        "price" : 2000,
+        "description" : "Breadth: You can hold 3 additional Scout Cam(s) and obtain charges 60s faster per Scout Cam. Depth: Scout Cam last 60s longer and take 3 extra hit(s) to kill. +500 Max Health +25% Cooldown Speed +5 Energy Recharge",
+        "depending" : [
+          "ScoutPak",
+          "ScoutTuff"
+        ],
+        "category" : [
+          "5"
+        ],
+        "tier" : 3
+      },
+      "3.1" : {}
     }
   }
 }

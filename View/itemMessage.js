@@ -121,6 +121,12 @@ const showItem = (PREFIX, message) => {
                                     .setDescription(`${i18n.get('Gold')}: ${selectedItem.price} ${dependency}`)
                                     .addField('\u200B',`${selectedItem.description}`)
                                     .setFooter(`${categoryMap.items[category-1]} | ${tierMap.items[tier-1]}`);
+                                    
+                                if (selectedItem.hasOwnProperty('old')) {
+                                    let oldItem = selectedItem.old;
+                                    d = d.addField(`${i18n.get('PrioUpdate')}:`,`${i18n.get('Gold')}: ${oldItem.price} ${dependency}`)
+                                    .addField('\u200B',`${oldItem.description}`)
+                                } 
                                 
                                 message.channel.send(d);
                             } else {

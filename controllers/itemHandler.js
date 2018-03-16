@@ -9,6 +9,7 @@ const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];
+const RELEASE_VERSION = ['3.0','3.1'];
 
 //FILTER LEVEL: CATEGORY TIER INDEX
 
@@ -64,17 +65,54 @@ const list = function(category, tier) {
         
         var itm = itemList.item[key];
         
-        //check tier first
-        if (itm.tier!=parseInt(tier)) {
-            continue;
+        var needsSkipping = false;
+        
+        //check each version
+        for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+            
+            let singleItem = itm[`${RELEASE_VERSION[index]}`]; 
+
+            if (Object.keys(singleItem).length == 0) {
+                continue;
+            }
+            if (singleItem.hasOwnProperty('name')) {
+                if (singleItem.hasOwnProperty('tier')) {
+                    //check tier first
+                    if (singleItem.tier!=parseInt(tier)) {
+                        needsSkipping = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (singleItem.hasOwnProperty('category')) {
+                //check category with a for loop
+                for (var ctg of singleItem.category) {
+                    if (ctg == category) {
+                        
+                        var combinedItem = singleItem;
+                        
+                        //latest object
+                        if (index == RELEASE_VERSION.length-1) {
+                            let prevItem = itm[`${RELEASE_VERSION[index-1]}`]; 
+                            combinedItem["old"] = prevItem;
+                        }
+                        
+                        items.push(combinedItem);
+                        needsSkipping = true;
+                        break;
+                    }
+                }
+                
+                if (items[items.length-1] == singleItem) {
+                    break;
+                }
+            }
         }
         
-        //check category with a for loop
-        for (var ctg of itm.category) {
-            if (ctg == category) {
-                items.push(itm);
-                break;
-            }
+        //skip because tier or category doesn't match
+        if (needsSkipping) {
+            continue;
         }
     }
     
