@@ -35,7 +35,7 @@
     "skaarf":["sa","pt","ph","lr","re"],
     "skye":["re","ag","kr","rn","ct"],
     "taka":["sy","cl","sk","br"],
-    "tony":["gw","ph"],
+    "tony":["?"],
     "varya":["re","jo","pt"],
     "vox":["re","jo","ph","pt","gw"]
   },
@@ -75,7 +75,7 @@
     "skaarf":["tk","bf","ct","rz","rn"],
     "skye":["tk","bt","ad","gl","sm"],
     "taka":["pt","ft","lr","ap"],
-    "tony":["sy","pt","re","kr"],
+    "tony":["pt","re","kr","gw","ph"],
     "varya":["rg","ap","bt"],
     "vox":["sa","rg","ap","br"]
   },
