@@ -126,9 +126,47 @@ const list = function(category, tier) {
     return {"title":`${i18n.get('ListOfMatchingItems')}`,"content":list,"items":items};
 }
 
+const updatedList = function(version) {
+    
+    //fetch all items into an array
+    var items = [];
+    
+    for (var key of Object.keys(itemList.item)) {
+        
+        var itm = itemList.item[key];
+        
+        var needsSkipping = false;
+        
+        //check each version
+        for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+            
+            
+            if (`${RELEASE_VERSION[index]}` === version) {
+                var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
+
+                if (Object.keys(singleItem).length == 0) {
+                    continue;
+                }
+                
+                //latest object
+                if (index == RELEASE_VERSION.length-1) {
+                    let prevItem = itm[`${RELEASE_VERSION[index-1]}`]; 
+                    singleItem["old"] = prevItem;
+                }
+                
+                items.push(singleItem);
+                break;
+            }
+        }
+    }
+    
+    return items;
+}
+
 // export
 module.exports = {
     getCategories: categoryList,
     getTierList: tierList,
-    getItems:list
+    getItems:list,
+    getUpdatedItems: updatedList
 };

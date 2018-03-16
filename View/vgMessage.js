@@ -68,9 +68,7 @@ let requestPlayerDetails = function(message, nextCaller){
     if (playerName.length == 0) {
         playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
-    console.log('Command 1');
     requestPlayerDetailsForName(message, playerName, nextCaller);
-    console.log('Command 2');
 }
 
 let requestPlayerDetailsForName = function(message, playerName, nextCaller) {

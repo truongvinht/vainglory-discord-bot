@@ -30,7 +30,6 @@ const showItem = (PREFIX, message) => {
                 //TIER SELECTION
                 let tierMap = item.getTierList();
                 
-                
                 message.channel.send(d.addField(tierMap.title, tierMap.content)
                 .setFooter(`${categoryMap.items[category-1]} => ${PREFIX}item ${category} [INDEX]`));
             } else {
@@ -156,7 +155,69 @@ const showItem = (PREFIX, message) => {
 }
 
 
+const updatedItems = (version, message) => {
+    
+    if (isNaN(version)) {
+        var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+        return d.setDescription(`${i18n.get('InvalidInput')}`);
+    }
+    
+    //restrict to all items
+    if (version == '3.0') {
+        var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+        return d.setDescription(`${i18n.get('InvalidInput')}`);
+    }
+
+    message.channel.startTyping();
+    let list = item.getUpdatedItems(version);
+    
+    let categoryMap = item.getCategories();
+    let tierMap = item.getTierList();
+    
+    for (var selectedItem of list) {
+
+        var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+        var dependency = "";
+        
+        if (selectedItem.hasOwnProperty("depending")) {
+            
+            var depend = "";
+            
+            for (var de of selectedItem.depending) {
+                
+                if (depend == "") {
+                    depend = de;
+                } else {
+                    depend = depend +", " + de;
+                }
+            }
+            
+            dependency = `| ${i18n.get('Dependency')}: ${depend}`;
+        }
+        if (selectedItem.hasOwnProperty("image")) {
+            d = d.setThumbnail(`${c.itemURL()}/${selectedItem.image}.png`);
+        }
+    
+        d = d.setTitle(selectedItem.name)
+            .setDescription(`${i18n.get('Gold')}: ${selectedItem.price} ${dependency}`)
+            .addField('\u200B',`${selectedItem.description}`)
+            .setFooter(`${categoryMap.items[selectedItem.category[0]-1]} | ${tierMap.items[selectedItem.tier-1]}`);
+            
+        if (selectedItem.hasOwnProperty('old')) {
+            let oldItem = selectedItem.old;
+            d = d.addField(`${i18n.get('PrioUpdate')}:`,`${i18n.get('Gold')}: ${oldItem.price} ${dependency}`)
+            .addField('\u200B',`${oldItem.description}`)
+        } 
+        message.channel.send(d);
+    }
+    message.channel.stopTyping();
+    
+}
 // export
 module.exports = {
-    showItem: showItem
+    showItem: showItem,
+    showUpdatedItems:updatedItems
 };

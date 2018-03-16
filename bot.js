@@ -316,7 +316,13 @@ bot.on("message", async message => {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }
         }
-
+        
+        //updated item list
+        if (strH.hasCmds(command,[`${PREFIX}updateditems`,`${PREFIX}uitems`])) {
+            itemMsg.showUpdatedItems(hero,message);
+            return
+        }
+        
         //show player stats
         if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetails(message, null);
