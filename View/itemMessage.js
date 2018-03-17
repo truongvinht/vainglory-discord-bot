@@ -160,18 +160,32 @@ const updatedItems = (version, message) => {
     if (isNaN(version)) {
         var d = new Discord.RichEmbed()
         .setAuthor(message.author.username);
-        return d.setDescription(`${i18n.get('InvalidInput')}`);
+        
+        message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        return;
     }
     
     //restrict to all items
-    if (version == '3.0') {
+    if (parseFloat(version) < 3.1 ) {
         var d = new Discord.RichEmbed()
         .setAuthor(message.author.username);
-        return d.setDescription(`${i18n.get('InvalidInput')}`);
+
+        message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        return;
     }
 
     message.channel.startTyping();
     let list = item.getUpdatedItems(version);
+    
+    
+    //check list
+    if (list.length == 0) {
+        var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+
+        message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+        return;
+    }
     
     let categoryMap = item.getCategories();
     let tierMap = item.getTierList();
