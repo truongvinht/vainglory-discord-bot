@@ -319,7 +319,11 @@ bot.on("message", async message => {
         
         //updated item list
         if (strH.hasCmds(command,[`${PREFIX}updateditems`,`${PREFIX}uitems`])) {
-            itemMsg.showUpdatedItems(hero,message);
+            if (hasRole) {
+                itemMsg.showUpdatedItems(hero,message);
+            } else {
+                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+            }
             return
         }
         
