@@ -185,7 +185,27 @@ let requestRecentPlayedHeroes = function(message, nextCaller) {
     requestRecentPlayedHeroesForName(message, playerName, nextCaller);
 }
 
+let requestRecentPlayedHeroesForMe = function(message, playerName, nextCaller) {
+    
+    let didFailed = function(d,playerName) {
+        let guildMember = access.getMember(message.channel,message.author.tag);
+        requestRecentPlayedHeroesForName(message, guildMember.displayName,nextCaller);
+    }
+    
+    fetchRecentPlaying(message,playerName, nextCaller, didFailed);
+}
+
 let requestRecentPlayedHeroesForName = function(message, playerName, nextCaller) {
+    
+    let didFailed = function(d,playerName) {
+        message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+    }
+    
+    fetchRecentPlaying(message,playerName, nextCaller, didFailed);
+}
+
+function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
+
     
     message.channel.startTyping();
     const messageArray = message.content.split(" ");
@@ -245,10 +265,11 @@ let requestRecentPlayedHeroesForName = function(message, playerName, nextCaller)
                 message.channel.stopTyping();
                 nextCaller(message,playerName);
             }
+            message.channel.stopTyping();
         } else {
-            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`));
+            message.channel.stopTyping();
+            didFailedHandler(d,playerName);
         }
-        message.channel.stopTyping();
     };
     vg.setToken(VaingloryToken.getInstance().token());
     vg.getRecentPlayedHeroes(serverCode, playerName, callback);
@@ -265,25 +286,23 @@ let requestMatch = function(message) {
         playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
     
+    requestMatchForPlayer(message,playerName);
+}
+
+let requestMatchForMe = function(message, playerName) {
+    
     let didFailed = function(d,playerName) {
-         message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+        let guildMember = access.getMember(message.channel,message.author.tag);
+        requestMatchForPlayer(message, guildMember.displayName);
     }
     
     fetchMatch(message,playerName, didFailed);
 }
 
-let requestMatchForPlayer = function(message, playerName, requestSelfUser) {
+let requestMatchForPlayer = function(message, playerName) {
     
     let didFailed = function(d,playerName) {
-
-        if (requestSelfUser != null) {
-            if (message.channel.type === "text") {
-                let guildMember = access.getMember(message.channel,message.author.tag);
-                requestMatchForPlayer(message, guildMember.displayName);
-            }
-        } else {
-            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
-        }
+        message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
     }
     
     fetchMatch(message,playerName, didFailed);
@@ -572,8 +591,10 @@ module.exports = {
     requestPlayerDetailsForName: requestPlayerDetailsForName,
     requestPlayerDetailsInChannel:requestPlayerDetailsInChannel,
     requestRecentPlayedHeroes: requestRecentPlayedHeroes,
+    requestRecentPlayedHeroesForMe:requestRecentPlayedHeroesForMe,
     requestRecentPlayedHeroesForName:requestRecentPlayedHeroesForName,
     requestMatch: requestMatch,
+    requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
     getMatchDetails:matchDetails,
     afkInfo: afkDetails

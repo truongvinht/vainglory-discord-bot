@@ -66,9 +66,9 @@ bot.on('messageReactionAdd', (reaction, user) => {
 bot.on("message", async message => {
     
     //ignore own messages
-    if (message.author.bot) {
-        return;
-    }
+    // if (message.author.bot) {
+    //     return;
+    // }
 
     //ignore commands without prefix
     if (!message.content.startsWith(PREFIX)) return;
@@ -399,10 +399,10 @@ bot.on("message", async message => {
             }
             return;
         } else if (strH.hasCmds(command,[`${PREFIX}recent`,`${PREFIX}r`])){
-            vgMsg.requestRecentPlayedHeroesForName(message,message.author.username);
+            vgMsg.requestRecentPlayedHeroesForMe(message,message.author.username);
         }
         else if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
-            vgMsg.requestMatchForPlayer(message,message.author.username, true);
+            vgMsg.requestMatchForMe(message,message.author.username);
             return;
         }else if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetailsForName(message,message.author.username,null);
