@@ -72,14 +72,14 @@ let requestPlayerDetails = function(message, nextCaller){
     requestPlayerDetailsForName(message, playerName, nextCaller);
 }
 
-let requestPlayerDetailsForMe = function(message, playerName) {
+let requestPlayerDetailsForMe = function(message, playerName,nextCaller) {
     
     let didFailed = function(d,playerName) {
         let guildMember = access.getMember(message.channel,message.author.tag);
-        requestPlayerDetailsForName(message, guildMember.displayName);
+        requestPlayerDetailsForName(message, guildMember.displayName, nextCaller);
     }
     
-    fetchPlayerDetails(message,playerName,null,didFailed);
+    fetchPlayerDetails(message,playerName,nextCaller,didFailed);
 }
 
 let requestPlayerDetailsForName = function(message, playerName, nextCaller) {

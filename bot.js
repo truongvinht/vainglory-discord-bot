@@ -65,10 +65,10 @@ bot.on('messageReactionAdd', (reaction, user) => {
 // messages
 bot.on("message", async message => {
     
-    //ignore own messages
-    // if (message.author.bot) {
-    //     return;
-    // }
+    ignore own messages
+    if (message.author.bot) {
+        return;
+    }
 
     //ignore commands without prefix
     if (!message.content.startsWith(PREFIX)) return;
@@ -393,7 +393,7 @@ bot.on("message", async message => {
                     }
                     vgMsg.requestRecentPlayedHeroesForName(message, playerName, callbackMatch);
                 }
-                vgMsg.requestPlayerDetailsForName(message,message.author.username ,callbackRecentHeroes);
+                vgMsg.requestPlayerDetailsForMe(message,message.author.username ,callbackRecentHeroes);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
