@@ -14,7 +14,7 @@
   "DisplayListHero":"Anzeige der verfügbaren Helden",
   "EloDetails":"Zeigt die Spielerstufe und die fehlenden Elo-Punkte für die nächste Stufe an",
   "EnteredHeroDoesntExist": "Eingegebener Held existiert nicht!",
-  "ErrorInvalidElo":"Ungültiger Elo-Wert. Bitte Wert angeben!",
+  "ErrorInvalidElo":"Ungültiger Elo-Wert. Bitte den Elo-Wert angeben! z.B. 1000",
   "ErrorNoMatchFoundFor":"Es wurde kein Spiel für $1 gefunden.",
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
   "GamesPlayed":"Gespielte Spiele",
