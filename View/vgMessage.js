@@ -397,7 +397,8 @@ const matchDetails = (message) => {
             for (var selected of data.left) {
                 ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
             }
-            
+
+            console.log('Ban L: '+JSON.stringify(ban));
             d = d.addField(`${i18n.get('Left')}`,`${ban}`);
             
             ban = "";
@@ -407,6 +408,8 @@ const matchDetails = (message) => {
             for (var selected of data.right) {
                 ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
             }
+            
+            console.log('Ban R: '+JSON.stringify(ban));
             d = d.addField(`${i18n.get('Right')}`,`${ban}`);
             
             d = d.addField('\u200B',`${i18n.get('Items')}:`);
@@ -429,6 +432,13 @@ const matchDetails = (message) => {
                         items = items + ", " + i;
                     }
                 }
+                
+                //check player sold items
+                if (items == '') {
+                    items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}`;
+                }
+            
+                //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
                 d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
             }
             
@@ -448,6 +458,12 @@ const matchDetails = (message) => {
                         items = items + ", " + i;
                     }
                 }
+                
+                //check player sold items
+                if (items == '') {
+                    items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Right',data.SellItem)}`;
+                }
+                
                 d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
             }
             
@@ -459,6 +475,26 @@ const matchDetails = (message) => {
         vg.getMatchDetails(matchData,callback)
         VaingloryToken.getInstance().removeMessage(message.id);
     }
+}
+
+function getSoldItems(actor, team, soldItemList) {
+    var items = '';
+    
+    for (var i of soldItemList) {
+        if (actor === i.payload.Actor.replace('\*', '').replace('\*', '') && team === i.payload.Team) {
+            if (items==="") {
+                items = i.payload.Item;
+                continue;
+            }
+            
+            items = items + ", " + i.payload.Item;
+        }
+    }
+    if (items == '') {
+        return '-';
+    }
+    
+    return items;
 }
 
 let afkDetails = function(list, channel) {

@@ -16,7 +16,7 @@ var requestToken = '';
 
 var matchStats = function(region, playerName, callback) {
     const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]=1&page[offset]=0";
-    console.log(requestURL);
+    log.debug(requestURL);
 
     const reqOption = getRequestHeader(requestURL);
 
@@ -219,12 +219,36 @@ const matchDetails = function(data, callback) {
                         right.push(entry.payload);
                     }
                 }
+                
+                //skip every other object
+                if (entry.typ == 'PlayerFirstSpawn') {
+                    break;
+                }
             }
             
             heroSelections['left'] = left;
             heroSelections['right'] = right;
+            
+            var maxLength = 100;
+            
+            if (json.length < 100) {
+                maxLength = json.length;
+            }
+            
+            var soldItems = [];
+            
+            // trace sold items
+            for (var entry of json.reverse().slice(0,maxLength)) {
+                if (entry.type == 'SellItem') {
+                    soldItems.push(entry);
+                }
+            }
+            
             heroSelections['banned'] = {'left':leftBan,'right':rightBan};
             heroSelections['data'] = data;
+            heroSelections['SellItem'] = soldItems;
+            //log.error(JSON.stringify(heroSelections))
+            
             callback(heroSelections)
         }
     });
@@ -737,7 +761,7 @@ function getRequestHeader(url) {
     //check for non-empty VG key
     var key = requestToken;
     if (key == null || key == '') {
-        console.log("Error: API Key is empty");
+        log.error("Error: API Key is empty");
         return null;
     }
 
