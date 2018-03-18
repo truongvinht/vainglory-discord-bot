@@ -32,10 +32,11 @@ const helpMessage = (PREFIX, author, hasRole) => {
 
     if (hasRole) {
         embed.addField(`${PREFIX}info ${i18n.get('Player')}`,
-             `${i18n.get('HelpPlayerDetailsFull')}`);
-        embed.addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`);
-        embed.addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`);
-        embed.addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
+             `${i18n.get('HelpPlayerDetailsFull')}`)
+        .addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`)
+        .addField(`${PREFIX}uitems VERSION`, `${i18n.get('HelpUpdatedItems')}`)
+        .addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`)
+        .addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
     }
     return embed;
 }
@@ -51,7 +52,10 @@ const directHelpMessage = (PREFIX, author) => {
     let embed = new Discord.RichEmbed()
     .setAuthor(`${author}`)
     .setDescription(`${i18n.get('FollowingCommands')}`)
-    .addField(`${PREFIX}msg CHANNEL MESSAGE`, `${i18n.get('HelpSendMessage')}`);
+    .addField(`${PREFIX}msg CHANNEL MESSAGE`, `${i18n.get('HelpSendMessage')}`)
+    .addField(`${PREFIX}cmd CHANNEL ${PREFIX}player ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetails')}`)
+    .addField(`${PREFIX}cmd CHANNEL ${PREFIX}help`, `${i18n.get('HelpInfos')}`)
+    .addField(`${PREFIX}cmd CHANNEL ${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`);
     return embed;
 }
 
