@@ -65,7 +65,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 // messages
 bot.on("message", async message => {
     
-    ignore own messages
+    //ignore own messages
     if (message.author.bot) {
         return;
     }
