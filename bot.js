@@ -68,7 +68,7 @@ bot.on("message", async message => {
     //ignore own messages
     if (message.author.bot) {
         return;
-    } 
+    }
 
     //ignore commands without prefix
     if (!message.content.startsWith(PREFIX)) return;
@@ -170,7 +170,6 @@ bot.on("message", async message => {
     }
     
     console.log(`${new Date()}|${message.channel.name}|${message.author.username}: ${message.content}`);
-    
 
     // user has role
     var hasRole = false;
@@ -338,7 +337,7 @@ bot.on("message", async message => {
             const callbackRecentHeroes = function(message, playerName) {
                 const callbackMatch = function(message, playerName) {
                     if (hasRole) {
-                        vgMsg.requestMatch(message);
+                        vgMsg.requestMatchForPlayer(message,playerName);
                     }
                 }
                 vgMsg.requestRecentPlayedHeroes(message, callbackMatch);
@@ -403,7 +402,7 @@ bot.on("message", async message => {
             vgMsg.requestRecentPlayedHeroesForName(message,message.author.username);
         }
         else if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
-            vgMsg.requestMatchForPlayer(message,message.author.username);
+            vgMsg.requestMatchForPlayer(message,message.author.username, true);
             return;
         }else if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetailsForName(message,message.author.username,null);

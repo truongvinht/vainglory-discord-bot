@@ -7,6 +7,7 @@ const Discord = require("discord.js");
 const i18n = require('../general/langSupport');
 const c = require("../general/constLoader");
 const fm = require('../general/contentFormatter');
+const access = require('../general/accessRightManager');
 
 // CONTROLLERS
 var vg = require('../controllers/vainglory-req');
@@ -264,10 +265,31 @@ let requestMatch = function(message) {
         playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
     
-    requestMatchForPlayer(message, playerName);
+    let didFailed = function(d,playerName) {
+         message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+    }
+    
+    fetchMatch(message,playerName, didFailed);
 }
 
-let requestMatchForPlayer = function(message, playerName) {
+let requestMatchForPlayer = function(message, playerName, requestSelfUser) {
+    
+    let didFailed = function(d,playerName) {
+
+        if (requestSelfUser != null) {
+            if (message.channel.type === "text") {
+                let guildMember = access.getMember(message.channel,message.author.tag);
+                requestMatchForPlayer(message, guildMember.displayName);
+            }
+        } else {
+            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+        }
+    }
+    
+    fetchMatch(message,playerName, didFailed);
+}
+
+function fetchMatch(message, playerName, didFailedHandler) {
     
     message.channel.startTyping();
     const messageArray = message.content.split(" ");
@@ -344,30 +366,19 @@ let requestMatchForPlayer = function(message, playerName) {
             message.channel.stopTyping();
             return;
         }
-
-        // user has role
-        var hasRole = false;
-
-        for (var reqRole of c.restriction()) {
-            if (message.member.roles.find("name", reqRole)) {
-                hasRole = true;
-                break;
-            }
-        }
-        
-        if (hasRole) {
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username)
-                .setColor("#000000");
-
-            if (text != null) {
-                    message.channel.send(d.setDescription(`${text}`));
-            } else {
-                message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
-            }
-        }
         
         message.channel.stopTyping();
+        
+        var d = new Discord.RichEmbed()
+            .setAuthor(message.author.username)
+            .setColor("#000000");
+
+        if (text != null) {
+            message.channel.send(d.setDescription(`${text}`));
+        } else {
+            didFailedHandler(d, playerName);
+        }
+        
     };
     vg.setToken(VaingloryToken.getInstance().token());
     vg.getMatchStats(serverCode, playerName, callback);

@@ -77,11 +77,32 @@ const userHasPermissionForChannel = function(channel, userName) {
     return false;
 }
 
+/**
+ * Get guild member based on user tag
+ * @param {Object} channel for checking user tag
+ * @param {String} usertag searching tag within channel
+ * @returns GuildMember object corresponding to userTag, null if no user was matching
+ * @type Object
+ */
+
+const userDetails = function(channel, userTag) {
+    
+    for(var guildMember of channel.members.array()) {
+        
+        if (userTag === guildMember.user.tag) {
+            return guildMember;
+        }
+    }
+    
+    return null;
+}
+
 // export
 module.exports = {
     addAccess: addAccessRight,
     removeAccess: removeAccessRight,
     accessRights: list,
     hasAccess: hasAccess,
-    hasAccess: userHasPermissionForChannel
+    hasAccess: userHasPermissionForChannel,
+    getMember: userDetails
 };
