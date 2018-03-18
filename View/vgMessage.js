@@ -72,8 +72,27 @@ let requestPlayerDetails = function(message, nextCaller){
     requestPlayerDetailsForName(message, playerName, nextCaller);
 }
 
+let requestPlayerDetailsForMe = function(message, playerName) {
+    
+    let didFailed = function(d,playerName) {
+        let guildMember = access.getMember(message.channel,message.author.tag);
+        requestPlayerDetailsForName(message, guildMember.displayName);
+    }
+    
+    fetchPlayerDetails(message,playerName,null,didFailed);
+}
+
 let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
     
+    let didFailed = function(d,playerName) {
+        message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+    }
+    
+    fetchPlayerDetails(message,playerName,nextCaller,didFailed);
+}
+
+function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
+
     message.channel.startTyping();
     
     //override default server
@@ -116,11 +135,11 @@ let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
                 message.channel.stopTyping();
                 nextCaller(message,playerName);
             }
+            message.channel.stopTyping();
         } else {
-            message.channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+            message.channel.stopTyping();
+            didFailedHandler(d,playerName);
         }
-    
-        message.channel.stopTyping();
     };
     vg.setToken(VaingloryToken.getInstance().token());
     vg.getPlayerStats(serverCode, playerName, callback);
@@ -589,6 +608,7 @@ module.exports = {
     getToken: getToken,
     requestPlayerDetails: requestPlayerDetails,
     requestPlayerDetailsForName: requestPlayerDetailsForName,
+    requestPlayerDetailsForMe:requestPlayerDetailsForMe,
     requestPlayerDetailsInChannel:requestPlayerDetailsInChannel,
     requestRecentPlayedHeroes: requestRecentPlayedHeroes,
     requestRecentPlayedHeroesForMe:requestRecentPlayedHeroesForMe,

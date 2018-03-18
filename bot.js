@@ -405,7 +405,7 @@ bot.on("message", async message => {
             vgMsg.requestMatchForMe(message,message.author.username);
             return;
         }else if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
-            vgMsg.requestPlayerDetailsForName(message,message.author.username,null);
+            vgMsg.requestPlayerDetailsForMe(message,message.author.username);
         } else {
             var d = new Discord.RichEmbed();
             const helpdestails = i18n.get(`HelpDetails`).replace("$1",`${PREFIX}`)
