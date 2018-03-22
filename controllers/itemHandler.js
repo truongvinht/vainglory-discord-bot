@@ -4,7 +4,10 @@
 
 
 // import 
-const itemList = require("../data/items.json");
+const c = require("../general/constLoader");
+
+//item list
+const itemList = require(`../data/items_${c.language()}.json`);
 const i18n = require('../general/langSupport');
 var log = require('loglevel');
 

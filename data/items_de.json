@@ -24,7 +24,7 @@
       "3.0" : {
         "name" : "Book of Eulogies",
         "price" : 300,
-        "description" : "Passiv: Regeneriert 25 Lebensenergie, wenn du ein Minion oder Monster tötest (65, wenn du einen Standard-Nahkampfangriff nutzt). Vampirismus: 4% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln) +5 Waffenstärke",
+        "description" : "Passiv: Regeneriert 25 Lebensenergie, wenn du ein Minion oder Monster tötest (65, wenn du einen Standard-Nahkampfangriff nutzt).\nVampirismus: 4% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln)\n\n+5 Waffenstärke",
         "category" : [
           "1"
         ],
@@ -34,7 +34,7 @@
       "3.1" : {
         "name" : "Book of Eulogies",
         "price" : 300,
-        "description" : "Passiv: Regeneriert 25 Lebensenergie, wenn du ein Minion oder Monster tötest (60, wenn du einen Standard-Nahkampfangriff nutzt). Vampirismus: 4% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln) +5 Waffenstärke",
+        "description" : "Passiv: Regeneriert 25 Lebensenergie, wenn du ein Minion oder Monster tötest (60, wenn du einen Standard-Nahkampfangriff nutzt).\nVampirismus: 4% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln)\n\n+5 Waffenstärke",
         "category" : [
           "1"
         ],
@@ -61,7 +61,7 @@
       "3.0" : {
         "name" : "Minion's Foot",
         "price" : 300,
-        "description" : "Passiv: Nach dem Kauf dieses Gegenstands wird dein erster Angriff auf einen gegnerischen Helden kritisch. +10% Chance auf kritische Treffer +5% Kritischer Schaden",
+        "description" : "Passiv: Nach dem Kauf dieses Gegenstands wird dein erster Angriff auf einen gegnerischen Helden kritisch.\n\n+10% Chance auf kritische Treffer\n+5% Kritischer Schaden",
         "category" : [],
         "Item[0]" : "1",
         "tier" : 1,
@@ -86,7 +86,7 @@
       "3.0" : {
         "name" : "Energy Battery",
         "price" : 300,
-        "description" : "+200 Maximale Energie +4 Energie-regen.",
+        "description" : "+200 Maximale Energie\n+4 Energie-regen.",
         "category" : [
           "2",
           "4"
@@ -100,7 +100,7 @@
       "3.0" : {
         "name" : "Hourglass",
         "price" : 250,
-        "description" : "+10% Abklinggeschw. +1.5 Energie-regen.",
+        "description" : "+10% Abklinggeschw.\n+1.5 Energie-regen.",
         "category" : [
           "1",
           "2",
@@ -148,7 +148,7 @@
       "3.0" : {
         "name" : "Barbed Needle",
         "price" : 800,
-        "description" : "Vampirismus: 8% lifesteal (lässt sich nicht mit anderem Vampirismus stapeln) +12 Waffenstärke",
+        "description" : "Vampirismus: 8% lifesteal (lässt sich nicht mit anderem Vampirismus stapeln)\n\n+12 Waffenstärke",
         "depending" : [
           "Book of Eulogies"
         ],
@@ -164,7 +164,7 @@
       "3.0" : {
         "name" : "Piercing Spear",
         "price" : 900,
-        "description" : "Panzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher) +15 Waffenstärke",
+        "description" : "Panzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher)\n\n+15 Waffenstärke",
         "depending" : [
           "Weapon Blade"
         ],
@@ -198,7 +198,7 @@
       "3.0" : {
         "name" : "Lucky Strike",
         "price" : 900,
-        "description" : "+20% Chance auf kritische Treffer +8% Kritischer Schaden",
+        "description" : "+20% Chance auf kritische Treffer\n+8% Kritischer Schaden",
         "depending" : [
           "Minion's Foot"
         ],
@@ -214,7 +214,7 @@
       "3.0" : {
         "name" : "Chronograph",
         "price" : 800,
-        "description" : "+20% Abklinggeschw. +2.5 Energie-regen.",
+        "description" : "+20% Abklinggeschw.\n+2.5 Energie-regen.",
         "depending" : [
           "Hourglass"
         ],
@@ -250,7 +250,7 @@
       "3.0" : {
         "name" : "Serpent Mask",
         "price" : 2800,
-        "description" : "Passiv: Die nächsten 600-1200 (level 1-12) Punkte Waffenschaden, die du gegnerischen Helden zufügst, bewirken +25% Lebensraub über 40s. Vampirismus: +10% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln) Passiv: Book of Eulogies +100 Waffenstärke",
+        "description" : "Passiv: Die nächsten 600-1200 (Stufe 1-12) Punkte Waffenschaden, die du gegnerischen Helden zufügst, bewirken +25% Lebensraub über 40s.\nVampirismus: +10% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln)\nPassiv: Book of Eulogies\n\n+100 Waffenstärke",
         "depending" : [
           "Heavy Steel",
           "Barbed Needle"
@@ -268,7 +268,7 @@
       "3.0" : {
         "name" : "Spellsword",
         "price" : 2700,
-        "description" : "Passiv: Jede normale Attack gewährt dir 4 Energie (12 bei Angriffen auf Helden). +100 Waffenstärke +35% Abklinggeschw. +3 Energie-regen.",
+        "description" : "Passiv: Jede normale Attack gewährt dir 4 Energie (12 bei Angriffen auf Helden).\n\n+100 Waffenstärke\n+35% Abklinggeschw.\n+3 Energie-regen.",
         "depending" : [
           "Heavy Steel",
           "Chronograph"
@@ -286,7 +286,7 @@
       "3.0" : {
         "name" : "Poisoned Shiv",
         "price" : 2250,
-        "description" : "Passiv: Jede 2-te normale Attacke verursacht eine tödliche Wunde für 2s. Vampirismus: +8% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln) Passiv: Book of Eulogies +40 Waffenstärke +30% Angriffstempo",
+        "description" : "Passiv: Jede 2-te normale Attacke verursacht eine tödliche Wunde für 2s.\nVampirismus: +8% Lebensraub (lässt sich nicht mit anderem Vampirismus stapeln)\nPassiv: Book of Eulogies\n\n+40 Waffenstärke\n+30% Angriffstempo",
         "depending" : [
           "Barbed Needle",
           "Blazing Salvo"
@@ -304,7 +304,7 @@
       "3.0" : {
         "name" : "Breaking Point",
         "price" : 2600,
-        "description" : "Passiv: Du erhälst 10 Waffenstärke pro 160 Waffenschaden gegen gegnerische Helden +5/10 (Nah-/Fernkampf)-Schaden ist für jeden Folgestapel nötig. Max. 25 Stapel. Wenn du 2.5s lang keine Stapel mehr hinzufügst, gehen pro Sekunde 3 Stapel verloren. +20% Angriffstempo +55 Waffenstärke",
+        "description" : "Passiv: Du erhälst 10 Waffenstärke pro 160 Waffenschaden gegen gegnerische Helden +5/10 (Nah-/Fernkampf)-Schaden ist für jeden Folgestapel nötig. Max. 25 Stapel. Wenn du 2.5s lang keine Stapel mehr hinzufügst, gehen pro Sekunde 3 Stapel verloren.\n\n+20% Angriffstempo\n+55 Waffenstärke",
         "depending" : [
           "Heavy Steel",
           "Blazing Salvo"
@@ -322,7 +322,7 @@
       "3.0" : {
         "name" : "Tension Bow",
         "price" : 2150,
-        "description" : "Passiv: Alle 6s verursacht deine nächste normale Attacke 240 zusätzlichen Schaden. Panzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln) +50 Waffenstärke",
+        "description" : "Passiv: Alle 6s verursacht deine nächste normale Attacke 240 zusätzlichen Schaden.\nPanzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln)\n\n+50 Waffenstärke",
         "depending" : [
           "Six Sins",
           "Piercing Spear"
@@ -337,7 +337,7 @@
       "3.1" : {
         "name" : "Tension Bow",
         "price" : 2150,
-        "description" : "Passiv: Alle 6s verursacht deine nächste normale Attacke 240 zusätzlichen Schaden. Panzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln) +60 Waffenstärke",
+        "description" : "Passiv: Alle 6s verursacht deine nächste normale Attacke 240 zusätzlichen Schaden.\nPanzerbrecher: +10% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln)\n\n+60 Waffenstärke",
         "depending" : [
           "Six Sins",
           "Piercing Spear"
@@ -354,7 +354,7 @@
       "3.0" : {
         "name" : "Bonesaw",
         "price" : 2700,
-        "description" : "Passiv: Deine normalen Attacken zerstören 5% der Rüstung des Ziels für 3. Maximal 8 Stapel. Panzerbrecher: +18% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln) +15 Waffenstärke +25% Angriffstempo",
+        "description" : "Passiv: Deine normalen Attacken zerstören 5% der Rüstung des Ziels für 3. Maximal 8 Stapel.\nPanzerbrecher: +18% Rüstungsdurchdringung (lässt sich nicht mit anderem Panzerbrecher stapeln)\n\n+15 Waffenstärke\n+25% Angriffstempo",
         "depending" : [
           "Piercing Spear",
           "Blazing Salvo"
@@ -372,7 +372,7 @@
       "3.0" : {
         "name" : "Tornado Trigger",
         "price" : 2600,
-        "description" : "+50% Angriffstempo +35% Chance auf kritische Treffer +10% Kritischer Schaden",
+        "description" : "+50% Angriffstempo\n+35% Chance auf kritische Treffer\n+10% Kritischer Schaden",
         "depending" : [
           "Blazing Salvo",
           "Lucky Strike"
@@ -387,7 +387,7 @@
       "3.1" : {
         "name" : "Tornado Trigger",
         "price" : 2600,
-        "description" : "+45% Angriffstempo +35% Chance auf kritische Treffer +10% Kritischer Schaden",
+        "description" : "+45% Angriffstempo\n+35% Chance auf kritische Treffer\n+10% Kritischer Schaden",
         "depending" : [
           "Blazing Salvo",
           "Lucky Strike"
@@ -404,7 +404,7 @@
       "3.0" : {
         "name" : "Tyrant's Monocle",
         "price" : 2750,
-        "description" : "+35% Chance auf kritische Treffer +10% Kritischer Schaden +80 Waffenstärke",
+        "description" : "+35% Chance auf kritische Treffer\n+10% Kritischer Schaden\n+80 Waffenstärke",
         "depending" : [
           "Six Sins",
           "Lucky Strike"
@@ -419,7 +419,7 @@
       "3.1" : {
         "name" : "Tyrant's Monocle",
         "price" : 2750,
-        "description" : "+35% Chance auf kritische Treffer +10% Kritischer Schaden +70 Waffenstärke",
+        "description" : "+35% Chance auf kritische Treffer\n+10% Kritischer Schaden\n+70 Waffenstärke",
         "depending" : [
           "Six Sins",
           "Lucky Strike"
@@ -468,7 +468,7 @@
       "3.0" : {
         "name" : "Piercing Shard",
         "price" : 900,
-        "description" : "Schildbrecher: +18% Schilddurchdringung (lässt sich nicht mit anderem Schildbrecher stapeln) +20 Kristallmacht",
+        "description" : "Schildbrecher: +18% Schilddurchdringung (lässt sich nicht mit anderem Schildbrecher stapeln)\n\n+20 Kristallmacht",
         "depending" : [
           "Crystal Bit"
         ],
@@ -484,7 +484,7 @@
       "3.0" : {
         "name" : "Void Battery",
         "price" : 700,
-        "description" : "+350 Maximale Energie +6 Energie-regen.",
+        "description" : "+350 Maximale Energie\n+6 Energie-regen.",
         "depending" : [
           "Energy Battery"
         ],
@@ -517,7 +517,7 @@
       "3.0" : {
         "name" : "Spellfire",
         "price" : 2700,
-        "description" : "Passiv: Fähigkeiten, die Genern(außer Lane-Minions) Kristallschaden zufügen, verursachen 15-50 (Stufe 1-12) + 100% deiner Kristallmacht zusätzlichen Kristallschaden über 3s und fügen für diese Zeit tödliche Wunden zu. +90 Kristallmacht",
+        "description" : "Passiv: Fähigkeiten, die Gegnern(außer Lane-Minions) Kristallschaden zufügen, verursachen 15-50 (Stufe 1-12) +100% deiner Kristallmacht zusätzlichen Kristallschaden über 3s und fügen für diese Zeit tödliche Wunden zu.\n\n+90 Kristallmacht",
         "depending" : [
           "Heavy Prismn",
           "Eclipse Prism"
@@ -535,7 +535,7 @@
       "3.0" : {
         "name" : "Frostburn",
         "price" : 2600,
-        "description" : "Passiv: Kristallschaden verursachende Fähigkeiten verlangsamen Gegner 1s um 30%. +85 Kristallmacht",
+        "description" : "Passiv: Kristallschaden verursachende Fähigkeiten verlangsamen Gegner 1s um 30%.\n\n+85 Kristallmacht",
         "depending" : [
           "Heavy Prismn",
           "Eclipse Prism"
@@ -553,7 +553,7 @@
       "3.0" : {
         "name" : "Dragon's Eye",
         "price" : 3000,
-        "description" : "Passiv: Du erhälst 12 Kristallmacht pro Sekunde, die du gegnerischen Helden Schaden zufügst. Nach 4s verlierst du 1 Stapel pro Sek. Max 18 Stapel. +85 Kristallmacht",
+        "description" : "Passiv: Du erhälst 12 Kristallmacht pro Sekunde, die du gegnerischen Helden Schaden zufügst. Nach 4s verlierst du 1 Stapel pro Sek. Max 18 Stapel.\n\n+85 Kristallmacht",
         "depending" : [
           "Heavy Prismn",
           "Eclipse Prism"
@@ -571,7 +571,7 @@
       "3.0" : {
         "name" : "Clockwork",
         "price" : 2400,
-        "description" : "Passiv: Wenn du einem Gegner mit einer Fähigkeit Schaden zufügst, werden alle Abklingzeiten um 6% verkürzt. Kann nur alle 2s geschehen. +40 Kristallmacht +35% Abklinggeschw. +600 Maximale Energie +10 Energie-regen.",
+        "description" : "Passiv: Wenn du einem Gegner mit einer Fähigkeit Schaden zufügst, werden alle Abklingzeiten um 6% verkürzt. Kann nur alle 2s geschehen.\n\n+40 Kristallmacht\n+35% Abklinggeschw.\n+600 Maximale Energie\n+10 Energie-regen.",
         "depending" : [
           "Void Battery",
           "Chronograph"
@@ -589,7 +589,7 @@
       "3.0" : {
         "name" : "Broken Myth",
         "price" : 2700,
-        "description" : "Schildbrecher: +30% Schilddurchdringung(lässt sich nicht mit anderem Schildbrecher stapeln) +80 Kristallmacht",
+        "description" : "Schildbrecher: +30% Schilddurchdringung(lässt sich nicht mit anderem Schildbrecher stapeln)\n\n+80 Kristallmacht",
         "depending" : [
           "Heavy Prism",
           "Piercing Shard"
@@ -607,7 +607,7 @@
       "3.0" : {
         "name" : "Eve of Harvest",
         "price" : 2600,
-        "description" : "Passiv: Die nächsten 600-1200 (Stufe 1-12) Punkte Kristallschaden, die du gegnerischen Helden zufügst, bewirken +25% Lebensraub über 40s. Vamirismus: +10% Lebensraub (lässt sich nicht mit anderem Vampirism stapeln) +55 Kristallmacht +400 Maximale Energie +7 Energie-regen.",
+        "description" : "Passiv: Die nächsten 600-1200 (Stufe 1-12) Punkte Kristallschaden, die du gegnerischen Helden zufügst, bewirken +25% Lebensraub über 40s. Vamirismus: +10% Lebensraub (lässt sich nicht mit anderem Vampirism stapeln)\n\n+55 Kristallmacht\n+400 Maximale Energie\n+7 Energie-regen.",
         "depending" : [
           "Heavy Prism",
           "Void Battery"
@@ -625,7 +625,7 @@
       "3.0" : {
         "name" : "Aftershock",
         "price" : 2400,
-        "description" : "Passiv: Nach Anwendung einer Fähigkeit verursacht deine nächste normale Attacke Schaden in Höhe von 14% der max. Lebensenergie des Ziels mit +50% Lebensraub. Max. 400 Schaden gegen Nicht-Helden. 1.5s Abklingzeit. +25% Abklinggeschw. +2.5 Energie-regen. +35 Kristallmacht",
+        "description" : "Passiv: Nach Anwendung einer Fähigkeit verursacht deine nächste normale Attacke Schaden in Höhe von 14% der max. Lebensenergie des Ziels mit +50% Lebensraub. Max. 400 Schaden gegen Nicht-Helden.\n\n1.5s Abklingzeit.\n+25% Abklinggeschw.\n+2.5 Energie-regen.\n+35 Kristallmacht",
         "depending" : [
           "Heavy Prism",
           "Void Battery"
@@ -643,7 +643,7 @@
       "3.0" : {
         "name" : "Alternating Current",
         "price" : 2800,
-        "description" : "Passiv: Jede zweite normale Attack verusacht 70% deiner Kristallmacht als Bonusschaden. +60 Kristallmacht +35% Angriffstempo",
+        "description" : "Passiv: Jede zweite normale Attack verusacht 70% deiner Kristallmacht als Bonusschaden.\n\n+60 Kristallmacht\n+35% Angriffstempo",
         "depending" : [
           "Heavy Prism",
           "Blazing Salvo"
@@ -675,7 +675,7 @@
       "3.0" : {
         "name" : "Light Schild",
         "price" : 250,
-        "description" : "+30 Schild +5 Rüstung",
+        "description" : "+30 Schild\n+5 Rüstung",
         "category" : [
           "3"
         ],
@@ -688,7 +688,7 @@
       "3.0" : {
         "name" : "Light Rüstung",
         "price" : 250,
-        "description" : "+30 Rüstung +5 Schild",
+        "description" : "+30 Rüstung\n+5 Schild",
         "category" : [
           "3"
         ],
@@ -717,7 +717,7 @@
       "3.0" : {
         "name" : "Lifespring",
         "price" : 800,
-        "description" : "Passiv: Regeneriert pro Sekunde 1.5% deiner fehlenden Lebensenergie, wenn du 5s lang nicht in einem Kampf verwickelt bist. +300 Maximale Lebensenergie",
+        "description" : "Passiv: Regeneriert pro Sekunde 1.5% deiner fehlenden Lebensenergie, wenn du 5s lang nicht in einem Kampf verwickelt bist.\n\n+300 Maximale Lebensenergie",
         "depending" : [
           "Oakheart"
         ],
@@ -733,7 +733,7 @@
       "3.0" : {
         "name" : "Reflex Block",
         "price" : 700,
-        "description" : "Aktiv: Verleiht dir eine Barriere von 25% deiner fehlenden Lebensenergie und wehrt für 1.5s alle negativen Effekte ab (45s Abklingzeit). Kann während der Betäubung aktiviert werden. +250 Maximale Lebensenergie",
+        "description" : "Aktiv: Verleiht dir eine Barriere von 25% deiner fehlenden Lebensenergie und wehrt für 1.5s alle negativen Effekte ab (45s Abklingzeit). Kann während der Betäubung aktiviert werden.\n\n+250 Maximale Lebensenergie",
         "depending" : [
           "Oakheart"
         ],
@@ -749,7 +749,7 @@
       "3.0" : {
         "name" : "Kinetic Schild",
         "price" : 800,
-        "description" : "+65 Schild +20 Rüstung",
+        "description" : "+65 Schild\n+20 Rüstung",
         "depending" : [
           "Light Schild"
         ],
@@ -765,7 +765,7 @@
       "3.0" : {
         "name" : "Coat of Plates",
         "price" : 800,
-        "description" : "+65 Rüstung +20 Schild",
+        "description" : "+65 Rüstung\n+20 Schild",
         "depending" : [
           "Light Rüstung"
         ],
@@ -781,7 +781,7 @@
       "3.0" : {
         "name" : "Slumbering Husk",
         "price" : 1700,
-        "description" : "Passiv: Wenn du innerhalb von 1.5 25% deiner maximalen Lebensenergie an Schaden erleidest, wird deine restliche Lebensenergie 2 lang verstärkt. (25 Abklingzeit). +650 Maximale Lebensenergie",
+        "description" : "Passiv: Wenn du innerhalb von 1.5 25% deiner maximalen Lebensenergie an Schaden erleidest, wird deine restliche Lebensenergie 2 lang verstärkt. (25 Abklingzeit).\n\n+650 Maximale Lebensenergie",
         "depending" : [
           "Dragonheart"
         ],
@@ -797,7 +797,7 @@
       "3.0" : {
         "name" : "Crucible",
         "price" : 1850,
-        "description" : "Aktiv: Löst Reflex Block für dich und nahe Mitstreiter aus(45s Abklingzeit). +700 Maximale Lebensenergie",
+        "description" : "Aktiv: Löst Reflex Block für dich und nahe Mitstreiter aus(45s Abklingzeit).\n\n+700 Maximale Lebensenergie",
         "depending" : [
           "Dragonheart",
           "Reflex Block"
@@ -815,7 +815,7 @@
       "3.0" : {
         "name" : "Fountain of Renewal",
         "price" : 2300,
-        "description" : "Passiv: Heilt dich und Verbündete in der Nähe über 3s um 2.5 Punkte für jedes fehlende Prozent Lebensenergie (65s Abklingzeit). +300 Maximale Lebensenergie +65 Schild +20 Rüstung",
+        "description" : "Passiv: Heilt dich und Verbündete in der Nähe über 3s um 2.5 Punkte für jedes fehlende Prozent Lebensenergie (65s Abklingzeit).\n\n+300 Maximale Lebensenergie\n+65 Schild\n+20 Rüstung",
         "depending" : [
           "Lifespring",
           "Kinetic Schild"
@@ -833,7 +833,7 @@
       "3.0" : {
         "name" : "Aegis",
         "price" : 2250,
-        "description" : "Aktiv: Reflex Block (35s Abklingzeit) +85 Schild +25 Rüstung +250 Maximale Lebensenergie",
+        "description" : "Aktiv: Reflex Block (35s Abklingzeit)\n\n+85 Schild\n+25 Rüstung\n+250 Maximale Lebensenergie",
         "depending" : [
           "Reflex Block",
           "Kinetic Schild"
@@ -848,7 +848,7 @@
       "3.1" : {
         "name" : "Aegis",
         "price" : 2150,
-        "description" : "Aktiv: Reflex Block (35s Abklingzeit) +85 Schild +25 Rüstung +250 Maximale Lebensenergie",
+        "description" : "Aktiv: Reflex Block (35s Abklingzeit)\n\n+85 Schild\n+25 Rüstung\n+250 Maximale Lebensenergie",
         "depending" : [
           "Reflex Block",
           "Kinetic Schild"
@@ -865,7 +865,7 @@
       "3.0" : {
         "name" : "Metal Jacket",
         "price" : 2100,
-        "description" : "+120 Rüstung +25 Schild",
+        "description" : "+120 Rüstung\n+25 Schild",
         "depending" : [
           "Coat of Plates"
         ],
@@ -879,7 +879,7 @@
       "3.1" : {
         "name" : "Metal Jacket",
         "price" : 2000,
-        "description" : "+120 Rüstung +25 Schild",
+        "description" : "+120 Rüstung\n+25 Schild",
         "depending" : [
           "Coat of Plates"
         ],
@@ -895,7 +895,7 @@
       "3.0" : {
         "name" : "Atlas Pauldron",
         "price" : 1900,
-        "description" : "Aktiv: Verstümmelt nahe Gegner im Umkreis von 4 Metern 4s lang und verringert ihre Angriffsgeschw. um 50% ihrer Gesamtwertes (20s Abklingzeit). +80 Rüstung + 25 Schild",
+        "description" : "Aktiv: Verstümmelt nahe Gegner im Umkreis von 4 Metern 4s lang und verringert ihre Angriffsgeschw. um 50% ihrer Gesamtwertes (20s Abklingzeit).\n\n+80 Rüstung\n+25 Schild",
         "depending" : [
           "Coat of Plates"
         ],
@@ -912,7 +912,7 @@
       "3.0" : {
         "name" : "Sprint Boots",
         "price" : 300,
-        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln) Aktiv: Sprinte 2s lang (150s Abklingzeit).",
+        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln)\nAktiv: Sprinte 2s lang (150s Abklingzeit).",
         "category" : [
           "4"
         ],
@@ -925,7 +925,7 @@
       "3.0" : {
         "name" : "Travel Boots",
         "price" : 800,
-        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln) Travel Boots: +1 Bewegungstempo außerhalb des Kampfes. Aktiv: Sprinte 2s lang (90s Abklingzeit). +100 Maximale Lebensenergie",
+        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln) Travel Boots: +1 Bewegungstempo außerhalb des Kampfes.\nAktiv: Sprinte 2s lang (90s Abklingzeit).\n\n+100 Maximale Lebensenergie",
         "depending" : [
           "Sprint Boots"
         ],
@@ -941,7 +941,7 @@
       "3.0" : {
         "name" : "Flare Gun",
         "price" : 600,
-        "description" : "Aktiv: Feuert ein Flare ab. 5s Abklingzeit. Max. 2 Aufladungen. 20s pro Aufladung. +300 Maximale Lebensenergie",
+        "description" : "Aktiv: Feuert ein Flare ab. 5s Abklingzeit. Max. 2 Aufladungen. 20s pro Aufladung.\n\n+300 Maximale Lebensenergie",
         "depending" : [
           "Oakheart"
         ],
@@ -957,7 +957,7 @@
       "3.0" : {
         "name" : "Stormguard Banner",
         "price" : 600,
-        "description" : "Stormguard: Normale Attacken verursachen 10-60 (Stufe 1-12) zusätzlichen reinen Schaden pro Sekunde. Helden erleiden 15% Schaden. (Lässt sich nicht mit anderem Stormguard stapeln) +250 Maximale Lebensenergie",
+        "description" : "Stormguard: Normale Attacken verursachen 10-60 (Stufe 1-12) zusätzlichen reinen Schaden pro Sekunde. Helden erleiden 15% Schaden. (Lässt sich nicht mit anderem Stormguard stapeln)\n\n+250 Maximale Lebensenergie",
         "depending" : [
           "Oakheart"
         ],
@@ -973,7 +973,7 @@
       "3.0" : {
         "name" : "Journey Boots",
         "price" : 1700,
-        "description" : "Boots: +0.6 Bewegungstempo. (lässt sich nicht stapeln) Passiv: Travel Boots Aktiv: Sprinte 2s lang (60s Abklingzeit). Fügst du Helden Schaden zu, wird die Abklingzeit sofort auf 12s gesetzt, sofern sie darüber liegt. +250 Maximale Lebensenergie",
+        "description" : "Boots: +0.6 Bewegungstempo. (lässt sich nicht stapeln)\nPassiv: Travel Boots\nAktiv: Sprinte 2s lang (60s Abklingzeit). Fügst du Helden Schaden zu, wird die Abklingzeit sofort auf 12s gesetzt, sofern sie darüber liegt.\n\n+250 Maximale Lebensenergie",
         "depending" : [
           "Travel Boots"
         ],
@@ -990,7 +990,7 @@
       "3.0" : {
         "name" : "War Treads",
         "price" : 1900,
-        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln) Passiv: Travel Boots Aktiv: Gewährt allen Mitsteitern in der Nähe 2s lang Sprint. (60s Abklingzeit). +500 Maximale Lebensenergie",
+        "description" : "Boots: +0.4 Bewegungstempo (lässt sich nicht stapeln)\nPassiv: Travel Boots\nAktiv: Gewährt allen Mitsteitern in der Nähe 2s lang Sprint. (60s Abklingzeit).\n\n+500 Maximale Lebensenergie",
         "depending" : [
           "Travel Boots",
           "Dragonsheart"
@@ -1008,7 +1008,7 @@
       "3.0" : {
         "name" : "Halcyon Chargers",
         "price" : 1700,
-        "description" : "Boots: +0.5 Bewegungstempo (lässt sich nicht stapeln) Passiv: Travel Boots Aktiv: Sprinte 3s lang (50s Abklingzeit). +150 Maximale Lebensenergie +15% Abklinggeschw. +350 Maximale Energie +6 Energie-regen.",
+        "description" : "Boots: +0.5 Bewegungstempo (lässt sich nicht stapeln)\nPassiv: Travel Boots\nAktiv: Sprinte 3s lang (50s Abklingzeit).\n\n+150 Maximale Lebensenergie\n+15% Abklinggeschw.\n+350 Maximale Energie\n+6 Energie-regen.",
         "depending" : [
           "Travel Boots",
           "Void Battery"
@@ -1026,7 +1026,7 @@
       "3.0" : {
         "name" : "Echo",
         "price" : 2200,
-        "description" : "Aktiv: Die zuletzt benutzte Fähigkeit mit Abklingzeit wird erneuert (Abklingzeit: 150% der Abklingzeit der Fähigkeit + 10s). +350 Maximale Energie +6 Energie-regen.",
+        "description" : "Aktiv: Die zuletzt benutzte Fähigkeit mit Abklingzeit wird erneuert (Abklingzeit: 150% der Abklingzeit der Fähigkeit + 10s).\n\n+350 Maximale Energie\n+6 Energie-regen.",
         "depending" : [
           "Void Battery"
         ],
@@ -1043,7 +1043,7 @@
       "3.0" : {
         "name" : "Contraption",
         "price" : 2100,
-        "description" : "Aktiv: Ziele auf dich selbst, um eine Scout Trap zu platzieren. Ziele weiter weg auf den Boden, um ein Flare abzuefeuern. 5s Abklingzeit. Max 5 Aufladungen. 20s pro Aufladung. +450 Maximale Lebensenergie +30% Abklinggeschw. +3 Energie-regen.",
+        "description" : "Aktiv: Ziele auf dich selbst, um eine Scout Trap zu platzieren. Ziele weiter weg auf den Boden, um ein Flare abzuefeuern. 5s Abklingzeit. Max 5 Aufladungen. 20s pro Aufladung.\n\n+450 Maximale Lebensenergie\n+30% Abklinggeschw.\n+3 Energie-regen.",
         "depending" : [
           "Flare Gun",
           "Chronograph"
@@ -1061,7 +1061,7 @@
       "3.0" : {
         "name" : "Stormcrown",
         "price" : 2000,
-        "description" : "Stormguard: Normale Attacken 50-160 (Stufe 1-12) zusätzlichen reinen Schaden pro Sekunde. Helden erleiden 25% Schaden. (Lässt sich nicht mit Stormguard stapeln) +20% Abklinggeschw. +4 Energie-regen. +300 Maximale Lebensenergie",
+        "description" : "Stormguard: Normale Attacken 50-160 (Stufe 1-12) zusätzlichen reinen Schaden pro Sekunde. Helden erleiden 25% Schaden. (Lässt sich nicht mit Stormguard stapeln)\n\n+20% Abklinggeschw.\n+4 Energie-regen.\n+300 Maximale Lebensenergie",
         "depending" : [
           "Stormguard Banner",
           "Chronograph"
@@ -1079,7 +1079,7 @@
       "3.0" : {
         "name" : "Nullwave Gauntlet",
         "price" : 2200,
-        "description" : "Aktiv: Gibt einen Schuss auf einen gegnerischen Helden ab, der kurz nach Treffen des Ziels explodiert, ihm 50-100 + 15% der max. LE an Kristallschaden zugefügt und seine Gegenstände 4s lang verstummt. (35s Abklingzeit). +500 Maximale Lebensenergie +25% Abklinggeschw. +4 Energie-regen.",
+        "description" : "Aktiv: Gibt einen Schuss auf einen gegnerischen Helden ab, der kurz nach Treffen des Ziels explodiert, ihm 50-100 + 15% der max. LE an Kristallschaden zugefügt und seine Gegenstände 4s lang verstummt. (35s Abklingzeit).\n\n+500 Maximale Lebensenergie\n+25% Abklinggeschw.\n+4 Energie-regen.",
         "depending" : [
           "Chronograph",
           "Dragonheart"
@@ -1097,7 +1097,7 @@
       "3.0" : {
         "name" : "Shiversteel",
         "price" : 1950,
-        "description" : "Aktiv: In den nächsten 4s (6s wenn du im Nahkampf bist) verlangsamen deine normale Attacken gegnerische Helden 1.4s lang um 40% (12s Abklingzeit). +650 Maximale Lebensenergie +30% Angriffstempo",
+        "description" : "Aktiv: In den nächsten 4s (6s wenn du im Nahkampf bist) verlangsamen deine normale Attacken gegnerische Helden 1.4s lang um 40% (12s Abklingzeit).\n\n+650 Maximale Lebensenergie\n+30% Angriffstempo",
         "depending" : [
           "Blazing Salvo",
           "Dragonheart"
@@ -1232,7 +1232,7 @@
       "3.0" : {
         "name" : "Flare Loader",
         "price" : 300,
-        "description" : "Activate: Fires a Flare that last 3s, granting vision and true sight in the area. Flares have 3 max charges and recover 1 charge every 75s. +150 Maximale Lebensenergie",
+        "description" : "Aktiv: Feuert eine Flare ab, die 3s anhält und Sicht und echte Sicht in einem Bereich gewährt. Flares haben maximal 3 Aufladungen und regenieren 1 Aufladung pro 75s. +150 Maximale Lebensenergie",
         "category" : [
           "5"
         ],
@@ -1245,7 +1245,7 @@
       "3.0" : {
         "name" : "Scout Pak",
         "price" : 500,
-        "description" : "Breadth: You can hold 1 additional Scout Cam(s) and obtain charges 30s faster per Scout Cam. +20% Abklinggeschw. +2.5 Energie-regen.",
+        "description" : "Breitenwirkung: Du kannst 1 zusätzliche Scout Cam(s)You can hold 1 additional Scout Cam(s) bei dir tragen und erhälst Aufladungen 30s pro Scout Cam schneller. +20% Abklinggeschw. +2.5 Energie-regen.",
         "depending" : [
           "Hourglass"
         ],
@@ -1260,7 +1260,7 @@
       "3.0" : {
         "name" : "Scout Tuff",
         "price" : 500,
-        "description" : "Depth: Scout Cam last 30s longer and take 1 extra hit(s) to kill +250 Maximale Lebensenergie",
+        "description" : "Tiefenwirkung: Scout Cams halten 30s länger, und es braucht 1 Extratreffer, um sie zu zerstören. Aktiv: Flare +250 Maximale Lebensenergie",
         "depending" : [
           "Flare Loader"
         ],
@@ -1275,7 +1275,7 @@
       "3.0" : {
         "name" : "SuperScout",
         "price" : 2000,
-        "description" : "Breadth: You can hold 3 additional Scout Cam(s) and obtain charges 60s faster per Scout Cam. Depth: Scout Cam last 60s longer and take 3 extra hit(s) to kill. +500 Maximale Lebensenergie +25% Abklinggeschw. +5 Energie-regen.",
+        "description" : "Breitenwirkung: Du kannst 3 zusätzliche Scout Cam(s) bei dir tragen und erhälst Aufladungen 60s pro Scout Cam schneller. Tiefenwirkung: Scout Cams halten 60s länger, und es braucht 3 Extratreffer, um sie zu zerstören. Aktiv: Flare. +500 Maximale Lebensenergie +25% Abklinggeschw. +5 Energie-regen.",
         "depending" : [
           "ScoutPak",
           "ScoutTuff"
