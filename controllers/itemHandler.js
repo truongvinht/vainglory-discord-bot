@@ -126,6 +126,31 @@ const list = function(category, tier) {
     return {"title":`${i18n.get('ListOfMatchingItems')}`,"content":list,"items":items};
 }
 
+const singleItem = function(code) {
+    
+    for (var key of Object.keys(itemList.item)) {
+        
+        var itm = itemList.item[key];
+        
+        //check each version
+        for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+
+            var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
+            
+            if (Object.keys(singleItem).length == 0) {
+                continue;
+            }
+            
+            if (singleItem.hasOwnProperty('code')) {
+                if (singleItem.code == code.toUpperCase()) {
+                    return singleItem;
+                }
+            }
+        }
+    }
+    return null;
+}
+
 const updatedList = function(version) {
     
     //fetch all items into an array
@@ -168,5 +193,6 @@ module.exports = {
     getCategories: categoryList,
     getTierList: tierList,
     getItems:list,
-    getUpdatedItems: updatedList
+    getUpdatedItems: updatedList,
+    getItem:singleItem
 };

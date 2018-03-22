@@ -154,6 +154,61 @@ const showItem = (PREFIX, message) => {
     }
 }
 
+const showSingleItem = (message) => {
+
+    let messageArray = message.content.split(" ");
+    var d = new Discord.RichEmbed()
+        .setAuthor(message.author.username);
+    
+    if (messageArray.length == 2) {
+    
+        let selectedItem = item.getItem(messageArray[1]);
+        
+        if (selectedItem === null) {
+            d = d.setDescription(`${i18n.get('InvalidInput')}`);
+            message.channel.send(d.addField(`${messageArray[1]}`,'\u200B'));
+        } else {
+            var dependency = "";
+            
+            if (selectedItem.hasOwnProperty("depending")) {
+                
+                var depend = "";
+                
+                for (var de of selectedItem.depending) {
+                    
+                    if (depend == "") {
+                        depend = de;
+                    } else {
+                        depend = depend +", " + de;
+                    }
+                }
+                
+                dependency = `| ${i18n.get('Dependency')}: ${depend}`;
+            }
+            if (selectedItem.hasOwnProperty("image")) {
+                d = d.setThumbnail(`${c.itemURL()}/${selectedItem.image}.png`);
+            }
+            
+            let cMap = item.getCategories();
+            let tierMap = item.getTierList();
+            
+            d = d.setTitle(selectedItem.name)
+                .setDescription(`${i18n.get('Gold')}: ${selectedItem.price} ${dependency}`)
+                .addField('\u200B',`${selectedItem.description}`)
+                .setFooter(`${cMap.items[parseInt(selectedItem.category[0])-1]} | ${tierMap.items[parseInt(selectedItem.tier)-1]}`);
+                
+            if (selectedItem.hasOwnProperty('old')) {
+                let oldItem = selectedItem.old;
+                d = d.addField(`${i18n.get('PrioUpdate')}:`,`${i18n.get('Gold')}: ${oldItem.price} ${dependency}`)
+                .addField('\u200B',`${oldItem.description}`)
+            } 
+            message.channel.send(d);
+        }
+    } else {
+        message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
+    }
+}
+
 
 const updatedItems = (version, message) => {
     
@@ -233,5 +288,6 @@ const updatedItems = (version, message) => {
 // export
 module.exports = {
     showItem: showItem,
+    showSingleItem:showSingleItem,
     showUpdatedItems:updatedItems
 };

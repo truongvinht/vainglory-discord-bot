@@ -316,6 +316,12 @@ bot.on("message", async message => {
             }
         }
         
+        // single item code
+        if (strH.hasCmds(command,[`${PREFIX}vgitem`])) {
+            itemMsg.showSingleItem(message);
+            return
+        }
+        
         //updated item list
         if (strH.hasCmds(command,[`${PREFIX}updateditems`,`${PREFIX}uitems`])) {
             if (hasRole) {
