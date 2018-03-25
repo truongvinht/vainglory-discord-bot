@@ -6,6 +6,13 @@ var request = require('request');
 var fs = require('fs');
 var log = require('loglevel');
 
+
+// CONTROLLER
+const itemHandler = require('./itemHandler');
+
+// CONFIG
+const gameMode = require('../data/gameMode.json');
+
 var vgbase = require('../models/vainglory-base.js');
 
 // URL for Vainglory developer API
@@ -91,7 +98,6 @@ var matchStats = function(region, playerName, callback) {
             
             var teamsData = [[],[]];
             
-            
             var objCount = 0;
             
             for (let side of rosterSides) {
@@ -111,63 +117,19 @@ var matchStats = function(region, playerName, callback) {
                         manOfMatch = player;
                     }
                 }
-                
+            
                 //increase for next roster
                 objCount = objCount + 1;
             }
             
-            
+        
+            //console.log(JSON.stringify(rosterLeft));
+            //console.log(JSON.stringify(teamsData[0]));
             matchContent["left"] = teamsData[0];
             matchContent["right"] = teamsData[1];
             
-            
-            
-            
-            // var leftTeam = [];
-            //
-            // //left
-            // for (var p of rosterLeft) {
-            //
-            //     var player = fetchPlayer(json, p.playerID);
-            //     player["participant"] = p;
-            //     leftTeam.push(player);
-            //     var guild = "";
-            //
-            //     if (player.guildTag != "") {
-            //         guild = "[" + player.guildTag + "]";
-            //     }
-            //
-            //     // man of the match
-            //     if (maxScorePlayerID == p.playerID) {
-            //         manOfMatch = player;
-            //     }
-            //
-            // }
-            // matchContent["left"] = leftTeam;
-            //
-            // var rightTeam = [];
-            //
-            // //right
-            // for (var p of rosterRight) {
-            //
-            //     var player = fetchPlayer(json, p.playerID);
-            //     player["participant"] = p;
-            //     rightTeam.push(player);
-            //
-            //     var guild = "";
-            //
-            //     if (player.guildTag != "") {
-            //         guild = "[" + player.guildTag + "]";
-            //     }
-            //
-            //     // man of the match
-            //     if (maxScorePlayerID == p.playerID) {
-            //         manOfMatch = player;
-            //     }
-            // }
             manOfMatch["actor"] = momHero;
             matchContent["mom"] = manOfMatch;
-            //matchContent["right"] = rightTeam;
             matchContent["hero"] = ownPlayedHero;
 
 
@@ -319,6 +281,8 @@ const recentPlayedHeroes = function(region, player, callback) {
 
             var heroSelectionMap = {};
             var playerMatchingMap = {};
+            
+            var roles = {"Carry":0,"Jungler":0,"Captain":0};
 
             var text = player + ": " + "\n";
             for (var match of json.data) {
@@ -327,13 +291,34 @@ const recentPlayedHeroes = function(region, player, callback) {
                 const rosterA = match.relationships.rosters.data[0];
                 const rosterB = match.relationships.rosters.data[1];
 
-                for (var rosterID of[rosterA, rosterB]) {
-                    //check roster
-                    var roster = fetchRoster(json, rosterID.id);
-
-                    for (var part of roster.participants) {
-                        var p = fetchParticipants(json, part);
+            
+                //helper list with both roster
+                let rosterSides = [fetchRoster(json, rosterA.id),fetchRoster(json, rosterB.id)];
+                
+                for (var roster of rosterSides) {
+                    
+                    var teamsData = [];
+                    
+                     for (var part of roster.participants) {
+                         teamsData.push(fetchParticipants(json, part));
+                     }
+                    
+                    for (let matchType of gameMode.relevant) {
+                        if (matchType === match.attributes.gameMode) {
+                            teamsData = getRolesForParticipants(teamsData);
+                            break;
+                        }
+                    }
+                    
+                    for (var p of teamsData) {
+                        
                         if (p.playerID == ownPlayerID) {
+                            
+                            if (roles.hasOwnProperty(p.role)) {
+                                roles[p.role] = roles[p.role] + 1;
+                            }
+                            
+                            
                             if (heroSelectionMap[p.actor] != undefined) {
                                 let victory = heroSelectionMap[p.actor].victory;
                                 
@@ -398,7 +383,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             });
             
             //fetch player names
-            callback(heroesList, playerList, json.data.length);
+            callback(heroesList, playerList, json.data.length, roles);
             
         } else {
 
@@ -660,6 +645,20 @@ function fetchParticipants(json, participantID) {
             if (participantID == included.id) {
 
                 var actor = attributes.actor;
+                
+                var itemCategory = {'1':0,"2":0,"3":0,"4":0,"5":0};
+                
+                for (let i of attributes.stats.items) {
+                    let itemObject = itemHandler.getItemByName(i);
+                    
+                    if (itemObject != null) {
+                        for (let category of itemObject.category) {
+                            itemCategory[category] = itemCategory[category] + 1;
+                        }
+                    }
+                }
+                
+                
 
                 participant = {
                     "id": included.id,
@@ -672,16 +671,76 @@ function fetchParticipants(json, participantID) {
                     "krakenCaptures": attributes.stats.krakenCaptures,
                     "turretCaptures": attributes.stats.turretCaptures,
                     "minionKills": attributes.stats.minionKills,
+                    "jungleKills":attributes.stats.jungleKills,
+                    "nonJungleMinionKills":attributes.stats.nonJungleMinionKills,
                     "goldMineCaptures": attributes.stats.goldMineCaptures,
                     "crystalMineCaptures": attributes.stats.crystalMineCaptures,
                     "wentafk":attributes.stats.wentAfk,
                     "skinKey": attributes.stats.skinKey,
-                    "items": attributes.stats.items
+                    "items": attributes.stats.items,
+                    "itemstats": itemCategory
                 };
             }
         }
     }
     return participant;
+}
+
+function getRolesForParticipants(participantList) {
+    
+    //check whether game mode has these information
+    if (!gameMode.composition.hasOwnProperty(`${participantList.length}`)) {
+        return participantList;
+    }
+    
+    
+    const config = gameMode.composition[`${participantList.length}`];
+    
+    var memberList = participantList;
+    
+    memberList.sort(function(a, b) {
+        return b.nonJungleMinionKills - a.nonJungleMinionKills;
+    });
+    
+    var counting = 0;
+    
+    for (var p of memberList) {
+        
+        let number = config['Carry'];
+        
+        if (counting < number) {
+            counting = counting + 1;
+            p["role"] = "Carry";
+        } else {
+            p["role"] = "Captain";
+        }
+    }
+    
+    
+    counting = 0;
+    
+    memberList.sort(function(a, b) {
+        return b.jungleKills - a.jungleKills;
+    });
+    for (var p of memberList) {
+        
+        let number = config['Jungler'];
+        
+        if (counting < number) {
+            
+            //skip carry
+            if (p.role === "Carry") {
+                continue;
+            }
+            
+            counting = counting + 1;
+            p["role"] = "Jungler";
+        } else {
+            break;
+        }
+    }
+    
+    return memberList;
 }
 
 

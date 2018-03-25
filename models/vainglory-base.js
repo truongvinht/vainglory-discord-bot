@@ -6,8 +6,8 @@ const modeUtility = require(`../data/gameMode.json`);
 const i18n = require('../general/langSupport');
 
 const gameMode = function(mode) {
-    if (modeUtility.hasOwnProperty(mode)) {
-      return modeUtility[mode];
+    if (modeUtility.mode.hasOwnProperty(mode)) {
+      return modeUtility.mode[mode];
     } else {
       return mode;
     }

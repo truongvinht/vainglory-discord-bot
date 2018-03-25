@@ -129,7 +129,7 @@ const list = function(category, tier) {
     return {"title":`${i18n.get('ListOfMatchingItems')}`,"content":list,"items":items};
 }
 
-const singleItem = function(code) {
+const singleItemCode = function(code) {
     
     for (var key of Object.keys(itemList.item)) {
         
@@ -146,6 +146,31 @@ const singleItem = function(code) {
             
             if (singleItem.hasOwnProperty('code')) {
                 if (singleItem.code == code.toUpperCase()) {
+                    return singleItem;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+const singleItem = function(name) {
+    
+    for (var key of Object.keys(itemList.item)) {
+        
+        var itm = itemList.item[key];
+        
+        //check each version
+        for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+
+            var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
+            
+            if (Object.keys(singleItem).length == 0) {
+                continue;
+            }
+            
+            if (singleItem.hasOwnProperty('name')) {
+                if (singleItem.name.toUpperCase() == name.toUpperCase()) {
                     return singleItem;
                 }
             }
@@ -197,5 +222,6 @@ module.exports = {
     getTierList: tierList,
     getItems:list,
     getUpdatedItems: updatedList,
-    getItem:singleItem
+    getItem:singleItemCode,
+    getItemByName: singleItem
 };

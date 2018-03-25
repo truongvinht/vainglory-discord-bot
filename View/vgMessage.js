@@ -233,7 +233,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     const code = messageArray.length === 2?messageArray[1]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(list,playerList,matches) {
+    var callback = function(list,playerList,matches, role) {
 
         var d = new Discord.RichEmbed()
             .setAuthor(playerName)
@@ -256,6 +256,28 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                 }
             }
             
+            //Prepare Most played Role
+            var mostPlayedRole = "-";
+            
+            var totalCountRoles = 0;
+            
+            console.log(JSON.stringify(role));
+            for (let r of Object.keys(role)) {
+                totalCountRoles = totalCountRoles + role[r];
+            }
+            
+            for (let r of Object.keys(role)) {
+                
+                if (role[r] > totalCountRoles*0.3) {
+                    if (mostPlayedRole=="-") {
+                        mostPlayedRole = r;
+                    } else {
+                        mostPlayedRole = mostPlayedRole + ", " + r;
+                    }
+                }
+            }
+            
+            
             //prepare player list
             count = 0;
             var recentNameRate = "";
@@ -275,6 +297,11 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             
             if (recentNameRate != "") {
                 d = d.addField(`${i18n.get('PlayedWith')}`, `${recentNameRate}`);
+            }
+            
+            
+            if (mostPlayedRole != "-") {
+                d = d.addField(`${i18n.get('MostPlayedRoles')}`,mostPlayedRole);
             }
             
             
