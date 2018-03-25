@@ -86,51 +86,88 @@ var matchStats = function(region, playerName, callback) {
                 }
             }
             
-            var leftTeam = [];
+            //helper list with both roster
+            let rosterSides = [rosterLeft,rosterRight];
             
-            //left
-            for (var p of rosterLeft) {
+            var teamsData = [[],[]];
+            
+            
+            var objCount = 0;
+            
+            for (let side of rosterSides) {
+                for (var p of side) {
 
-                var player = fetchPlayer(json, p.playerID);
-                player["participant"] = p;
-                leftTeam.push(player);
-                var guild = "";
+                    var player = fetchPlayer(json, p.playerID);
+                    player["participant"] = p;
+                    teamsData[objCount].push(player);
+                    var guild = "";
 
-                if (player.guildTag != "") {
-                    guild = "[" + player.guildTag + "]";
+                    if (player.guildTag != "") {
+                        guild = "[" + player.guildTag + "]";
+                    }
+                
+                    // man of the match
+                    if (maxScorePlayerID == p.playerID) {
+                        manOfMatch = player;
+                    }
                 }
                 
-                // man of the match
-                if (maxScorePlayerID == p.playerID) {
-                    manOfMatch = player;
-                }
-
+                //increase for next roster
+                objCount = objCount + 1;
             }
-            matchContent["left"] = leftTeam;
             
-            var rightTeam = [];
-
-            //right
-            for (var p of rosterRight) {
-
-                var player = fetchPlayer(json, p.playerID);
-                player["participant"] = p;
-                rightTeam.push(player);
-
-                var guild = "";
-
-                if (player.guildTag != "") {
-                    guild = "[" + player.guildTag + "]";
-                }
-                
-                // man of the match
-                if (maxScorePlayerID == p.playerID) {
-                    manOfMatch = player;
-                }
-            }
+            
+            matchContent["left"] = teamsData[0];
+            matchContent["right"] = teamsData[1];
+            
+            
+            
+            
+            // var leftTeam = [];
+            //
+            // //left
+            // for (var p of rosterLeft) {
+            //
+            //     var player = fetchPlayer(json, p.playerID);
+            //     player["participant"] = p;
+            //     leftTeam.push(player);
+            //     var guild = "";
+            //
+            //     if (player.guildTag != "") {
+            //         guild = "[" + player.guildTag + "]";
+            //     }
+            //
+            //     // man of the match
+            //     if (maxScorePlayerID == p.playerID) {
+            //         manOfMatch = player;
+            //     }
+            //
+            // }
+            // matchContent["left"] = leftTeam;
+            //
+            // var rightTeam = [];
+            //
+            // //right
+            // for (var p of rosterRight) {
+            //
+            //     var player = fetchPlayer(json, p.playerID);
+            //     player["participant"] = p;
+            //     rightTeam.push(player);
+            //
+            //     var guild = "";
+            //
+            //     if (player.guildTag != "") {
+            //         guild = "[" + player.guildTag + "]";
+            //     }
+            //
+            //     // man of the match
+            //     if (maxScorePlayerID == p.playerID) {
+            //         manOfMatch = player;
+            //     }
+            // }
             manOfMatch["actor"] = momHero;
             matchContent["mom"] = manOfMatch;
-            matchContent["right"] = rightTeam;
+            //matchContent["right"] = rightTeam;
             matchContent["hero"] = ownPlayedHero;
 
 
