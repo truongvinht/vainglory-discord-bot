@@ -128,7 +128,7 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
+                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}\n${getTimeSince(player.createdAt)}`)
             message.channel.send(d.setAuthor(`${player.name}`));
             
             if (nextCaller !=null) {
@@ -178,7 +178,7 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}`)
+                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}\n${getTimeSince(player.createdAt)}`)
             channel.send(d.setAuthor(`${player.name}`));
             
         } else {
@@ -338,7 +338,10 @@ function fetchMatch(message, playerName, didFailedHandler) {
 
     var callback = function(text, data) {
         if (data != null) {
-            var header = `${data.match.gameMode} | ${data.duration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
+            
+            const gameDuration = data.duration;
+            
+            var header = `${data.match.gameMode} | ${gameDuration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
                  .setAuthor(playerName)
                  .setColor("#000000")
@@ -348,43 +351,42 @@ function fetchMatch(message, playerName, didFailedHandler) {
             const rightRoster = data.right;
             
             var heroName = null;
-
-            d = d.addField('\u200B',`${i18n.get('Left')}:`);
-            for (let player of leftRoster) {
-                var guildTag = "";
             
-                if (player.guildTag != "") {
-                    guildTag = ` [${player.guildTag}]`
-                }
-                
-                var afk = '';
-                if (player.participant.wentafk) {
-                    afk = "AFK";
-                }
-                
-                const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
-                
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier}) ${afk}`, `${player.participant.actor} | KDA ${kda} | CS ${player.participant.minionKills}`);
-            }
+            const rosters = [{'side':'Left','dataRoster':leftRoster},
+                            {'side':'Right','dataRoster':rightRoster}];
             
-            d = d.addField('\u200B',`${i18n.get('Right')}:`);
-            for (let player of rightRoster) {
+            for (let r of rosters) {
             
-                var guildTag = "";
+                d = d.addField('\u200B',`${i18n.get(r.side)}:`);
+                for (let player of r.dataRoster) {
+                    var guildTag = "";
+            
+                    if (player.guildTag != "") {
+                        guildTag = ` [${player.guildTag}]`
+                    }
                 
-                if (player.guildTag != "") {
-                    guildTag = ` [${player.guildTag}]`
+                    var afk = '';
+                    if (player.participant.wentafk) {
+                        afk = "AFK";
+                    }
+                    
+                    //header
+                    const header = `${player.name}${guildTag} (${player.skillTier}) ${afk}`;
+                    
+                    const heroSelection = player.participant.actor;
+                    
+                    const kills = player.participant.kills;
+                    const deaths = player.participant.deaths;
+                    const assists = player.participant.assists;
+                    
+                    const kda = `${kills}/${deaths}/${assists}`;
+                    
+                    const cs = player.participant.minionKills;
+                    
+                    const csPerMin = `${(cs / gameDuration).toFixed(1)} CS/m`;
+                
+                    d = d.addField(header, `${heroSelection} | KDA ${kda} | ${csPerMin} (${cs})`);
                 }
-                
-                var afk = '';
-                if (player.participant.wentafk) {
-                    afk = "AFK";
-                }
-                
-                
-                const kda = `${player.participant.kills}/${player.participant.deaths}/${player.participant.assists}`;
-                
-                d = d.addField(`${player.name}${guildTag} (${player.skillTier}) ${afk}`, `${player.participant.actor} | KDA ${kda} | CS ${player.participant.minionKills}`);
             }
             
             d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
@@ -555,7 +557,7 @@ let afkDetails = function(list, channel) {
             for (var p of content) {
                 //${p.id}
                 var diff = fm.timeToNow(new Date(p.createdAt));
-                d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `);
+                d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${getTimeSince(p.createdAt)}`);
             }
             channel.send(d);
         } else {
@@ -570,6 +572,11 @@ let afkDetails = function(list, channel) {
     
     //needs to figure out for more than 6 ids
     vg.getPlayersInfo(serverCode, list, callback);
+}
+
+function getTimeSince(time) {
+    var diff = fm.timeToNow(new Date(time));
+    return `${diff['days']} d ${diff['hours']} h ${diff['minutes']} m `;
 }
 
 function getClassColor(classification) {
