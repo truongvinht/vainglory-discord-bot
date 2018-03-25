@@ -92,7 +92,7 @@ bot.on("message", async message => {
         }
         
         //server and channel information
-        if (strH.hasCmd(command,`${PREFIX}server`)) {
+        if (strH.hasCmd(command,`${PREFIX}whereami`)) {
             let embed = adminMsg.getServerInfo(bot,message);
             message.channel.send(embed);
             return;
