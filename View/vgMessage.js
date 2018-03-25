@@ -261,7 +261,6 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             
             var totalCountRoles = 0;
             
-            console.log(JSON.stringify(role));
             for (let r of Object.keys(role)) {
                 totalCountRoles = totalCountRoles + role[r];
             }

@@ -16,6 +16,7 @@ const cntMsg = require('./View/counterPickMessage');
 const itemMsg = require('./View/itemMessage');
 const vgMsg = require('./View/vgMessage');
 const eloMsg = require('./View/eloMessage');
+const adminMsg = require('./View/adminMessage');
 
 //counter picker
 const cp = require('./controllers/vgCounterPicker');
@@ -60,6 +61,12 @@ bot.on('messageReactionAdd', (reaction, user) => {
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
     }
+    
+    //remove own message from bot
+    if (reaction.emoji == '🗑' && reaction.message.author.bot) {
+        reaction.message.delete();
+    }
+    
 });
 
 // messages
@@ -82,6 +89,13 @@ bot.on("message", async message => {
         if (strH.hasCmd(command,`${PREFIX}help`)) {
             let embed = helpMsg.getDmHelp(PREFIX,message.author.username);
             message.channel.send(embed);
+        }
+        
+        //server and channel information
+        if (strH.hasCmd(command,`${PREFIX}server`)) {
+            let embed = adminMsg.getServerInfo(bot,message);
+            message.channel.send(embed);
+            return;
         }
 
         // send message to a target channel
@@ -121,10 +135,12 @@ bot.on("message", async message => {
                     return;
                 }
                 
+                
                 // help command
                 if (strH.hasCmd(subCommand,`${PREFIX}help`)) {
                     let embed = helpMsg.getChannelHelp(PREFIX,bot.user.username, false);
                     channel.send(embed);
+                    return;
                 }
                 
                 // hero command
