@@ -64,8 +64,6 @@ bot.on('messageReactionAdd', (reaction, user) => {
         vgMsg.getMatchDetails(reaction.message);
     }
     
-    console.log("reaction");
-    
     //remove own message from bot
     if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();

@@ -86,5 +86,6 @@
   "Winner":"Gewinner",
   "WinningChance":"Gewinnerquote",
   "right/red":"Rechts/Rot",
-  "left/blue":"Links/Blau"
+  "left/blue":"Links/Blau",
+  "DateFormattingCode":"de-DE"
 }

@@ -29,7 +29,27 @@ const dateDiff = (date) => {
     };
 }
 
+/**
+ * Convert date to string format
+ * @param {Object} date input date which needs to be converted to string
+ * @returns formated date based on locale
+ * @type String
+ */
+const dateToString = (date, locale) => {
+    let options = {   
+        day: 'numeric',
+        month: '2-digit', 
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    };
+
+    return date.toLocaleDateString(locale, options);
+}
+
 // export
 module.exports = {
-    timeToNow: dateDiff
+    timeToNow: dateDiff,
+    dateToString: dateToString
 };

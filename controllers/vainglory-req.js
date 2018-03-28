@@ -48,7 +48,7 @@ var matchStats = function(region, playerName, callback) {
             var matchContent = {};
 
             matchContent['match'] = match;
-            matchContent['createdAt'] = getFormattedDate(match.createdAt);
+            matchContent['createdAt'] = match.createdAt;
             matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
 
             // Helper list with all players grouped by roster
@@ -836,10 +836,6 @@ function getTimeStamp(date) {
     var month = (date.getMonth() < 9) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
     var day = ((date.getDate() - 1) < 10) ? "0" + (date.getDate() - 1) : (date.getDate());
     return "" + date.getFullYear() + "-" + month + "-" + day + "T00:00:00Z";
-}
-
-function getFormattedDate(date) {
-    return date.replace("T", " ").replace("Z", "");
 }
 
 var updateToken = function(token) {

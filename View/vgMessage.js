@@ -9,6 +9,9 @@ const c = require("../general/constLoader");
 const fm = require('../general/contentFormatter');
 const access = require('../general/accessRightManager');
 
+
+const formatter = require('../general/contentFormatter');
+
 // CONTROLLERS
 var vg = require('../controllers/vainglory-req');
 
@@ -124,11 +127,13 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                                       `Blitz: ${player.gamesPlayed.blitz}\n` +
                                       `Battle Royal: ${player.gamesPlayed.aral}`;
             
+            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
+                                      
             d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}\n${getTimeSince(player.createdAt)}`)
+                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
             message.channel.send(d.setAuthor(`${player.name}`));
             
             if (nextCaller !=null) {
@@ -168,6 +173,9 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
                  d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
             }
             
+            
+            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
+            
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
                                       `Casual 3v3: ${player.gamesPlayed.casual}\n` +
                                       `Ranked: ${player.gamesPlayed.ranked}\n` + 
@@ -178,7 +186,7 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${player.createdAt}\n${getTimeSince(player.createdAt)}`)
+                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
             channel.send(d.setAuthor(`${player.name}`));
             
         } else {
@@ -303,8 +311,10 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                 d = d.addField(`${i18n.get('MostPlayedRoles')}`,mostPlayedRole);
             }
             
-            
-            message.channel.send(d);
+        
+            message.channel.send(d).then(message => {
+                message.react('🗑');
+            });
             
             if (nextCaller !=null) {
                 message.channel.stopTyping();
@@ -367,7 +377,9 @@ function fetchMatch(message, playerName, didFailedHandler) {
             
             const gameDuration = data.duration;
             
-            var header = `${data.match.gameMode} | ${gameDuration} mins | ${data.createdAt} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
+            const gameDate = formatter.dateToString(new Date(data.createdAt),`${i18n.get('DateFormattingCode')}`);
+            
+            var header = `${data.match.gameMode} | ${gameDuration} mins | ${gameDate} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
                  .setAuthor(playerName)
                  .setColor("#000000")
@@ -382,8 +394,14 @@ function fetchMatch(message, playerName, didFailedHandler) {
                             {'side':'Right','dataRoster':rightRoster}];
             
             for (let r of rosters) {
+                
+                var totalKills = 0;
+                for (let player of r.dataRoster) {
+                    totalKills = totalKills + player.participant.kills;
+                }
+                
             
-                d = d.addField('\u200B',`${i18n.get(r.side)}:`);
+                d = d.addField('\u200B',`${i18n.get(r.side)} (${totalKills}):`);
                 for (let player of r.dataRoster) {
                     var guildTag = "";
             

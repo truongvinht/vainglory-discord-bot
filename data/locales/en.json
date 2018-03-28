@@ -86,5 +86,6 @@
   "Winner":"Winner",
   "WinningChance":"Winning chance",
   "right/red":"Right/Red",
-  "left/blue":"Left/Blue"
+  "left/blue":"Left/Blue",
+  "DateFormattingCode":"en-US"
 }
