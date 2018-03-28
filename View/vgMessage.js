@@ -475,7 +475,6 @@ const matchDetails = (message) => {
                 ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
             }
 
-            console.log('Ban L: '+JSON.stringify(ban));
             d = d.addField(`${i18n.get('Left')}`,`${ban}`);
             
             ban = "";
@@ -486,9 +485,7 @@ const matchDetails = (message) => {
                 ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
             }
             
-            console.log('Ban R: '+JSON.stringify(ban));
             d = d.addField(`${i18n.get('Right')}`,`${ban}`);
-            
             d = d.addField('\u200B',`${i18n.get('Items')}:`);
             //items
             let infoData = data['data'];
@@ -544,7 +541,9 @@ const matchDetails = (message) => {
                 d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
             }
             
-            channel.send(d);
+            channel.send(d).then(message => {
+                message.react('🗑');
+            });
             
             channel.stopTyping(true);
         };

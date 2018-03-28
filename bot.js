@@ -18,6 +18,8 @@ const vgMsg = require('./View/vgMessage');
 const eloMsg = require('./View/eloMessage');
 const adminMsg = require('./View/adminMessage');
 
+const vgBase = require('./models/vainglory-base.js');
+
 //counter picker
 const cp = require('./controllers/vgCounterPicker');
 
@@ -62,8 +64,10 @@ bot.on('messageReactionAdd', (reaction, user) => {
         vgMsg.getMatchDetails(reaction.message);
     }
     
+    console.log("reaction");
+    
     //remove own message from bot
-    if (reaction.emoji == '🗑' && reaction.message.author.bot) {
+    if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();
     }
     
@@ -200,7 +204,11 @@ bot.on("message", async message => {
     //HELP
     if (strH.hasCmd(command,`${PREFIX}help`)) {
         let embed = helpMsg.getChannelHelp(PREFIX,message.author.username, hasRole);
-        message.channel.send(embed);
+        
+        message.channel.send(embed).then(message => {
+            message.react('🗑');
+        });
+        
         return;
     }
     
