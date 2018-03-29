@@ -187,6 +187,14 @@ bot.on("message", async message => {
         return;
     }
     
+    //prevent any actions, if bot cannot write
+    if (message.member != null) {
+        if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
+            return;
+        }
+    }
+
+
     console.log(`${new Date()}|${message.channel.name}|${message.author.username}: ${message.content}`);
 
     // user has role

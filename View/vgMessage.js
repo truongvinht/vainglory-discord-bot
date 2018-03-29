@@ -474,8 +474,8 @@ const matchDetails = (message) => {
     
     if (matchData.asset !=null) {
         
-        //remove reaction
-        message.clearReactions();
+        //try remove reactions
+        message.clearReactions().catch(error => {});
         
         const channel = message.channel;
         
