@@ -6,6 +6,7 @@
 const Discord = require("discord.js");
 const i18n = require('../general/langSupport');
 const c = require("../general/constLoader");
+const colorMng = require('../controllers/messageColorManager');
 
 //counter picker
 const cp = require('../controllers/vgCounterPicker');
@@ -17,7 +18,7 @@ const heroList = () => {
 }
 
 const counterPickHero = (hero) => {
-    var d = new Discord.RichEmbed().setColor("#ff0000");
+    var d = new Discord.RichEmbed().setColor(colorMng.getColor(2));
     let result = cp.getCounter(hero.toLowerCase());
     if (result != null) {
         d = d.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`)
@@ -37,13 +38,13 @@ const quickCounterPickHero = (heroCode) => {
     if (heroName != null) {
         return counterPickHero(heroName);
     } else {
-        return new Discord.RichEmbed().setColor("#ff0000")
+        return new Discord.RichEmbed().setColor(colorMng.getColor(2))
         .setDescription(`'${hName}': ${i18n.get('InvalidHeroCode')}`);
     }
 }
 
 const supportPickHero = (hero) => {
-    var d = new Discord.RichEmbed().setColor("#008000");
+    var d = new Discord.RichEmbed().setColor(colorMng.getColor(3));
     let result = cp.getSupport(hero.toLowerCase());
     if (result != null) {
         d = d.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`)
@@ -63,7 +64,7 @@ const quickSupportPickHero = (heroCode) => {
     if (heroName != null) {
         return supportPickHero(heroName);
     } else {
-        return new Discord.RichEmbed().setColor("#008000")
+        return new Discord.RichEmbed().setColor(colorMng.getColor(3))
         .setDescription(`'${hName}': ${i18n.get('InvalidHeroCode')}`);
     }
 }

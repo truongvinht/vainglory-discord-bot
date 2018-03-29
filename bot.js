@@ -9,6 +9,7 @@ const i18n = require('./general/langSupport');
 const fm = require('./general/contentFormatter');
 const strH = require('./general/stringHelper');
 const access = require('./general/accessRightManager');
+const colorMng = require('./controllers/messageColorManager');
 
 // VIEW
 const helpMsg = require('./View/helpMessage');
@@ -60,16 +61,36 @@ bot.on("ready", async() => {
 
 // reactions added
 bot.on('messageReactionAdd', (reaction, user) => {
+    
+    //reload content
+    if (reaction.count > 1 && reaction.emoji == '🔄') {
+        vgMsg.reloadContent(reaction.message);
+        return;
+    }
+    
+    // show further match details
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
+        return;
     }
     
     //remove own message from bot
     if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();
     }
-    
 });
+
+
+// reactions removed
+bot.on('messageReactionRemove', (reaction, user) => {
+    
+    //reload content
+    if (!user.bot && reaction.emoji == '🔄') {
+        vgMsg.reloadContent(reaction.message);
+        return;
+    }
+});
+
 
 // messages
 bot.on("message", async message => {
@@ -150,7 +171,7 @@ bot.on("message", async message => {
 
                     var d = new Discord.RichEmbed()
                         .setAuthor(bot.user.username)
-                        .setColor("#123456");
+                        .setColor(colorMng.getColor(4));
 
                     let cmd = subCommand.substring(1, 3);
 
@@ -234,7 +255,7 @@ bot.on("message", async message => {
 
             var d = new Discord.RichEmbed()
                 .setAuthor(message.author.username)
-                .setColor("#123456");
+                .setColor(colorMng.getColor(4));
 
             let cmd = command.substring(1, 3);
 

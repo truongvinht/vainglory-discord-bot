@@ -8,6 +8,7 @@ const i18n = require('../general/langSupport');
 const c = require("../general/constLoader");
 const fm = require('../general/contentFormatter');
 const access = require('../general/accessRightManager');
+const colorMng = require('../controllers/messageColorManager');
 
 
 const formatter = require('../general/contentFormatter');
@@ -94,6 +95,51 @@ let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
     fetchPlayerDetails(message,playerName,nextCaller,didFailed);
 }
 
+function updatePlayerDetails(message, playerName) {
+    
+    //override default server
+    const serverCode = c.vgServerCode(null);
+
+    var callback = function(playerName, player) {
+
+        var d = new Discord.RichEmbed();
+
+        if (player != null) {
+            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
+                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+                .setColor(getClassColor(`${player.skillTier}`));
+
+            if (player.guildTag != "") {
+                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
+            }
+            
+            //load image from parameter
+            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
+            }
+            
+            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
+                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
+                                      `Battle Royal: ${player.gamesPlayed.aral}`;
+            
+            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
+                                      
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
+                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
+                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
+                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
+            
+            
+            message.edit(d.setAuthor(`${player.name}`));
+        }
+    };
+    vg.setToken(VaingloryToken.getInstance().token());
+    vg.getPlayerStats(serverCode, playerName, callback);
+}
+
 function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
 
     message.channel.startTyping();
@@ -134,13 +180,19 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
                 .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
-            message.channel.send(d.setAuthor(`${player.name}`));
+            
             
             if (nextCaller !=null) {
+                message.channel.send(d.setAuthor(`${player.name}`));
                 message.channel.stopTyping();
                 nextCaller(message,playerName);
+            } else {
+                
+                message.channel.send(d.setAuthor(`${player.name}`)).then(message => {
+                    message.react('🔄');
+                });
+                message.channel.stopTyping();
             }
-            message.channel.stopTyping();
         } else {
             message.channel.stopTyping();
             didFailedHandler(d,playerName);
@@ -245,7 +297,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
 
         var d = new Discord.RichEmbed()
             .setAuthor(playerName)
-            .setColor("#0000FF");
+            .setColor(colorMng.getColor(8));
 
         if (list.length > 0) {
             //console.log(JSON.stringify(list));
@@ -382,7 +434,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
             var header = `${data.match.gameMode} | ${gameDuration} mins | ${gameDate} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
             var d = new Discord.RichEmbed()
                  .setAuthor(playerName)
-                 .setColor("#000000")
+                 .setColor(colorMng.getColor(9))
                  .setDescription(header);
             
             const leftRoster = data.left; 
@@ -481,7 +533,7 @@ const matchDetails = (message) => {
         
         channel.startTyping();
         var callback = function(data) {
-            var d = new Discord.RichEmbed().setColor("#000000").setTitle(`${i18n.get('HeroSelection')}`);
+            var d = new Discord.RichEmbed().setColor(colorMng.getColor(10)).setTitle(`${i18n.get('HeroSelection')}`);
             
             var ban = "";
             
@@ -571,6 +623,19 @@ const matchDetails = (message) => {
     }
 }
 
+const reloadContent = (message) => {
+    
+    for (var embed of message.embeds) {
+        
+        // reload player details
+        console.log(embed.hexColor);
+        if (colorMng.isPlayerDetails(embed.hexColor)) {
+            const author = embed.author.name;
+            updatePlayerDetails(message, author);
+        }
+    }
+}
+
 function getSoldItems(actor, team, soldItemList) {
     var items = '';
     
@@ -624,11 +689,11 @@ function getTimeSince(time) {
 
 function getClassColor(classification) {
     if (classification.toLowerCase().includes("gold")) {
-        return "#FFD700";
+        return colorMng.getColor(7);
     } else if (classification.toLowerCase().includes("silver")) {
-        return "#C0C0C0";
+        return colorMng.getColor(6);
     } else if (classification.toLowerCase().includes("bronze")) {
-        return "#cd7f32";
+        return colorMng.getColor(5);
     }
 
     return "#FFFFFF";
@@ -667,5 +732,6 @@ module.exports = {
     requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
     getMatchDetails:matchDetails,
+    reloadContent: reloadContent,
     afkInfo: afkDetails
 };

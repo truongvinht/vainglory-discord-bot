@@ -5,6 +5,7 @@
 //import
 const Discord = require("discord.js");
 const i18n = require('../general/langSupport');
+const colorMng = require('../controllers/messageColorManager');
 
 /**
  * Sending general informations about available commands within channel
@@ -15,7 +16,9 @@ const i18n = require('../general/langSupport');
  * @type RichEmbed
  */
 const helpMessage = (PREFIX, author, hasRole) => {
+    
     let embed = new Discord.RichEmbed()
+        .setColor(`${colorMng.getColor(1)}`)
         .setAuthor(`${author}`)
         .setDescription(`${i18n.get('FollowingCommands')}`)
         .addField(`${PREFIX}about`, `${i18n.get('AboutBot')}`)
@@ -50,6 +53,7 @@ const helpMessage = (PREFIX, author, hasRole) => {
  */
 const directHelpMessage = (PREFIX, author) => {
     let embed = new Discord.RichEmbed()
+    .setColor(`${colorMng.getColor(1)}`)
     .setAuthor(`${author}`)
     .setDescription(`${i18n.get('FollowingCommands')}`)
     .addField(`${PREFIX}msg CHANNEL MESSAGE`, `${i18n.get('HelpSendMessage')}`)
