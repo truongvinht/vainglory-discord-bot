@@ -342,26 +342,60 @@ bot.on("message", async message => {
             var d = new Discord.RichEmbed();
             
             if (points.length > 0) {
-                var info = eloCalc.getResult(points);
-
-                if (info == null) {
-                    message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
-                } else {
-                    //load image from parameter
-                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                        const img = vgBase.convertTier(vgBase.getTier(info.elo));
-                         d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
-                    }
+                
+                if (isNaN(points)) {
                     
-                    if (info.missing == -1) {
-                        message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
+                    const callback = function(playerName, player) {
+        
+                        if (player == null) {
+                            message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
+                        } else {
+                            
+                            const info = eloCalc.getResult(Math.floor(player.rankPoints.ranked));
+                            //load image from parameter
+                            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                                const img = vgBase.convertTier(vgBase.getTier(info.elo));
+                                 d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
+                            }
+                    
+                            if (info.missing == -1) {
+                                message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
+                            } else {
+                        
+                                const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
+                                message.channel.send(d.addField(`${info.title}`, `${msg}`));
+                        
+                            }
+                        }
+                        message.channel.stopTyping();
+                    };
+
+                    message.channel.startTyping();
+                    vgMsg.requestEloForPlayer(message, points, callback);
+                    return;
+                } else {
+                    var info = eloCalc.getResult(points);
+
+                    if (info == null) {
+                        message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                     } else {
+                        //load image from parameter
+                        if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                            const img = vgBase.convertTier(vgBase.getTier(info.elo));
+                             d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
+                        }
+                    
+                        if (info.missing == -1) {
+                            message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
+                        } else {
                         
-                        const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
-                        message.channel.send(d.addField(`${info.title}`, `${msg}`));
+                            const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
+                            message.channel.send(d.addField(`${info.title}`, `${msg}`));
                         
+                        }
                     }
                 }
+                
             } else {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }

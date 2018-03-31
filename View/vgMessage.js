@@ -623,6 +623,15 @@ const matchDetails = (message) => {
     }
 }
 
+const requestEloForPlayer = (message, playerName, callback) => {
+
+    vg.setToken(VaingloryToken.getInstance().token());
+    
+    const serverCode = c.vgServerCode(null);
+    
+    vg.getPlayerStats(serverCode, playerName, callback);
+}
+
 const reloadContent = (message) => {
     
     for (var embed of message.embeds) {
@@ -752,6 +761,7 @@ module.exports = {
     requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
     getMatchDetails:matchDetails,
+    requestEloForPlayer: requestEloForPlayer,
     reloadContent: reloadContent,
     afkInfo: afkDetails
 };
