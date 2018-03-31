@@ -663,16 +663,31 @@ let afkDetails = function(list, channel) {
         
         if (content != null) {
             
+            channel.send(d.setTitle(`${i18n.get('LastActive')}`));
+            
             var contentMessage = "";
             
+            var count = 0;
+            
             for (var p of content) {
-                //${p.id}
+
                 var diff = fm.timeToNow(new Date(p.createdAt));
                 
                 contentMessage = `${contentMessage}${p.name} [${p.skillTier}] - ${getTimeSince(p.createdAt)}\n`;
                 
+                count = count + 1;
+                
+                if (count >= 20) {
+                    count = 0;
+                    d = d.addField('\u200B',contentMessage);
+                    contentMessage = "";
+                }
             }
-            channel.send(d.addField(`${i18n.get('LastActive')}`,contentMessage));
+            
+            if (contentMessage.length > 0) {
+                d = d.addField('\u200B',contentMessage);
+            }
+            channel.send(d);
         } else {
             channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
         }
