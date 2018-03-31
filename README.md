@@ -18,10 +18,10 @@ node bot
 Copy config/example_settings.json to config/settings.json and fill in your discord bot token and the vainglory api token. 
 
 optional adjustment:
-prefix: Command to listen
-imageURL: Url for getting images like heroes / items / tier
-restricted: user with this tag has special permission
-ELO_LIST_URL: url to json file with elo scoring
+- prefix: Command to listen
+- imageURL: Url for getting images like heroes / items / tier
+- restricted: user with this tag has special permission
+- ELO_LIST_URL: url to json file with elo scoring
 
 
 #### Note
