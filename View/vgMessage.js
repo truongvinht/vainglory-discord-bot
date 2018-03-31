@@ -524,7 +524,7 @@ const matchDetails = (message) => {
     
     let matchData = VaingloryToken.getInstance().getMessage(message.id);
     
-    if (matchData.asset !=null) {
+    if (matchData!=null && matchData.hasOwnProperty("asset")) {
         
         //try remove reactions
         message.clearReactions().catch(error => {});
@@ -630,6 +630,18 @@ const requestEloForPlayer = (message, playerName, callback) => {
     const serverCode = c.vgServerCode(null);
     
     vg.getPlayerStats(serverCode, playerName, callback);
+}
+
+const fullDetails = (message, playerName) => {
+
+    const callbackRecentHeroes = function(message, playerName) {
+        const callbackMatch = function(message, playerName) {
+            requestMatchForPlayer(message,playerName);
+        }
+        requestRecentPlayedHeroesForName(message,playerName, callbackMatch);
+    }
+    
+    requestPlayerDetailsForName(message,playerName, callbackRecentHeroes);
 }
 
 const reloadContent = (message) => {
@@ -761,6 +773,7 @@ module.exports = {
     requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
     getMatchDetails:matchDetails,
+    getFullPlayerDetails: fullDetails,
     requestEloForPlayer: requestEloForPlayer,
     reloadContent: reloadContent,
     afkInfo: afkDetails
