@@ -628,7 +628,6 @@ const reloadContent = (message) => {
     for (var embed of message.embeds) {
         
         // reload player details
-        console.log(embed.hexColor);
         if (colorMng.isPlayerDetails(embed.hexColor)) {
             const author = embed.author.name;
             updatePlayerDetails(message, author);
@@ -660,14 +659,20 @@ let afkDetails = function(list, channel) {
     
     var callback = function(content) {
         var d = new Discord.RichEmbed().setColor("#FFFFFF");
-
+        
+        
         if (content != null) {
+            
+            var contentMessage = "";
+            
             for (var p of content) {
                 //${p.id}
                 var diff = fm.timeToNow(new Date(p.createdAt));
-                d = d.addField(`${p.name}`, `Last active: ${p.createdAt}\n${getTimeSince(p.createdAt)}`);
+                
+                contentMessage = `${contentMessage}${p.name} [${p.skillTier}] - ${getTimeSince(p.createdAt)}\n`;
+                
             }
-            channel.send(d);
+            channel.send(d.addField(`${i18n.get('LastActive')}`,contentMessage));
         } else {
             channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
         }

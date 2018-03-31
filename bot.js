@@ -408,7 +408,9 @@ bot.on("message", async message => {
         //hidden feature to fetch player IDs
         if (strH.hasCmds(command,[`${PREFIX}afk`])) {
             if (hasRole) {
-                var list = messageArray.slice(1, messageArray.length);
+                var list = message.content.replace(/(?:\r\n|\r|\n)/g, " " ).split( " " );
+                list = list.slice(1, list.length);
+                
                 vgMsg.afkInfo(list, message.channel);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);

@@ -8,8 +8,6 @@ const i18n = require('../general/langSupport');
 
 const serverInfo = (bot,message) => {
     
-    
-    
     let d = new Discord.RichEmbed().setTitle(`${i18n.get('ListConnectedDiscordChannel')}`);
     
     var count = 0;

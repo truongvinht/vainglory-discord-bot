@@ -464,53 +464,45 @@ var playerStats = function(region, playerName, callback) {
     });
 }
 
-// function to get quick info about the players (afk feature)
-var playersQuickInfo = function(region, playerNames, callback) {
+const playersQuickInfo = function(region, playerNames, callback, resultList) {
 
     //fill a batch of player names, VG allows 6 for each request
-    var requestBatch = [];
+    var remainingList = null;
+
+    var currentNames = playerNames;
 
     var playerRequest = "";
 
-    if (requestBatch.length > 6) {
-        //not fully implemented yet
+    if (playerNames.length > 6) {
 
-        //limit to max 50 entries
-        if (requestBatch.length > 50) {
-            callback(null);
-        }
-
-        var subCallback = function(content) {
+        const subCallback = function(content) {
             playersQuickInfo(region, otherList, callback);
         }
 
-        var otherList = playerNames.slice(6, playerNames.list);
-        var subList = playerNames.slice(0, 6);
+        remainingList = playerNames.slice(6, playerNames.list);
+        
+        //slice max 6 entries
+        currentNames = playerNames.slice(0, 6);
+    } 
+    
 
-        //request first 6 items
-        playersQuickInfo(region, subList, callback);
+    //list fits into single request
+    for (var n of currentNames) {
 
-    } else {
-        //list fits into single request
-        for (var n of playerNames) {
-
-            //init first player
-            if (playerRequest.length == 0) {
-                playerRequest = n;
-            } else {
-                playerRequest = playerRequest + "," + n;
-            }
+        //init first player
+        if (playerRequest.length == 0) {
+            playerRequest = n;
+        } else {
+            playerRequest = playerRequest + "," + n;
         }
     }
-
-    var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerRequest;
-
+    
+    const requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerRequest;
     const reqOption = getRequestHeader(requestURL);
     
     if (reqOption==null) {
         return null;
     }
-
     request(reqOption, function(error, response, body) {
 
         if (!error && response.statusCode == 200) {
@@ -547,7 +539,21 @@ var playersQuickInfo = function(region, playerNames, callback) {
                     };
                     players.push(player);
                 }
-                callback(players);
+
+                if (resultList!=null) {
+                    players = players.concat(resultList);
+                }
+                
+                
+                players.sort(function(b, a) {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+                
+                if (remainingList!= null) {
+                    playersQuickInfo(region,remainingList,callback,players);
+                } else {
+                    callback(players);
+                }
             } else {
                 if (response != null) {
                     log.debug("# # # # #");
