@@ -663,7 +663,7 @@ let afkDetails = function(list, channel) {
         
         if (content != null) {
             
-            channel.send(d.setTitle(`${i18n.get('LastActive')}`));
+            d = d.setTitle(`${i18n.get('LastActive')}`);
             
             var contentMessage = "";
             
