@@ -28,83 +28,36 @@ const karma = function(mode) {
 
 // tier list
 const tier = function(skillTier) {
-    switch(skillTier) {
-    case -1:
-        return "T0";
-    case 0:
-        return "T1 Bronze";
-    case 1:
-        return "T1 Silver";
-    case 2:
-        return "T1 Gold";
-    case 3:
-        return "T2 Bronze";
-    case 4:
-        return "T2 Silver";
-    case 5:
-        return "T2 Gold";
-    case 6:
-        return "T3 Bronze";
-    case 7:
-        return "T3 Silver";
-    case 8:
-        return "T3 Gold";
-    case 9:
-        return "T4 Bronze";
-    case 10:
-        return "T4 Silver";
-    case 11:
-        return "T4 Gold";
-    case 12:
-        return "T5 Bronze";
-    case 13:
-        return "T5 Silver";
-    case 14:
-        return "T5 Gold";
-    case 15:
-        return "T6 Bronze";
-    case 16:
-        return "T6 Silver";
-    case 17:
-        return "T6 Gold";
-    case 18:
-        return "T7 Bronze";
-    case 19:
-        return "T7 Silver";
-    case 20:
-        return "T7 Gold";
-    case 21:
-        return "T8 Bronze";
-    case 22:
-        return "T8 Silver";
-    case 23:
-        return "T8 Gold";
-    case 24:
-        return "T9 Bronze";
-    case 25:
-        return "T9 Silver";
-    case 26:
-        return "T9 Gold";
-    case 27:
-        return "T10 Bronze";
-    case 28:
-        return "T10 Silver";
-    case 29:
-        return "T10 Gold";
-    default:
-        return "?";
+    
+    //unranked
+    if (skillTier < 0) {
+        return "T0"
     }
+    
+    var rank = `T${Math.floor(skillTier/3)+1}`;
+    
+    switch(skillTier%3) {
+        case 0:
+            rank =`${rank} ${i18n.get('Bronze')}`;
+            break;
+        case 1:
+            rank =`${rank} ${i18n.get('Silver')}`;
+            break;
+        case 2:
+            rank =`${rank} ${i18n.get('Gold')}`;
+    }
+    
+    return rank;
 }
 
 const convertTier = function(skillTier) {
-    var output = skillTier.replace(" Bronze","a")
-        .replace(" Silver","b")
-        .replace(" Gold","c")
+    return skillTier.replace(` ${i18n.get('Bronze')}`,"a")
+        .replace(` ${i18n.get('Silver')}`,"b")
+        .replace(` ${i18n.get('Gold')}`,"c")
         .replace("T0","unranked")
         .replace("?","unranked")
         .replace("T10","tier_10")
-    .replace("T","tier_0");
-    return output
+        .replace("T","tier_0");
 }
 
 // export

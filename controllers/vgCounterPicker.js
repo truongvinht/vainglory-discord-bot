@@ -2,92 +2,90 @@
 // Handle counter pick for given hero name
 // ==================
 
-
 // import 
 const vgCounter = require("../data/heroes.json");
 const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
-// weak against
-var counter = function(hero) {
-
-    //check for hero name
-    if (vgCounter.against.hasOwnProperty(hero)) {
-
-        if (vgCounter.against[hero].length > 0) {
-            var list = "";
-            for (var name of vgCounter.against[hero]) {
-                const fullName = quickHeroLookup(name);
-                if (fullName!=null) {
-                    list = list + (`- ${fullName}`) + "\n";
-                } else {
-                    log.error(`- ${name}`)
-                    
-                    if (name === '?') {
-                        list = list + (`- ${name}`) + "\n";
-                    }
-                }
-            }
-            return list;
-        }
-    }
-
-    // hero not found
-    return null;
+/**
+ * Get Heroes which counter entered hero name (weak against)
+ * @private
+ * @param {String} hero name for finding counter
+ * @returns List of heroes which counters entered hero
+ * @type Array
+ */
+const counter = (hero) => {
+    return heroPick(vgCounter.against, hero, "-");
 }
 
-// strong against
-var support = function(hero) {
+/**
+ * Get Heroes entered hero would have advantage against (Strong against)
+ * @private
+ * @param {String} hero name for finding list of heroes which are strong against
+ * @returns List of heroes which are weak against entered hero
+ * @type Array
+ */
+const support = (hero) => {
+    return heroPick(vgCounter.with, hero, "+");
+}
+
+function heroPick(map, hero, prefix) {
 
     //check for hero name
-    if (vgCounter.with.hasOwnProperty(hero)) {
+    if (map.hasOwnProperty(hero)) {
 
-        if (vgCounter.with[hero].length > 0) {
+        if (map[hero].length > 0) {
             var list = "";
 
-            for (var name of vgCounter.with[hero]) {
+            for (var name of map[hero]) {
                 const fullName = quickHeroLookup(name);
                 if (fullName!=null) {
-                    list = list + (`+ ${fullName}`) + "\n";
+                    list = list + (`${prefix} ${fullName}`) + "\n";
                 } else {
+                    // hero could not be found
                     log.error(`+ ${name}`)
                     
+                    //display the code instead of the hero name
                     if (name === '?') {
-                        list = list + (`+ ${name}`) + "\n";
+                        list = list + (`${prefix} ${name}`) + "\n";
                     }
                 }
             }
-
             return list;
         }
     }
+    
     // hero not found
     return null;
 }
 
-// hero list
-var heroes = function() {
+/**
+ * Get list of available heroes with their matching hero code
+ * @returns List of available heroes
+ * @type Array
+ */
+const heroes = () => {
 
     // list for output
     var list = "";
 
     for (var key of Object.keys(vgCounter.hero)) {
-        list = list + "+ " + vgCounter.hero[key] + " [" + `${key}` + "]\n";
-        
-        //Test for all heroes
-        // support(quickHeroLookup(key));
-        // counter(quickHeroLookup(key));
+        list = `${list}+ ${vgCounter.hero[key]} [${key}]\n`;
     }
 
-    let content = {
+    return {
         "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(vgCounter.hero).length}]`,
         "content": list
     }
-
-    return content;
 }
 
-var quickHeroLookup = function(hero) {
+/**
+ * Method to get the matching hero name based on the hero code
+ * @param {String} hero entered  hero code
+ * @returns full hero name or null if code could not be encoded
+ * @type String
+ */
+const quickHeroLookup = (hero) => {
     if (hero.length == 2) {
         if (vgCounter.hero.hasOwnProperty(hero)) {
             return vgCounter.hero[hero];

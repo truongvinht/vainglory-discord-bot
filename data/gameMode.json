@@ -6,7 +6,8 @@
         "casual": "Casual",
         "casual_aral": "Battle Royal",
         "blitz_rounds_pvp_casual": "Onslaught",
-        "5v5_pvp_casual": "Casual 5v5"
+        "5v5_pvp_casual": "Casual 5v5",
+        "5v5_pvp_ranked": "Rank 5v5"
     },
     "composition": {
         "3":{
@@ -24,7 +25,8 @@
         "ranked",
         "casual",
         "private",
-        "5v5_pvp_casual"
+        "5v5_pvp_casual",
+        "5v5_pvp_ranked"
     ]
         
     
