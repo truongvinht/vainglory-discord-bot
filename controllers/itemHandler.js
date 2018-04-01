@@ -123,7 +123,10 @@ const list = function(category, tier) {
     var list = "";
     
     for (var i of items) {
-        list = list + "[" + `${items.indexOf(i)+1}` + "] " + i.name + "\n";
+        
+        const code = (i.hasOwnProperty('code'))?` (${i.code})`:"";
+        
+        list = list + "[" + `${items.indexOf(i)+1}` + "] " + i.name + ` ${code}\n`;
     }
     
     return {"title":`${i18n.get('ListOfMatchingItems')}`,"content":list,"items":items};

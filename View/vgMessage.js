@@ -146,7 +146,7 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
     
     //override default server
     const messageArray = message.content.split(" ");
-    const code = messageArray.length === 2?messageArray[1]:null;
+    const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
     var callback = function(playerName, player) {
@@ -290,7 +290,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     const messageArray = message.content.split(" ");
 
     //override default server
-    const code = messageArray.length === 2?messageArray[1]:null;
+    const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
     var callback = function(list,playerList,matches, role) {
@@ -352,7 +352,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
             .addField(`${i18n.get('RecentHeroes')}`, `${recentRate}`)
-            .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/50).toFixed(0)}%]`, `${victoryRate}`);
+            .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/matches).toFixed(0)}%]`, `${victoryRate}`);
             
             if (recentNameRate != "") {
                 d = d.addField(`${i18n.get('PlayedWith')}`, `${recentNameRate}`);
@@ -421,7 +421,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
     const messageArray = message.content.split(" ");
     
     //override default server
-    const code = messageArray.length === 2?messageArray[1]:null;
+    const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
     var callback = function(text, data) {

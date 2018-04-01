@@ -144,6 +144,22 @@ bot.on("message", async message => {
         return;
     }
     
+
+    // single item code
+    if (strH.hasCmds(command,[`${PREFIX}vgitem`])) {
+        
+        if (messageArray.length == 1) {
+            // show list
+            itemMsg.showItemWithParam(PREFIX, message, ["",'1','3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["",'2','3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["",'3','3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["",'4','3']);
+        } else {
+            itemMsg.showSingleItem(message);
+        }
+        return
+    }
+    
     // command to show items: ITEM CATEGORY TIER INDEX
     if (strH.hasCmd(command,`${PREFIX}item`)) {
         if (hasRole) {
@@ -299,6 +315,7 @@ bot.on("message", async message => {
         //show player stats
         if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
             vgMsg.requestPlayerDetails(message, null);
+            return;
         }
 
         // show recent played heroes
@@ -364,16 +381,10 @@ bot.on("message", async message => {
             return;
         }
         
-        // single item code
-        if (strH.hasCmds(command,[`${PREFIX}vgitem`])) {
-            itemMsg.showSingleItem(message);
-            return
-        }
-        
         // commands with special rights
 
         //updated item list
-        if (strH.hasCmds(command,[`${PREFIX}updateditems`,`${PREFIX}uitems`])) {
+        if (strH.hasCmds(command,[`${PREFIX}update`,`${PREFIX}upates`])) {
             if (hasRole) {
                 itemMsg.showUpdatedItems(hero,message);
             } else {
@@ -428,6 +439,7 @@ function findChannelByName(channelName) {
 function directMessage(message) {
     
     let messageArray = message.content.split(" ");
+    let command = messageArray[0];
     
     if (strH.hasCmd(command,`${PREFIX}help`)) {
         let embed = helpMsg.getDmHelp(PREFIX,message.author.username);

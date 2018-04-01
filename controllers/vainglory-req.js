@@ -261,7 +261,7 @@ const matchDetails = function(data, callback) {
 const recentPlayedHeroes = function(region, player, callback) {
 
     var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
-    console.log(requestURL);
+    log.debug(requestURL);
     const reqOption = getRequestHeader(requestURL);
     
     if (reqOption==null) {
@@ -699,7 +699,6 @@ function getRolesForParticipants(participantList) {
         return participantList;
     }
     
-    
     const config = gameMode.composition[`${participantList.length}`];
     
     var memberList = participantList;
@@ -792,18 +791,6 @@ function fetchPlayer(json, playerId) {
         }
     }
     return null;
-}
-
-
-function countGameTypes(gameList, type) {
-    var count = 0;
-
-    for (var game of gameList) {
-        if (game.gameMode === type) {
-            count = count + 1;
-        }
-    }
-    return count;
 }
 
 /**

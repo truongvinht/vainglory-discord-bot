@@ -31,14 +31,14 @@ const helpMessage = (PREFIX, author, hasRole) => {
         .addField(`${PREFIX}recent ${i18n.get('Player')} [server]`, `${i18n.get('RecentHeroes')}`)
         .addField(`${PREFIX}elo ELO | ${PREFIX}elo ${i18n.get('Player')}`, `${i18n.get('EloDetails')}`)
         .addField(`${PREFIX}match ${i18n.get('Player')} [server]`,
-             `${i18n.get('LastMatchDetails')}`);
+             `${i18n.get('LastMatchDetails')}`)
+    .addField(`${PREFIX}vgitem CODE`, `${i18n.get('ItemDescription')}`);
 
     if (hasRole) {
         embed.addField(`${PREFIX}info ${i18n.get('Player')}`,
              `${i18n.get('HelpPlayerDetailsFull')}`)
-        .addField(`${PREFIX}item`, `${i18n.get('ItemDescription')}`)
-        .addField(`${PREFIX}uitems VERSION`, `${i18n.get('HelpUpdatedItems')}`)
-        .addField(`${PREFIX}afk ${i18n.get('Player')} [server]`, `${i18n.get('AfkInfo')}`)
+        .addField(`${PREFIX}update VERSION`, `${i18n.get('HelpUpdatedItems')}`)
+        .addField(`${PREFIX}afk ${i18n.get('Player')}`, `${i18n.get('AfkInfo')}`)
         .addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
     }
     return embed;
