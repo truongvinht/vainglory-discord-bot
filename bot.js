@@ -452,6 +452,12 @@ function directMessage(message) {
         message.channel.send(embed);
         return;
     }
+    
+    if (strH.hasCmd(command,`${PREFIX}whatcanido`)) {
+        let embed = adminMsg.getBotDetails(bot);
+        message.channel.send(embed);
+        return;
+    }
 
     // send message to a target channel
     if (strH.hasCmd(command,`${PREFIX}msg`)) {

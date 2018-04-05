@@ -14,19 +14,10 @@ const serverInfo = (bot,message) => {
     
     var contentMap = {};
     
-    
     for (var channel of bot.channels.array()) {
-        
         
         // only text channel 
         if (channel.type == "text") {
-            
-            //console.log(channel.guild.name + ": " + channel.name);
-            //console.log(channel.members)
-            // if (channel.permissionsFor(bot.user).has(Permissions.FLAGS.VIEW_CHANNEL)) {
-            //
-            //     console.log(channel.permissionsFor(bot.user))
-            // }
             
             if (!contentMap.hasOwnProperty(channel.guild.name)) {
                 //first entry
@@ -48,7 +39,45 @@ const serverInfo = (bot,message) => {
     return d;
 }
 
+const botDetails = (bot) => {
+    let d = new Discord.RichEmbed().setTitle(`${i18n.get('OverviewGuildDistribution')}`);
+    
+    var contentMap = {};
+    
+    
+    for (var g of bot.guilds.array()) {
+        
+         let channelCount = g.channels.array().length;
+         let memberCount = g.members.array().length;
+        
+        if (contentMap.hasOwnProperty(`${g.region}`)) {
+
+            contentMap[g.region] = {
+                'region':g.region,
+                'guilds': contentMap[g.region].guilds + 1,
+                'channels': contentMap[g.region].channels + channelCount,
+                'members':contentMap[g.region].members  + memberCount
+            };
+        } else {
+            contentMap[g.region] = {
+                'region':g.region,
+                'guilds': 1,
+                'channels': channelCount,
+                'members':memberCount
+            };
+        }
+    }
+    
+    for (let k of Object.keys(contentMap)) {
+        d = d.addField(`${k}`,`${contentMap[k].guilds} ${i18n.get('Guilds')}, ${contentMap[k].members} ${i18n.get('Users')}`)
+    }
+    
+    
+    return d;
+}
+
 // export
 module.exports = {
-    getServerInfo: serverInfo
+    getServerInfo: serverInfo,
+    getBotDetails: botDetails
 };
