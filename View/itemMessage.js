@@ -285,12 +285,20 @@ const updatedItems = (version, message) => {
         message.channel.send(d);
     }
     message.channel.stopTyping();
-    
 }
+
+const countItems = () => {
+
+    message.channel.startTyping();
+    console.log(item.getItemNumber());
+    message.channel.stopTyping();
+}
+
 // export
 module.exports = {
     showItem: showItem,
     showItemWithParam:showItemWithParam,
     showSingleItem:showSingleItem,
-    showUpdatedItems:updatedItems
+    showUpdatedItems:updatedItems,
+    showItemsNumber: countItems
 };

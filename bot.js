@@ -170,6 +170,11 @@ bot.on("message", async message => {
         return;
     }
 
+    if (strH.hasCmd(command,`${PREFIX}itemcount`)) {
+        itemMsg.showItemsNumber();
+        return;
+    }
+
     if (messageArray.length == 1) {
         //hero commands
         if (command.length == 3) {
