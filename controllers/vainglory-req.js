@@ -6,7 +6,6 @@ var request = require('request');
 var fs = require('fs');
 var log = require('loglevel');
 
-
 // CONTROLLER
 const itemHandler = require('./itemHandler');
 
@@ -17,6 +16,7 @@ var vgbase = require('../models/vainglory-base.js');
 
 // URL for Vainglory developer API
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
+//const VG_URL = 'http://localhost:8080/'
 
 // request token for VG API
 var requestToken = '';
@@ -24,6 +24,7 @@ var requestToken = '';
 var matchStats = function(region, playerName, callback) {
     const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]=1&page[offset]=0";
     log.debug(requestURL);
+    console.log(requestURL);
 
     const reqOption = getRequestHeader(requestURL);
 
@@ -236,7 +237,7 @@ const matchDetails = function(data, callback) {
             
             var soldItems = [];
             
-            // trace sold items
+            // trace sold items (last 100 actions)
             for (var entry of json.reverse().slice(0,maxLength)) {
                 if (entry.type == 'SellItem') {
                     soldItems.push(entry);
@@ -405,7 +406,9 @@ const recentPlayedHeroes = function(region, player, callback) {
 var playerStats = function(region, playerName, callback) {
 
     var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerName;
+    log.debug(requestURL);
     const reqOption = getRequestHeader(requestURL);
+
     
     if (reqOption==null) {
         return null;
@@ -498,6 +501,7 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
     }
     
     const requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerRequest;
+    log.debug(requestURL);
     const reqOption = getRequestHeader(requestURL);
     
     if (reqOption==null) {

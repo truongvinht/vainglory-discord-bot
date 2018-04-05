@@ -566,20 +566,30 @@ const matchDetails = (message) => {
             for (var p of leftTeam) {
                 
                 var items = "";
+                
+                var countItems = 0;
                 if (p.participant.items.length > 0) {
                     for (var i of p.participant.items) {
                         
                         if (items==="") {
                             items = i;
+                            countItems = 1;
                             continue;
                         }
                         items = items + ", " + i;
+                        countItems = countItems+1;
                     }
                 }
                 
                 //check player sold items
-                if (items == '') {
-                    items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}`;
+                if (items == '' || countItems < 6) {
+                    
+                    if (items != '') {
+                        items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}\n${i18n.get('Bought')}: ${items}`;
+                    } else {
+                        items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}`;
+                    }
+                    
                 }
             
                 //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
