@@ -171,7 +171,7 @@ bot.on("message", async message => {
     }
 
     if (strH.hasCmd(command,`${PREFIX}itemcount`)) {
-        itemMsg.showItemsNumber();
+        message.channel.send(itemMsg.showItemsNumber(message));
         return;
     }
 

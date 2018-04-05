@@ -219,6 +219,45 @@ const updatedList = function(version) {
     return items;
 }
 
+const countItems = function() {
+    
+    //fetch all items into an array
+    var items = {};
+    var totalNumber = 0;
+    
+    
+    for (let k of Object.keys(itemList.category)) {
+        let catKey = itemList.category[k];
+        items[catKey] = 1;
+    }
+    
+    for (var key of Object.keys(itemList.item)) {
+        
+        var itm = itemList.item[key];
+        
+        var needsSkipping = false;
+        
+        //check each version
+        for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+            
+            var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
+
+            if (Object.keys(singleItem).length == 0) {
+                continue;
+            }
+        
+            //found item
+            for (let cat of singleItem.category) {
+                let catKey = itemList.category[cat];
+                items[catKey] = items[catKey] + 1;
+            }
+            totalNumber = totalNumber + 1;
+            break;
+        }
+    }
+    return {"items":items,"total":totalNumber};
+}
+
 // export
 module.exports = {
     getCategories: categoryList,
@@ -226,5 +265,6 @@ module.exports = {
     getItems:list,
     getUpdatedItems: updatedList,
     getItem:singleItemCode,
-    getItemByName: singleItem
+    getItemByName: singleItem,
+    getItemNumber: countItems
 };

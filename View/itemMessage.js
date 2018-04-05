@@ -287,11 +287,23 @@ const updatedItems = (version, message) => {
     message.channel.stopTyping();
 }
 
-const countItems = () => {
-
-    message.channel.startTyping();
-    console.log(item.getItemNumber());
-    message.channel.stopTyping();
+const countItems = (message) => {
+    
+    const itemMap = item.getItemNumber();
+    
+    var d = new Discord.RichEmbed()
+    .setAuthor(message.author.username)
+    .setTitle(`${i18n.get('OverviewItems')} (${itemMap.total})`);
+    
+    var msg = "";
+    
+    for (let i of Object.keys(itemMap.items)) {
+        msg = `${msg}${i}: ${itemMap.items[i]}\n`;
+    }
+    
+    d.addField('\u200B',msg);
+    
+    return d;
 }
 
 // export
