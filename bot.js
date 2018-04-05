@@ -453,7 +453,7 @@ function directMessage(message) {
         return;
     }
     
-    if (strH.hasCmd(command,`${PREFIX}whatcanido`)) {
+    if (strH.hasCmd(command,`${PREFIX}whatdoisee`)) {
         let embed = adminMsg.getBotDetails(bot);
         message.channel.send(embed);
         return;
