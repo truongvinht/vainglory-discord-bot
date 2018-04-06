@@ -4,6 +4,7 @@
 
 //import
 const Discord = require("discord.js");
+const http = require("http");
 const c = require("./general/constLoader");
 const i18n = require('./general/langSupport');
 const fm = require('./general/contentFormatter');
