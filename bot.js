@@ -54,6 +54,14 @@ bot.on("ready", async() => {
         
         //init vainglory API token for the bot
         vgMsg.setToken(VG_TOKEN);
+        
+        // heroku hack
+        if (typeof process.env.HOST != 'undefined') {
+            setInterval(function() {
+                console.log(`Ping URL http://${process.env.HOST}.herokuapp.com`);
+                http.get(`http://${process.env.HOST}.herokuapp.com`);
+            }, 1000 * 60 * 10); // every 10 minutes (300000)
+        }
     } catch (e) {
         log.error(e.stack);
     }
