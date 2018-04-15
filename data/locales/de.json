@@ -10,6 +10,8 @@
   "Carry":"Carry",
   "Channels":"Channels",
   "ClearCmd":"Letzte Nachrichten entfernen",
+  "DamageDealt":"Schaden verteilt",
+  "DamageReceived":"Schaden erhalten",
   "Dependency":"Benötigt",
   "DisplayWeaknessHero":"Anzeige der Helden, die diesen Helden überlegen sind (Heldennamen)",
   "DisplayWeaknessHeroCode":"Anzeige der Helden, die diesen Helden überlegen sind (Code)",

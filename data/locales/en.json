@@ -10,6 +10,8 @@
   "Carry":"Carry",
   "Channels":"Channels",
   "ClearCmd":"Clear the recent messages",
+  "DamageDealt":"Damage dealt",
+  "DamageReceived":"Damaged received",
   "Dependency":"Requires",
   "DisplayWeaknessHero":"Display weakness for given hero name",
   "DisplayWeaknessHeroCode":"Display weakness for given hero code",

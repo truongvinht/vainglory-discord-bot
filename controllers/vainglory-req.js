@@ -249,7 +249,249 @@ const matchDetails = function(data, callback) {
             heroSelections['SellItem'] = soldItems;
             //log.error(JSON.stringify(heroSelections))
             
-            callback(heroSelections)
+            callback(heroSelections);
+        }
+    });
+}
+
+const matchDetailsPlayer = (data, callback) => {
+
+    var reqAssetsOption = {
+        url: data.asset,
+        headers: {
+            'User-Agent': 'request',
+            'Accept': 'application/json'
+        }
+    }
+
+    request(reqAssetsOption, function(err, resp, assetbody) {
+
+        if (!err && resp.statusCode == 200) {
+            let json = JSON.parse(assetbody);
+            
+            var playerName = {}
+
+            var teamLeft = {};
+            var teamRight = {};
+            
+            for (var entry of json) {
+
+                //ignore 
+                if (entry.type == 'HeroBan' || 
+                    entry.type == 'HeroSkinSelect' || 
+                    entry.type == 'PlayerFirstSpawn') {
+                    continue;
+                }
+                
+                // prepare player hero selection
+                if (entry.type == 'HeroSelect') {
+                    
+                    if (entry.payload.Team == 1) {
+                        teamLeft[entry.payload.Hero] = {
+                            'Player':`${entry.payload.Player}`,
+                            'Ability':[],
+                            'DealDamage':[],
+                            'ReceiveDamage':[]
+                        };
+                    } else {
+                        teamRight[entry.payload.Hero] = {
+                            'Player': `${entry.payload.Player}`,
+                            'Ability':[],
+                            'DealDamage':[],
+                            'ReceiveDamage':[]
+                        };
+                    }
+                    playerName[entry.payload.Player] = entry.payload.Handle;
+                    continue;
+                }
+                
+                if (entry.type == 'HeroSwap') {
+                    for (let p of entry.payload) {
+                        if (p.Team == 1) {
+                            teamLeft[p.Hero]  = {
+                                'Player':`${p.Player}`,
+                                'Ability':[],
+                                'DealDamage':[],
+                                'ReceiveDamage':[]
+                            };
+                        } else {
+                            teamRight[p.Hero]  = {
+                                'Player':`${p.Player}`,
+                                'Ability':[],
+                                'DealDamage':[],
+                                'ReceiveDamage':[]
+                            };
+                        }
+                    }
+                    continue;
+                }
+                
+                if (entry.type == 'BuyItem') {
+                    //console.log(entry);
+                    continue;
+                }
+                
+                if (entry.type == 'SellItem') {
+                    continue;
+                }
+                
+                // ability 
+                if (entry.type == 'LearnAbility') {
+                    
+                    if (entry.payload.Team == 'Left') {
+                        var hero = teamLeft[entry.payload.Actor];
+                        
+                        var abilityList = hero['Ability'];
+                        
+                        var ability = {};
+                        ability['time'] = entry.time;
+                        ability['Ability'] = entry.payload.Ability;
+                        ability['Level'] = entry.payload.Level;
+                        
+                        abilityList.push(ability);
+                        hero['Ability'] = abilityList;
+                        
+                        teamLeft[entry.payload.Actor] = hero;
+                    } else {
+                        var hero = teamRight[entry.payload.Actor];
+                        
+                        var abilityList = hero['Ability'];
+                        
+                        var ability = {};
+                        ability['time'] = entry.time;
+                        ability['Ability'] = entry.payload.Ability;
+                        ability['Level'] = entry.payload.Level;
+                        
+                        abilityList.push(ability);
+                        hero['Ability'] = abilityList;
+                        
+                        teamRight[entry.payload.Actor] = hero;
+                    }
+                    
+                    continue;
+                }
+                
+                if (entry.type == 'UseAbility') {
+                    continue;
+                }
+                
+                if (entry.type == 'GoldFromTowerKill') {
+                    continue;
+                }
+                
+                if (entry.type == 'GoldFromGoldMine') {
+                    continue;
+                }
+                
+                if (entry.type == 'GoldFromKrakenKill') {
+                    continue;
+                }
+                
+                if (entry.type == 'NPCkillNPC') {
+                    continue;
+                }
+                
+                if (entry.type == 'EarnXP' || entry.type == 'LevelUp') {
+                    continue;
+                }
+                
+                if (entry.type == 'UseItemAbility') {
+                    continue;
+                }
+                
+                if (entry.type == 'HealTarget') {
+                    //console.log(entry);
+                    continue;
+                }
+                
+                if (entry.type == 'Vampirism') {
+                    continue;
+                }
+                
+                if (entry.type == 'KillActor') {
+                    continue;
+                }
+                
+                if (entry.type == 'DealDamage') {
+
+                    var damage = {};
+                    damage['Actor'] = entry.payload.Actor;
+                    damage['Target'] = entry.payload.Target;
+                    damage['Source'] = entry.payload.Source;
+                    damage['Damage'] = entry.payload.Damage;
+                    damage['Dealt'] = entry.payload.Damage;
+                    
+                    
+                    if (entry.payload.Team == 'Left') {
+                        var hero = teamLeft[entry.payload.Actor];
+                        var dealDamage = hero['DealDamage'];
+                        dealDamage.push(damage);
+                        
+                        var opponent = teamRight[entry.payload.Target];
+                        
+                        if (teamRight.hasOwnProperty(entry.payload.Target)) {
+                            
+                            //add only hero damage
+                            hero['DealDamage'] = dealDamage;
+                            teamLeft[entry.payload.Actor] = hero;
+                            
+                            var receiveDamage = opponent['ReceiveDamage'];
+                            receiveDamage.push(damage);
+                            
+                            opponent['ReceiveDamage'] = receiveDamage;
+                            teamRight[entry.payloadTarget] = opponent;
+                        } else {
+                            //console.log("OK for " + entry.payload.Target)
+                        }
+                        
+                    } else {
+                        
+                        var hero = teamRight[entry.payload.Actor];
+                        var dealDamage = hero['DealDamage'];
+                        dealDamage.push(damage);
+                        
+                        var opponent = teamLeft[entry.payload.Target];
+                        
+                        if (teamLeft.hasOwnProperty(entry.payload.Target)) {
+                            //add only hero damage
+                            hero['DealDamage'] = dealDamage;
+                            teamRight[entry.payload.Actor] = hero;
+                            
+                            var receiveDamage = opponent['ReceiveDamage'];
+                            receiveDamage.push(damage);
+                            
+                            opponent['ReceiveDamage'] = receiveDamage;
+                            teamLeft[entry.payloadTarget] = opponent;
+                        } else {
+
+                            //console.log("RIGHT OK for " + entry.payload.Target)
+                        }
+                    }
+                    
+                    continue;
+                }
+                console.log(entry.type);
+                
+            }
+            //console.log(playerName);
+            //console.log(JSON.stringify(teamLeft));
+            //console.log('###');
+            //console.log(teamRight);
+            
+            //set name
+            for (let k of Object.keys(teamLeft)) {
+                var h = teamLeft[k];
+                h['name'] = playerName[h.Player];
+                teamLeft[k] = h;
+            }
+            
+            for (let k of Object.keys(teamRight)) {
+                var h = teamRight[k];
+                h['name'] = playerName[h.Player];
+                teamRight[k] = h;
+            }
+                        
+            callback({'left': teamLeft, 'right': teamRight});
         }
     });
 }
@@ -875,5 +1117,6 @@ module.exports = {
     getPlayersInfo: playersQuickInfo,
     getRecentPlayedHeroes: recentPlayedHeroes,
     getMatchDetails: matchDetails,
+    getMatchDetailsForPlayer: matchDetailsPlayer,
     setToken: updateToken
 };

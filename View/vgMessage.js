@@ -495,6 +495,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
             
             message.channel.send(d).then(message => {
                 message.react('ℹ');
+                message.react('📊');
                 VaingloryToken.getInstance().setMessage(`${message.id}`, data);
             }
             
@@ -629,8 +630,108 @@ const matchDetails = (message) => {
         };
         
         vg.getMatchDetails(matchData,callback)
-        VaingloryToken.getInstance().removeMessage(message.id);
+        //TODO: needs to be reimplemented
+        //VaingloryToken.getInstance().removeMessage(message.id);
     }
+}
+
+const matchDetailsPlayer  = (message) => {
+    
+    var playerName = null;
+    
+    for (var embed of message.embeds) {
+        
+        // reload player details
+        if (colorMng.isMatch(embed.hexColor)) {
+            playerName = embed.author.name;
+            break;
+        } else {
+            console.log('Ignore call for match details');
+            return;
+        }
+    }
+    let matchData = VaingloryToken.getInstance().getMessage(message.id);
+    
+    const channel = message.channel;
+    channel.startTyping();
+    
+    if (matchData!=null && matchData.hasOwnProperty("asset")) {
+        
+        let callback = function(data) {
+        
+            var d = new Discord.RichEmbed().setColor(colorMng.getColor(11))
+                .setTitle(playerName);
+            // find own player
+            let teamLeft = data.left;
+            let teamRight = data.right;
+            
+            var ownData = null;
+            
+            for (let k of Object.keys(teamLeft)) {
+                let hero = teamLeft[k];
+                
+                if (hero.name == playerName) {
+                    ownData = hero;
+                }
+            }
+            
+            if (ownData == null) {
+                for (let k of Object.keys(teamRight)) {
+                    let hero = teamRight[k];
+                
+                    if (hero.name == playerName) {
+                        ownData = hero;
+                    }
+                }
+            }
+            
+            // damage dealt
+            var enemyList = {};
+            
+            for (let dmg of ownData.DealDamage) {
+                if (enemyList.hasOwnProperty(dmg.Target)) {
+                    enemyList[dmg.Target] = enemyList[dmg.Target] + dmg.Dealt;
+                } else {
+                    enemyList[dmg.Target] = dmg.Dealt;
+                }
+            }
+            
+            // damage received
+            var dealtDmgMap = {};
+            
+            for (let dmg of ownData.ReceiveDamage) {
+                if (dealtDmgMap.hasOwnProperty(dmg.Actor)) {
+                    dealtDmgMap[dmg.Actor] = dealtDmgMap[dmg.Actor] + dmg.Dealt;
+                } else {
+                    dealtDmgMap[dmg.Actor] = dmg.Dealt;
+                }
+            }
+            
+            
+            var damageDealtHeroes = "";
+            
+            for (let k of Object.keys(enemyList)) {
+                damageDealtHeroes = damageDealtHeroes + k + ": " + enemyList[k] + "\n";
+            }
+            
+            var receivedDamage = "";
+            
+            for (let k of Object.keys(dealtDmgMap)) {
+                receivedDamage = receivedDamage + k + ": " + dealtDmgMap[k] + "\n";
+            }
+            
+            d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes);
+            d.addField(`${i18n.get('DamageReceived')}`, receivedDamage);
+            
+            channel.send(d).then(message => {
+                message.react('🗑');
+            });
+            channel.stopTyping();
+        };
+        
+        vg.getMatchDetailsForPlayer(matchData, callback);
+    }
+    
 }
 
 const requestEloForPlayer = (message, playerName, callback) => {
@@ -783,6 +884,7 @@ module.exports = {
     requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
     getMatchDetails:matchDetails,
+    getMatchDetailsForPlayer: matchDetailsPlayer,
     getFullPlayerDetails: fullDetails,
     requestEloForPlayer: requestEloForPlayer,
     reloadContent: reloadContent,

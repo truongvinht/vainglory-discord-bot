@@ -71,6 +71,8 @@ bot.on("ready", async() => {
 // reactions added
 bot.on('messageReactionAdd', (reaction, user) => {
     
+    //console.log(reaction);
+    
     //reload content
     if (reaction.count > 1 && reaction.emoji == '🔄') {
         vgMsg.reloadContent(reaction.message);
@@ -80,6 +82,12 @@ bot.on('messageReactionAdd', (reaction, user) => {
     // show further match details
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
+        return;
+    }
+    
+    // show played stats
+    if (reaction.count > 1 && reaction.emoji == '📊') {
+        vgMsg.getMatchDetailsForPlayer(reaction.message);
         return;
     }
     

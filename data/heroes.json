@@ -1,122 +1,1131 @@
 {
   "with" : {
-    "adagio":["rg","vo","lr"],
-    "alpha":["pt","vo","jo","tk","cl"],
-    "ardan":["sy","gl","tk","ft"],
-    "baptiste":["sk","kk","gj","rz","gl"],
-    "baron":["vo","cl","lr","rg","sa"],
-    "blackfeather":["kk","rg","br", "cl"],
-    "catherine":["rn","gr","sa","sk","oz"],
-    "celeste":["sa","kt","pt","fk","ag"],
-    "churnwalker":["re"],
-    "flicker":["rg","id","sk","ap"],
-    "fortress":["tk","kt","fk","ag","la"],
-    "glaive":["kt","tk","sm","id","sy"],
-    "grace":["rn","kr","gl","gj","cl","cw"],
-    "grumpjaw":["kk"],
-    "gwen":["gl","fk","cl","kk","rg"],
-    "idris":["br","gw","sa","vo","jo","rg"],
-    "joule":["pt","sa","cl","br","sa"],
-    "kestrel":["re","kr","sa","rg","ad"],
-    "koshka":["rg","id","vo","br","kt"],
-    "krul":["ap","oz","rn","bf"],
-    "lance":["oz","ap","ct","kr"],
-    "lorelai":["cl","re","sk"],
-    "lyra":["tk","ap","oz","kk"],
-    "ozo":["pt","gw","vo","sy"],
-    "petal":["tk","kr","kt","re","fk"],
-    "phinn":["ct","gr","kt","la"],
-    "reim":["ap","bf","jo","rn","bt"],
-    "reza":["sm","sk","kt","cl"],
-    "ringo":["vo","lr","cl","kt","sy"],
-    "rona":["bf","oz","gl","ft","jo"],
-    "samuel":["sa","kr","rn","sy","kk"],
-    "saw":["vo","fk","rg","gw"],
-    "skaarf":["sa","pt","ph","lr","re"],
-    "skye":["re","ag","kr","rn","ct"],
-    "taka":["sy","cl","sk","br"],
-    "tony":["?"],
-    "varya":["re","jo","pt"],
-    "vox":["re","jo","ph","pt","gw"]
+    "adagio" : [
+      "rg",
+      "vo",
+      "lr"
+    ],
+    "alpha" : [
+      "pt",
+      "vo",
+      "jo",
+      "tk",
+      "cl"
+    ],
+    "ardan" : [
+      "sy",
+      "gl",
+      "tk",
+      "ft"
+    ],
+    "baptiste" : [
+      "sk",
+      "kk",
+      "gj",
+      "rz",
+      "gl"
+    ],
+    "baron" : [
+      "vo",
+      "cl",
+      "lr",
+      "rg",
+      "sa"
+    ],
+    "blackfeather" : [
+      "kk",
+      "rg",
+      "br",
+      "cl"
+    ],
+    "catherine" : [
+      "rn",
+      "gr",
+      "sa",
+      "sk",
+      "oz"
+    ],
+    "celeste" : [
+      "sa",
+      "kt",
+      "pt",
+      "fk",
+      "ag"
+    ],
+    "churnwalker" : [
+      "re"
+    ],
+    "flicker" : [
+      "rg",
+      "id",
+      "sk",
+      "ap"
+    ],
+    "fortress" : [
+      "tk",
+      "kt",
+      "fk",
+      "ag",
+      "la"
+    ],
+    "glaive" : [
+      "kt",
+      "tk",
+      "sm",
+      "id",
+      "sy"
+    ],
+    "grace" : [
+      "rn",
+      "kr",
+      "gl",
+      "gj",
+      "cl",
+      "cw"
+    ],
+    "grumpjaw" : [
+      "kk"
+    ],
+    "gwen" : [
+      "gl",
+      "fk",
+      "cl",
+      "kk",
+      "rg"
+    ],
+    "idris" : [
+      "br",
+      "gw",
+      "sa",
+      "vo",
+      "jo",
+      "rg"
+    ],
+    "joule" : [
+      "pt",
+      "sa",
+      "cl",
+      "br",
+      "sa"
+    ],
+    "kestrel" : [
+      "re",
+      "kr",
+      "sa",
+      "rg",
+      "ad"
+    ],
+    "koshka" : [
+      "rg",
+      "id",
+      "vo",
+      "br",
+      "kt"
+    ],
+    "krul" : [
+      "ap",
+      "oz",
+      "rn",
+      "bf"
+    ],
+    "lance" : [
+      "oz",
+      "ap",
+      "ct",
+      "kr"
+    ],
+    "lorelai" : [
+      "cl",
+      "re",
+      "sk"
+    ],
+    "lyra" : [
+      "tk",
+      "ap",
+      "oz",
+      "kk"
+    ],
+    "ozo" : [
+      "pt",
+      "gw",
+      "vo",
+      "sy"
+    ],
+    "petal" : [
+      "tk",
+      "kr",
+      "kt",
+      "re",
+      "fk"
+    ],
+    "phinn" : [
+      "ct",
+      "gr",
+      "kt",
+      "la"
+    ],
+    "reim" : [
+      "ap",
+      "bf",
+      "jo",
+      "rn",
+      "bt"
+    ],
+    "reza" : [
+      "sm",
+      "sk",
+      "kt",
+      "cl"
+    ],
+    "ringo" : [
+      "vo",
+      "lr",
+      "cl",
+      "kt",
+      "sy"
+    ],
+    "rona" : [
+      "bf",
+      "oz",
+      "gl",
+      "ft",
+      "jo"
+    ],
+    "samuel" : [
+      "sa",
+      "kr",
+      "rn",
+      "sy",
+      "kk"
+    ],
+    "saw" : [
+      "vo",
+      "fk",
+      "rg",
+      "gw"
+    ],
+    "skaarf" : [
+      "sa",
+      "pt",
+      "ph",
+      "lr",
+      "re"
+    ],
+    "skye" : [
+      "re",
+      "ag",
+      "kr",
+      "rn",
+      "ct"
+    ],
+    "taka" : [
+      "sy",
+      "cl",
+      "sk",
+      "br"
+    ],
+    "tony" : [
+      "?"
+    ],
+    "varya" : [
+      "re",
+      "jo",
+      "pt"
+    ],
+    "vox" : [
+      "re",
+      "jo",
+      "ph",
+      "pt",
+      "gw"
+    ]
   },
   "against" : {
-    "adagio":["sy","bf","ft","tk","cl"],
-    "alpha":["re","kr","lr","la"],
-    "ardan":["lr","bf","vo","ct"],
-    "baptiste":["pt","re","bf","ap"],
-    "baron":["bf","tk","id","kk","ap"],
-    "blackfeather":["rn","re","kr","tk"],
-    "catherine":["ph","bf","sy","pt","la"],
-    "celeste":["tk","br","ap","gw","rg"],
-    "churnwalker":["sa","bf","vr","oz","gr"],
-    "flicker":["pt","ft","Saw", "gw","cl"],
-    "fortress":["rn","lr","re","kk","ad"],
-    "glaive":["gw","rn","kr","ad","bt"],
-    "grace":["ct","ph","sy","vo","la"],
-    "grumpjaw":["bt","re","sy","sm"],
-    "gwen":["bf","id","oz","vo","sa"],
-    "idris":["kk","gl","tk","fk","bf"],
-    "joule":["re","vo","ap","rn","id"],
-    "kestrel":["ft","pt","gl","kk"],
-    "koshka":["bf","lr","bt","gw","gl","ap","kr"],
-    "krul":["pt","sy","sm","kt","la"],
-    "lance":["ft","sy","bf","ph"],
-    "lorelai":["bf","vr","sy"],
-    "lyra":["rg","br","sk","id"],
-    "ozo":["la","kr","rn","lr","ct"],
-    "petal":["oz","jo","ap","sk","vo"],
-    "phinn":["vo","sk","ap","bf"],
-    "reim":["sy","vo","pt"],
-    "reza":["bf","bt","lr","re","id"],
-    "ringo":["bf","kk","fk","sa","br","id"],
-    "rona":["ct","kr","sy","re","vo"],
-    "samuel":["bf","gl","rz","tk","bt"],
-    "saw":["sk","cl","sm","jo","id","re"],
-    "skaarf":["tk","bf","ct","rz","rn"],
-    "skye":["tk","bt","ad","gl","sm"],
-    "taka":["pt","ft","lr","ap"],
-    "tony":["pt","re","kr","gw","ph"],
-    "varya":["rg","ap","bt"],
-    "vox":["sa","rg","ap","br"]
+    "adagio" : [
+      "sy",
+      "bf",
+      "ft",
+      "tk",
+      "cl"
+    ],
+    "alpha" : [
+      "re",
+      "kr",
+      "lr",
+      "la"
+    ],
+    "ardan" : [
+      "lr",
+      "bf",
+      "vo",
+      "ct"
+    ],
+    "baptiste" : [
+      "pt",
+      "re",
+      "bf",
+      "ap"
+    ],
+    "baron" : [
+      "bf",
+      "tk",
+      "id",
+      "kk",
+      "ap"
+    ],
+    "blackfeather" : [
+      "rn",
+      "re",
+      "kr",
+      "tk"
+    ],
+    "catherine" : [
+      "ph",
+      "bf",
+      "sy",
+      "pt",
+      "la"
+    ],
+    "celeste" : [
+      "tk",
+      "br",
+      "ap",
+      "gw",
+      "rg"
+    ],
+    "churnwalker" : [
+      "sa",
+      "bf",
+      "vr",
+      "oz",
+      "gr"
+    ],
+    "flicker" : [
+      "pt",
+      "ft",
+      "Saw",
+      "gw",
+      "cl"
+    ],
+    "fortress" : [
+      "rn",
+      "lr",
+      "re",
+      "kk",
+      "ad"
+    ],
+    "glaive" : [
+      "gw",
+      "rn",
+      "kr",
+      "ad",
+      "bt"
+    ],
+    "grace" : [
+      "ct",
+      "ph",
+      "sy",
+      "vo",
+      "la"
+    ],
+    "grumpjaw" : [
+      "bt",
+      "re",
+      "sy",
+      "sm"
+    ],
+    "gwen" : [
+      "bf",
+      "id",
+      "oz",
+      "vo",
+      "sa"
+    ],
+    "idris" : [
+      "kk",
+      "gl",
+      "tk",
+      "fk",
+      "bf"
+    ],
+    "joule" : [
+      "re",
+      "vo",
+      "ap",
+      "rn",
+      "id"
+    ],
+    "kestrel" : [
+      "ft",
+      "pt",
+      "gl",
+      "kk"
+    ],
+    "koshka" : [
+      "bf",
+      "lr",
+      "bt",
+      "gw",
+      "gl",
+      "ap",
+      "kr"
+    ],
+    "krul" : [
+      "pt",
+      "sy",
+      "sm",
+      "kt",
+      "la"
+    ],
+    "lance" : [
+      "ft",
+      "sy",
+      "bf",
+      "ph"
+    ],
+    "lorelai" : [
+      "bf",
+      "vr",
+      "sy"
+    ],
+    "lyra" : [
+      "rg",
+      "br",
+      "sk",
+      "id"
+    ],
+    "ozo" : [
+      "la",
+      "kr",
+      "rn",
+      "lr",
+      "ct"
+    ],
+    "petal" : [
+      "oz",
+      "jo",
+      "ap",
+      "sk",
+      "vo"
+    ],
+    "phinn" : [
+      "vo",
+      "sk",
+      "ap",
+      "bf"
+    ],
+    "reim" : [
+      "sy",
+      "vo",
+      "pt"
+    ],
+    "reza" : [
+      "bf",
+      "bt",
+      "lr",
+      "re",
+      "id"
+    ],
+    "ringo" : [
+      "bf",
+      "kk",
+      "fk",
+      "sa",
+      "br",
+      "id"
+    ],
+    "rona" : [
+      "ct",
+      "kr",
+      "sy",
+      "re",
+      "vo"
+    ],
+    "samuel" : [
+      "bf",
+      "gl",
+      "rz",
+      "tk",
+      "bt"
+    ],
+    "saw" : [
+      "sk",
+      "cl",
+      "sm",
+      "jo",
+      "id",
+      "re"
+    ],
+    "skaarf" : [
+      "tk",
+      "bf",
+      "ct",
+      "rz",
+      "rn"
+    ],
+    "skye" : [
+      "tk",
+      "bt",
+      "ad",
+      "gl",
+      "sm"
+    ],
+    "taka" : [
+      "pt",
+      "ft",
+      "lr",
+      "ap"
+    ],
+    "tony" : [
+      "pt",
+      "re",
+      "kr",
+      "gw",
+      "ph"
+    ],
+    "varya" : [
+      "rg",
+      "ap",
+      "bt"
+    ],
+    "vox" : [
+      "sa",
+      "rg",
+      "ap",
+      "br"
+    ]
   },
-  "hero": {
-    "ag": "Adagio",
-    "ap": "Alpha",
-    "ad": "Ardan",
-    "bt": "Baptiste",
-    "br": "Baron",
-    "bf": "Blackfeather",
-    "ct": "Catherine",
-    "cl": "Celeste",
-    "cw": "Churnwalker",
-    "fk": "Flicker",
-    "ft": "Fortress",
-    "gl": "Glaive",
-    "gr": "Grace",
-    "gj": "Grumpjaw",
-    "gw": "Gwen",
-    "id": "Idris",
-    "jo": "Joule",
-    "kt": "Kestrel",
-    "kk": "Koshka",
-    "kr": "Krul",
-    "la": "Lance",
-    "ll": "Lorelai",
-    "lr": "Lyra",
-    "oz": "Ozo",
-    "pt": "Petal",
-    "ph": "Phinn",
-    "re": "Reim",
-    "rz": "Reza",
-    "rg": "Ringo",
-    "rn": "Rona",
-    "sm": "Samuel",
-    "sa": "SAW",
-    "sk": "Skaarf",
-    "sy": "Skye",
-    "tk": "Taka",
-    "tn": "Tony",
-    "vr": "Varya",
-    "vo": "Vox"
+  "ability" : {
+    "adagio" : {
+      "perk" : {
+        "title" : "Arcane Renewal"
+      },
+      "a" : {
+        "title" : "Gift of Fire",
+        "heal" : true,
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Agent of Wrath"
+      },
+      "c" : {
+        "title" : "Verse of Judgement",
+        "stun" : true
+      }
+    },
+    "alpha" : {
+      "perk" : {
+        "title" : "Infinite Reboot"
+      },
+      "a" : {
+        "title" : "Prime Directive",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Core Charge"
+      },
+      "c" : {
+        "title" : "Termination Protocol"
+      }
+    },
+    "ardan" : {
+      "perk" : {
+        "title" : "Julia's Gift"
+      },
+      "a" : {
+        "title" : "Vanguard",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Blood for Blood"
+      },
+      "c" : {
+        "title" : "Gauntlet",
+        "stun" : true
+      }
+    },
+    "baptiste" : {
+      "perk" : {
+        "title" : "Reap",
+        "heal" : true
+      },
+      "a" : {
+        "title" : "Bad Mojo"
+      },
+      "b" : {
+        "title" : "Ordained",
+        "stun" : true
+      },
+      "c" : {
+        "title" : "Fearsome Shade",
+        "stun" : true
+      }
+    },
+    "baron" : {
+      "perk" : {
+        "title" : "Rocket Launcher"
+      },
+      "a" : {
+        "title" : "Porcupine Mortar"
+      },
+      "b" : {
+        "title" : "Jump Jets"
+      },
+      "c" : {
+        "title" : "Ion Cannon"
+      }
+    },
+    "blackfeather" : {
+      "perk" : {
+        "title" : "Heartthrob"
+      },
+      "a" : {
+        "title" : "Feint of Heart"
+      },
+      "b" : {
+        "title" : "On Point",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Rose Offensive"
+      }
+    },
+    "catherine" : {
+      "perk" : {
+        "title" : "Captain of the Guard"
+      },
+      "a" : {
+        "title" : "Merciless Pursuit",
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Stormguard"
+      },
+      "c" : {
+        "title" : "Ion Cannon",
+        "silence" : true
+      }
+    },
+    "celeste" : {
+      "perk" : {
+        "title" : "Julia's Light"
+      },
+      "a" : {
+        "title" : "Heliogenesis"
+      },
+      "b" : {
+        "title" : "Core Collapse",
+        "stun" : true
+      },
+      "c" : {
+        "title" : "Rose Offensive"
+      }
+    },
+    "churnwalker" : {
+      "perk" : {
+        "title" : "Futility of Life"
+      },
+      "a" : {
+        "title" : "Hook & Chain"
+      },
+      "b" : {
+        "title" : "Torment"
+      },
+      "c" : {
+        "title" : "Trespass",
+        "stun" : true
+      }
+    },
+    "flicker" : {
+      "perk" : {
+        "title" : "Willow Whisper"
+      },
+      "a" : {
+        "title" : "Willow Whisper",
+        "root" : true
+      },
+      "b" : {
+        "title" : "Fairy Dust",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Mooncloak"
+      }
+    },
+    "fortress" : {
+      "perk" : {
+        "title" : "Packmates"
+      },
+      "a" : {
+        "title" : "Truth of the Tooth"
+      },
+      "b" : {
+        "title" : "Law of the Claw",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Attack of the Pack"
+      }
+    },
+    "glaive" : {
+      "perk" : {
+        "title" : "Hunt the Weak"
+      },
+      "a" : {
+        "title" : "Afterburn",
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Twisted Stroke"
+      },
+      "c" : {
+        "title" : "Bloodsong",
+        "heal" : true
+      }
+    },
+    "grace" : {
+      "perk" : {
+        "title" : "Retribution",
+        "slow" : true
+      },
+      "a" : {
+        "title" : "Benediction"
+      },
+      "b" : {
+        "title" : "Holy Nova"
+      },
+      "c" : {
+        "title" : "Divine Intervention",
+        "heal" : true
+      }
+    },
+    "grumpjaw" : {
+      "perk" : {
+        "title" : "Living Armor"
+      },
+      "a" : {
+        "title" : "Grumpy",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Hangry"
+      },
+      "c" : {
+        "title" : "Stuffed"
+      }
+    },
+    "gwen" : {
+      "perk" : {
+        "title" : "Boomstick"
+      },
+      "a" : {
+        "title" : "Buckshot Bonanza",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Skedaddle"
+      },
+      "c" : {
+        "title" : "Aces High",
+        "stun" : true
+      }
+    },
+    "idris" : {
+      "perk" : {
+        "title" : "Divergent Paths"
+      },
+      "a" : {
+        "title" : "Shroudstep"
+      },
+      "b" : {
+        "title" : "Chakram"
+      },
+      "c" : {
+        "title" : "Shimmer Strike"
+      }
+    },
+    "joule" : {
+      "perk" : {
+        "title" : "Heavy Plating"
+      },
+      "a" : {
+        "title" : "Rocket Leap",
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Thunder Strike"
+      },
+      "c" : {
+        "title" : "Big Red Button"
+      }
+    },
+    "kestrel" : {
+      "perk" : {
+        "title" : "Adrenaline"
+      },
+      "a" : {
+        "title" : "Glimmershot"
+      },
+      "b" : {
+        "title" : "Active Camo",
+        "stun" : true
+      },
+      "c" : {
+        "title" : "One Shot One Kill"
+      }
+    },
+    "koshka" : {
+      "perk" : {
+        "title" : "Bloodrush"
+      },
+      "a" : {
+        "title" : "Pouncy Fun"
+      },
+      "b" : {
+        "title" : "Twirly Death"
+      },
+      "c" : {
+        "title" : "Yummy Catnip Frenzy",
+        "stun" : true
+      }
+    },
+    "krul" : {
+      "perk" : {
+        "title" : "Shadows Empower Me",
+        "slow" : true
+      },
+      "a" : {
+        "title" : "Dead Man's Rush"
+      },
+      "b" : {
+        "title" : "Spectral Smite"
+      },
+      "c" : {
+        "title" : "From Hell's Heart",
+        "stun" : true
+      }
+    },
+    "lance" : {
+      "perk" : {
+        "title" : "Partisan's Technique"
+      },
+      "a" : {
+        "title" : "Impale",
+        "root" : true
+      },
+      "b" : {
+        "title" : "Gythian Wall",
+        "stun" : true
+      },
+      "c" : {
+        "title" : "Combat Roll"
+      }
+    },
+    "lorelai" : {
+      "perk" : {
+        "title" : "That's Swell"
+      },
+      "a" : {
+        "title" : "Fish Food",
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Splashdown",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Waterwall"
+      }
+    },
+    "lyra" : {
+      "perk" : {
+        "title" : "Principle Arcanum",
+        "slow" : true
+      },
+      "a" : {
+        "title" : "Imperial Sigil",
+        "heal" : true
+      },
+      "b" : {
+        "title" : "Bright Bulwark",
+        "snare" : 0
+      },
+      "c" : {
+        "title" : "Arcane Passage"
+      }
+    },
+    "ozo" : {
+      "perk" : {
+        "title" : "Carnie Luck",
+        "heal" : true
+      },
+      "a" : {
+        "title" : "Three-Ring Circus",
+        "heal" : true
+      },
+      "b" : {
+        "title" : "Acrobounce",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Bangarang",
+        "stun" : true
+      }
+    },
+    "petal" : {
+      "perk" : {
+        "title" : "Munions"
+      },
+      "a" : {
+        "title" : "Brambleboom Seeds"
+      },
+      "b" : {
+        "title" : "Trampoline!"
+      },
+      "c" : {
+        "title" : "Spontaneous Combustion",
+        "heal" : true,
+        "slow" : true
+      }
+    },
+    "phinn" : {
+      "perk" : {
+        "title" : "Unstoppable"
+      },
+      "a" : {
+        "title" : "Quibble",
+        "slow" : true,
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Polite Company"
+      },
+      "c" : {
+        "title" : "Forced Accord"
+      }
+    },
+    "reim" : {
+      "perk" : {
+        "title" : "Frostguard"
+      },
+      "a" : {
+        "title" : "Winter Spire"
+      },
+      "b" : {
+        "title" : "Chill Winds",
+        "root" : true
+      },
+      "c" : {
+        "title" : "Valkyrie",
+        "stun" : true
+      }
+    },
+    "reza" : {
+      "perk" : {
+        "title" : "Firestarter"
+      },
+      "a" : {
+        "title" : "Scorcher"
+      },
+      "b" : {
+        "title" : "Troublemaker"
+      },
+      "c" : {
+        "title" : "Netherform Detonator"
+      }
+    },
+    "ringo" : {
+      "perk" : {
+        "title" : "Double Down"
+      },
+      "a" : {
+        "title" : "Achilles Shot",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Twirling Silver"
+      },
+      "c" : {
+        "title" : "Hellfire Brew"
+      }
+    },
+    "rona" : {
+      "perk" : {
+        "title" : "Berserkers' Fury"
+      },
+      "a" : {
+        "title" : "Into the Fray",
+        "slow" : true
+      },
+      "b" : {
+        "title" : "Foesplitter"
+      },
+      "c" : {
+        "title" : "Red Mist"
+      }
+    },
+    "samuel" : {
+      "perk" : {
+        "title" : "Corrupted Genius",
+        "heal" : true
+      },
+      "a" : {
+        "title" : "Malice & Verdict"
+      },
+      "b" : {
+        "title" : "Drifting Dark",
+        "heal" : false
+      },
+      "c" : {
+        "title" : "Oblivion",
+        "sleep" : true
+      }
+    },
+    "saw" : {
+      "perk" : {
+        "title" : "Spin Up"
+      },
+      "a" : {
+        "title" : "Roadie Run"
+      },
+      "b" : {
+        "title" : "Suppressing Fire",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Mad Cannon"
+      }
+    },
+    "skaarf" : {
+      "perk" : {
+        "title" : "Fan the Flames"
+      },
+      "a" : {
+        "title" : "Spitfire"
+      },
+      "b" : {
+        "title" : "Goop",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Dragon's Breath"
+      }
+    },
+    "skye" : {
+      "perk" : {
+        "title" : "Target Lock"
+      },
+      "a" : {
+        "title" : "Forward Barrage"
+      },
+      "b" : {
+        "title" : "Suri Strike"
+      },
+      "c" : {
+        "title" : "Death From Above",
+        "stun" : true,
+        "slow" : true
+      }
+    },
+    "taka" : {
+      "perk" : {
+        "title" : "House Kamuha"
+      },
+      "a" : {
+        "title" : "Kaiten"
+      },
+      "b" : {
+        "title" : "Kaku",
+        "heal" : true
+      },
+      "c" : {
+        "title" : "X-Retsu"
+      }
+    },
+    "tony" : {
+      "perk" : {
+        "title" : "Come At Me"
+      },
+      "a" : {
+        "title" : "Jawbreaker"
+      },
+      "b" : {
+        "title" : "Trash talk"
+      },
+      "c" : {
+        "title" : "Bada Boom",
+        "stun" : true
+      }
+    },
+    "varya" : {
+      "perk" : {
+        "title" : "Chain Lightning"
+      },
+      "a" : {
+        "title" : "Stormforged Spear"
+      },
+      "b" : {
+        "title" : "Arc Recursion"
+      },
+      "c" : {
+        "title" : "Anvil's Hammer"
+      }
+    },
+    "vox" : {
+      "perk" : {
+        "title" : "Julia's Song"
+      },
+      "a" : {
+        "title" : "Sonic Zoom"
+      },
+      "b" : {
+        "title" : "Pulse",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Wait for It",
+        "silence" : true
+      }
+    }
+  },
+  "hero" : {
+    "ag" : "Adagio",
+    "ap" : "Alpha",
+    "ad" : "Ardan",
+    "bt" : "Baptiste",
+    "br" : "Baron",
+    "bf" : "Blackfeather",
+    "ct" : "Catherine",
+    "cl" : "Celeste",
+    "cw" : "Churnwalker",
+    "fk" : "Flicker",
+    "ft" : "Fortress",
+    "gl" : "Glaive",
+    "gr" : "Grace",
+    "gj" : "Grumpjaw",
+    "gw" : "Gwen",
+    "id" : "Idris",
+    "jo" : "Joule",
+    "kt" : "Kestrel",
+    "kk" : "Koshka",
+    "kr" : "Krul",
+    "la" : "Lance",
+    "ll" : "Lorelai",
+    "lr" : "Lyra",
+    "oz" : "Ozo",
+    "pt" : "Petal",
+    "ph" : "Phinn",
+    "re" : "Reim",
+    "rz" : "Reza",
+    "rg" : "Ringo",
+    "rn" : "Rona",
+    "sm" : "Samuel",
+    "sa" : "SAW",
+    "sk" : "Skaarf",
+    "sy" : "Skye",
+    "tk" : "Taka",
+    "tn" : "Tony",
+    "vr" : "Varya",
+    "vo" : "Vox"
   }
 }

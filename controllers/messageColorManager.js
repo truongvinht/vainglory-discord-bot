@@ -14,7 +14,8 @@ const MessageTypes = {
     RECENT_PLAYED: 8,
     MATCH: 9,
     MATCH_DETAILS: 10,
-    ELO_LIST: 11
+    ELO_LIST: 11,
+    MATCH_PLAYER_DETAILS: 12
 };
 
 const colorMap = {
@@ -28,7 +29,8 @@ const colorMap = {
     "8": "#531b93", // RECENT_PLAYED
     "9": "#424242", // MATCH
     "10": "#222222", // MATCH_DETAILS
-    "11": "#234234" // ELO_LIST
+    "11": "#234234", // ELO_LIST
+    "12": "#123123" // MATCH_PLAYER_DETAILS
     
 };
 
@@ -65,9 +67,21 @@ const isPlayerDetails = (color) => {
     }
 }
 
+const isMatch = (color) => {
+    
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    
+    if (colorIndex == MessageTypes.MATCH ) {
+        return true;  
+    } else {
+        return false;
+    }
+}
+
 // export
 module.exports = {
     getColor: colorForMessage,
     getType: messageType,
-    isPlayerDetails:isPlayerDetails
+    isPlayerDetails:isPlayerDetails,
+    isMatch: isMatch
 };
