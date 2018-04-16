@@ -291,14 +291,18 @@ const matchDetailsPlayer = (data, callback) => {
                             'Player':`${entry.payload.Player}`,
                             'Ability':[],
                             'DealDamage':[],
-                            'ReceiveDamage':[]
+                            'ReceiveDamage':[],
+                            'Kill':[],
+                            'Death':[]
                         };
                     } else {
                         teamRight[entry.payload.Hero] = {
                             'Player': `${entry.payload.Player}`,
                             'Ability':[],
                             'DealDamage':[],
-                            'ReceiveDamage':[]
+                            'ReceiveDamage':[],
+                            'Kill':[],
+                            'Death':[]
                         };
                     }
                     playerName[entry.payload.Player] = entry.payload.Handle;
@@ -312,14 +316,18 @@ const matchDetailsPlayer = (data, callback) => {
                                 'Player':`${p.Player}`,
                                 'Ability':[],
                                 'DealDamage':[],
-                                'ReceiveDamage':[]
+                                'ReceiveDamage':[],
+                                'Kill':[],
+                                'Death':[]
                             };
                         } else {
                             teamRight[p.Hero]  = {
                                 'Player':`${p.Player}`,
                                 'Ability':[],
                                 'DealDamage':[],
-                                'ReceiveDamage':[]
+                                'ReceiveDamage':[],
+                                'Kill':[],
+                                'Death':[]
                             };
                         }
                     }
@@ -409,6 +417,39 @@ const matchDetailsPlayer = (data, callback) => {
                 }
                 
                 if (entry.type == 'KillActor') {
+                    
+                    if (entry.payload.IsHero != 1 ||entry.payload.TargetIsHero != 1) {
+                        continue;
+                    }
+
+                    //console.log(entry);
+
+                    var killedHero = {};
+                    killedHero['Actor'] = entry.payload.Actor;
+                    killedHero['Killed'] = entry.payload.Killed;
+                    killedHero['KilledTeam'] = entry.payload.KilledTeam;
+                    killedHero['time'] = entry.time;
+
+                    if (entry.payload.Team == 'Left') {
+
+                        var hero = teamLeft[entry.payload.Actor];
+                        var kills = hero['Kill'];
+                        kills.push(killedHero);
+                        
+                        var deathHero = teamRight[entry.payload.Killed];
+                        var death = deathHero['Death'];
+                        death.push(killedHero)
+                        
+                    } else {
+                        var hero = teamRight[entry.payload.Actor];
+                        var kills = hero['Kill'];
+                        kills.push(killedHero);
+
+                        var deathHero = teamLeft[entry.payload.Killed];
+                        var death = deathHero['Death'];
+                        death.push(killedHero)
+                    }
+                    
                     continue;
                 }
                 
@@ -440,8 +481,6 @@ const matchDetailsPlayer = (data, callback) => {
                             
                             opponent['ReceiveDamage'] = receiveDamage;
                             teamRight[entry.payloadTarget] = opponent;
-                        } else {
-                            //console.log("OK for " + entry.payload.Target)
                         }
                         
                     } else {
@@ -462,9 +501,6 @@ const matchDetailsPlayer = (data, callback) => {
                             
                             opponent['ReceiveDamage'] = receiveDamage;
                             teamLeft[entry.payloadTarget] = opponent;
-                        } else {
-
-                            //console.log("RIGHT OK for " + entry.payload.Target)
                         }
                     }
                     
@@ -490,6 +526,7 @@ const matchDetailsPlayer = (data, callback) => {
                 h['name'] = playerName[h.Player];
                 teamRight[k] = h;
             }
+            
                         
             callback({'left': teamLeft, 'right': teamRight});
         }

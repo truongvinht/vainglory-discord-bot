@@ -686,6 +686,64 @@ const matchDetailsPlayer  = (message) => {
                 }
             }
             
+            // kills / deaths
+            var killDeathMap = {};
+            
+            for (let p of ownData.Kill) {
+                
+                if (killDeathMap.hasOwnProperty(p.Killed)) {
+                    var hero = killDeathMap[p.Killed];
+                    
+                    if (hero.hasOwnProperty("Death")) {
+                        hero["Death"] = hero["Death"]  + 1;
+                    } else {
+                        hero["Death"] = 1;
+                    }
+                } else {
+                    killDeathMap[p.Killed] = {"Death": 1};
+                }
+            }
+            
+            for (let p of ownData.Death) {
+                
+                if (killDeathMap.hasOwnProperty(p.Actor)) {
+                    var hero = killDeathMap[p.Actor];
+                    
+                    if (hero.hasOwnProperty("Kill")) {
+                        hero["Kill"] = hero["Kill"]  + 1;
+                    } else {
+                        hero["Kill"] = 1;
+                    }
+                } else {
+                    killDeathMap[p.Actor] = {"Kill": 1};
+                }
+            }
+            
+            
+            if (Object.keys(killDeathMap).length > 0) {
+                
+                var kdString = "";
+                for (let key of Object.keys(killDeathMap)) {
+                    let h = killDeathMap[key];
+                    
+                    var kills = 0;
+                    if (h.hasOwnProperty("Kill")) {
+                        kills = h["Kill"];
+                    }
+                    
+                    var deaths = 0;
+                    if (h.hasOwnProperty("Death")) {
+                        deaths = h["Death"];
+                    }
+                    
+                    kdString = kdString + key + " | KD " + kills + "/" + deaths + "\n";
+                }
+                
+                d.addField('\u200B', kdString );
+            }
+            
+            //console.log(JSON.stringify(ownData.Death));
+            
             // damage dealt
             var dealtDmgMap = {};
             
