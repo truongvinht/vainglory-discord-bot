@@ -496,6 +496,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
             message.channel.send(d).then(message => {
                 message.react('ℹ');
                 message.react('📊');
+                message.react('🗑');
                 VaingloryToken.getInstance().setMessage(`${message.id}`, data);
             }
             
@@ -653,9 +654,9 @@ const matchDetailsPlayer  = (message) => {
     let matchData = VaingloryToken.getInstance().getMessage(message.id);
     
     const channel = message.channel;
-    channel.startTyping();
     
     if (matchData!=null && matchData.hasOwnProperty("asset")) {
+        channel.startTyping();
         
         let callback = function(data) {
         
@@ -686,42 +687,76 @@ const matchDetailsPlayer  = (message) => {
             }
             
             // damage dealt
-            var enemyList = {};
-            
-            for (let dmg of ownData.DealDamage) {
-                if (enemyList.hasOwnProperty(dmg.Target)) {
-                    enemyList[dmg.Target] = enemyList[dmg.Target] + dmg.Dealt;
-                } else {
-                    enemyList[dmg.Target] = dmg.Dealt;
-                }
-            }
-            
-            // damage received
             var dealtDmgMap = {};
             
-            for (let dmg of ownData.ReceiveDamage) {
-                if (dealtDmgMap.hasOwnProperty(dmg.Actor)) {
-                    dealtDmgMap[dmg.Actor] = dealtDmgMap[dmg.Actor] + dmg.Dealt;
+            for (let dmg of ownData.DealDamage) {
+                if (dealtDmgMap.hasOwnProperty(dmg.Target)) {
+                    dealtDmgMap[dmg.Target] = dealtDmgMap[dmg.Target] + dmg.Dealt;
                 } else {
-                    dealtDmgMap[dmg.Actor] = dmg.Dealt;
+                    dealtDmgMap[dmg.Target] = dmg.Dealt;
+                }
+            }
+            
+            var dealtDmgList = [];
+            
+            for (let k of Object.keys(dealtDmgMap)) {
+                dealtDmgList.push({"name":`${k}`,"score":`${dealtDmgMap[k]}`});
+            }
+            
+            dealtDmgList.sort(function(a, b) {
+                return b.score - a.score;
+            });
+            
+            // damage received
+            var receivedDmgMap = {};
+            
+            for (let dmg of ownData.ReceiveDamage) {
+                if (receivedDmgMap.hasOwnProperty(dmg.Actor)) {
+                    receivedDmgMap[dmg.Actor] = receivedDmgMap[dmg.Actor] + dmg.Dealt;
+                } else {
+                    receivedDmgMap[dmg.Actor] = dmg.Dealt;
                 }
             }
             
             
+            var receiveDmgList = [];
+            
+            for (let k of Object.keys(receivedDmgMap)) {
+                receiveDmgList.push({"name":`${k}`,"score":`${receivedDmgMap[k]}`});
+            }
+            
+            receiveDmgList.sort(function(a, b) {
+                return b.score - a.score;
+            });
+            
+
+            // prepare text
             var damageDealtHeroes = "";
-            
-            for (let k of Object.keys(enemyList)) {
-                damageDealtHeroes = damageDealtHeroes + k + ": " + enemyList[k] + "\n";
+
+            for (let hero of dealtDmgList) {
+                
+                //filter non-heroes
+                if (receivedDmgMap[hero.name] != undefined) {
+                    damageDealtHeroes = `${damageDealtHeroes}${hero.name}: ${hero.score}\n`;
+                } 
+            }
+            var damageReceivedHeroes = "";
+
+            for (let hero of receiveDmgList) {
+                
+                //filter non-heroes
+                if (dealtDmgMap[hero.name] != undefined) {
+                    damageReceivedHeroes = `${damageReceivedHeroes}${hero.name}: ${hero.score}\n`;
+                } 
             }
             
-            var receivedDamage = "";
-            
-            for (let k of Object.keys(dealtDmgMap)) {
-                receivedDamage = receivedDamage + k + ": " + dealtDmgMap[k] + "\n";
+            if (damageDealtHeroes.length > 0) {
+                d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes );
             }
             
-            d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes);
-            d.addField(`${i18n.get('DamageReceived')}`, receivedDamage);
+            if (damageReceivedHeroes.length > 0) {
+                d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes);
+            }
             
             channel.send(d).then(message => {
                 message.react('🗑');
