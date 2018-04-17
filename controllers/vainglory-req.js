@@ -422,8 +422,6 @@ const matchDetailsPlayer = (data, callback) => {
                         continue;
                     }
 
-                    //console.log(entry);
-
                     var killedHero = {};
                     killedHero['Actor'] = entry.payload.Actor;
                     killedHero['Killed'] = entry.payload.Killed;
@@ -506,13 +504,9 @@ const matchDetailsPlayer = (data, callback) => {
                     
                     continue;
                 }
-                console.log(entry.type);
+                //console.log(entry.type);
                 
             }
-            //console.log(playerName);
-            //console.log(JSON.stringify(teamLeft));
-            //console.log('###');
-            //console.log(teamRight);
             
             //set name
             for (let k of Object.keys(teamLeft)) {

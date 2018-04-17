@@ -736,10 +736,10 @@ const matchDetailsPlayer  = (message) => {
                         deaths = h["Death"];
                     }
                     
-                    kdString = kdString + key + " | KD " + kills + "/" + deaths + "\n";
+                    kdString = kdString + key.split("*").join("**") + " | KD " + kills + "/" + deaths + "\n";
                 }
                 
-                d.addField('\u200B', kdString );
+                d.addField('\u200B', kdString);
             }
             
             //console.log(JSON.stringify(ownData.Death));
@@ -809,11 +809,11 @@ const matchDetailsPlayer  = (message) => {
             }
             
             if (damageDealtHeroes.length > 0) {
-                d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes );
+                d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes.split("*").join("**"));
             }
             
             if (damageReceivedHeroes.length > 0) {
-                d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes);
+                d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes.split("*").join("**"));
             }
             
             channel.send(d).then(message => {
