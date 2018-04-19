@@ -121,12 +121,13 @@ function updatePlayerDetails(message, playerName) {
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
                                       `Casual 3v3: ${player.gamesPlayed.casual}\n` +
                                       `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
                                       `Blitz: ${player.gamesPlayed.blitz}\n` +
                                       `Battle Royal: ${player.gamesPlayed.aral}`;
             
             const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
                                       
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
@@ -170,12 +171,13 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
                                       `Casual 3v3: ${player.gamesPlayed.casual}\n` +
                                       `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
                                       `Blitz: ${player.gamesPlayed.blitz}\n` +
                                       `Battle Royal: ${player.gamesPlayed.aral}`;
             
             const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
                                       
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)
@@ -231,10 +233,11 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
                                       `Casual 3v3: ${player.gamesPlayed.casual}\n` +
                                       `Ranked: ${player.gamesPlayed.ranked}\n` + 
+                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
                                       `Blitz: ${player.gamesPlayed.blitz}\n` +
                                       `Battle Royal: ${player.gamesPlayed.aral}`;
             
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}`)
+            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
                 .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
                 .addField(`${i18n.get('Victory')}`, `${player.wins}`)

@@ -709,7 +709,8 @@ var playerStats = function(region, playerName, callback) {
                     "skillTierImg": vgbase.convertTier(vgbase.getTier(anyPlayer.attributes.stats.skillTier)),
                     "rankPoints": {
                         "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
-                        "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                        "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2),
+                        "ranked_5v5": anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2),
                     },
                     "createdAt": anyPlayer.attributes.createdAt,
                     "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
@@ -804,7 +805,8 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                         "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                         "rankPoints": {
                             "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
-                            "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                            "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2),
+                            "ranked_5v5": anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
                         },
                         "createdAt": anyPlayer.attributes.createdAt,
                         "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
