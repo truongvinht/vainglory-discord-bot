@@ -18,7 +18,8 @@
         "tier" : 1,
         "image" : "weapon-blade"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1059_Item_BookOfEulogies*" : {
       "3.0" : {
@@ -40,7 +41,8 @@
         ],
         "tier" : 1,
         "image" : "book-of-eulogies"
-      }
+      },
+      "3.2" : {}
     },
     "*1004_Item_SwiftShooter*" : {
       "3.0" : {
@@ -55,7 +57,8 @@
         "tier" : 1,
         "image" : "swift-shooter"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1080_Item_MinionsFoot*" : {
       "3.0" : {
@@ -67,7 +70,8 @@
         "tier" : 1,
         "image" : "minions-foot"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1003_Item_CrystalBit*" : {
       "3.0" : {
@@ -80,7 +84,8 @@
         "tier" : 1,
         "image" : "crystal-bit"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1025_Item_EnergyBattery*" : {
       "3.0" : {
@@ -94,7 +99,8 @@
         "tier" : 1,
         "image" : "energy-battery"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1026_Item_Hourglass*" : {
       "3.0" : {
@@ -110,7 +116,8 @@
         "tier" : 1,
         "image" : "hourglass"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1065_Item_HeavySteel*" : {
       "3.0" : {
@@ -126,7 +133,8 @@
         "tier" : 2,
         "image" : "heavy-steel"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1005_Item_SixSins*" : {
       "3.0" : {
@@ -142,7 +150,8 @@
         "tier" : 2,
         "image" : "six-sins"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1060_Item_BarbedNeedle*" : {
       "3.0" : {
@@ -158,7 +167,8 @@
         "tier" : 2,
         "image" : "barbed-needle"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1066_Item_PiercingSpear*" : {
       "3.0" : {
@@ -174,7 +184,8 @@
         "tier" : 2,
         "image" : "piercing-spear"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1010_Item_BlazingSalvo*" : {
       "3.0" : {
@@ -192,7 +203,8 @@
         "tier" : 2,
         "image" : "blazing-salvo"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1068_Item_LuckyStrike*" : {
       "3.0" : {
@@ -208,7 +220,8 @@
         "tier" : 2,
         "image" : "lucky-strike"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1028_Item_Chronograph*" : {
       "3.0" : {
@@ -226,7 +239,8 @@
         "tier" : 2,
         "image" : "chronograph"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1012_Item_Sorrowblade*" : {
       "3.0" : {
@@ -244,7 +258,8 @@
         "image" : "sorrowblade",
         "code" : "SB"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1034_Item_SerpentMask*" : {
       "3.0" : {
@@ -262,7 +277,8 @@
         "image" : "serpent-mask",
         "code" : "SM"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "spellsword" : {
       "3.0" : {
@@ -280,7 +296,8 @@
         "image" : "spellsword",
         "code" : "SS"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1092_Item_PoisonedShiv*" : {
       "3.0" : {
@@ -298,7 +315,8 @@
         "image" : "poisoned-shiv",
         "code" : "PS"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1067_Item_BreakingPoint*" : {
       "3.0" : {
@@ -316,7 +334,22 @@
         "image" : "breaking-point",
         "code" : "BP"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {
+        "name" : "Breaking Point",
+        "price" : 2600,
+        "description" : "Passive: Gain 10 weapon power for every 170 weapon damage done to enemy heroes +5/10 (Melee/Ranged) damage needed for each stack thereafter. 25 stacks max. Decays 3 stacks per second after you've stopped stacking for 2.5s. +20% Attack Speed +55 Weapon Power",
+        "depending" : [
+          "Heavy Steel",
+          "Blazing Salvo"
+        ],
+        "category" : [
+          "1"
+        ],
+        "tier" : 3,
+        "image" : "breaking-point",
+        "code" : "BP"
+      }
     },
     "*1035_Item_TensionBow*" : {
       "3.0" : {
@@ -348,7 +381,8 @@
         "tier" : 3,
         "image" : "tension-bow",
         "code" : "TB"
-      }
+      },
+      "3.2" : {}
     },
     "*1039_Item_Bonesaw*" : {
       "3.0" : {
@@ -366,7 +400,8 @@
         "image" : "bonesaw",
         "code" : "BS"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1014_Item_TornadoTrigger*" : {
       "3.0" : {
@@ -398,7 +433,8 @@
         "tier" : 3,
         "image" : "tornado-trigger",
         "code" : "TT"
-      }
+      },
+      "3.2" : {}
     },
     "*1049_Item_TyrantsMonocle*" : {
       "3.0" : {
@@ -430,7 +466,8 @@
         "tier" : 3,
         "image" : "tyrants-monocle",
         "code" : "TM"
-      }
+      },
+      "3.2" : {}
     },
     "*1072_Item_HeavyPrism*" : {
       "3.0" : {
@@ -446,7 +483,8 @@
         "tier" : 2,
         "image" : "heavy-prism"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1009_Item_EclipsePrism*" : {
       "3.0" : {
@@ -462,7 +500,8 @@
         "tier" : 2,
         "image" : "eclipse-prism"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1070_Item_PiercingShard*" : {
       "3.0" : {
@@ -478,7 +517,8 @@
         "tier" : 2,
         "image" : "eclipse-prism"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1027_Item_VoidBattery*" : {
       "3.0" : {
@@ -494,7 +534,8 @@
         "tier" : 2,
         "image" : "void-battery"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1013_Item_Shatterglass*" : {
       "3.0" : {
@@ -511,7 +552,8 @@
         "tier" : 3,
         "image" : "shatterglass"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*Spellfire*" : {
       "3.0" : {
@@ -529,7 +571,8 @@
         "image" : "spellfire",
         "code" : "SF"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1044_Item_Frostburn*" : {
       "3.0" : {
@@ -547,7 +590,8 @@
         "image" : "frostburn",
         "code" : "FB"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*DragonsEye*" : {
       "3.0" : {
@@ -565,7 +609,8 @@
         "image" : "dragons-eye",
         "code" : "DE"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1029_Item_Clockwork*" : {
       "3.0" : {
@@ -583,7 +628,8 @@
         "image" : "clockwork",
         "code" : "CW"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1055_Item_BrokenMyth*" : {
       "3.0" : {
@@ -601,7 +647,8 @@
         "image" : "broken-myth",
         "code" : "BM"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1071_Item_EveOfHarvest*" : {
       "3.0" : {
@@ -619,7 +666,8 @@
         "image" : "eve-of-harvest",
         "code" : "EH"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1050_Item_Aftershock*" : {
       "3.0" : {
@@ -637,7 +685,22 @@
         "image" : "aftershock",
         "code" : "AS"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {
+        "name" : "Aftershock",
+        "price" : 2400,
+        "description" : "Passive: After using an ability, your next basic attack deals 13% of target's max health as damage with +50% lifesteal. Max 400 damage vs non-heroes. 1.5s cooldown. +25% Cooldown Speed +2.5 Energy Recharge +35 Crystal Power",
+        "depending" : [
+          "Heavy Prism",
+          "Void Battery"
+        ],
+        "category" : [
+          "2"
+        ],
+        "tier" : 3,
+        "image" : "aftershock",
+        "code" : "AS"
+      }
     },
     "*1069_Item_AlternatingCurrent*" : {
       "3.0" : {
@@ -655,7 +718,8 @@
         "image" : "alternating-current",
         "code" : "AC"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1015_Item_Oakheart*" : {
       "3.0" : {
@@ -669,7 +733,8 @@
         "tier" : 1,
         "image" : "oakheart"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1061_Item_LightShield*" : {
       "3.0" : {
@@ -682,7 +747,8 @@
         "tier" : 1,
         "image" : "light-shield"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1017_Item_LightArmor*" : {
       "3.0" : {
@@ -695,7 +761,8 @@
         "tier" : 1,
         "image" : "light-armor"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1016_Item_Dragonheart*" : {
       "3.0" : {
@@ -711,7 +778,8 @@
         "tier" : 2,
         "image" : "dragonheart"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1064_Item_Lifespring*" : {
       "3.0" : {
@@ -727,7 +795,8 @@
         "tier" : 2,
         "image" : "lifespring"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1043_Item_ReflexBlock*" : {
       "3.0" : {
@@ -743,7 +812,8 @@
         "tier" : 2,
         "image" : "reflex-block"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1062_Item_KineticShield*" : {
       "3.0" : {
@@ -759,7 +829,8 @@
         "tier" : 2,
         "image" : "kinetic-shield"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1022_Item_CoatOfPlates*" : {
       "3.0" : {
@@ -775,7 +846,8 @@
         "tier" : 2,
         "image" : "coat-of-plates"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1105_Item_SlumberingHusk*" : {
       "3.0" : {
@@ -791,7 +863,8 @@
         "tier" : 3,
         "image" : "slumbering-husk"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1046_Item_Crucible*" : {
       "3.0" : {
@@ -809,7 +882,8 @@
         "image" : "crucible",
         "code" : "CC"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1045_Item_FountainOfRenewal*" : {
       "3.0" : {
@@ -827,7 +901,8 @@
         "image" : "fountain-of-renewal",
         "code" : "FR"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1063_Item_Aegis*" : {
       "3.0" : {
@@ -859,7 +934,8 @@
         "tier" : 3,
         "image" : "aegis",
         "code" : "AG"
-      }
+      },
+      "3.2" : {}
     },
     "*1024_Item_MetalJacket*" : {
       "3.0" : {
@@ -889,7 +965,8 @@
         "tier" : 3,
         "image" : "metal-jacket",
         "code" : "MJ"
-      }
+      },
+      "3.2" : {}
     },
     "*1057_Item_AtlasPauldron*" : {
       "3.0" : {
@@ -906,7 +983,8 @@
         "image" : "atlas-pauldron",
         "code" : "AP"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1030_Item_SprintBoots*" : {
       "3.0" : {
@@ -919,7 +997,8 @@
         "tier" : 1,
         "image" : "sprint-boots"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1032_Item_TravelBoots*" : {
       "3.0" : {
@@ -935,7 +1014,8 @@
         "tier" : 2,
         "image" : "travel-boots"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1088_Item_Flaregun*" : {
       "3.0" : {
@@ -951,7 +1031,8 @@
         "tier" : 2,
         "image" : "flare-gun"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1074_Item_StormguardBanner*" : {
       "3.0" : {
@@ -967,7 +1048,8 @@
         "tier" : 2,
         "image" : "stormguard-banner"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1047_Item_JourneyBoots*" : {
       "3.0" : {
@@ -984,7 +1066,8 @@
         "image" : "journey-boots",
         "code" : "JB"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1056_Item_WarTreads*" : {
       "3.0" : {
@@ -1002,7 +1085,8 @@
         "image" : "war-treads",
         "code" : "WT"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1087_Item_HalcyonChargers*" : {
       "3.0" : {
@@ -1020,7 +1104,8 @@
         "image" : "halcyon-chargers",
         "code" : "HC"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1097_Item_Echo*" : {
       "3.0" : {
@@ -1037,7 +1122,8 @@
         "image" : "echo",
         "code" : "EC"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1079_Item_Contraption*" : {
       "3.0" : {
@@ -1055,7 +1141,8 @@
         "image" : "contraption",
         "code" : "CT"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1090_Item_Stormcrown*" : {
       "3.0" : {
@@ -1073,7 +1160,22 @@
         "image" : "stormcrown",
         "code" : "SC"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {
+        "name" : "Stormcrown",
+        "price" : 2000,
+        "description" : "Stormguard: Basic attacks deal 40-130 (level 1-12) bonus true damage per second. 20% effectiveness against heroes and structures. (Does not stack with other Stormguard) +20% Cooldown Speed +4 Energy Recharge +300 Max Health",
+        "depending" : [
+          "Stormguard Banner",
+          "Chronograph"
+        ],
+        "category" : [
+          "4"
+        ],
+        "tier" : 3,
+        "image" : "stormcrown",
+        "code" : "SC"
+      }
     },
     "*1095_Item_NullwaveGauntlet*" : {
       "3.0" : {
@@ -1091,7 +1193,8 @@
         "image" : "nullwave-gauntlet",
         "code" : "NG"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1042_Item_Shiversteel*" : {
       "3.0" : {
@@ -1109,7 +1212,8 @@
         "image" : "shiversteel",
         "code" : "SS"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "Healing Flask" : {
       "3.0" : {
@@ -1122,7 +1226,8 @@
         "tier" : 1,
         "image" : "healing-flask"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1038_Item_Flare*" : {
       "3.0" : {
@@ -1135,7 +1240,8 @@
         "tier" : 1,
         "image" : "flare"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1054_Item_ScoutTrap*" : {
       "3.0" : {
@@ -1148,7 +1254,8 @@
         "tier" : 1,
         "image" : "scout-trap"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1041_Item_MinionCandy*" : {
       "3.0" : {
@@ -1161,7 +1268,17 @@
         "tier" : 1,
         "image" : "minion-candy"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {
+        "name" : "Minion Candy",
+        "price" : 75,
+        "description" : "Consumer: Emporers nearby friendly minions for 60s and friendly jungle bosses for 30s. They are granted 40% increased damage, 120 armor, 60 shield, and 0.5 increased movement speed.",
+        "category" : [
+          "5"
+        ],
+        "tier" : 1,
+        "image" : "minion-candy"
+      }
     },
     "*1073_Item_IronguardContract*" : {
       "3.0" : {
@@ -1174,7 +1291,8 @@
         "tier" : 1,
         "image" : "ironguard-contract"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "1084_Item_ProtectorContract*" : {
       "3.0" : {
@@ -1187,7 +1305,8 @@
         "tier" : 1,
         "image" : "protector-contract"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "DragonbloodContract" : {
       "3.0" : {
@@ -1200,7 +1319,8 @@
         "tier" : 1,
         "image" : "dragonblood-contract"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1052_Item_WeaponInfusion*" : {
       "3.0" : {
@@ -1213,7 +1333,8 @@
         "tier" : 1,
         "image" : "weapon-infusion"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "*1053_Item_CrystalInfusion*" : {
       "3.0" : {
@@ -1226,7 +1347,8 @@
         "tier" : 1,
         "image" : "crystal-infusion"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "Flare Loader" : {
       "3.0" : {
@@ -1239,7 +1361,8 @@
         "tier" : 1,
         "image" : "flare-gun"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "ScoutPak" : {
       "3.0" : {
@@ -1254,7 +1377,8 @@
         ],
         "tier" : 2
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "ScoutTuff" : {
       "3.0" : {
@@ -1269,7 +1393,8 @@
         ],
         "tier" : 2
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     },
     "SuperScout" : {
       "3.0" : {
@@ -1286,7 +1411,8 @@
         "tier" : 3,
         "code" : "SU"
       },
-      "3.1" : {}
+      "3.1" : {},
+      "3.2" : {}
     }
   }
 }

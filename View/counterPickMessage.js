@@ -47,6 +47,7 @@ const supportPickHero = (hero) => {
     var d = new Discord.RichEmbed().setColor(colorMng.getColor(3));
     let result = cp.getSupport(hero.toLowerCase());
     if (result != null) {
+        console.log(`${c.imageURL()}/${hero.toLowerCase()}.png`);
         d = d.setThumbnail(`${c.imageURL()}/${hero.toLowerCase()}.png`)
             .addField(`${hero} ${i18n.get('IsStrongAgainst')}`, result);
     } else {

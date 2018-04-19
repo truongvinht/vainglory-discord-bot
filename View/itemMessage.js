@@ -237,8 +237,7 @@ const updatedItems = (version, message) => {
     
     //check list
     if (list.length == 0) {
-        var d = new Discord.RichEmbed()
-        .setAuthor(message.author.username);
+        var d = new Discord.RichEmbed().setAuthor(message.author.username);
 
         message.channel.send(d.setDescription(`${i18n.get('InvalidInput')}`));
         return;

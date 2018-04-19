@@ -145,6 +145,9 @@
       "oz",
       "kk"
     ],
+    "malene" : [
+      "?"
+    ],
     "ozo" : [
       "pt",
       "gw",
@@ -295,11 +298,12 @@
       "rg"
     ],
     "churnwalker" : [
-      "sa",
+      "ap",
       "bf",
-      "vr",
-      "oz",
-      "gr"
+      "fk",
+      "re",
+      "kk",
+      "gl"
     ],
     "flicker" : [
       "pt",
@@ -395,6 +399,9 @@
       "sk",
       "id"
     ],
+    "malene" : [
+      "?"
+    ],
     "ozo" : [
       "la",
       "kr",
@@ -482,12 +489,16 @@
       "re",
       "kr",
       "gw",
-      "ph"
+      "ph",
+      "kk"
     ],
     "varya" : [
       "rg",
       "ap",
-      "bt"
+      "bt",
+      "kr",
+      "oz",
+      "kk"
     ],
     "vox" : [
       "sa",
@@ -855,6 +866,24 @@
         "title" : "Arcane Passage"
       }
     },
+    "malene" : {
+      "perk" : {
+        "title" : "Masked Ball"
+      },
+      "a" : {
+        "title" : "Light Ribbons",
+        "slow" : true,
+        "stun" : true
+      },
+      "b" : {
+        "title" : "Royal Amnesty",
+        "slow" : true
+      },
+      "c" : {
+        "title" : "Enchanted Transformation",
+        "slow" : true
+      }
+    },
     "ozo" : {
       "perk" : {
         "title" : "Carnie Luck",
@@ -1113,6 +1142,7 @@
     "la" : "Lance",
     "ll" : "Lorelai",
     "lr" : "Lyra",
+    "ml" : "Malene",
     "oz" : "Ozo",
     "pt" : "Petal",
     "ph" : "Phinn",

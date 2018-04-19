@@ -12,7 +12,7 @@ const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];
-const RELEASE_VERSION = ['3.0','3.1'];
+const RELEASE_VERSION = ['3.0','3.1',"3.2"];
 
 //FILTER LEVEL: CATEGORY TIER INDEX
 
@@ -205,9 +205,13 @@ const updatedList = function(version) {
                 }
                 
                 //latest object
-                if (index == RELEASE_VERSION.length-1) {
-                    let prevItem = itm[`${RELEASE_VERSION[index-1]}`]; 
-                    singleItem["old"] = prevItem;
+                
+                for (var rIndex = index-1;rIndex >= 0; rIndex--) {
+                    let prevItem = itm[`${RELEASE_VERSION[rIndex]}`]; 
+                    if (prevItem.hasOwnProperty('name')) {
+                        singleItem["old"] = prevItem;
+                        break;
+                    }
                 }
                 
                 items.push(singleItem);
