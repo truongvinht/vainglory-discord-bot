@@ -10,6 +10,8 @@ const fm = require('../general/contentFormatter');
 const access = require('../general/accessRightManager');
 const colorMng = require('../controllers/messageColorManager');
 
+//elo calculator
+const eloCalc = require('../controllers/eloCalculator');
 
 const formatter = require('../general/contentFormatter');
 
@@ -448,6 +450,8 @@ function fetchMatch(message, playerName, didFailedHandler) {
             const rosters = [{'side':'Left','dataRoster':leftRoster},
                             {'side':'Right','dataRoster':rightRoster}];
             
+            let is5v5Match = leftRoster.length == 5;
+            
             for (let r of rosters) {
                 
                 var totalKills = 0;
@@ -469,8 +473,28 @@ function fetchMatch(message, playerName, didFailedHandler) {
                         afk = "AFK";
                     }
                     
+                    var eloLevel = -1;
+                    
+                    if (is5v5Match) {
+                        // 5v5 rank data
+                        let score = eloCalc.getResult(player.ranked_5v5);
+                        
+                        if (score != null) {
+                            eloLevel = score.elo;
+                        }
+                    } else {
+                        // 3v3 rank data
+                        let score = eloCalc.getResult(player.rankPoints);
+                        
+                        if (score != null) {
+                            eloLevel = score.elo;
+                        }
+                    }
+                    var tier = vgBase.getTier(eloLevel);
+                    
+                    
                     //header
-                    const header = `${player.name}${guildTag} (${player.skillTier}) ${afk}`;
+                    const header = `${player.name}${guildTag} (${tier}) ${afk}`;
                     
                     const heroSelection = player.participant.actor;
                     

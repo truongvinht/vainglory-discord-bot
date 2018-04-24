@@ -60,10 +60,18 @@ const convertTier = function(skillTier) {
         .replace("T","tier_0");
 }
 
+
+const tierFromNum = function(skillTier) {
+    
+    const convertedValue = tier(skillTier);
+    return convertTier(convertedValue);
+}
+
 // export
 module.exports = {
     getMode: gameMode,
     getKarma: karma,
     getTier: tier,
-    convertTier: convertTier
+    convertTier: convertTier,
+    getTierFromNum: tierFromNum
 };

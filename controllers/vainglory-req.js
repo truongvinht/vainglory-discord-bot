@@ -1061,10 +1061,16 @@ function fetchPlayer(json, playerId) {
                 //prevent broken data for rank points
                 if (attributes.stats.hasOwnProperty('rankPoints')) {
                     if (attributes.stats.rankPoints.hasOwnProperty('ranked')) {
-                        player["rankPoints"] = attributes.stats.rankPoints.ranked.toFixed(2);
+                        
+                        if (attributes.stats.rankPoints.hasOwnProperty("ranked")) {
+                            player["rankPoints"] = attributes.stats.rankPoints.ranked.toFixed(2);
+                        }
+                        
+                        if (attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
+                            player["ranked_5v5"] = attributes.stats.rankPoints.ranked_5v5.toFixed(2);
+                        }
                     }
                 }
-                
                 return player;
             }
         }
