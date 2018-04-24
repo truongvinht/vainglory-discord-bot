@@ -392,9 +392,15 @@ bot.on("message", async message => {
                         if (player == null) {
                             message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                         } else {
-                            response(Math.floor(player.rankPoints.ranked),"3v3");
-                            d = new Discord.RichEmbed();
-                            response(Math.floor(player.rankPoints.ranked_5v5),"5v5");
+                            response(Math.max(0, Math.floor(player.rankPoints.ranked)),"3v3");
+                            
+                            
+                            const fiveVfiveElo = Math.floor(player.rankPoints.ranked_5v5);
+                            if (fiveVfiveElo >= 0 ) {
+                                d = new Discord.RichEmbed();
+                                response(Math.max(0, Math.floor(player.rankPoints.ranked_5v5)),"5v5");
+                            }
+                            
                         }
                         message.channel.stopTyping();
                     };
