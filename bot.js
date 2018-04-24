@@ -359,7 +359,7 @@ bot.on("message", async message => {
             
             if (points.length > 0) {
                 
-                const response = function(score) {
+                const response = function(score, gameMode) {
                     const info = eloCalc.getResult(score);
 
                     if (info == null) {
@@ -370,12 +370,18 @@ bot.on("message", async message => {
                             const img = vgBase.convertTier(vgBase.getTier(info.elo));
                              d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
                         }
+                        
+                        var gameModeInfo = "";
+                        
+                        if (gameMode!=null) {
+                            gameModeInfo = ` (${gameMode})`;
+                        }
                     
                         if (info.missing == -1) {
-                            message.channel.send(d.addField(`${info.title}`, `${i18n.get('BetterImpossible')}`));
+                            message.channel.send(d.addField(`${info.title}${gameModeInfo}`, `${i18n.get('BetterImpossible')}`));
                         } else {
                             const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
-                            message.channel.send(d.addField(`${info.title}`, `${msg}`));
+                            message.channel.send(d.addField(`${info.title}${gameModeInfo}`, `${msg}`));
                         }
                     }
                 };
@@ -386,7 +392,9 @@ bot.on("message", async message => {
                         if (player == null) {
                             message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                         } else {
-                            response(Math.floor(player.rankPoints.ranked));
+                            response(Math.floor(player.rankPoints.ranked),"3v3");
+                            d = new Discord.RichEmbed();
+                            response(Math.floor(player.rankPoints.ranked_5v5),"5v5");
                         }
                         message.channel.stopTyping();
                     };
@@ -394,7 +402,7 @@ bot.on("message", async message => {
                     message.channel.startTyping();
                     vgMsg.requestEloForPlayer(message, points, callback);
                 } else {
-                    response(points);
+                    response(points,null);
                 }
                 
             } else {
