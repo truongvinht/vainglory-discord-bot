@@ -41,7 +41,7 @@ var ItemDescriptionManager = (function () {
                         log.debug("item list loaded...");
                     } else {
                         log.error("error while loading item list json [" +url + "]");
-                        log.debug(error);
+                        log.debug(JSON.stringify(response));
                     }
                 });
                 return;

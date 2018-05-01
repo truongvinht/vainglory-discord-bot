@@ -32,7 +32,7 @@ var GameModeHandler = (function () {
                         log.debug("game mode list loaded...");
                     } else {
                         log.error("error while loading game mode list json [" +url + "]");
-                        log.debug(error);
+                        log.debug(JSON.stringify(response));
                     }
                 });
                 return;
