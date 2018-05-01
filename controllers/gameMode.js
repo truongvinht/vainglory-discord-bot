@@ -1,5 +1,5 @@
-// eloCalculator.js
-// request information regarding given elo points
+// gameMode.js
+// wrapper class for accessing game mode
 // ==================
 
 var request = require('request');
