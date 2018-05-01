@@ -5,6 +5,13 @@
   "imageURL":"",
   "restricted":["Leader","Moderator"],
   "vgAPIToken":"",
+  "DATA_URL":"",
+  "DATA_FILES": {
+      "GAME_MODE": "gameMode",
+      "HEROES": "heroes",
+      "ITEMS_DESCRIPTION": "itemDescription",
+      "ELO_LIST":"numerical_vst"
+  },
   "ELO_LIST_URL":"",
   "vaingloryAPIServer": "eu",
   "author":"B3nB, roest, C4CW & EuE Community",

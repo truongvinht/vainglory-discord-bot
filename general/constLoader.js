@@ -2,6 +2,9 @@
 // handle environment variable
 // ==================
 
+//suffix
+const SUFFIX_JSON = ".json";
+
 //load settings => auto fallback to example for heroku
 var botSettings = {};
 try {
@@ -28,12 +31,39 @@ if (imageURL == "") {
     imageURL = process.env.IMAGE_URL;
 }
 
-// link to elo point list
-var eloListURL = botSettings.ELO_LIST_URL;
-if (eloListURL == "") {
-    // Heroku ENV token
-    eloListURL = process.env.ELO_LIST_URL;
+// CONFIGURATIONS
+
+// data for all configurations
+var dataURL = botSettings.DATA_URL;
+if (dataURL == "") {
+    dataURL = process.env.DATA_URL;
 }
+
+// Game mode
+var dataGameMode = botSettings.DATA_FILES.GAME_MODE;
+if (dataGameMode == "") {
+    dataGameMode = process.env.DATA_FILES_GAME_MODE;
+}
+
+// Heroes
+var dataHeroes = botSettings.DATA_FILES.HEROES;
+if (dataHeroes == "") {
+    dataHeroes = process.env.DATA_FILES_HEROES;
+}
+
+// Item Description
+var dataItemsDesc = botSettings.DATA_FILES.ITEMS_DESCRIPTION;
+if (dataItemsDesc == "") {
+    dataItemsDesc = process.env.DATA_FILES_ITEMS_DESCRIPTION;
+}
+
+// Elo list
+var dataEloList = botSettings.DATA_FILES.ELO_LIST;
+if (dataEloList == "") {
+    dataEloList = process.env.DATA_FILES_ELO_LIST;
+}
+
+// API CONFIGURATIONS
 
 // Vainglory API Token
 var vgApiToken = botSettings.vgAPIToken;
@@ -79,7 +109,21 @@ const getItemURL = () => {
 }
 
 const getEloListURL = () => {
-    return eloListURL;
+    
+    if (dataURL!=null && dataURL.length > 0) {
+        return dataURL + "/" + dataEloList + SUFFIX_JSON;
+    }
+    
+    return dataEloList;
+}
+
+const getItemListURL = () => {
+    
+    if (dataURL!=null && dataURL.length > 0) {
+        return dataURL + "/locales/" + language + "/"  + dataItemsDesc + SUFFIX_JSON;
+    }
+    
+    return dataItemsDesc;
 }
 
 //load prefix
@@ -127,6 +171,7 @@ module.exports = {
     tierImageURL: getTierImageURL,
     itemURL: getItemURL,
     eloListURL: getEloListURL,
+    itemListURL: getItemListURL,
     prefix: getPrefix,
     vgServerCode: getVgServerCode,
     restriction: getRestrictedRoles,

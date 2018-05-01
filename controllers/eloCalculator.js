@@ -3,6 +3,7 @@
 // ==================
 
 var request = require('request');
+var log = require('loglevel');
 
 var EloManager = (function () {
     var instance;
@@ -28,8 +29,9 @@ var EloManager = (function () {
                     if (!error && response.statusCode == 200) {
                         var json = JSON.parse(body);
                         data = json;
+                        log.debug("elo list loaded...");
                     } else {
-                        console.log("error while loading elo json");
+                        log.error("error while loading elo json");
                     }
                 });
                 return;
@@ -51,9 +53,7 @@ var EloManager = (function () {
                     const start = details["starts"];
                     const ends = details["ends"];
                 
-
                      if (points >= start && points <= ends) {
-
 
                         var next = -1.0;
 
@@ -69,9 +69,7 @@ var EloManager = (function () {
                          };
                          return contentData;
                      }
-                    
                 }
-                
                 return null;
             },
             score: function(index) {
@@ -104,7 +102,6 @@ const score = function(index) {
     var instance = EloManager.getInstance();
     return instance.score(index);
 }
-
 
 // function to get random message for tier
 const randomMessage = () => {

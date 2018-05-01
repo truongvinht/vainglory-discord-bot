@@ -4,15 +4,66 @@
 
 
 // import 
+const request = require('request');
 const c = require("../general/constLoader");
 
 //item list
-const itemList = require(`../data/items_${c.language()}.json`);
 const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];
 const RELEASE_VERSION = ['3.0','3.1',"3.2"];
+
+var ItemDescriptionManager = (function () {
+    var instance;
+    
+    function initInstance() {
+        
+        //url for request
+        var data = "";
+        
+        return {
+            initURL: function(url) {
+                
+                var reqOption = {
+                    url: url,
+                    headers: {
+                        'User-Agent': 'request',
+                        'Accept': 'application/json'
+                    }
+                };
+
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("item list loaded...");
+                    } else {
+                        log.error("error while loading item list json [" +url + "]");
+                    }
+                });
+                return;
+            },
+            content: function() {
+                return data;
+            }
+        }
+    }
+    return {
+        getInstance: function() {
+            if (!instance) {
+                instance = initInstance();
+            }
+            return instance;
+        } 
+    };
+})();
+
+function getItemList() {
+    return ItemDescriptionManager.getInstance().content();
+}
+
 
 //FILTER LEVEL: CATEGORY TIER INDEX
 
@@ -22,15 +73,15 @@ const categoryList = function() {
     var list = "";
     var rawList = [];
     
-    for (var key of Object.keys(itemList.category)) {
-        list = list + "[" + `${key}` + "] " + itemList.category[key] + "\n";
-        rawList.push(itemList.category[key]);
+    for (var key of Object.keys(getItemList().category)) {
+        list = list + "[" + `${key}` + "] " + getItemList().category[key] + "\n";
+        rawList.push(getItemList().category[key]);
     }
 
     let content = {
-        "title": `${i18n.get('ListAvailableCategories')} [${Object.keys(itemList.category).length}]`,
+        "title": `${i18n.get('ListAvailableCategories')} [${Object.keys(getItemList().category).length}]`,
         "content": list,
-        "count":Object.keys(itemList.category).length,
+        "count":Object.keys(getItemList().category).length,
         "items":rawList
     }
 
@@ -64,9 +115,9 @@ const list = function(category, tier) {
     //fetch all items into an array
     var items = [];
     
-    for (var key of Object.keys(itemList.item)) {
+    for (var key of Object.keys(getItemList().item)) {
         
-        var itm = itemList.item[key];
+        var itm = getItemList().item[key];
         
         var needsSkipping = false;
         
@@ -134,9 +185,9 @@ const list = function(category, tier) {
 
 const singleItemCode = function(code) {
     
-    for (var key of Object.keys(itemList.item)) {
+    for (var key of Object.keys(getItemList().item)) {
         
-        var itm = itemList.item[key];
+        var itm = getItemList().item[key];
         
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
@@ -159,9 +210,9 @@ const singleItemCode = function(code) {
 
 const singleItem = function(name) {
     
-    for (var key of Object.keys(itemList.item)) {
+    for (var key of Object.keys(getItemList().item)) {
         
-        var itm = itemList.item[key];
+        var itm = getItemList().item[key];
         
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
@@ -187,9 +238,9 @@ const updatedList = function(version) {
     //fetch all items into an array
     var items = [];
     
-    for (var key of Object.keys(itemList.item)) {
+    for (var key of Object.keys(getItemList().item)) {
         
-        var itm = itemList.item[key];
+        var itm = getItemList().item[key];
         
         var needsSkipping = false;
         
@@ -230,14 +281,14 @@ const countItems = function() {
     var totalNumber = 0;
     
     
-    for (let k of Object.keys(itemList.category)) {
-        let catKey = itemList.category[k];
+    for (let k of Object.keys(getItemList().category)) {
+        let catKey = getItemList().category[k];
         items[catKey] = 1;
     }
     
-    for (var key of Object.keys(itemList.item)) {
+    for (var key of Object.keys(getItemList().item)) {
         
-        var itm = itemList.item[key];
+        var itm = getItemList().item[key];
         
         var needsSkipping = false;
         
@@ -252,7 +303,7 @@ const countItems = function() {
         
             //found item
             for (let cat of singleItem.category) {
-                let catKey = itemList.category[cat];
+                let catKey = getItemList().category[cat];
                 items[catKey] = items[catKey] + 1;
             }
             totalNumber = totalNumber + 1;
@@ -260,6 +311,11 @@ const countItems = function() {
         }
     }
     return {"items":items,"total":totalNumber};
+}
+
+// initialize url for points json
+const prepUrl = function(url) {
+    ItemDescriptionManager.getInstance().initURL(url);
 }
 
 // export
@@ -270,5 +326,6 @@ module.exports = {
     getUpdatedItems: updatedList,
     getItem:singleItemCode,
     getItemByName: singleItem,
-    getItemNumber: countItems
+    getItemNumber: countItems,
+    initURL: prepUrl
 };
