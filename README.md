@@ -17,11 +17,17 @@ node bot
 #### Configuration
 Copy config/example_settings.json to config/settings.json and fill in your discord bot token and the vainglory api token. 
 
+mandatory arguments:
+- token: Discord API Token
+- prefix: Prefix for triggering bot
+- lang: language (currently only de or en)
+- vgAPIToken: Vainglory API token
+
 optional adjustment:
 - prefix: Command to listen
 - imageURL: Url for getting images like heroes / items / tier
 - restricted: user with this tag has special permission
-- ELO_LIST_URL: url to json file with elo scoring
+- DATA_URL: url to folder containing following configurations: gameMode.json, heroes.json, itemsDescription.json, numerical_vst.json (see https://github.com/truongvinht/vainglory-raw-assets for samples)
 
 
 #### Note
