@@ -22,7 +22,6 @@ var requestToken = '';
 var matchStats = function(region, playerName, callback) {
     const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]=1&page[offset]=0";
     log.debug(requestURL);
-    console.log(requestURL);
 
     const reqOption = getRequestHeader(requestURL);
 
@@ -121,9 +120,7 @@ var matchStats = function(region, playerName, callback) {
                 objCount = objCount + 1;
             }
             
-        
-            //console.log(JSON.stringify(rosterLeft));
-            //console.log(JSON.stringify(teamsData[0]));
+            log.debug(JSON.stringify(rosterLeft));
             matchContent["left"] = teamsData[0];
             matchContent["right"] = teamsData[1];
             
@@ -333,7 +330,6 @@ const matchDetailsPlayer = (data, callback) => {
                 }
                 
                 if (entry.type == 'BuyItem') {
-                    //console.log(entry);
                     continue;
                 }
                 
@@ -406,7 +402,6 @@ const matchDetailsPlayer = (data, callback) => {
                 }
                 
                 if (entry.type == 'HealTarget') {
-                    //console.log(entry);
                     continue;
                 }
                 
@@ -502,8 +497,6 @@ const matchDetailsPlayer = (data, callback) => {
                     
                     continue;
                 }
-                //console.log(entry.type);
-                
             }
             
             //set name
@@ -849,9 +842,7 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
 function fetchLastMatch(json) {
 
     var latestMatch = null;
-
     for (var game of json.data) {
-
         //fetch game information
         var attributes = game.attributes;
 
@@ -880,7 +871,7 @@ function prepareMatchContent(game) {
         "queue": game.attributes.stats.queue,
         "roster": [roster1.id, roster2.id]
     };
-    //console.log(JSON.stringify(game));
+    log.debug(JSON.stringify(game));
     return gameInfo;
 }
 
@@ -889,7 +880,6 @@ function prepareMatchContent(game) {
 function fetchRoster(json, rosterID) {
 
     var roster = null;
-
 
     for (var included of json.included) {
 
@@ -941,8 +931,6 @@ function fetchParticipants(json, participantID) {
                     }
                 }
                 
-                
-
                 participant = {
                     "id": included.id,
                     "actor": actor.replace('\*', '').replace('\*', ''),
@@ -997,7 +985,6 @@ function getRolesForParticipants(participantList) {
             p["role"] = "Captain";
         }
     }
-    
     
     counting = 0;
     
@@ -1081,36 +1068,36 @@ function fetchPlayer(json, playerId) {
  */
 function calculateManOfMatch(details) {
     // hero kills
-    var sumKills = details.kills * 300;
+    const sumKills = details.kills * 300;
 
     // deaths
-    var sumDeaths = details.deaths * 300;
+    const sumDeaths = details.deaths * 300;
 
     // assist
-    var sumAssists = details.assists * 300;
+    const sumAssists = details.assists * 300;
 
     // kraken captured
-    var sumKraken = details.krakenCaptures * 500;
+    const sumKraken = details.krakenCaptures * 500;
 
     //turrets destroyed
-    var sumTurret = details.turretCaptures * 300;
+    const sumTurret = details.turretCaptures * 300;
 
     // minions killed
-    var sumMinion = details.minionKills * 10;
+    const sumMinion = details.minionKills * 10;
 
     // captured gold miner
-    var sumGoldMiner = details.goldMineCaptures * 400;
+    const sumGoldMiner = details.goldMineCaptures * 400;
 
     // captured crystal miner
-    var sumCrystalMiner = details.crystalMineCaptures + 300;
+    const sumCrystalMiner = details.crystalMineCaptures + 300;
 
     return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
 }
 
 // function to get formatted time stamp
 function getTimeStamp(date) {
-    var month = (date.getMonth() < 9) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-    var day = ((date.getDate() - 1) < 10) ? "0" + (date.getDate() - 1) : (date.getDate());
+    const month = (date.getMonth() < 9) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const day = ((date.getDate() - 1) < 10) ? "0" + (date.getDate() - 1) : (date.getDate());
     return "" + date.getFullYear() + "-" + month + "-" + day + "T00:00:00Z";
 }
 
