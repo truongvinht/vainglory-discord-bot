@@ -126,6 +126,25 @@ const getItemListURL = () => {
     return dataItemsDesc;
 }
 
+const getHeroesURL = () => {
+    
+    if (dataURL!=null && dataURL.length > 0) {
+        return dataURL + "/" + dataHeroes + SUFFIX_JSON;
+    }
+    
+    return dataHeroes;
+}
+
+const getGameModeURL = () => {
+    
+    if (dataURL!=null && dataURL.length > 0) {
+        return dataURL + "/" + dataGameMode + SUFFIX_JSON;
+    }
+    
+    return dataGameMode;
+}
+
+
 //load prefix
 const getPrefix = () => {
     return botSettings.prefix;
@@ -172,6 +191,8 @@ module.exports = {
     itemURL: getItemURL,
     eloListURL: getEloListURL,
     itemListURL: getItemListURL,
+    heroesListURL: getHeroesURL,
+    gameModeListURL: getGameModeURL,
     prefix: getPrefix,
     vgServerCode: getVgServerCode,
     restriction: getRestrictedRoles,

@@ -2,12 +2,13 @@
 // Helper function for getting details
 // ================
 
-const modeUtility = require(`../data/gameMode.json`);
+const gm = require('../controllers/gameMode');
+
 const i18n = require('../general/langSupport');
 
 const gameMode = function(mode) {
-    if (modeUtility.mode.hasOwnProperty(mode)) {
-      return modeUtility.mode[mode];
+    if (gm.getData().mode.hasOwnProperty(mode)) {
+      return gm.getData().mode[mode];
     } else {
       return mode;
     }

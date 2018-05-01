@@ -12,8 +12,7 @@
       "ITEMS_DESCRIPTION": "itemDescription",
       "ELO_LIST":"numerical_vst"
   },
-  "ELO_LIST_URL":"",
   "vaingloryAPIServer": "eu",
   "author":"B3nB, roest, C4CW & EuE Community",
-  "version":"1.7.4"
+  "version":"1.8.0"
 }

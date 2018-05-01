@@ -27,7 +27,10 @@ const cp = require('./controllers/vgCounterPicker');
 
 //elo calculator
 const eloCalc = require('./controllers/eloCalculator');
+
+// item command
 const itemHandler = require('./controllers/itemHandler');
+const gameMode = require('./controllers/gameMode');
 
 //logger
 var log =require('loglevel');
@@ -55,6 +58,8 @@ bot.on("ready", async() => {
         //load URL
         eloCalc.initURL(`${c.eloListURL()}`);
         itemHandler.initURL(`${c.itemListURL()}`);
+        cp.initURL(`${c.heroesListURL()}`);
+        gameMode.initURL(`${c.gameModeListURL()}`);
         
         //init vainglory API token for the bot
         vgMsg.setToken(VG_TOKEN);

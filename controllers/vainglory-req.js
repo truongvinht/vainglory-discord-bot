@@ -8,9 +8,7 @@ var log = require('loglevel');
 
 // CONTROLLER
 const itemHandler = require('./itemHandler');
-
-// CONFIG
-const gameMode = require('../data/gameMode.json');
+const gameMode = require('./gameMode');
 
 var vgbase = require('../models/vainglory-base.js');
 
@@ -577,7 +575,7 @@ const recentPlayedHeroes = function(region, player, callback) {
                          teamsData.push(fetchParticipants(json, part));
                      }
                     
-                    for (let matchType of gameMode.relevant) {
+                    for (let matchType of gameMode.getData().relevant) {
                         if (matchType === match.attributes.gameMode) {
                             teamsData = getRolesForParticipants(teamsData);
                             break;
@@ -974,11 +972,11 @@ function fetchParticipants(json, participantID) {
 function getRolesForParticipants(participantList) {
     
     //check whether game mode has these information
-    if (!gameMode.composition.hasOwnProperty(`${participantList.length}`)) {
+    if (!gameMode.getData().composition.hasOwnProperty(`${participantList.length}`)) {
         return participantList;
     }
     
-    const config = gameMode.composition[`${participantList.length}`];
+    const config = gameMode.getData().composition[`${participantList.length}`];
     
     var memberList = participantList;
     

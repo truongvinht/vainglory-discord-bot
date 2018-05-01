@@ -3,9 +3,66 @@
 // ==================
 
 // import 
-const vgCounter = require("../data/heroes.json");
+const request = require('request');
+
 const i18n = require('../general/langSupport');
 var log = require('loglevel');
+
+var HeroDetailsManager = (function () {
+    var instance;
+    
+    function initInstance() {
+        
+        //url for request
+        var data = "";
+        
+        return {
+            initURL: function(url) {
+                
+                var reqOption = {
+                    url: url,
+                    headers: {
+                        'User-Agent': 'request',
+                        'Accept': 'application/json'
+                    }
+                };
+
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("Heroes loaded...");
+                    } else {
+                        log.error("error while loading heroes json [" +url + "]");
+                    }
+                });
+                return;
+            },
+            content: function() {
+                return data;
+            }
+        }
+    }
+    return {
+        getInstance: function() {
+            if (!instance) {
+                instance = initInstance();
+            }
+            return instance;
+        } 
+    };
+})();
+
+
+/**
+ * Get Heroes from remote server
+ * @private
+ * @returns JSON data object with heroes details
+ */
+function getHeroesData() {
+    return HeroDetailsManager.getInstance().content();
+}
 
 /**
  * Get Heroes which counter entered hero name (weak against)
@@ -15,7 +72,7 @@ var log = require('loglevel');
  * @type Array
  */
 const counter = (hero) => {
-    return heroPick(vgCounter.against, hero, "-");
+    return heroPick(getHeroesData().against, hero, "-");
 }
 
 /**
@@ -26,7 +83,7 @@ const counter = (hero) => {
  * @type Array
  */
 const support = (hero) => {
-    return heroPick(vgCounter.with, hero, "+");
+    return heroPick(getHeroesData().with, hero, "+");
 }
 
 function heroPick(map, hero, prefix) {
@@ -69,12 +126,12 @@ const heroes = () => {
     // list for output
     var list = "";
 
-    for (var key of Object.keys(vgCounter.hero)) {
-        list = `${list}+ ${vgCounter.hero[key]} [${key}]\n`;
+    for (var key of Object.keys(getHeroesData().hero)) {
+        list = `${list}+ ${getHeroesData().hero[key]} [${key}]\n`;
     }
 
     return {
-        "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(vgCounter.hero).length}]`,
+        "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(getHeroesData().hero).length}]`,
         "content": list
     }
 }
@@ -87,12 +144,17 @@ const heroes = () => {
  */
 const quickHeroLookup = (hero) => {
     if (hero.length == 2) {
-        if (vgCounter.hero.hasOwnProperty(hero)) {
-            return vgCounter.hero[hero];
+        if (getHeroesData().hero.hasOwnProperty(hero)) {
+            return getHeroesData().hero[hero];
         }
     } else {
         return null;
     }
+}
+
+// initialize url for points json
+const prepUrl = function(url) {
+    HeroDetailsManager.getInstance().initURL(url);
 }
 
 // export
@@ -100,5 +162,6 @@ module.exports = {
     getCounter: counter,
     getSupport: support,
     getHeroes: heroes,
-    getHeroName: quickHeroLookup
+    getHeroName: quickHeroLookup,
+    initURL: prepUrl
 };
