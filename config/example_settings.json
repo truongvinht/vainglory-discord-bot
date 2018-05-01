@@ -9,7 +9,7 @@
   "DATA_FILES": {
       "GAME_MODE": "gameMode",
       "HEROES": "heroes",
-      "ITEMS_DESCRIPTION": "itemDescription",
+      "ITEMS_DESCRIPTION": "itemsDescription",
       "ELO_LIST":"numerical_vst"
   },
   "vaingloryAPIServer": "eu",

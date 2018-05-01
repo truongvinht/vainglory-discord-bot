@@ -34,8 +34,8 @@ const gameMode = require('./controllers/gameMode');
 
 //logger
 var log =require('loglevel');
-//log.setLevel('info');
-log.setLevel('debug');
+log.setLevel('info');
+//log.setLevel('debug');
 
 // CONSTANTS
 

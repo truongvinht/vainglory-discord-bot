@@ -35,7 +35,6 @@ var HeroDetailsManager = (function () {
                         log.debug("Heroes loaded...");
                     } else {
                         log.error("error while loading heroes json [" +url + "]");
-                        log.debug(JSON.stringify(response));
                     }
                 });
                 return;
