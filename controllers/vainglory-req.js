@@ -709,7 +709,6 @@ var playerStats = function(region, playerName, callback) {
                     ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
                 }
                 
-                
                 var player = {
                     "id": anyPlayer.id,
                     "name": anyPlayer.attributes.name,
@@ -806,14 +805,33 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                         guildTag = anyPlayer.attributes.stats.guildTag;
                     }
 
+                
+                    var blitzRank = 0;
+                
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
+                        blitzRank = anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2)
+                    }
+                
+                    var rankedRank = 0;
+                
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
+                        rankedRank = anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                    }
+                
+                    var ranked5v5Rank = 0;
+                
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
+                        ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
+                    }
+
                     var player = {
                         "id": anyPlayer.id,
                         "name": anyPlayer.attributes.name,
                         "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                         "rankPoints": {
-                            "blitz": anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2),
-                            "ranked": anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2),
-                            "ranked_5v5": anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
+                            "blitz": blitzRank,
+                            "ranked": rankedRank,
+                            "ranked_5v5": ranked5v5Rank
                         },
                         "createdAt": anyPlayer.attributes.createdAt,
                         "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
@@ -829,7 +847,6 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                 if (resultList!=null) {
                     players = players.concat(resultList);
                 }
-                
                 
                 players.sort(function(b, a) {
                     return new Date(b.createdAt) - new Date(a.createdAt);
