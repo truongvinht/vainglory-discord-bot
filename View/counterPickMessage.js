@@ -31,6 +31,10 @@ const counterPickHero = (hero) => {
 
 const quickCounterPickHero = (heroCode) => {
     
+    if (heroCode.length > 2) {
+        return counterPickHero(heroCode);
+    }
+    
     //hero quick name
     let hName = heroCode.toLowerCase();
     let heroName = cp.getHeroName(hName);
@@ -57,6 +61,10 @@ const supportPickHero = (hero) => {
 }
 
 const quickSupportPickHero = (heroCode) => {
+    
+    if (heroCode.length > 2) {
+        return supportPickHero(heroCode);
+    }
     
     //hero quick name
     let hName = heroCode.toLowerCase();
