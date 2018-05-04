@@ -97,50 +97,60 @@ let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
     fetchPlayerDetails(message,playerName,nextCaller,didFailed);
 }
 
+function getPlayerDetails(playerName, player) {
+    var d = new Discord.RichEmbed();
+    d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
+        .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+        .setColor(getClassColor(`${player.skillTier}`));
+
+    if (player.guildTag != "") {
+        d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
+    }
+
+    //load image from parameter
+    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+        d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
+    }
+    
+    // Rank
+    const eloRank3v3Blitz = player.rankPoints.hasOwnProperty('blitz')?
+        `Blitz: ${player.rankPoints.blitz}\n`: '';
+    const eloRank3v3 = player.rankPoints.hasOwnProperty('ranked')?
+        `Ranked: ${player.rankPoints.ranked}\n`: '';
+    const eloRank5v5 = player.rankPoints.hasOwnProperty('ranked_5v5')?
+        `Ranked 5v5: ${player.rankPoints.ranked_5v5}`: '';
+    
+    // Game mode
+    const playedRank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
+        `Ranked: ${player.gamesPlayed.ranked}\n`: '';
+
+    const playedRank5v5 = player.gamesPlayed.hasOwnProperty('ranked_5v5')?
+        `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
+
+    const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
+                          `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                          playedRank3v3 + 
+                          playedRank5v5 + 
+                          `Blitz: ${player.gamesPlayed.blitz}\n` +
+                          `Battle Royal: ${player.gamesPlayed.aral}`;
+
+    const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
+    
+    return d.addField(`${i18n.get('RankPoints')}`, `${eloRank3v3Blitz}${eloRank3v3}${eloRank5v5}`)
+        .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
+        .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
+        .addField(`${i18n.get('Victory')}`, `${player.wins}`)
+        .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`);
+}
+
 function updatePlayerDetails(message, playerName) {
     
     //override default server
     const serverCode = c.vgServerCode(null);
 
-    var callback = function(playerName, player) {
-
-        var d = new Discord.RichEmbed();
-
+    const callback = function(playerName, player) {
         if (player != null) {
-            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
-                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
-                .setColor(getClassColor(`${player.skillTier}`));
-
-            if (player.guildTag != "") {
-                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
-            }
-            
-            //load image from parameter
-            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
-            }
-            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
-                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
-
-            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
-                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
-            
-            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                                      rank3v3 + 
-                                      rank5v5 + 
-                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
-                                      `Battle Royal: ${player.gamesPlayed.aral}`;
-            
-            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
-                                      
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
-                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
-                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
-                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
-            
-            
+            const d = getPlayerDetails(playerName,player);
             message.edit(d.setAuthor(`${player.name}`));
         }
     };
@@ -157,45 +167,12 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
     const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(playerName, player) {
+    const callback = function(playerName, player) {
 
         var d = new Discord.RichEmbed();
 
         if (player != null) {
-            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
-                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
-                .setColor(getClassColor(`${player.skillTier}`));
-
-            if (player.guildTag != "") {
-                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
-            }
-            
-            //load image from parameter
-            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
-            }
-
-            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
-                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
-
-            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
-                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
-        
-            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                                  `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                                  rank3v3 + 
-                                  rank5v5 + 
-                                  `Blitz: ${player.gamesPlayed.blitz}\n` +
-                                  `Battle Royal: ${player.gamesPlayed.aral}`;
-            
-            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
-                                      
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
-                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
-                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
-                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
-            
+            d = getPlayerDetails(playerName,player);
             
             if (nextCaller !=null) {
                 message.channel.send(d.setAuthor(`${player.name}`));
@@ -218,6 +195,7 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
 }
 
 let requestPlayerDetailsInChannel = function(channel,playerName, code) {
+    
     channel.startTyping();
     
     const serverCode = c.vgServerCode(code);
@@ -227,42 +205,8 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
         var d = new Discord.RichEmbed();
 
         if (player != null) {
-            d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
-                .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
-                .setColor(getClassColor(`${player.skillTier}`));
-
-            if (player.guildTag != "") {
-                d = d.addField(`${i18n.get('GuildTag')}`, `${player.guildTag}`);
-            }
-            
-            //load image from parameter
-            if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                 d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
-            }
-            
-            
-            const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
-
-            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
-                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
-
-            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
-                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
-    
-            const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                              `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                              rank3v3 + 
-                              rank5v5 + 
-                              `Blitz: ${player.gamesPlayed.blitz}\n` +
-                              `Battle Royal: ${player.gamesPlayed.aral}`;
-            
-            d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
-                .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
-                .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
-                .addField(`${i18n.get('Victory')}`, `${player.wins}`)
-                .addField(`${i18n.get('LastActive')}`, `${gameDate}\n${getTimeSince(player.createdAt)}`)
+            d = getPlayerDetails(playerName,player);
             channel.send(d.setAuthor(`${player.name}`));
-            
         } else {
             channel.send(d.setDescription(`'${playerName}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
         }
