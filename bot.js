@@ -33,7 +33,7 @@ const itemHandler = require('./controllers/itemHandler');
 const gameMode = require('./controllers/gameMode');
 
 //logger
-var log =require('loglevel');
+var log = require('loglevel');
 log.setLevel('info');
 //log.setLevel('debug');
 
@@ -54,16 +54,16 @@ bot.on("ready", async() => {
         // show link for inviting
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         log.info(link);
-        
+
         //load URL
         eloCalc.initURL(`${c.eloListURL()}`);
         itemHandler.initURL(`${c.itemListURL()}`);
         cp.initURL(`${c.heroesListURL()}`);
         gameMode.initURL(`${c.gameModeListURL()}`);
-        
+
         //init vainglory API token for the bot
         vgMsg.setToken(VG_TOKEN);
-        
+
         // heroku hack
         if (typeof process.env.HOST != 'undefined') {
             setInterval(function() {
@@ -78,27 +78,27 @@ bot.on("ready", async() => {
 
 // reactions added
 bot.on('messageReactionAdd', (reaction, user) => {
-    
+
     //console.log(reaction);
-    
+
     //reload content
     if (reaction.count > 1 && reaction.emoji == '🔄') {
         vgMsg.reloadContent(reaction.message);
         return;
     }
-    
+
     // show further match details
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
         return;
     }
-    
+
     // show played stats
     if (reaction.count > 1 && reaction.emoji == '📊') {
         vgMsg.getMatchDetailsForPlayer(reaction.message);
         return;
     }
-    
+
     //remove own message from bot
     if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();
@@ -108,7 +108,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 
 // reactions removed
 bot.on('messageReactionRemove', (reaction, user) => {
-    
+
     //reload content
     if (!user.bot && reaction.emoji == '🔄') {
         vgMsg.reloadContent(reaction.message);
@@ -119,7 +119,7 @@ bot.on('messageReactionRemove', (reaction, user) => {
 
 // messages
 bot.on("message", async message => {
-    
+
     //ignore own messages
     if (message.author.bot) {
         return;
@@ -132,11 +132,11 @@ bot.on("message", async message => {
     let command = messageArray[0];
 
     //prevent direct message
-    if (message.channel.type === "dm"){ 
+    if (message.channel.type === "dm") {
         directMessage(message)
         return;
     }
-    
+
     //prevent any actions, if bot cannot write
     if (message.member != null) {
         if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
@@ -157,36 +157,36 @@ bot.on("message", async message => {
     console.log(`${new Date()}|${message.channel.name}|${message.author.username}: ${message.content}`);
 
     // commands with 0 or more parameters
-    
+
     //HELP
-    if (strH.hasCmd(command,`${PREFIX}help`)) {
-        let embed = helpMsg.getChannelHelp(PREFIX,message.author.username, hasRole);
-        
+    if (strH.hasCmd(command, `${PREFIX}help`)) {
+        let embed = helpMsg.getChannelHelp(PREFIX, message.author.username, hasRole);
+
         message.channel.send(embed).then(message => {
             message.react('🗑');
         });
-        
+
         return;
     }
-    
+
 
     // single item code
-    if (strH.hasCmds(command,[`${PREFIX}vgitem`])) {
-        
+    if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
+
         if (messageArray.length == 1) {
             // show list
-            itemMsg.showItemWithParam(PREFIX, message, ["",'1','3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["",'2','3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["",'3','3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["",'4','3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["", '1', '3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["", '2', '3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["", '3', '3']);
+            itemMsg.showItemWithParam(PREFIX, message, ["", '4', '3']);
         } else {
             itemMsg.showSingleItem(message);
         }
         return
     }
-    
+
     // command to show items: ITEM CATEGORY TIER INDEX
-    if (strH.hasCmd(command,`${PREFIX}item`)) {
+    if (strH.hasCmd(command, `${PREFIX}item`)) {
         if (hasRole) {
             itemMsg.showItem(PREFIX, message);
         } else {
@@ -195,7 +195,7 @@ bot.on("message", async message => {
         return;
     }
 
-    if (strH.hasCmd(command,`${PREFIX}itemcount`)) {
+    if (strH.hasCmd(command, `${PREFIX}itemcount`)) {
         message.channel.send(itemMsg.showItemsNumber(message));
         return;
     }
@@ -221,7 +221,7 @@ bot.on("message", async message => {
                 let resultSupport = cp.getSupport(heroName.toLowerCase());
 
                 if (result != null) {
-                    message.channel.send( 
+                    message.channel.send(
                         d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
                         .addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
                         .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport));
@@ -237,51 +237,51 @@ bot.on("message", async message => {
         //elo list
         if (message.content.toLowerCase() === `${PREFIX}elo`) {
             for (var eloItem of eloMsg.getList()) {
-                message.channel.send(eloItem); 
+                message.channel.send(eloItem);
             }
             return;
         }
-        
+
         // show heroes list
-        if (strH.hasCmds(command,[`${PREFIX}hero`])) {
+        if (strH.hasCmds(command, [`${PREFIX}hero`])) {
             message.channel.send(cntMsg.getHeroes().setAuthor(message.author.username));
             return;
         }
-        
+
         // about
-        if (strH.hasCmds(command,[`${PREFIX}about`])) {
+        if (strH.hasCmds(command, [`${PREFIX}about`])) {
 
             var d = new Discord.RichEmbed()
-                    .setAuthor(message.author.username);
-            
+                .setAuthor(message.author.username);
+
             const version = c.version();
             message.channel.send(d.addField(`${i18n.get('AboutBot')} [${version}]`, `Creator: ${c.author()}`));
             return;
         }
-        
+
         // player details
-        if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
-            vgMsg.requestPlayerDetailsForMe(message,message.author.username);
+        if (strH.hasCmds(command, [`${PREFIX}player`, `${PREFIX}p`])) {
+            vgMsg.requestPlayerDetailsForMe(message, message.author.username);
             return;
         }
-        
+
         // recent played heroes
-        if (strH.hasCmds(command,[`${PREFIX}recent`,`${PREFIX}r`])){
-            vgMsg.requestRecentPlayedHeroesForMe(message,message.author.username);
+        if (strH.hasCmds(command, [`${PREFIX}recent`, `${PREFIX}r`])) {
+            vgMsg.requestRecentPlayedHeroesForMe(message, message.author.username);
             return;
         }
-        
+
         // last match
-        if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
-            vgMsg.requestMatchForMe(message,message.author.username);
+        if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
+            vgMsg.requestMatchForMe(message, message.author.username);
             return;
         }
-        
-        
+
+
         // commands with special rights
-        
+
         //clear chat
-        if (strH.hasCmds(command,[`${PREFIX}clear`]) && hasRole) {
+        if (strH.hasCmds(command, [`${PREFIX}clear`]) && hasRole) {
             async function clear() {
                 //remove clear command (last 50 messages)
                 message.delete();
@@ -295,78 +295,78 @@ bot.on("message", async message => {
             }
             clear();
             return;
-        } 
-        
+        }
+
         // p + r + m command
-        if (strH.hasCmds(command,[`${PREFIX}info`,`${PREFIX}i`])) {
-            
+        if (strH.hasCmds(command, [`${PREFIX}info`, `${PREFIX}i`])) {
+
             if (hasRole) {
-                vgMsg.getFullPlayerDetails(message,message.author.username);
+                vgMsg.getFullPlayerDetails(message, message.author.username);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
             return;
-        } 
+        }
     }
-    
+
     // command with parameter
     if (messageArray.length >= 2) {
 
         let hero = messageArray[1].toLowerCase();
 
         // counter pick
-        if (strH.hasCmd(command,`${PREFIX}counter`)) {
+        if (strH.hasCmd(command, `${PREFIX}counter`)) {
             let d = cntMsg.getCounter(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;
         }
 
         // quick counter pick
-        if (strH.hasCmd(command,`${PREFIX}c`)) {
+        if (strH.hasCmd(command, `${PREFIX}c`)) {
             let d = cntMsg.getQuickCounter(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;
         }
 
         // support pick
-        if (strH.hasCmd(command,`${PREFIX}support`)) {
+        if (strH.hasCmd(command, `${PREFIX}support`)) {
             let d = cntMsg.getSupport(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;
         }
 
         // quick support pick
-        if (strH.hasCmd(command,`${PREFIX}s`)) {
+        if (strH.hasCmd(command, `${PREFIX}s`)) {
             let d = cntMsg.getQuickSupport(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;
         }
-        
+
         //show player stats
-        if (strH.hasCmds(command,[`${PREFIX}player`,`${PREFIX}p`])) {
+        if (strH.hasCmds(command, [`${PREFIX}player`, `${PREFIX}p`])) {
             vgMsg.requestPlayerDetails(message, null);
             return;
         }
 
         // show recent played heroes
-        if (strH.hasCmds(command,[`${PREFIX}recent`,`${PREFIX}r`])) {
+        if (strH.hasCmds(command, [`${PREFIX}recent`, `${PREFIX}r`])) {
             vgMsg.requestRecentPlayedHeroes(message, null);
             return;
         }
-        
+
         //only allow users with roles
-        if (strH.hasCmds(command,[`${PREFIX}match`,`${PREFIX}m`])) {
+        if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
             vgMsg.requestMatch(message);
             return;
         }
-        
+
         //elo info for given value
         if (command.toLowerCase() === `${PREFIX}elo`) {
             var d = new Discord.RichEmbed();
             const points = messageArray[1];
-            
+
             if (points.length > 0) {
-                
+
                 const response = function(score, gameMode) {
                     const info = eloCalc.getResult(score);
 
@@ -374,41 +374,41 @@ bot.on("message", async message => {
                         message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                     } else {
                         //load image from parameter
-                        if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                        if (c.tierImageURL() != null && c.tierImageURL() != "") {
                             const img = vgBase.convertTier(vgBase.getTier(info.elo));
-                             d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
+                            d = d.setThumbnail(`${c.tierImageURL()}/${img}.png?raw=true`);
                         }
-                        
+
                         var gameModeInfo = "";
-                        
-                        if (gameMode!=null) {
+
+                        if (gameMode != null) {
                             gameModeInfo = ` (${gameMode})`;
                         }
-                    
+
                         if (info.missing == -1) {
                             message.channel.send(d.addField(`${info.title}${gameModeInfo}`, `${i18n.get('BetterImpossible')}`));
                         } else {
-                            const msg = i18n.get(eloCalc.getMessage()).replace("$1",info.missing);
+                            const msg = i18n.get(eloCalc.getMessage()).replace("$1", info.missing);
                             message.channel.send(d.addField(`${info.title}${gameModeInfo}`, `${msg}`));
                         }
                     }
                 };
-                
+
                 if (isNaN(points)) {
                     //use name to check for elo
                     const callback = function(playerName, player) {
                         if (player == null) {
                             message.channel.send(d.setDescription(`${i18n.get('ErrorInvalidElo')}`));
                         } else {
-                            response(Math.max(0, Math.floor(player.rankPoints.ranked)),"3v3");
-                            
-                            
+                            response(Math.max(0, Math.floor(player.rankPoints.ranked)), "3v3");
+
+
                             const fiveVfiveElo = Math.floor(player.rankPoints.ranked_5v5);
-                            if (fiveVfiveElo >= 0 ) {
+                            if (fiveVfiveElo >= 0) {
                                 d = new Discord.RichEmbed();
-                                response(Math.max(0, Math.floor(player.rankPoints.ranked_5v5)),"5v5");
+                                response(Math.max(0, Math.floor(player.rankPoints.ranked_5v5)), "5v5");
                             }
-                            
+
                         }
                         message.channel.stopTyping();
                     };
@@ -416,31 +416,31 @@ bot.on("message", async message => {
                     message.channel.startTyping();
                     vgMsg.requestEloForPlayer(message, points, callback);
                 } else {
-                    response(points,null);
+                    response(points, null);
                 }
-                
+
             } else {
                 message.channel.send(d.setDescription(`${i18n.get('NotFound')}`));
             }
             return;
         }
-        
+
         // commands with special rights
 
         //updated item list
-        if (strH.hasCmds(command,[`${PREFIX}update`,`${PREFIX}upates`])) {
+        if (strH.hasCmds(command, [`${PREFIX}update`, `${PREFIX}upates`])) {
             if (hasRole) {
-                itemMsg.showUpdatedItems(hero,message);
+                itemMsg.showUpdatedItems(hero, message);
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
             return
         }
-        
+
         //information
-        if (strH.hasCmds(command,[`${PREFIX}info`,`${PREFIX}i`])) {
+        if (strH.hasCmds(command, [`${PREFIX}info`, `${PREFIX}i`])) {
             if (hasRole) {
-                vgMsg.getFullPlayerDetails(message,messageArray[1]);
+                vgMsg.getFullPlayerDetails(message, messageArray[1]);
                 return;
             } else {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
@@ -449,9 +449,9 @@ bot.on("message", async message => {
         }
 
         //hidden feature to fetch player IDs
-        if (strH.hasCmds(command,[`${PREFIX}afk`])) {
+        if (strH.hasCmds(command, [`${PREFIX}afk`])) {
             if (hasRole) {
-                var list = message.content.replace(/(?:\r\n|\r|\n)/g, " " ).split( " " );
+                var list = message.content.replace(/(?:\r\n|\r|\n)/g, " ").split(" ");
                 list = list.slice(1, list.length);
                 vgMsg.afkInfo(list, message.channel);
             } else {
@@ -460,10 +460,10 @@ bot.on("message", async message => {
             return;
         }
     }
-    
+
     //unknown command
     var d = new Discord.RichEmbed();
-    const helpdestails = i18n.get(`HelpDetails`).replace("$1",`${PREFIX}`)
+    const helpdestails = i18n.get(`HelpDetails`).replace("$1", `${PREFIX}`)
     message.channel.send(d.addField(`${i18n.get('Help')}`, `${helpdestails}`));
 });
 
@@ -481,72 +481,72 @@ function findChannelByName(channelName) {
 }
 
 function directMessage(message) {
-    
+
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
-    
-    if (strH.hasCmd(command,`${PREFIX}help`)) {
-        let embed = helpMsg.getDmHelp(PREFIX,message.author.username);
+
+    if (strH.hasCmd(command, `${PREFIX}help`)) {
+        let embed = helpMsg.getDmHelp(PREFIX, message.author.username);
         message.channel.send(embed);
     }
-    
+
     //server and channel information
-    if (strH.hasCmd(command,`${PREFIX}whereami`)) {
-        let embed = adminMsg.getServerInfo(bot,message);
+    if (strH.hasCmd(command, `${PREFIX}whereami`)) {
+        let embed = adminMsg.getServerInfo(bot, message);
         message.channel.send(embed);
         return;
     }
-    
-    if (strH.hasCmd(command,`${PREFIX}whatdoisee`)) {
+
+    if (strH.hasCmd(command, `${PREFIX}whatdoisee`)) {
         let embed = adminMsg.getBotDetails(bot);
         message.channel.send(embed);
         return;
     }
 
     // send message to a target channel
-    if (strH.hasCmd(command,`${PREFIX}msg`)) {
-        if(messageArray.length <= 2){
+    if (strH.hasCmd(command, `${PREFIX}msg`)) {
+        if (messageArray.length <= 2) {
             return;
         }
-        
+
         let channel = findChannelByName(messageArray[1]);
         let permission = access.hasAccess(channel, message.author.username);
-        
+
         if (permission) {
             channel.send(message.content.substring(
                 messageArray[0].length + messageArray[1].length + 2, message.content.length));
-        }else {
+        } else {
             message.channel.send(`${i18n.get('NoPermissionCommand')}`);
         }
         return;
     }
-    
+
     // commands
-    if (strH.hasCmd(command,`${PREFIX}cmd`)) {
-        if(messageArray.length <= 2){
+    if (strH.hasCmd(command, `${PREFIX}cmd`)) {
+        if (messageArray.length <= 2) {
             return;
         }
         let channel = findChannelByName(messageArray[1]);
         let permission = access.hasAccess(channel, message.author.username);
-        
+
         if (permission) {
             //execute command into channel
             let subCommand = messageArray[2];
-            
+
             //player command
-            if (strH.hasCmd(subCommand,`${PREFIX}player`) && messageArray.length > 3) {
+            if (strH.hasCmd(subCommand, `${PREFIX}player`) && messageArray.length > 3) {
                 let playerName = messageArray[3];
-                vgMsg.requestPlayerDetailsInChannel(channel,playerName,messageArray.length > 4? messageArray[4]: null);
+                vgMsg.requestPlayerDetailsInChannel(channel, playerName, messageArray.length > 4 ? messageArray[4] : null);
                 return;
             }
-            
+
             // help command
-            if (strH.hasCmd(subCommand,`${PREFIX}help`)) {
-                let embed = helpMsg.getChannelHelp(PREFIX,bot.user.username, false);
+            if (strH.hasCmd(subCommand, `${PREFIX}help`)) {
+                let embed = helpMsg.getChannelHelp(PREFIX, bot.user.username, false);
                 channel.send(embed);
                 return;
             }
-            
+
             // hero command
             if (subCommand.length == 3) {
 
@@ -567,7 +567,7 @@ function directMessage(message) {
                     let resultSupport = cp.getSupport(heroName.toLowerCase());
 
                     if (result != null) {
-                        channel.send( 
+                        channel.send(
                             d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
                             .addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
                             .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport));
@@ -578,7 +578,7 @@ function directMessage(message) {
                     message.channel.send(d.setDescription(`'${hName}': ${i18n.get('EnteredHeroDoesntExist')}`));
                 }
             }
-        }else {
+        } else {
             message.channel.send(`${i18n.get('NoPermissionCommand')}`);
         }
     }

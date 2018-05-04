@@ -694,19 +694,19 @@ var playerStats = function(region, playerName, callback) {
                 var blitzRank = 0;
                 
                 if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
-                    blitzRank = anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2)
+                    blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
                 }
                 
                 var rankedRank = 0;
                 
                 if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
-                    rankedRank = anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                    rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
                 }
                 
                 var ranked5v5Rank = 0;
                 
                 if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
-                    ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
+                    ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
                 }
                 
                 var player = {
@@ -715,9 +715,9 @@ var playerStats = function(region, playerName, callback) {
                     "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                     "skillTierImg": vgbase.convertTier(vgbase.getTier(anyPlayer.attributes.stats.skillTier)),
                     "rankPoints": {
-                        "blitz": blitzRank,
-                        "ranked": rankedRank,
-                        "ranked_5v5": ranked5v5Rank,
+                        "blitz": blitzRank.toFixed(2),
+                        "ranked": rankedRank.toFixed(2),
+                        "ranked_5v5": ranked5v5Rank.toFixed(2)
                     },
                     "createdAt": anyPlayer.attributes.createdAt,
                     "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,
@@ -809,19 +809,19 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                     var blitzRank = 0;
                 
                     if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
-                        blitzRank = anyPlayer.attributes.stats.rankPoints.blitz.toFixed(2)
+                        blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
                     }
                 
                     var rankedRank = 0;
                 
                     if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
-                        rankedRank = anyPlayer.attributes.stats.rankPoints.ranked.toFixed(2)
+                        rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
                     }
                 
                     var ranked5v5Rank = 0;
                 
                     if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
-                        ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5.toFixed(2)
+                        ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
                     }
 
                     var player = {
@@ -829,9 +829,9 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                         "name": anyPlayer.attributes.name,
                         "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                         "rankPoints": {
-                            "blitz": blitzRank,
-                            "ranked": rankedRank,
-                            "ranked_5v5": ranked5v5Rank
+                            "blitz": blitzRank.toFixed(2),
+                            "ranked": rankedRank.toFixed(2),
+                            "ranked_5v5": ranked5v5Rank.toFixed(2)
                         },
                         "createdAt": anyPlayer.attributes.createdAt,
                         "gamesPlayed": anyPlayer.attributes.stats.gamesPlayed,

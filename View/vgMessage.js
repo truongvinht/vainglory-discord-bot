@@ -119,11 +119,16 @@ function updatePlayerDetails(message, playerName) {
             if (c.tierImageURL()!=null && c.tierImageURL()!="") {
                  d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
             }
+            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
+                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
+
+            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
+                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
             
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
                                       `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
-                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
+                                      rank3v3 + 
+                                      rank5v5 + 
                                       `Blitz: ${player.gamesPlayed.blitz}\n` +
                                       `Battle Royal: ${player.gamesPlayed.aral}`;
             
@@ -169,13 +174,19 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
             if (c.tierImageURL()!=null && c.tierImageURL()!="") {
                  d = d.setThumbnail(`${c.tierImageURL()}/${player.skillTierImg}.png?raw=true`);
             }
-            
+
+            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
+                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
+
+            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
+                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
+        
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
-                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
-                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
-                                      `Battle Royal: ${player.gamesPlayed.aral}`;
+                                  `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                                  rank3v3 + 
+                                  rank5v5 + 
+                                  `Blitz: ${player.gamesPlayed.blitz}\n` +
+                                  `Battle Royal: ${player.gamesPlayed.aral}`;
             
             const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
                                       
@@ -231,13 +242,19 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
             
             
             const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
-            
+
+            const rank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
+                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
+
+            const rank5v5 = player.gamesPlayed.hasOwnProperty('rank5v5')?
+                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
+    
             const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                                      `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                                      `Ranked: ${player.gamesPlayed.ranked}\n` + 
-                                      `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n` + 
-                                      `Blitz: ${player.gamesPlayed.blitz}\n` +
-                                      `Battle Royal: ${player.gamesPlayed.aral}`;
+                              `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                              rank3v3 + 
+                              rank5v5 + 
+                              `Blitz: ${player.gamesPlayed.blitz}\n` +
+                              `Battle Royal: ${player.gamesPlayed.aral}`;
             
             d = d.addField(`${i18n.get('RankPoints')}`, `Blitz: ${player.rankPoints.blitz}\nRanked: ${player.rankPoints.ranked}\nRanked 5v5: ${player.rankPoints.ranked_5v5}`)
                 .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
@@ -340,7 +357,6 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                     }
                 }
             }
-            
             
             //prepare player list
             count = 0;
@@ -460,7 +476,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
                 }
                 
             
-                d = d.addField('\u200B',`${i18n.get(r.side)} (${totalKills}):`);
+                d = d.addField('\u200B',`__**${i18n.get(r.side)} (${totalKills}):**__`);
                 for (let player of r.dataRoster) {
                     var guildTag = "";
             
@@ -567,25 +583,25 @@ const matchDetails = (message) => {
             var ban = "";
             
             for (var banned of data.banned.left) {
-                ban = ban + `${i18n.get('HeroBanned').replace('$1',banned)}\n`;
+                ban = ban + `${i18n.get('HeroBanned').replace('$1',`~~${banned}~~`)}\n`;
             }
             
             for (var selected of data.left) {
-                ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
+                ban = ban + `${selected.Hero} (${selected.Handle})\n`;
             }
 
             d = d.addField(`${i18n.get('Left')}`,`${ban}`);
             
             ban = "";
             for (var banned of data.banned.right) {
-                ban = ban + `${i18n.get('HeroBanned').replace('$1',banned)}\n`;
+                ban = ban + `${i18n.get('HeroBanned').replace('$1',`~~${banned}~~`)}\n`;
             }
             for (var selected of data.right) {
-                ban = ban + `${selected.Hero} [${selected.Handle}]\n`;
+                ban = ban + `${selected.Hero} (${selected.Handle})\n`;
             }
             
             d = d.addField(`${i18n.get('Right')}`,`${ban}`);
-            d = d.addField('\u200B',`${i18n.get('Items')}:`);
+            d = d.addField('\u200B',`__**${i18n.get('Items')}:**__`);
             //items
             let infoData = data['data'];
             
@@ -618,11 +634,10 @@ const matchDetails = (message) => {
                     } else {
                         items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}`;
                     }
-                    
                 }
             
                 //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
-                d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
+                d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);
             }
             
             let rightTeam = infoData["right"];
@@ -646,8 +661,8 @@ const matchDetails = (message) => {
                 if (items == '') {
                     items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Right',data.SellItem)}`;
                 }
-                
-                d = d.addField(`${p.name} / ${p.participant.actor}`,`${items}`);
+
+                d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);
             }
             
             channel.send(d).then(message => {
