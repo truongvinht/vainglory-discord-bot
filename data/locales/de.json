@@ -1,6 +1,7 @@
 {
   "AboutBot":"Informationen über den Bot",
   "AfkInfo":"Abwesenheit eines Spielers",
+  "AppliedAndReceivedDamageForHero":"Erhaltener und verteilter Schaden für $1",
   "AvailableCommands": "Folgende Befehle sind verfügbar:",
   "BotReady": "Bot is bereit!",
   "BetterImpossible":"Besser geht es kaum noch!",
@@ -48,7 +49,7 @@
   "KarmaBad":"Schlechtes Karma",
   "KarmaGood":"Gutes Karma",
   "KarmaGreat":"Großartiges Karma",
-  "LastMatchDetails":"Anzeige des letzten Spiels",
+  "LastMatchDetails":"Anzeige des letzten Spiels und weitere Optionen zu Details (ℹ️: Builds, 📊: Schadensverteilung für eigenen Spielerhelden)",
   "LastActive":"Zuletzt aktiv",
   "Left":"Links",
   "Level":"Level",

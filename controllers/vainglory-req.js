@@ -520,7 +520,6 @@ const matchDetailsPlayer = (data, callback) => {
 /**
  * Getting recent played heroes
  * @private
- * @param {String|Object|Array|Boolean|Number} paramName Describe this parameter
  */
 const recentPlayedHeroes = function(region, player, callback) {
 
@@ -547,6 +546,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             var playerMatchingMap = {};
             
             var roles = {"Carry":0,"Jungler":0,"Captain":0};
+            var playedGameMode = {};
 
             var text = player + ": " + "\n";
             for (var match of json.data) {
@@ -554,7 +554,15 @@ const recentPlayedHeroes = function(region, player, callback) {
                 
                 const rosterA = match.relationships.rosters.data[0];
                 const rosterB = match.relationships.rosters.data[1];
-
+                
+                //collect game mode data
+                const gMode = vgbase.getMode(match.attributes.gameMode);
+                
+                if (playedGameMode.hasOwnProperty(`${gMode}`)) {
+                    playedGameMode[`${gMode}`] = playedGameMode[`${gMode}`] + 1;
+                } else {
+                    playedGameMode[`${gMode}`] = 1;
+                }
             
                 //helper list with both roster
                 let rosterSides = [fetchRoster(json, rosterA.id),fetchRoster(json, rosterB.id)];
@@ -646,7 +654,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             });
             
             //fetch player names
-            callback(heroesList, playerList, json.data.length, roles);
+            callback(heroesList, playerList, json.data.length, roles, playedGameMode);
             
         } else {
 

@@ -61,6 +61,8 @@ var VaingloryToken = (function () {
     };
 })();
 
+// PLAYER INFO
+
 /**
  * Getting vainglory player details
  * @param {Object} message msg object with calling argument
@@ -97,6 +99,14 @@ let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
     fetchPlayerDetails(message,playerName,nextCaller,didFailed);
 }
 
+/**
+ * Method to get player details
+ * @private
+ * @param {String} playerName name of player
+ * @param {Object} player map with player details
+ * @returns message object formatted for displaying 
+ * @type Object
+ */
 function getPlayerDetails(playerName, player) {
     var d = new Discord.RichEmbed();
     d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
@@ -217,6 +227,7 @@ let requestPlayerDetailsInChannel = function(channel,playerName, code) {
     vg.getPlayerStats(serverCode, playerName, callback);
 }
 
+// RECENT PLAYER INFORMATION
 
 let requestRecentPlayedHeroes = function(message, nextCaller) {
     
@@ -251,7 +262,6 @@ let requestRecentPlayedHeroesForName = function(message, playerName, nextCaller)
 
 function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
 
-    
     message.channel.startTyping();
     const messageArray = message.content.split(" ");
 
@@ -259,15 +269,13 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(list,playerList,matches, role) {
+    var callback = function(list,playerList,matches, role, playedGameMode) {
 
         var d = new Discord.RichEmbed()
             .setAuthor(playerName)
             .setColor(colorMng.getColor(8));
 
         if (list.length > 0) {
-            //console.log(JSON.stringify(list));
-            
             var count = 0;
             
             var recentRate = "";
@@ -307,8 +315,8 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             var recentNameRate = "";
             for (var pObj of playerList) {
                 if (count++ < 5) {
-                    recentNameRate = `${recentNameRate}${pObj.name}: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} \n`
-                    
+                    const percentage = pObj.value.victory/pObj.value.played * 100;
+                    recentNameRate = `${recentNameRate}**${pObj.name}:** ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
                 }
             }
             
@@ -316,12 +324,36 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             const topPickHero = list[0].name;
             
             d = d.setThumbnail(`${c.imageURL()}/${topPickHero.toLowerCase()}.png`)
-            .addField(`${i18n.get('RecentHeroes')}`, `${recentRate}`)
-            .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/matches).toFixed(0)}%]`, `${victoryRate}`);
+                .addField(`${i18n.get('RecentHeroes')}`, `${recentRate}`)
+                .addField(`${i18n.get('WinningChance')} [${(totalVictory*100/matches).toFixed(0)}%]`, `${victoryRate}`);
+            
             
             if (recentNameRate != "") {
                 d = d.addField(`${i18n.get('PlayedWith')}`, `${recentNameRate}`);
             }
+            
+            var gModeList = [];
+            
+            // game mode
+            for (var key of Object.keys(playedGameMode)) {
+                gModeList.push({'name': key,'count':playedGameMode[key]});
+            }
+            
+            gModeList.sort(function(a, b) {
+                return b.count - a.count;
+            });
+            
+            var gModeString = "";
+            
+            for (var row of gModeList) {
+                if (gModeString.length == 0) {
+                    gModeString =  `${row.name}: ${row.count}`;
+                } else {
+                    gModeString =  `${gModeString}, ${row.name}: ${row.count}`;
+                }
+            }
+            
+            d.addField(`${i18n.get('GamesPlayed')}`,gModeString);
             
             
             if (mostPlayedRole != "-") {
@@ -647,7 +679,8 @@ const matchDetailsPlayer  = (message) => {
         let callback = function(data) {
         
             var d = new Discord.RichEmbed().setColor(colorMng.getColor(11))
-                .setTitle(playerName);
+                .setTitle(`${i18n.get('AppliedAndReceivedDamageForHero').replace("$1", playerName)}`);
+            
             // find own player
             let teamLeft = data.left;
             let teamRight = data.right;

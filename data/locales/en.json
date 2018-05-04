@@ -1,6 +1,7 @@
 {
   "AboutBot":"Details about the bot",
   "AfkInfo":"Afk time of a player",
+  "AppliedAndReceivedDamageForHero":"Applied and received damage for $1",
   "AvailableCommands":"Following commands are available:",
   "BotReady":"Bot is ready!",
   "BetterImpossible":"You are one of the best player!",
@@ -48,7 +49,7 @@
   "KarmaBad":"Bad Karma",
   "KarmaGood":"Good Karma",
   "KarmaGreat":"Great Karma",
-  "LastMatchDetails":"Display last match",
+  "LastMatchDetails":"Display last match and further options (ℹ️ : Builds, 📊: Damages related to your hero)",
   "LastActive":"Recent activity",
   "Left":"Left",
   "Level":"Level",
