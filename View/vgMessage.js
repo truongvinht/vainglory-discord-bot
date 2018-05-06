@@ -129,10 +129,20 @@ function getPlayerDetails(playerName, player) {
     // Rank
     const eloRank3v3Blitz = player.rankPoints.hasOwnProperty('blitz')?
         `Blitz: ${player.rankPoints.blitz}\n`: '';
-    const eloRank3v3 = player.rankPoints.hasOwnProperty('ranked')?
-        `Ranked: ${player.rankPoints.ranked}\n`: '';
-    const eloRank5v5 = player.rankPoints.hasOwnProperty('ranked_5v5')?
-        `Ranked 5v5: ${player.rankPoints.ranked_5v5}`: '';
+        
+    var eloRank3v3 = '';
+    if (player.rankPoints.hasOwnProperty('ranked')) {
+        if (player.rankPoints.ranked > 0) {
+            eloRank3v3 = `Ranked: ${player.rankPoints.ranked}\n`;
+        }
+    }
+    var eloRank5v5 = '';
+
+    if (player.rankPoints.hasOwnProperty('ranked_5v5')) {
+        if (player.rankPoints.ranked_5v5 > 0) {
+            eloRank5v5 = `Ranked: ${player.rankPoints.ranked_5v5}\n`;
+        }
+    }
     
     // Game mode
     const playedRank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
