@@ -25,6 +25,9 @@ var vg = require('../controllers/vainglory-req');
 // MODEL
 const vgBase = require('../models/vainglory-base');
 
+// timeout for match related details in seconds
+const MATCH_AUTO_DELETE_TIMER = 120*1000;
+
 //singleton instance of vainglory token manager for handling api token 
 var VaingloryToken = (function () {
     var instance;
@@ -578,6 +581,7 @@ function fetchMatch(message, playerName, didFailedHandler) {
     vg.getMatchStats(serverCode, playerName, callback);
 }
 
+// Player draft/ hero selection and builds in target match
 const matchDetails = (message) => {
     
     let matchData = VaingloryToken.getInstance().getMessage(message.id);
@@ -678,8 +682,11 @@ const matchDetails = (message) => {
                 d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);
             }
             
-            channel.send(d).then(message => {
-                message.react('🗑');
+            channel.send(d).then(async function (message) {
+                await message.react('🗑');
+                await setTimeout(function () {
+                    message.delete();
+                },MATCH_AUTO_DELETE_TIMER);
             });
             
             channel.stopTyping(true);
@@ -871,9 +878,13 @@ const matchDetailsPlayer  = (message) => {
             if (damageReceivedHeroes.length > 0) {
                 d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes.split("*").join("**"));
             }
+
             
-            channel.send(d).then(message => {
-                message.react('🗑');
+            channel.send(d).then(async function (message) {
+                await message.react('🗑');
+                await setTimeout(function () {
+                    message.delete();
+                },MATCH_AUTO_DELETE_TIMER);
             });
             channel.stopTyping();
         };
