@@ -51,6 +51,7 @@ const bot = new Discord.Client({
 bot.on("ready", async() => {
     log.info(`# # # # # # # # # #\n${i18n.get('BotReady')} ${bot.user.username}\n# # # # # # # # # #`);
     try {
+        
         // show link for inviting
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         log.info(link);
@@ -79,7 +80,7 @@ bot.on("ready", async() => {
 // reactions added
 bot.on('messageReactionAdd', (reaction, user) => {
 
-    //console.log(reaction);
+    log.debug("reaction " + reaction._emoji.name + " added");
 
     //reload content
     if (reaction.count > 1 && reaction.emoji == '🔄') {
@@ -102,6 +103,32 @@ bot.on('messageReactionAdd', (reaction, user) => {
     //remove own message from bot
     if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();
+    }
+
+    //load mate details
+    if (reaction.count > 1 && reaction.emoji == '1⃣') {
+        vgMsg.loadMates(reaction.message,1);
+        return;
+    }
+
+    if (reaction.count > 1 && reaction.emoji == '2⃣') {
+        vgMsg.loadMates(reaction.message,2);
+        return;
+    }
+    
+    if (reaction.count > 1 && reaction.emoji == '3⃣') {
+        vgMsg.loadMates(reaction.message,3);
+        return;
+    }
+    
+    if (reaction.count > 1 && reaction.emoji == '4⃣') {
+        vgMsg.loadMates(reaction.message,4);
+        return;
+    }
+    
+    if (reaction.count > 1 && reaction.emoji == '5⃣') {
+        vgMsg.loadMates(reaction.message,5);
+        return;
     }
 });
 

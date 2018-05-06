@@ -26,7 +26,7 @@ const colorMap = {
     "5": "#CD7F32", // PLAYER_DETAILS_B
     "6": "#C0C0C0", // PLAYER_DETAILS_S
     "7": "#FFD700", // PLAYER_DETAILS_G
-    "8": "#531b93", // RECENT_PLAYED
+    "8": "#531B93", // RECENT_PLAYED
     "9": "#424242", // MATCH
     "10": "#222222", // MATCH_DETAILS
     "11": "#234234", // ELO_LIST
@@ -67,11 +67,22 @@ const isPlayerDetails = (color) => {
     }
 }
 
+const isRecentStats = (color) => {
+    
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    
+    if (colorIndex == MessageTypes.RECENT_PLAYED) {
+        return true;  
+    } else {
+        return false;
+    }
+}
+
 const isMatch = (color) => {
     
     let colorIndex = parseInt(messageType(color.toUpperCase()));
     
-    if (colorIndex == MessageTypes.MATCH ) {
+    if (colorIndex == MessageTypes.MATCH) {
         return true;  
     } else {
         return false;
@@ -83,5 +94,6 @@ module.exports = {
     getColor: colorForMessage,
     getType: messageType,
     isPlayerDetails:isPlayerDetails,
+    isRecentStats: isRecentStats,
     isMatch: isMatch
 };

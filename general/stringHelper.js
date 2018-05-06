@@ -46,9 +46,37 @@ const containsCommands = (inputString, commands) => {
     return false;
 }
 
+/**
+ * Split string and collect into an array which is wrapped by given separator string
+ * @param {String} inputString with component for splitting
+ * @param {String} separator string
+ * @returns array with matching items (strings)
+ * @type Object
+ */
+const collectWrappedString = (inputString, separator) => {
+    
+    //invalid split
+    if (separator==undefined || separator == null) {
+        return [];
+    }
+    
+    // array for collecting results
+    var resultList = [];
+    const tmpList = inputString.split(separator);
+    
+    for (var index = 0; index< tmpList.length; index++) {
+        if (index%2==1 && index+1 < tmpList.length) {
+            resultList.push(tmpList[index]);
+        }
+    }
+    
+    return resultList;
+}
+
 // export
 module.exports = {
     numberOfSpaces: countSpaces,
     hasCmd: containsCommand,
-    hasCmds: containsCommands
+    hasCmds: containsCommands,
+    collectWrappedString: collectWrappedString
 };

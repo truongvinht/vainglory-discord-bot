@@ -9,6 +9,10 @@ const c = require("../general/constLoader");
 const fm = require('../general/contentFormatter');
 const access = require('../general/accessRightManager');
 const colorMng = require('../controllers/messageColorManager');
+const strH = require('../general/stringHelper');
+
+//logger
+const log = require('loglevel');
 
 //elo calculator
 const eloCalc = require('../controllers/eloCalculator');
@@ -189,9 +193,9 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                 message.channel.stopTyping();
                 nextCaller(message,playerName);
             } else {
-                
-                message.channel.send(d.setAuthor(`${player.name}`)).then(message => {
-                    message.react('🔄');
+                message.channel.send(d.setAuthor(`${player.name}`)).then(async function (message) {
+                    await message.react('🔄');
+                    await message.react('🗑');
                 });
                 message.channel.stopTyping();
             }
@@ -316,7 +320,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             for (var pObj of playerList) {
                 if (count++ < 5) {
                     const percentage = pObj.value.victory/pObj.value.played * 100;
-                    recentNameRate = `${recentNameRate}**${pObj.name}:** ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
+                    recentNameRate = `${recentNameRate}**${pObj.name}**: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
                 }
             }
             
@@ -360,9 +364,29 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                 d = d.addField(`${i18n.get('MostPlayedRoles')}`,mostPlayedRole);
             }
             
-        
-            message.channel.send(d).then(message => {
-                message.react('🗑');
+            message.channel.send(d).then(async function (message) {
+                
+                //TODO: needs to be optimized (dirty hack)
+                if (playerList.length > 0) {
+                    await message.react('1⃣');
+                }
+                
+                if (playerList.length > 1) {
+                    await message.react('2⃣');
+                }
+                
+                if (playerList.length > 2) {
+                    await message.react('3⃣');
+                }
+                
+                if (playerList.length > 3) {
+                    await message.react('4⃣');
+                }
+                
+                if (playerList.length > 4) {
+                    await message.react('5⃣');
+                }
+                await message.react('🗑');
             });
             
             if (nextCaller !=null) {
@@ -484,6 +508,9 @@ function fetchMatch(message, playerName, didFailedHandler) {
                     }
                     var tier = vgBase.getTier(eloLevel);
                     
+                    if (tier == 'T0') {
+                        tier = 'Unranked';
+                    }
                     
                     //header
                     const header = `${player.name}${guildTag} (${tier}) ${afk}`;
@@ -512,14 +539,14 @@ function fetchMatch(message, playerName, didFailedHandler) {
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             
-            message.channel.send(d).then(message => {
-                message.react('ℹ');
-                message.react('📊');
-                message.react('🗑');
+
+            message.channel.send(d).then(async function (message) {
+                await message.react('ℹ');
+                await message.react('📊');
+                await message.react('🗑');
                 VaingloryToken.getInstance().setMessage(`${message.id}`, data);
-            }
+            });
             
-            );
             message.channel.stopTyping();
             return;
         }
@@ -665,7 +692,7 @@ const matchDetailsPlayer  = (message) => {
             playerName = embed.author.name;
             break;
         } else {
-            console.log('Ignore call for match details');
+            log.info('Ignore call for match details');
             return;
         }
     }
@@ -879,6 +906,31 @@ const reloadContent = (message) => {
     }
 }
 
+const loadMateDetails = (message, position) => {
+    
+    for (var embed of message.embeds) {
+        
+        // recent played team mate
+        if (colorMng.isRecentStats(embed.hexColor)) {
+            
+            // 2nd field contains mate names
+            const field = embed.fields[2];
+            
+            const rawMateData = field.value.split('\n');
+            
+            //check for valid index
+            if (rawMateData.length > position - 1) {
+                const playerName = strH.collectWrappedString(rawMateData[position-1],'**');
+                requestPlayerDetailsForName(message, playerName,null);
+            }
+            
+            
+            break;
+        }
+    }
+}
+
+
 function getSoldItems(actor, team, soldItemList) {
     var items = '';
     
@@ -1000,5 +1052,6 @@ module.exports = {
     getFullPlayerDetails: fullDetails,
     requestEloForPlayer: requestEloForPlayer,
     reloadContent: reloadContent,
+    loadMates: loadMateDetails,
     afkInfo: afkDetails
 };
