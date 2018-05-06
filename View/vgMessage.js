@@ -437,7 +437,7 @@ let requestMatchForMe = function(message, playerName) {
         requestMatchForPlayer(message, guildMember.displayName);
     }
     
-    fetchMatch(message,playerName, didFailed);
+    fetchMatch(message,playerName, false, didFailed);
 }
 
 let requestMatchForPlayer = function(message, playerName) {
@@ -446,10 +446,21 @@ let requestMatchForPlayer = function(message, playerName) {
         message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
     }
     
-    fetchMatch(message,playerName, didFailed);
+    fetchMatch(message,playerName, false, didFailed);
 }
 
-function fetchMatch(message, playerName, didFailedHandler) {
+
+function updateMatch(message, playerName) {
+    
+    let didFailed = function(d,playerName) {
+        message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+    }
+    
+    fetchMatch(message,playerName, true, didFailed);
+}
+
+
+function fetchMatch(message, playerName, shouldUpdate, didFailedHandler) {
     
     message.channel.startTyping();
     const messageArray = message.content.split(" ");
@@ -552,13 +563,19 @@ function fetchMatch(message, playerName, didFailedHandler) {
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             
-
-            message.channel.send(d).then(async function (message) {
-                await message.react('ℹ');
-                await message.react('📊');
-                await message.react('🗑');
-                VaingloryToken.getInstance().setMessage(`${message.id}`, data);
-            });
+            if (shouldUpdate) {
+                message.edit(d).then(async function (message) {
+                    VaingloryToken.getInstance().setMessage(`${message.id}`, data);
+                });
+            } else {
+                message.channel.send(d).then(async function (message) {
+                    await message.react('ℹ');
+                    await message.react('📊');
+                    await message.react('🔄');
+                    await message.react('🗑');
+                    VaingloryToken.getInstance().setMessage(`${message.id}`, data);
+                });
+            }
             
             message.channel.stopTyping();
             return;
@@ -923,6 +940,14 @@ const reloadContent = (message) => {
         if (colorMng.isPlayerDetails(embed.hexColor)) {
             const author = embed.author.name;
             updatePlayerDetails(message, author);
+            break;
+        }
+        
+        // reload match details
+        if (colorMng.isMatch(embed.hexColor)) {
+            const author = embed.author.name;
+            updateMatch(message, author);
+            break;
         }
     }
 }
