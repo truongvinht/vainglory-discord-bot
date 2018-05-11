@@ -303,8 +303,8 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                 if (count++ < 5) {
                     recentRate = recentRate + obj.name + ": " + (obj.value.played/matches*100).toFixed(0) + "% \n";
                     victoryRate = victoryRate + obj.name + ": " + (obj.value.victory/obj.value.played*100).toFixed(0) + "% \n";
-                    totalVictory = totalVictory + obj.value.victory;
                 }
+                totalVictory = totalVictory + obj.value.victory;
             }
             
             //Prepare Most played Role

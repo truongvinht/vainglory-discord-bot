@@ -11,7 +11,6 @@ const serverInfo = (bot,message) => {
     let d = new Discord.RichEmbed().setTitle(`${i18n.get('ListConnectedDiscordChannel')}`);
     
     var count = 0;
-    
     var contentMap = {};
     
     for (var channel of bot.channels.array()) {
@@ -35,7 +34,6 @@ const serverInfo = (bot,message) => {
         }
     }
     
-    
     return d;
 }
 
@@ -43,7 +41,6 @@ const botDetails = (bot) => {
     let d = new Discord.RichEmbed().setTitle(`${i18n.get('OverviewGuildDistribution')}`);
     
     var contentMap = {};
-    
     
     for (var g of bot.guilds.array()) {
         
@@ -71,7 +68,6 @@ const botDetails = (bot) => {
     for (let k of Object.keys(contentMap)) {
         d = d.addField(`${k}`,`${contentMap[k].guilds} ${i18n.get('Guilds')}, ${contentMap[k].members} ${i18n.get('Users')}`)
     }
-    
     
     return d;
 }
