@@ -286,7 +286,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     const code = messageArray.length === 3?messageArray[2]:null;
     const serverCode = c.vgServerCode(code);
 
-    var callback = function(list,playerList,matches, role, playedGameMode) {
+    var callback = function(list,playerList,matches, role, playedGameMode, playedTime) {
 
         var d = new Discord.RichEmbed()
             .setAuthor(playerName)
@@ -373,6 +373,35 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             d.addField(`${i18n.get('GamesPlayed')}`,gModeString);
             
             
+            var playingTimeList = [];
+            
+            // playing time
+            for (var key of Object.keys(playedTime)) {
+                playingTimeList.push({'name': key,'count':playedTime[key]});
+            }
+            
+            playingTimeList.sort(function(a, b) {
+                return b.count - a.count;
+            });
+
+            var playingTimeString = "";
+
+            count = 0;
+            for (var row of playingTimeList) {
+                if (count++ < 3) {
+
+                    if (count == 1) {
+                        playingTimeString = row.name;
+                    } else {
+                        playingTimeString = playingTimeString + ", " + row.name;
+                    }
+                }
+            }
+
+            console.log(playingTimeList);
+            
+            d = d.addField(`${i18n.get('MostPlayedTime')}`,playingTimeString);
+
             if (mostPlayedRole != "-") {
                 d = d.addField(`${i18n.get('MostPlayedRoles')}`,mostPlayedRole);
             }

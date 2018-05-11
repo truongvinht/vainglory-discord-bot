@@ -48,8 +48,23 @@ const dateToString = (date, locale) => {
     return date.toLocaleDateString(locale, options);
 }
 
+/**
+ * Convert date to hour string format
+ * @param {Object} date input date which needs to be converted to string
+ * @returns formated date based on locale
+ * @type String
+ */
+const dateToHour = (date, locale) => {
+    let options = {   
+        hour: 'numeric',
+    };
+
+    return date.toLocaleTimeString(locale, options);
+}
+
 // export
 module.exports = {
     timeToNow: dateDiff,
-    dateToString: dateToString
+    dateToString: dateToString,
+    dateToHour: dateToHour
 };

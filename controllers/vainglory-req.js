@@ -12,6 +12,8 @@ const gameMode = require('./gameMode');
 
 var vgbase = require('../models/vainglory-base.js');
 
+const formatter = require('../general/contentFormatter');
+
 // URL for Vainglory developer API
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 //const VG_URL = 'http://localhost:8080/'
@@ -546,12 +548,24 @@ const recentPlayedHeroes = function(region, player, callback) {
             var playerMatchingMap = {};
             
             var roles = {"Carry":0,"Jungler":0,"Captain":0};
+
+            //collect match starting time
+            var playedTime = {};
+
             var playedGameMode = {};
 
             var text = player + ": " + "\n";
             for (var match of json.data) {
                 //find my roster
                 
+                const gameDate = formatter.dateToHour(new Date(match.attributes.createdAt),`en`);
+
+                if (playedTime.hasOwnProperty(gameDate)) {
+                    playedTime[gameDate] = playedTime[gameDate] + 1;
+                } else {
+                    playedTime[gameDate] = 1;
+                }
+
                 const rosterA = match.relationships.rosters.data[0];
                 const rosterB = match.relationships.rosters.data[1];
                 
@@ -663,7 +677,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             });
             
             //fetch player names
-            callback(heroesList, playerList, json.data.length, roles, playedGameMode);
+            callback(heroesList, playerList, json.data.length, roles, playedGameMode, playedTime);
             
         } else {
 
