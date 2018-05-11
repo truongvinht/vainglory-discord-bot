@@ -583,7 +583,7 @@ const recentPlayedHeroes = function(region, player, callback) {
                     }
                     
                     for (var p of teamsData) {
-                        
+
                         if (p.playerID == ownPlayerID) {
                             
                             if (roles.hasOwnProperty(p.role)) {
@@ -606,6 +606,15 @@ const recentPlayedHeroes = function(region, player, callback) {
                             continue;
                         } else {
                             
+                            //check for players which are played in the same team
+                            let ownPlayer = teamsData.find(function (pl){
+                                return pl.playerID == ownPlayerID;
+                            });
+
+                            if (ownPlayer == null||ownPlayer == undefined) {
+                                continue;
+                            } 
+
                             if (playerMatchingMap[p.playerID] != undefined) {
                                 let victory = playerMatchingMap[p.playerID].victory;
                                 
