@@ -143,7 +143,7 @@ function getPlayerDetails(playerName, player) {
 
     if (player.rankPoints.hasOwnProperty('ranked_5v5')) {
         if (player.rankPoints.ranked_5v5 > 0) {
-            eloRank5v5 = `Ranked: ${player.rankPoints.ranked_5v5}\n`;
+            eloRank5v5 = `Ranked 5v5: ${player.rankPoints.ranked_5v5}\n`;
         }
     }
     
