@@ -390,10 +390,14 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             for (var row of playingTimeList) {
                 if (count++ < 3) {
 
+                    var today = new Date();
+                    today.setHours(parseInt(row.name));
+                    
+                    const time = formatter.dateToHour(today,`${i18n.get('DateFormattingCode')}`);
                     if (count == 1) {
-                        playingTimeString = row.name;
+                        playingTimeString = time + `${i18n.get('oclock')}`;
                     } else {
-                        playingTimeString = playingTimeString + ", " + row.name;
+                        playingTimeString = playingTimeString + ", " + time + `${i18n.get('oclock')}`;
                     }
                 }
             }

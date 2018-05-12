@@ -17,14 +17,12 @@ const serverInfo = (bot,message) => {
         
         // only text channel 
         if (channel.type == "text") {
-            
             if (!contentMap.hasOwnProperty(channel.guild.name)) {
                 //first entry
                 contentMap[channel.guild.name] = `- ${channel.name}`;
             } else {
                 contentMap[channel.guild.name] = `${contentMap[channel.guild.name]}\n- ${channel.name}`;
             }
-            
         }
     }
     
@@ -33,7 +31,6 @@ const serverInfo = (bot,message) => {
             d = d.addField(key,contentMap[key]);
         }
     }
-    
     return d;
 }
 
@@ -43,9 +40,8 @@ const botDetails = (bot) => {
     var contentMap = {};
     
     for (var g of bot.guilds.array()) {
-        
-         let channelCount = g.channels.array().length;
-         let memberCount = g.members.array().length;
+        let channelCount = g.channels.array().length;
+        let memberCount = g.members.array().length;
         
         if (contentMap.hasOwnProperty(`${g.region}`)) {
 

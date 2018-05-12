@@ -64,6 +64,7 @@
   "MostPlayedTime": "Most played time",
   "NotFound":"not found!",
   "NoPermissionCommand":"You don't have permission to run this command.",
+  "oclock": "",
   "OverviewGuildDistribution":"Overview of guild distribution",
   "OverviewItems":"Overview of available items",
   "PlayedWith":"Played with",
