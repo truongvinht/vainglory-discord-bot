@@ -333,7 +333,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             for (var pObj of playerList) {
                 if (count++ < 5) {
                     const percentage = pObj.value.victory/pObj.value.played * 100;
-                    recentNameRate = `${recentNameRate}**${pObj.name}**: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
+                    recentNameRate = `${recentNameRate}**${count}) ${pObj.name}**: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
                 }
             }
             
@@ -401,8 +401,6 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                     }
                 }
             }
-
-            console.log(playingTimeList);
             
             d = d.addField(`${i18n.get('MostPlayedTime')}`,playingTimeString);
 
@@ -411,7 +409,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             }
             
             message.channel.send(d).then(async function (message) {
-                
+
                 //TODO: needs to be optimized (dirty hack)
                 if (playerList.length > 0) {
                     await message.react('1⃣');
@@ -433,6 +431,9 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                     await message.react('5⃣');
                 }
                 await message.react('🗑');
+
+                // action for showing player details
+                await message.react('🗒');
             });
             
             if (nextCaller !=null) {
@@ -944,6 +945,27 @@ const matchDetailsPlayer  = (message) => {
     
 }
 
+const requestPlayerForEmoji = (message) => {
+
+    var playerName = null;
+    
+    for (var embed of message.embeds) {
+        
+        // reload player details
+        if (colorMng.isRecentStats(embed.hexColor)) {
+            playerName = embed.author.name;
+            break;
+        } else {
+            log.info('Ignore call');
+            return;
+        }
+    }
+    
+    if (playerName != null) {
+        requestPlayerDetailsForName(message,playerName,null);
+    }
+}
+
 const requestEloForPlayer = (message, playerName, callback) => {
 
     vg.setToken(VaingloryToken.getInstance().token());
@@ -1002,8 +1024,6 @@ const loadMateDetails = (message, position) => {
                 const playerName = strH.collectWrappedString(rawMateData[position-1],'**');
                 requestPlayerDetailsForName(message, playerName,null);
             }
-            
-            
             break;
         }
     }
@@ -1130,6 +1150,7 @@ module.exports = {
     getMatchDetailsForPlayer: matchDetailsPlayer,
     getFullPlayerDetails: fullDetails,
     requestEloForPlayer: requestEloForPlayer,
+    requestPlayerForEmoji: requestPlayerForEmoji,
     reloadContent: reloadContent,
     loadMates: loadMateDetails,
     afkInfo: afkDetails

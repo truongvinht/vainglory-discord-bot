@@ -105,6 +105,11 @@ bot.on('messageReactionAdd', (reaction, user) => {
         reaction.message.delete();
     }
 
+    //show player info
+    if (reaction.count > 1 && reaction.emoji == '🗒') {
+        vgMsg.requestPlayerForEmoji(reaction.message);
+    }
+
     //load mate details
     if (reaction.count > 1 && reaction.emoji == '1⃣') {
         vgMsg.loadMates(reaction.message,1);
@@ -489,9 +494,9 @@ bot.on("message", async message => {
     }
 
     //unknown command
-    var d = new Discord.RichEmbed();
-    const helpdestails = i18n.get(`HelpDetails`).replace("$1", `${PREFIX}`)
-    message.channel.send(d.addField(`${i18n.get('Help')}`, `${helpdestails}`));
+    // var d = new Discord.RichEmbed();
+    // const helpdestails = i18n.get(`HelpDetails`).replace("$1", `${PREFIX}`)
+    // message.channel.send(d.addField(`${i18n.get('Help')}`, `${helpdestails}`));
 });
 
 // method to get bot channel
