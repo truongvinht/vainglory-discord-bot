@@ -333,7 +333,7 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             for (var pObj of playerList) {
                 if (count++ < 5) {
                     const percentage = pObj.value.victory/pObj.value.played * 100;
-                    recentNameRate = `${recentNameRate}**${count}) ${pObj.name}**: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
+                    recentNameRate = `${recentNameRate}${count}) **${pObj.name}**: ${pObj.value.victory} ${i18n.get('Victory')} | ${pObj.value.played} ${i18n.get('Matches')} [${percentage.toFixed(0)}%] \n`;
                 }
             }
             
