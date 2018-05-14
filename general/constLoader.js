@@ -7,6 +7,8 @@ const SUFFIX_JSON = ".json";
 
 //load settings => auto fallback to example for heroku
 var botSettings = {};
+const exampleSettings = require("../config/example_settings.json");
+
 try {
     botSettings = require("../config/settings.json");
 } catch (e) {
@@ -14,7 +16,7 @@ try {
         throw e;
     }
     console.log('settings.json not found. Loading default example_settings.json...');
-    botSettings = require("../config/example_settings.json");
+    botSettings = exampleSettings;
 }
 
 //Bot Token
@@ -84,13 +86,6 @@ if (language == "") {
     }
 }
 
-// author information
-var creator = botSettings.author;
-if (creator == "") {
-    // Heroku ENV token
-    creator = process.env.AUTHOR;
-}
-
 const getBotToken = () => {
     return botToken;
 }
@@ -109,41 +104,32 @@ const getItemURL = () => {
 }
 
 const getEloListURL = () => {
-    
     if (dataURL!=null && dataURL.length > 0) {
         return dataURL + "/" + dataEloList + SUFFIX_JSON;
     }
-    
     return dataEloList;
 }
 
 const getItemListURL = () => {
-    
     if (dataURL!=null && dataURL.length > 0) {
         return dataURL + "/locales/" + language + "/"  + dataItemsDesc + SUFFIX_JSON;
     }
-    
     return dataItemsDesc;
 }
 
 const getHeroesURL = () => {
-    
     if (dataURL!=null && dataURL.length > 0) {
         return dataURL + "/" + dataHeroes + SUFFIX_JSON;
     }
-    
     return dataHeroes;
 }
 
 const getGameModeURL = () => {
-    
     if (dataURL!=null && dataURL.length > 0) {
         return dataURL + "/" + dataGameMode + SUFFIX_JSON;
     }
-    
     return dataGameMode;
 }
-
 
 //load prefix
 const getPrefix = () => {
@@ -152,7 +138,6 @@ const getPrefix = () => {
 
 //default vg server code
 const getVgServerCode = (code) => {
-    
     //check for valid code 2 or 3 characters
     if (code !=null && code.length > 1 && code.length < 4) {
         return code;
@@ -175,13 +160,14 @@ const lang = () => {
     return language;
 }
 
+// author information
 const author = () => {
-    return creator
+    return exampleSettings.author;
 }
 
 const getVersion = () => {
-    return botSettings.version;
-} 
+    return exampleSettings.version;
+}
 
 // export
 module.exports = {

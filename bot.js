@@ -137,17 +137,14 @@ bot.on('messageReactionAdd', (reaction, user) => {
     }
 });
 
-
 // reactions removed
 bot.on('messageReactionRemove', (reaction, user) => {
-
     //reload content
     if (!user.bot && reaction.emoji == '🔄') {
         vgMsg.reloadContent(reaction.message);
         return;
     }
 });
-
 
 // messages
 bot.on("message", async message => {
@@ -189,8 +186,6 @@ bot.on("message", async message => {
     console.log(`${new Date()}|${message.channel.name}|${message.author.username}: ${message.content}`);
 
     // commands with 0 or more parameters
-
-    //HELP
     if (strH.hasCmd(command, `${PREFIX}help`)) {
         let embed = helpMsg.getChannelHelp(PREFIX, message.author.username, hasRole);
 
@@ -200,7 +195,6 @@ bot.on("message", async message => {
 
         return;
     }
-
 
     // single item code
     if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
@@ -277,17 +271,6 @@ bot.on("message", async message => {
         // show heroes list
         if (strH.hasCmds(command, [`${PREFIX}hero`])) {
             message.channel.send(cntMsg.getHeroes().setAuthor(message.author.username));
-            return;
-        }
-
-        // about
-        if (strH.hasCmds(command, [`${PREFIX}about`])) {
-
-            var d = new Discord.RichEmbed()
-                .setAuthor(message.author.username);
-
-            const version = c.version();
-            message.channel.send(d.addField(`${i18n.get('AboutBot')} [${version}]`, `Creator: ${c.author()}`));
             return;
         }
 
@@ -479,24 +462,7 @@ bot.on("message", async message => {
             }
             return;
         }
-
-        //hidden feature to fetch player IDs
-        if (strH.hasCmds(command, [`${PREFIX}afk`])) {
-            if (hasRole) {
-                var list = message.content.replace(/(?:\r\n|\r|\n)/g, " ").split(" ");
-                list = list.slice(1, list.length);
-                vgMsg.afkInfo(list, message.channel);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
-            }
-            return;
-        }
     }
-
-    //unknown command
-    // var d = new Discord.RichEmbed();
-    // const helpdestails = i18n.get(`HelpDetails`).replace("$1", `${PREFIX}`)
-    // message.channel.send(d.addField(`${i18n.get('Help')}`, `${helpdestails}`));
 });
 
 // method to get bot channel
@@ -550,6 +516,14 @@ function directMessage(message) {
         } else {
             message.channel.send(`${i18n.get('NoPermissionCommand')}`);
         }
+        return;
+    }
+
+    //feature to fetch player afk status
+    if (strH.hasCmds(command, [`${PREFIX}afk`])) {
+        var list = message.content.replace(/(?:\r\n|\r|\n)/g, " ").split(" ");
+        list = list.slice(1, list.length);
+        vgMsg.afkInfo(list, message.channel);
         return;
     }
 
