@@ -12,7 +12,7 @@ const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];
-const RELEASE_VERSION = ['3.0','3.1',"3.2"];
+const RELEASE_VERSION = ['3.0','3.1',"3.2","3.3"];
 
 var ItemDescriptionManager = (function () {
     var instance;
