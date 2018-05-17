@@ -695,13 +695,11 @@ const matchDetails = (message) => {
                 }
                 
                 //check player sold items
-                if (items == '' || countItems < 6) {
-                    
-                    if (items != '') {
-                        items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}\n${i18n.get('Bought')}: ${items}`;
-                    } else {
-                        items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Left',data.SellItem)}`;
-                    }
+                let soldItems = getSoldItems(p.participant.actor,'Left',data.SellItem);
+                if (soldItems.length < 2) {
+                    items = `${i18n.get('SoldItems')}: ${soldItems}`;
+                } else {
+                    items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
             
                 //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
@@ -726,8 +724,11 @@ const matchDetails = (message) => {
                 }
                 
                 //check player sold items
-                if (items == '') {
-                    items = `${i18n.get('SoldItems')}: ${getSoldItems(p.participant.actor,'Right',data.SellItem)}`;
+                let soldItems = getSoldItems(p.participant.actor,'Right',data.SellItem);
+                if (soldItems.length < 2) {
+                    items = `${i18n.get('SoldItems')}: ${soldItems}`;
+                } else {
+                    items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
 
                 d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);
