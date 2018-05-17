@@ -439,7 +439,6 @@ const matchDetailsPlayer = (data, callback) => {
                         var death = deathHero['Death'];
                         death.push(killedHero)
                     }
-                    
                     continue;
                 }
                 
@@ -452,7 +451,9 @@ const matchDetailsPlayer = (data, callback) => {
                     damage['Damage'] = entry.payload.Damage;
                     damage['Dealt'] = entry.payload.Damage;
                     
-                    
+                    if (entry.payload.Actor == undefined || entry.payload.Actor === 'undefined') {
+                        continue;
+                    }
                     if (entry.payload.Team == 'Left') {
                         var hero = teamLeft[entry.payload.Actor];
                         var dealDamage = hero['DealDamage'];
@@ -500,17 +501,36 @@ const matchDetailsPlayer = (data, callback) => {
             
             //set name
             for (let k of Object.keys(teamLeft)) {
+                if (k == undefined || k == 'undefined') {
+                    continue;
+                }
+
                 var h = teamLeft[k];
                 h['name'] = playerName[h.Player];
                 teamLeft[k] = h;
             }
             
             for (let k of Object.keys(teamRight)) {
+                if (k == undefined || k == 'undefined') {
+                    continue;
+                }
                 var h = teamRight[k];
                 h['name'] = playerName[h.Player];
                 teamRight[k] = h;
             }
-                        
+
+            for (let k of Object.keys(teamLeft)) {
+                if( k.indexOf('*') < 0){
+                    delete teamLeft[k];
+                }
+            }
+
+            for (let k of Object.keys(teamRight)) {
+                if( k.indexOf('*') < 0){
+                    delete teamRight[k];
+                }
+            }
+
             callback({'left': teamLeft, 'right': teamRight});
         }
     });

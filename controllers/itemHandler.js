@@ -2,7 +2,6 @@
 // Handle items for heroes
 // ==================
 
-
 // import 
 const request = require('request');
 const c = require("../general/constLoader");
@@ -247,7 +246,6 @@ const updatedList = function(version) {
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
             
-            
             if (`${RELEASE_VERSION[index]}` === version) {
                 var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
 
@@ -256,7 +254,6 @@ const updatedList = function(version) {
                 }
                 
                 //latest object
-                
                 for (var rIndex = index-1;rIndex >= 0; rIndex--) {
                     let prevItem = itm[`${RELEASE_VERSION[rIndex]}`]; 
                     if (prevItem.hasOwnProperty('name')) {

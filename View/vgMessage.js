@@ -771,11 +771,12 @@ const matchDetailsPlayer  = (message) => {
     if (matchData!=null && matchData.hasOwnProperty("asset")) {
         channel.startTyping();
         
-        let callback = function(data) {
-        
-            var d = new Discord.RichEmbed().setColor(colorMng.getColor(11))
-                .setTitle(`${i18n.get('AppliedAndReceivedDamageForHero').replace("$1", playerName)}`);
-            
+        let sendHeroStats = function (data, pname, hero) {
+
+            // ELO
+            var d = new Discord.RichEmbed().setColor(colorMng.getColor(12))
+                .setTitle(`${i18n.get('AppliedAndReceivedDamageForHero').replace("$1", pname)}`)
+                .setThumbnail(`${c.imageURL()}/${hero.replace("*", "").replace("*", "").toLowerCase()}.png`);
             // find own player
             let teamLeft = data.left;
             let teamRight = data.right;
@@ -785,7 +786,7 @@ const matchDetailsPlayer  = (message) => {
             for (let k of Object.keys(teamLeft)) {
                 let hero = teamLeft[k];
                 
-                if (hero.name == playerName) {
+                if (hero.name == pname) {
                     ownData = hero;
                 }
             }
@@ -794,7 +795,7 @@ const matchDetailsPlayer  = (message) => {
                 for (let k of Object.keys(teamRight)) {
                     let hero = teamRight[k];
                 
-                    if (hero.name == playerName) {
+                    if (hero.name == pname) {
                         ownData = hero;
                     }
                 }
@@ -890,7 +891,6 @@ const matchDetailsPlayer  = (message) => {
                 }
             }
             
-            
             var receiveDmgList = [];
             
             for (let k of Object.keys(receivedDmgMap)) {
@@ -901,7 +901,6 @@ const matchDetailsPlayer  = (message) => {
                 return b.score - a.score;
             });
             
-
             // prepare text
             var damageDealtHeroes = "";
 
@@ -929,7 +928,6 @@ const matchDetailsPlayer  = (message) => {
             if (damageReceivedHeroes.length > 0) {
                 d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes.split("*").join("**"));
             }
-
             
             channel.send(d).then(async function (message) {
                 await message.react('🗑');
@@ -937,6 +935,37 @@ const matchDetailsPlayer  = (message) => {
                     message.delete();
                 },MATCH_AUTO_DELETE_TIMER);
             });
+        };
+
+
+        let callback = function(data) {
+            
+            // find own player
+            let teamLeft = data.left;
+            let teamRight = data.right;
+            
+            var ownData = null;
+            
+            for (let k of Object.keys(teamLeft)) {
+                let hero = teamLeft[k];
+                
+                if (hero.name == playerName) {
+                    ownData = hero;
+                }
+            }
+            
+            if (ownData == null) {
+                for (let k of Object.keys(teamRight)) {
+                    let hero = teamRight[k];
+                    sendHeroStats(data,hero.name,k);
+                }
+            } else {
+                for (let k of Object.keys(teamLeft)) {
+                    let hero = teamLeft[k];
+                    sendHeroStats(data,hero.name,k);
+                }
+            }
+
             channel.stopTyping();
         };
         
