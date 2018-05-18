@@ -143,17 +143,7 @@ function getPlayerDetails(playerName, player) {
 
     if (player.rankPoints.hasOwnProperty('ranked_5v5')) {
         if (player.rankPoints.ranked_5v5 > 0) {
-
             const tier = `${getTier(player.rankPoints.ranked_5v5)}`;
-
-            //override thumbnail if tier is higher
-            if (d.thumbnail != undefined && eloRank3v3.length > 0) {
-                if (player.rankPoints.ranked_5v5 > player.rankPoints.ranked) {
-                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
-                        d = d.setThumbnail(`${c.tierImageURL()}/${vgBase.convertTier(tier)}.png?raw=true`);
-                    }
-                }
-            } 
             eloRank5v5 = `Ranked 5v5: ${player.rankPoints.ranked_5v5} (${tier})\n`;
         }
     }
@@ -220,6 +210,10 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                 nextCaller(message,playerName);
             } else {
                 message.channel.send(d.setAuthor(`${player.name}`)).then(async function (message) {
+
+                    // action for showing player details
+                    await message.react('🗒');
+
                     await message.react('🔄');
                     await message.react('🗑');
                 });
@@ -423,6 +417,9 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
             
             message.channel.send(d).then(async function (message) {
 
+                // action for showing player details
+                await message.react('🗒');
+
                 //TODO: needs to be optimized (dirty hack)
                 if (playerList.length > 0) {
                     await message.react('1⃣');
@@ -444,9 +441,6 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                     await message.react('5⃣');
                 }
                 await message.react('🗑');
-
-                // action for showing player details
-                await message.react('🗒');
             });
             
             if (nextCaller !=null) {
@@ -991,12 +985,16 @@ const matchDetailsPlayer  = (message) => {
 const requestPlayerForEmoji = (message) => {
 
     var playerName = null;
+    var playerNameForRecent = null;
     
     for (var embed of message.embeds) {
         
         // reload player details
         if (colorMng.isRecentStats(embed.hexColor)) {
             playerName = embed.author.name;
+            break;
+        } else if (colorMng.isPlayerDetails(embed.hexColor)) {
+            playerNameForRecent = embed.author.name;
             break;
         } else {
             log.info('Ignore call');
@@ -1006,6 +1004,10 @@ const requestPlayerForEmoji = (message) => {
     
     if (playerName != null) {
         requestPlayerDetailsForName(message,playerName,null);
+    }
+
+    if (playerNameForRecent != null) {
+        requestRecentPlayedHeroesForName(message, playerNameForRecent,null);
     }
 }
 
@@ -1146,11 +1148,11 @@ function getTimeSince(time) {
 }
 
 function getClassColor(classification) {
-    if (classification.toLowerCase().includes("gold")) {
+    if (classification.toLowerCase().includes(i18n.get('Gold').toLowerCase())) {
         return colorMng.getColor(7);
-    } else if (classification.toLowerCase().includes("silver")) {
+    } else if (classification.toLowerCase().includes(i18n.get('Silver').toLowerCase())) {
         return colorMng.getColor(6);
-    } else if (classification.toLowerCase().includes("bronze")) {
+    } else if (classification.toLowerCase().includes(i18n.get('Bronze').toLowerCase())) {
         return colorMng.getColor(5);
     }
 
