@@ -132,18 +132,29 @@ function getPlayerDetails(playerName, player) {
     // Rank
     const eloRank3v3Blitz = player.rankPoints.hasOwnProperty('blitz')?
         `Blitz: ${player.rankPoints.blitz}\n`: '';
-        
+    
     var eloRank3v3 = '';
     if (player.rankPoints.hasOwnProperty('ranked')) {
         if (player.rankPoints.ranked > 0) {
-            eloRank3v3 = `Ranked: ${player.rankPoints.ranked}\n`;
+            eloRank3v3 = `Ranked: ${player.rankPoints.ranked} (${getTier(player.rankPoints.ranked)})\n`;
         }
     }
     var eloRank5v5 = '';
 
     if (player.rankPoints.hasOwnProperty('ranked_5v5')) {
         if (player.rankPoints.ranked_5v5 > 0) {
-            eloRank5v5 = `Ranked 5v5: ${player.rankPoints.ranked_5v5}\n`;
+
+            const tier = `${getTier(player.rankPoints.ranked_5v5)}`;
+
+            //override thumbnail if tier is higher
+            if (d.thumbnail != undefined && eloRank3v3.length > 0) {
+                if (player.rankPoints.ranked_5v5 > player.rankPoints.ranked) {
+                    if (c.tierImageURL()!=null && c.tierImageURL()!="") {
+                        d = d.setThumbnail(`${c.tierImageURL()}/${vgBase.convertTier(tier)}.png?raw=true`);
+                    }
+                }
+            } 
+            eloRank5v5 = `Ranked 5v5: ${player.rankPoints.ranked_5v5} (${tier})\n`;
         }
     }
     
@@ -163,6 +174,8 @@ function getPlayerDetails(playerName, player) {
 
     const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
     
+
+
     return d.addField(`${i18n.get('RankPoints')}`, `${eloRank3v3Blitz}${eloRank3v3}${eloRank5v5}`)
         .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
         .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
@@ -696,8 +709,8 @@ const matchDetails = (message) => {
                 
                 //check player sold items
                 let soldItems = getSoldItems(p.participant.actor,'Left',data.SellItem);
-                if (soldItems.length < 2) {
-                    items = `${i18n.get('SoldItems')}: ${soldItems}`;
+                if (soldItems == '-') {
+                    items = `${i18n.get('Bought')}: ${items}`;
                 } else {
                     items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
@@ -725,8 +738,8 @@ const matchDetails = (message) => {
                 
                 //check player sold items
                 let soldItems = getSoldItems(p.participant.actor,'Right',data.SellItem);
-                if (soldItems.length < 2) {
-                    items = `${i18n.get('SoldItems')}: ${soldItems}`;
+                if (soldItems == '-') {
+                    items = `${i18n.get('Bought')}: ${items}`;
                 } else {
                     items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
@@ -1157,9 +1170,30 @@ const setToken = (token) => {
  * @returns current Vainglory API token
  * @type String
  */
-
 const getToken = () => {
     VaingloryToken.getInstance().token();
+}
+
+/**
+ * Function to get current tier for given elo scores
+ * @returns Tier description
+ * @type String
+ */
+const getTier = (points) => {
+
+    var eloLevel = -1;
+                    
+    let score = eloCalc.getResult(points);
+        
+    if (score != null) {
+        eloLevel = score.elo;
+    }
+    var tier = vgBase.getTier(eloLevel);
+    
+    if (tier == 'T0') {
+        tier = 'Unranked';
+    }
+    return tier;
 }
 
 // export
