@@ -120,7 +120,7 @@ var matchStats = function(region, playerName, callback) {
                 objCount = objCount + 1;
             }
             
-            log.debug(JSON.stringify(rosterLeft));
+            //log.debug(JSON.stringify(rosterLeft));
             matchContent["left"] = teamsData[0];
             matchContent["right"] = teamsData[1];
             
@@ -249,6 +249,8 @@ const matchDetails = function(data, callback) {
 }
 
 const matchDetailsPlayer = (data, callback) => {
+
+    log.debug(`URL: ${data.asset}`);
 
     var reqAssetsOption = {
         url: data.asset,
@@ -448,9 +450,9 @@ const matchDetailsPlayer = (data, callback) => {
                     damage['Actor'] = entry.payload.Actor;
                     damage['Target'] = entry.payload.Target;
                     damage['Source'] = entry.payload.Source;
-                    damage['Damage'] = entry.payload.Damage;
-                    damage['Dealt'] = entry.payload.Damage;
-                    
+                    damage['Damage'] = entry.payload.Dealt;
+                    damage['Dealt'] = entry.payload.Dealt;
+
                     if (entry.payload.Actor == undefined || entry.payload.Actor === 'undefined') {
                         continue;
                     }
@@ -951,7 +953,7 @@ function prepareMatchContent(game) {
         "queue": game.attributes.stats.queue,
         "roster": [roster1.id, roster2.id]
     };
-    log.debug(JSON.stringify(game));
+    //log.debug(JSON.stringify(game));
     return gameInfo;
 }
 

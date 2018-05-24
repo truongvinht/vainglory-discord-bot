@@ -39,9 +39,9 @@ var ItemDescriptionManager = (function () {
                     if (!error && response.statusCode == 200) {
                         var json = JSON.parse(body);
                         data = json;
-                        log.debug("item list reloaded...");
+                        log.debug("item list loaded...");
                     } else {
-                        log.error("error while reloading item list json [" +url + "]");
+                        log.error("error while loading item list json [" +url + "]");
                     }
                 });
                 return;

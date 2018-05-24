@@ -595,7 +595,7 @@ function fetchMatch(message, playerName, shouldUpdate, didFailedHandler) {
                     d = d.addField(header, `${heroSelection} | KDA ${kda} | ${csPerMin} (${cs})`);
                 }
             }
-            
+            //log.debug(`${c.imageURL()}/${data.hero.toLowerCase()}.png`);
             d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
             
             //man of the match
@@ -911,30 +911,34 @@ const matchDetailsPlayer  = (message) => {
             
             // prepare text
             var damageDealtHeroes = "";
+            var dealtDmg = 0;
 
             for (let hero of dealtDmgList) {
                 
                 //filter non-heroes
                 if (receivedDmgMap[hero.name] != undefined) {
                     damageDealtHeroes = `${damageDealtHeroes}${hero.name}: ${hero.score}\n`;
+                    dealtDmg = dealtDmg + parseInt(hero.score);
                 } 
             }
             var damageReceivedHeroes = "";
+            var receivedDmg = 0;
 
             for (let hero of receiveDmgList) {
                 
                 //filter non-heroes
                 if (dealtDmgMap[hero.name] != undefined) {
                     damageReceivedHeroes = `${damageReceivedHeroes}${hero.name}: ${hero.score}\n`;
+                    receivedDmg = receivedDmg + parseInt(hero.score);
                 } 
             }
             
             if (damageDealtHeroes.length > 0) {
-                d.addField(`${i18n.get('DamageDealt')}`, damageDealtHeroes.split("*").join("**"));
+                d.addField(`${i18n.get('DamageDealt')} [${dealtDmg}]`, damageDealtHeroes.split("*").join("**"));
             }
             
             if (damageReceivedHeroes.length > 0) {
-                d.addField(`${i18n.get('DamageReceived')}`, damageReceivedHeroes.split("*").join("**"));
+                d.addField(`${i18n.get('DamageReceived')} [${receivedDmg}]`, damageReceivedHeroes.split("*").join("**"));
             }
             
             channel.send(d).then(async function (message) {
