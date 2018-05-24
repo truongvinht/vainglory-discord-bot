@@ -123,16 +123,31 @@ function heroPick(map, hero, prefix) {
  */
 const heroes = () => {
 
-    // list for output
-    var list = "";
+    var heroesList = [];
 
     for (var key of Object.keys(getHeroesData().hero)) {
-        list = `${list}+ ${getHeroesData().hero[key]} [${key}]\n`;
+
+        const abilities = getHeroesData().ability;
+        
+        if (abilities.hasOwnProperty(`${getHeroesData().hero[key].toLowerCase()}`)) {
+            const ability = abilities[getHeroesData().hero[key].toLowerCase()];
+            heroesList.push({'name':getHeroesData().hero[key],'key':key, 'type': ability.type, 'ability':ability});
+        } else {
+            heroesList.push({'name':getHeroesData().hero[key],'key':key});
+        }
     }
+
+
+    // list for output
+    // var list = "";
+
+    // for (var key of Object.keys(getHeroesData().hero)) {
+    //     list = `${list}+ ${getHeroesData().hero[key]} [${key}]\n`;
+    // }
 
     return {
         "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(getHeroesData().hero).length}]`,
-        "content": list
+        "content": heroesList
     }
 }
 

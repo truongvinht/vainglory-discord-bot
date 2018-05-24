@@ -14,7 +14,57 @@ const cp = require('../controllers/vgCounterPicker');
 const heroList = () => {
     var d = new Discord.RichEmbed();
     let keyValueMap = cp.getHeroes();
-    return d.addField(keyValueMap.title, keyValueMap.content);
+
+    var content = "";
+
+    //symbole as prefix for every row
+    const symbole = "◦";
+
+    for (let item of keyValueMap.content) {
+        console.log(item);
+
+        if (content.length == 0) {
+            if (item.hasOwnProperty('type')) {
+                content = symbole +" " + formatHeroString(item.name + " [" + item.key + "]", item.type);
+            } else {
+                content = symbole +" " + item.name + " [" + item.key + "]";
+            }
+
+        } else {
+            if (item.hasOwnProperty('type')) {
+                content = content + "\n" + symbole +" " + formatHeroString(item.name + " [" + item.key + "]", item.type);
+            } else {
+                content = content + "\n" + symbole +" " + item.name + " [" + item.key + "]";
+            }
+            
+        }
+    }
+
+    //prevent broken message
+    if (content.length == 0) {
+        content = "-";
+    } else {
+        d.setDescription("**Captain** | __Laner__ | Jungler");
+    }
+
+    return d.addField(keyValueMap.title, content);
+}
+
+/**
+ * Helper method to convert string into formated string for message
+ * @param {String} input input string for formatting
+ * @param {String} type captain,jungler, laner as input type
+ * @return formated string
+ */
+function formatHeroString(input, type) {
+    if (type != undefined) {
+        if (type == 'captain') {
+            return  "**" + input + "**";
+        } else if (type == 'laner') {
+            return  "__" + input + "__";
+        }
+    }
+    return input
 }
 
 const counterPickHero = (hero) => {

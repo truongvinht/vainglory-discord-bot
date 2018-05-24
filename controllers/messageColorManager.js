@@ -89,11 +89,16 @@ const isMatch = (color) => {
     }
 }
 
+const greenString = (text) => {
+    return "```CSS\n"+text+"\n```";
+}
+
 // export
 module.exports = {
     getColor: colorForMessage,
     getType: messageType,
     isPlayerDetails:isPlayerDetails,
     isRecentStats: isRecentStats,
-    isMatch: isMatch
+    isMatch: isMatch,
+    getGreenString: greenString
 };
