@@ -21,7 +21,6 @@ const heroList = () => {
     const symbole = "◦";
 
     for (let item of keyValueMap.content) {
-        console.log(item);
 
         if (content.length == 0) {
             if (item.hasOwnProperty('type')) {

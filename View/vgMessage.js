@@ -704,9 +704,9 @@ const matchDetails = (message) => {
                 //check player sold items
                 let soldItems = getSoldItems(p.participant.actor,'Left',data.SellItem);
                 if (soldItems == '-') {
-                    items = `${i18n.get('Bought')}: ${items}`;
+                    items = `__${i18n.get('Bought')}:__ ${items}`;
                 } else {
-                    items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
+                    items = `__${i18n.get('SoldItems')}:__ ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
             
                 //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
@@ -733,9 +733,9 @@ const matchDetails = (message) => {
                 //check player sold items
                 let soldItems = getSoldItems(p.participant.actor,'Right',data.SellItem);
                 if (soldItems == '-') {
-                    items = `${i18n.get('Bought')}: ${items}`;
+                    items = `__${i18n.get('Bought')}:__ ${items}`;
                 } else {
-                    items = `${i18n.get('SoldItems')}: ${soldItems}\n${i18n.get('Bought')}: ${items}`;
+                    items = `__${i18n.get('SoldItems')}:__ ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
 
                 d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);

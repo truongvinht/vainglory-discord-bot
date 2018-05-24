@@ -18,14 +18,14 @@ var EloManager = (function () {
 
         return {
             initURL: function(url) {
+                reqOption = {
+                    url: url,
+                    headers: {
+                        'User-Agent': 'request',
+                        'Accept': 'application/json'
+                    }
+                };
                 request(reqOption, function(error, response, body) {
-                    reqOption = {
-                        url: url,
-                        headers: {
-                            'User-Agent': 'request',
-                            'Accept': 'application/json'
-                        }
-                    };
                     if (!error && response.statusCode == 200) {
                         var json = JSON.parse(body);
                         data = json;
