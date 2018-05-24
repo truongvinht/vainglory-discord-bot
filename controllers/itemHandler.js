@@ -18,28 +18,44 @@ var ItemDescriptionManager = (function () {
     
     function initInstance() {
         
-        //url for request
+        //requested data
         var data = "";
-        
+
+        var reqOption = {};
+
         return {
             initURL: function(url) {
                 
-                var reqOption = {
+                //request object
+                reqOption = {
                     url: url,
                     headers: {
                         'User-Agent': 'request',
                         'Accept': 'application/json'
                     }
                 };
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("item list reloaded...");
+                    } else {
+                        log.error("error while reloading item list json [" +url + "]");
+                    }
+                });
+                return;
+            },
+            reloadContent: function() {
 
                 request(reqOption, function(error, response, body) {
 
                     if (!error && response.statusCode == 200) {
                         var json = JSON.parse(body);
                         data = json;
-                        log.debug("item list loaded...");
+                        log.debug("item list reloaded...");
                     } else {
-                        log.error("error while loading item list json [" +url + "]");
+                        log.error("error while reloading item list json [" +url + "]");
                     }
                 });
                 return;
@@ -315,6 +331,10 @@ const prepUrl = function(url) {
     ItemDescriptionManager.getInstance().initURL(url);
 }
 
+const reloadUrl = () => {
+    ItemDescriptionManager.getInstance().reloadContent();
+}
+
 // export
 module.exports = {
     getCategories: categoryList,
@@ -324,5 +344,6 @@ module.exports = {
     getItem:singleItemCode,
     getItemByName: singleItem,
     getItemNumber: countItems,
-    initURL: prepUrl
+    initURL: prepUrl,
+    reload: reloadUrl
 };

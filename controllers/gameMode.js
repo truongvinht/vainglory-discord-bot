@@ -12,11 +12,12 @@ var GameModeHandler = (function () {
         
         //url for request
         var data = "";
-        
+        var reqOption = {};
+
         return {
             initURL: function(url) {
                 
-                var reqOption = {
+                reqOption = {
                     url: url,
                     headers: {
                         'User-Agent': 'request',
@@ -32,6 +33,19 @@ var GameModeHandler = (function () {
                         log.debug("game mode list loaded...");
                     } else {
                         log.error("error while loading game mode list json [" +url + "]");
+                    }
+                });
+                return;
+            },
+            reloadContent: function() {
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("game mode relist loaded...");
+                    } else {
+                        log.error("error while reloading game mode list json [" +url + "]");
                     }
                 });
                 return;
@@ -56,6 +70,10 @@ const prepUrl = function(url) {
     GameModeHandler.getInstance().initURL(url);
 }
 
+const reloadUrl = () => {
+    GameModeHandler.getInstance().reloadContent();
+}
+
 const data = () => {
     return GameModeHandler.getInstance().content();
 }
@@ -63,5 +81,6 @@ const data = () => {
 // export
 module.exports = {
     initURL: prepUrl,
-    getData: data
+    getData: data,
+    reload: reloadUrl
 };

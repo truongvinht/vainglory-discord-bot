@@ -488,6 +488,24 @@ function directMessage(message) {
         message.channel.send(embed);
     }
 
+    // reload remote plist content
+    if (strH.hasCmd(command, `${PREFIX}reloadall`)) {
+
+        //reload elo list
+        eloCalc.reload();
+
+        //reload item list
+        itemHandler.reload();
+
+        //reload counter pick data
+        cp.reload();
+
+        //reload game mode
+        gameMode.reload();
+
+        return;
+    }
+
     //server and channel information
     if (strH.hasCmd(command, `${PREFIX}whereami`)) {
         let embed = adminMsg.getServerInfo(bot, message);

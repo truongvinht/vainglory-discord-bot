@@ -12,26 +12,40 @@ var EloManager = (function () {
         
         //url for request
         var data = "";
-        
+
+        //request header
+        var reqOption = {};
+
         return {
             initURL: function(url) {
-                
-                var reqOption = {
-                    url: url,
-                    headers: {
-                        'User-Agent': 'request',
-                        'Accept': 'application/json'
-                    }
-                };
-
                 request(reqOption, function(error, response, body) {
-
+                    reqOption = {
+                        url: url,
+                        headers: {
+                            'User-Agent': 'request',
+                            'Accept': 'application/json'
+                        }
+                    };
                     if (!error && response.statusCode == 200) {
                         var json = JSON.parse(body);
                         data = json;
                         log.debug("elo list loaded...");
                     } else {
                         log.error("error while loading elo json");
+                    }
+                });
+                return;
+            },
+
+            reloadContent: function() {
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("elo list reloaded...");
+                    } else {
+                        log.error("error while reloading elo json");
                     }
                 });
                 return;
@@ -92,6 +106,11 @@ const prepUrl = function(url) {
     EloManager.getInstance().initURL(url);
 }
 
+// reload json file
+const reloadUrl = () => {
+    EloManager.getInstance().reloadContent();
+}
+
 // prepare data for displaying
 const calculate = function(points) {
     var instance = EloManager.getInstance();
@@ -117,4 +136,5 @@ module.exports = {
     getResult: calculate,
     getScore: score,
     getMessage: randomMessage,
+    reload: reloadUrl
 };

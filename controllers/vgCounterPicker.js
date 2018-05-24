@@ -15,11 +15,12 @@ var HeroDetailsManager = (function () {
         
         //url for request
         var data = "";
-        
+        var reqOption = {};
+
         return {
             initURL: function(url) {
                 
-                var reqOption = {
+                reqOption = {
                     url: url,
                     headers: {
                         'User-Agent': 'request',
@@ -35,6 +36,19 @@ var HeroDetailsManager = (function () {
                         log.debug("Heroes loaded...");
                     } else {
                         log.error("error while loading heroes json [" +url + "]");
+                    }
+                });
+                return;
+            },
+            reloadContent: function() {
+                request(reqOption, function(error, response, body) {
+
+                    if (!error && response.statusCode == 200) {
+                        var json = JSON.parse(body);
+                        data = json;
+                        log.debug("Heroes reloaded...");
+                    } else {
+                        log.error("error while reloading heroes json [" +url + "]");
                     }
                 });
                 return;
@@ -172,11 +186,16 @@ const prepUrl = function(url) {
     HeroDetailsManager.getInstance().initURL(url);
 }
 
+const reloadUrl = () => {
+    HeroDetailsManager.getInstance().reloadContent();
+}
+
 // export
 module.exports = {
     getCounter: counter,
     getSupport: support,
     getHeroes: heroes,
     getHeroName: quickHeroLookup,
-    initURL: prepUrl
+    initURL: prepUrl,
+    reload: reloadUrl
 };
