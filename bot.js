@@ -297,7 +297,6 @@ bot.on("message", async message => {
             return;
         }
 
-
         // commands with special rights
 
         //clear chat
@@ -397,13 +396,11 @@ bot.on("message", async message => {
                         } else {
                             response(Math.max(0, Math.floor(player.rankPoints.ranked)), "3v3");
 
-
                             const fiveVfiveElo = Math.floor(player.rankPoints.ranked_5v5);
                             if (fiveVfiveElo >= 0) {
                                 d = new Discord.RichEmbed();
                                 response(Math.max(0, Math.floor(player.rankPoints.ranked_5v5)), "5v5");
                             }
-
                         }
                         message.channel.stopTyping();
                     };
