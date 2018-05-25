@@ -110,6 +110,11 @@ bot.on('messageReactionAdd', (reaction, user) => {
         vgMsg.requestPlayerForEmoji(reaction.message);
     }
 
+    //show last match
+    if (reaction.count > 1 && reaction.emoji == '⚔') {
+        vgMsg.requestMatchForEmoji(reaction.message);
+    }
+
     //load mate details
     if (reaction.count > 1 && reaction.emoji == '1⃣') {
         vgMsg.loadMates(reaction.message,1);
@@ -311,17 +316,6 @@ bot.on("message", async message => {
             clear();
             return;
         }
-
-        // p + r + m command
-        if (strH.hasCmds(command, [`${PREFIX}info`, `${PREFIX}i`])) {
-
-            if (hasRole) {
-                vgMsg.getFullPlayerDetails(message, message.author.username);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
-            }
-            return;
-        }
     }
 
     // command with parameter
@@ -330,28 +324,14 @@ bot.on("message", async message => {
         let hero = messageArray[1].toLowerCase();
 
         // counter pick
-        if (strH.hasCmd(command, `${PREFIX}counter`)) {
-            let d = cntMsg.getCounter(hero).setAuthor(message.author.username);
-            message.channel.send(d);
-            return;
-        }
-
-        // quick counter pick
-        if (strH.hasCmd(command, `${PREFIX}c`)) {
+        if (strH.hasCmds(command, [`${PREFIX}counter`, `${PREFIX}c`])) {
             let d = cntMsg.getQuickCounter(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;
         }
 
         // support pick
-        if (strH.hasCmd(command, `${PREFIX}support`)) {
-            let d = cntMsg.getSupport(hero).setAuthor(message.author.username);
-            message.channel.send(d);
-            return;
-        }
-
-        // quick support pick
-        if (strH.hasCmd(command, `${PREFIX}s`)) {
+        if (strH.hasCmds(command, [`${PREFIX}support`, `${PREFIX}s`])) {
             let d = cntMsg.getQuickSupport(hero).setAuthor(message.author.username);
             message.channel.send(d);
             return;

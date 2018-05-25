@@ -213,7 +213,7 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
 
                     // action for showing player details
                     await message.react('🗒');
-
+                    await message.react('⚔');
                     await message.react('🔄');
                     await message.react('🗑');
                 });
@@ -708,8 +708,6 @@ const matchDetails = (message) => {
                 } else {
                     items = `__${i18n.get('SoldItems')}:__ ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
-            
-                //console.log(`${p.name} / ${p.participant.actor} - ${JSON.stringify(items)}`);
                 d = d.addField(`${p.participant.actor} (${p.name})`,`${items}`);
             }
             
@@ -783,6 +781,7 @@ const matchDetailsPlayer  = (message) => {
 
             // ELO
             var d = new Discord.RichEmbed().setColor(colorMng.getColor(12))
+                .setAuthor(pname)
                 .setTitle(`${i18n.get('AppliedAndReceivedDamageForHero').replace("$1", pname)}`)
                 .setThumbnail(`${c.imageURL()}/${hero.replace("*", "").replace("*", "").toLowerCase()}.png`);
             // find own player
@@ -942,6 +941,7 @@ const matchDetailsPlayer  = (message) => {
             }
             
             channel.send(d).then(async function (message) {
+                await message.react('🗒');
                 await message.react('🗑');
                 await setTimeout(function () {
                     message.delete();
@@ -1000,7 +1000,10 @@ const requestPlayerForEmoji = (message) => {
         } else if (colorMng.isPlayerDetails(embed.hexColor)) {
             playerNameForRecent = embed.author.name;
             break;
-        } else {
+        } else if (colorMng.isDamageStats(embed.hexColor)) {
+            playerName = embed.author.name;
+            break;
+        }else {
             log.info('Ignore call');
             return;
         }
@@ -1012,6 +1015,29 @@ const requestPlayerForEmoji = (message) => {
 
     if (playerNameForRecent != null) {
         requestRecentPlayedHeroesForName(message, playerNameForRecent,null);
+    }
+}
+
+
+const requestMatchForEmoji = (message) => {
+
+    var playerName = null;
+    var playerNameForRecent = null;
+    
+    for (var embed of message.embeds) {
+        
+        // reload player details
+        if (colorMng.isPlayerDetails(embed.hexColor)) {
+            playerName = embed.author.name;
+            break;
+        } else {
+            log.info('Ignore call');
+            return;
+        }
+    }
+    
+    if (playerName != null) {
+        requestMatchForPlayer(message,playerName);
     }
 }
 
@@ -1221,6 +1247,7 @@ module.exports = {
     getFullPlayerDetails: fullDetails,
     requestEloForPlayer: requestEloForPlayer,
     requestPlayerForEmoji: requestPlayerForEmoji,
+    requestMatchForEmoji: requestMatchForEmoji,
     reloadContent: reloadContent,
     loadMates: loadMateDetails,
     afkInfo: afkDetails

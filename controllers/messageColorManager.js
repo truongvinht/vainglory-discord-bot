@@ -89,6 +89,17 @@ const isMatch = (color) => {
     }
 }
 
+const isDamageStats = (color) => {
+    
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    
+    if (colorIndex == MessageTypes.MATCH_PLAYER_DETAILS) {
+        return true;  
+    } else {
+        return false;
+    }
+}
+
 const greenString = (text) => {
     return "```CSS\n"+text+"\n```";
 }
@@ -99,6 +110,7 @@ module.exports = {
     getType: messageType,
     isPlayerDetails:isPlayerDetails,
     isRecentStats: isRecentStats,
+    isDamageStats: isDamageStats,
     isMatch: isMatch,
     getGreenString: greenString
 };
