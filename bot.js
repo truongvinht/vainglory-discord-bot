@@ -34,8 +34,8 @@ const gameMode = require('./controllers/gameMode');
 
 //logger
 var log = require('loglevel');
-log.setLevel('info');
-//log.setLevel('debug');
+//log.setLevel('info');
+log.setLevel('debug');
 
 // CONSTANTS
 
@@ -91,6 +91,43 @@ bot.on('messageReactionAdd', (reaction, user) => {
     // show further match details
     if (reaction.count > 1 && reaction.emoji == 'ℹ') {
         vgMsg.getMatchDetails(reaction.message);
+        return;
+    }
+
+    // show vg pro data
+    if (reaction.count > 1 && reaction.emoji == '🕵') {
+        
+        var playerName = null;
+        var heroName = null;
+    
+        for (var embed of reaction.message.embeds) {
+
+            if (colorMng.isCounterPick(embed.hexColor)) {
+                const fields = embed.fields;
+
+                if (fields.length > 0) {
+                    const titleString = "" + fields[0].name;
+                    const titleFragments = titleString.split(" ");
+                    
+                    heroName = titleFragments[0];
+                }
+            } else {
+                playerName = embed.author.name;
+            }
+
+            break;
+        }
+
+        if (playerName !=null) {
+            reaction.message.channel.send(helpMsg.getExternalLinkForPlayer(playerName)).then(message => {
+                message.react('🗑');
+            });
+        }else if (heroName !=null) {
+            reaction.message.channel.send(helpMsg.getExternalLinkForHero(heroName)).then(message => {
+                message.react('🗑');
+            });
+        }
+
         return;
     }
 
@@ -252,10 +289,15 @@ bot.on("message", async message => {
                 let resultSupport = cp.getSupport(heroName.toLowerCase());
 
                 if (result != null) {
-                    message.channel.send(
-                        d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
+                    d.setThumbnail(`${c.imageURL()}/${heroName.toLowerCase()}.png`)
                         .addField(`${heroName} ${i18n.get('IsWeakAgainst')}`, result)
-                        .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport));
+                        .addField(`${heroName} ${i18n.get('IsStrongAgainst')}`, resultSupport);
+                    
+                    message.channel.send(d).then(async function (message) {
+                        if (c.heroLink() != "") {
+                            await message.react('🕵');
+                        }
+                    });
                 } else {
                     message.channel.send(d.setDescription(`'${heroName}': ${i18n.get('EnteredHeroDoesntExist')}`));
                 }

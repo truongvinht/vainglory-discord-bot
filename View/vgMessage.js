@@ -214,6 +214,11 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
                     // action for showing player details
                     await message.react('🗒');
                     await message.react('⚔');
+
+                    if (c.playerLink() != "") {
+                        await message.react('🕵');
+                    }
+
                     await message.react('🔄');
                     await message.react('🗑');
                 });

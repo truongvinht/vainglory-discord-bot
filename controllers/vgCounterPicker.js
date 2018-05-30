@@ -151,14 +151,6 @@ const heroes = () => {
         }
     }
 
-
-    // list for output
-    // var list = "";
-
-    // for (var key of Object.keys(getHeroesData().hero)) {
-    //     list = `${list}+ ${getHeroesData().hero[key]} [${key}]\n`;
-    // }
-
     return {
         "title": `${i18n.get('ListAvailableHeroes')} [${Object.keys(getHeroesData().hero).length}]`,
         "content": heroesList

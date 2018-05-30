@@ -61,8 +61,19 @@ const directHelpMessage = (PREFIX, author) => {
     return embed;
 }
 
+const externalPlayerLink = (player) => {
+    return ""  +constant.playerLink() + player;
+}
+
+
+const externalHeroLink = (hero) => {
+    return ""  +constant.heroLink() + hero;
+}
+
 // export
 module.exports = {
     getChannelHelp: helpMessage,
-    getDmHelp: directHelpMessage
+    getDmHelp: directHelpMessage,
+    getExternalLinkForPlayer: externalPlayerLink,
+    getExternalLinkForHero: externalHeroLink
 };

@@ -12,7 +12,11 @@
       "ITEMS_DESCRIPTION": "itemsDescription",
       "ELO_LIST":"numerical_vst"
   },
+  "EXTERNAL": {
+      "HERO": "",
+      "PLAYER": ""
+  },
   "vaingloryAPIServer": "eu",
   "author":"roest, C4CW & EuE Community",
-  "version":"1.9.1"
+  "version":"1.9.2"
 }

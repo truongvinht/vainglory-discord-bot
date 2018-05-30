@@ -65,6 +65,21 @@ if (dataEloList == "") {
     dataEloList = process.env.DATA_FILES_ELO_LIST;
 }
 
+// EXTERNAL Source
+var playerURL = botSettings.EXTERNAL.PLAYER;
+if (playerURL == "") {
+    if (process.env.hasOwnProperty('EXTERNAL_LINK_PLAYER')) {
+        playerURL = process.env.EXTERNAL_LINK_PLAYER;
+    }
+}
+
+var heroURL = botSettings.EXTERNAL.HERO;
+if (heroURL == "") {
+    if (process.env.hasOwnProperty('EXTERNAL_LINK_HERO')) {
+        extHeroLink = process.env.EXTERNAL_LINK_HERO;
+    }
+}
+
 // API CONFIGURATIONS
 
 // Vainglory API Token
@@ -163,11 +178,19 @@ const lang = () => {
 // author information
 const author = () => {
     return exampleSettings.author;
-}
+};
 
 const getVersion = () => {
     return exampleSettings.version;
-}
+};
+
+const getPlayerURL = () => {
+    return playerURL;
+};
+
+const getHeroURL = () => {
+    return heroURL;
+};
 
 // export
 module.exports = {
@@ -185,5 +208,7 @@ module.exports = {
     vgToken: getVgToken,
     language: lang,
     author: author,
-    version: getVersion
+    version: getVersion,
+    playerLink: getPlayerURL,
+    heroLink: getHeroURL
 };

@@ -15,7 +15,8 @@ const MessageTypes = {
     MATCH: 9,
     MATCH_DETAILS: 10,
     ELO_LIST: 11,
-    MATCH_PLAYER_DETAILS: 12
+    MATCH_PLAYER_DETAILS: 12,
+    VGPRO_PLAYER_DATA:13
 };
 
 const colorMap = {
@@ -30,7 +31,8 @@ const colorMap = {
     "9": "#424242", // MATCH
     "10": "#222222", // MATCH_DETAILS
     "11": "#234234", // ELO_LIST
-    "12": "#123123" // MATCH_PLAYER_DETAILS
+    "12": "#123123", // MATCH_PLAYER_DETAILS
+    "13": "#FFFF00" // VGPRO PLAYER DATA
     
 };
 
@@ -100,6 +102,19 @@ const isDamageStats = (color) => {
     }
 }
 
+const isCounterPick = (color) => {
+
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    
+    if (colorIndex == MessageTypes.COUNTER_SUPPORT ||
+        colorIndex == MessageTypes.COUNTER ||
+        colorIndex == MessageTypes.SUPPORT) {
+        return true;  
+    } else {
+        return false;
+    }
+}
+
 const greenString = (text) => {
     return "```CSS\n"+text+"\n```";
 }
@@ -112,5 +127,6 @@ module.exports = {
     isRecentStats: isRecentStats,
     isDamageStats: isDamageStats,
     isMatch: isMatch,
+    isCounterPick:isCounterPick,
     getGreenString: greenString
 };
