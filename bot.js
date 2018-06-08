@@ -66,7 +66,7 @@ bot.on("ready", async() => {
         vgMsg.setToken(VG_TOKEN);
 
         if (c.playerLink() != "") {
-            log.info('Load custom urls configuration');
+            log.info('Load custom urls configuration: ' + c.playerLink());
         }
 
         // heroku hack
