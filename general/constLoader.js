@@ -73,7 +73,7 @@ if (playerURL == "") {
 
 var heroURL = botSettings.EXTERNAL.HERO;
 if (heroURL == "") {
-    extHeroLink = process.env.EXTERNAL_LINK_HERO;
+    heroURL = process.env.EXTERNAL_LINK_HERO;
 }
 
 // API CONFIGURATIONS
