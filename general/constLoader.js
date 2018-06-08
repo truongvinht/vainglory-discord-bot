@@ -181,10 +181,19 @@ const getVersion = () => {
 };
 
 const getPlayerURL = () => {
+
+    if (playerURL == undefined) {
+        return "";
+    }
+
     return playerURL;
 };
 
 const getHeroURL = () => {
+
+    if (heroURL == undefined) {
+        return "";
+    }
     return heroURL;
 };
 
