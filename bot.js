@@ -34,8 +34,8 @@ const gameMode = require('./controllers/gameMode');
 
 //logger
 var log = require('loglevel');
-//log.setLevel('info');
-log.setLevel('debug');
+log.setLevel('info');
+//log.setLevel('debug');
 
 // CONSTANTS
 
@@ -64,6 +64,10 @@ bot.on("ready", async() => {
 
         //init vainglory API token for the bot
         vgMsg.setToken(VG_TOKEN);
+
+        if (c.playerLink() != "") {
+            log.info('Load custom urls configuration');
+        }
 
         // heroku hack
         if (typeof process.env.HOST != 'undefined') {

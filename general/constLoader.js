@@ -68,16 +68,12 @@ if (dataEloList == "") {
 // EXTERNAL Source
 var playerURL = botSettings.EXTERNAL.PLAYER;
 if (playerURL == "") {
-    if (process.env.hasOwnProperty('EXTERNAL_LINK_PLAYER')) {
-        playerURL = process.env.EXTERNAL_LINK_PLAYER;
-    }
+    playerURL = process.env.EXTERNAL_LINK_PLAYER;
 }
 
 var heroURL = botSettings.EXTERNAL.HERO;
 if (heroURL == "") {
-    if (process.env.hasOwnProperty('EXTERNAL_LINK_HERO')) {
-        extHeroLink = process.env.EXTERNAL_LINK_HERO;
-    }
+    extHeroLink = process.env.EXTERNAL_LINK_HERO;
 }
 
 // API CONFIGURATIONS
