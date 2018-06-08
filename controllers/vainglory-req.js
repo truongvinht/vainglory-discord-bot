@@ -45,6 +45,8 @@ var matchStats = function(region, playerName, callback) {
             //map for callback
             var matchContent = {};
 
+            var mappingMOM = {};
+
             matchContent['match'] = match;
             matchContent['createdAt'] = match.createdAt;
             matchContent['duration'] = (match.duration - (match.duration % 60)) / 60;
@@ -73,6 +75,8 @@ var matchStats = function(region, playerName, callback) {
 
                     var mom = calculateManOfMatch(p);
 
+                    mappingMOM[p.playerID] = mom;
+                    
                     if (maxScorePlayerValue < mom) {
                         maxScorePlayerValue = mom;
                         maxScorePlayerID = p.playerID;
@@ -103,6 +107,12 @@ var matchStats = function(region, playerName, callback) {
 
                     var player = fetchPlayer(json, p.playerID);
                     player["participant"] = p;
+
+                    if (mappingMOM[player.id] != undefined) {
+                        mappingMOM[player.name] = mappingMOM[player.id];
+                        delete mappingMOM[player.id];
+                    }
+
                     teamsData[objCount].push(player);
                     var guild = "";
 
@@ -127,6 +137,7 @@ var matchStats = function(region, playerName, callback) {
             manOfMatch["actor"] = momHero;
             matchContent["mom"] = manOfMatch;
             matchContent["hero"] = ownPlayedHero;
+            matchContent["scores"] = mappingMOM;
 
             //continue with hero pick
             for (var included of json.included) {
@@ -1150,28 +1161,28 @@ function fetchPlayer(json, playerId) {
  */
 function calculateManOfMatch(details) {
     // hero kills
-    const sumKills = details.kills * 300;
+    const sumKills = details.kills * 30;
 
     // deaths
-    const sumDeaths = details.deaths * 300;
+    const sumDeaths = details.deaths * 30;
 
     // assist
-    const sumAssists = details.assists * 300;
+    const sumAssists = details.assists * 30;
 
     // kraken captured
-    const sumKraken = details.krakenCaptures * 500;
+    const sumKraken = details.krakenCaptures * 50;
 
     //turrets destroyed
-    const sumTurret = details.turretCaptures * 300;
+    const sumTurret = details.turretCaptures * 30;
 
     // minions killed
-    const sumMinion = details.minionKills * 10;
+    const sumMinion = details.minionKills * 1;
 
     // captured gold miner
-    const sumGoldMiner = details.goldMineCaptures * 400;
+    const sumGoldMiner = details.goldMineCaptures * 40;
 
     // captured crystal miner
-    const sumCrystalMiner = details.crystalMineCaptures + 300;
+    const sumCrystalMiner = details.crystalMineCaptures * 30;
 
     return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
 }
