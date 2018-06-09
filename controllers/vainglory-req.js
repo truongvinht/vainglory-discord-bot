@@ -234,25 +234,24 @@ const matchDetails = function(data, callback) {
             heroSelections['left'] = left;
             heroSelections['right'] = right;
             
-            var maxLength = 100;
+            var maxLength = 1000;
             
-            if (json.length < 100) {
+            if (json.length < 1000) {
                 maxLength = json.length;
             }
-            
+
             var soldItems = [];
             
-            // trace sold items (last 100 actions)
+            // trace sold items (last 1000 actions)
             for (var entry of json.reverse().slice(0,maxLength)) {
                 if (entry.type == 'SellItem') {
                     soldItems.push(entry);
-                }
+                } 
             }
             
             heroSelections['banned'] = {'left':leftBan,'right':rightBan};
             heroSelections['data'] = data;
             heroSelections['SellItem'] = soldItems;
-            //log.error(JSON.stringify(heroSelections))
             
             callback(heroSelections);
         }

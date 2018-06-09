@@ -715,7 +715,7 @@ const matchDetails = (message) => {
                 }
 
 
-                d = d.addField(`${p.participant.actor} (${p.name}) - ${data.data.scores[p.name]}`,`${items}`);
+                d = d.addField(`${p.participant.actor} (${p.name}) [${data.data.scores[p.name]}]`,`${items}`);
             }
             
             let rightTeam = infoData["right"];
@@ -743,7 +743,7 @@ const matchDetails = (message) => {
                     items = `__${i18n.get('SoldItems')}:__ ${soldItems}\n${i18n.get('Bought')}: ${items}`;
                 }
 
-                d = d.addField(`${p.participant.actor} (${p.name}) - ${data.data.scores[p.name]}`,`${items}`);
+                d = d.addField(`${p.participant.actor} (${p.name}) [${data.data.scores[p.name]}]`,`${items}`);
             }
             
             channel.send(d).then(async function (message) {
