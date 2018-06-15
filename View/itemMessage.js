@@ -199,11 +199,11 @@ const showSingleItem = (message) => {
                 .addField('\u200B',`${selectedItem.description}`)
                 .setFooter(`${cMap.items[parseInt(selectedItem.category[0])-1]} | ${tierMap.items[parseInt(selectedItem.tier)-1]}`);
                 
-            if (selectedItem.hasOwnProperty('old')) {
-                let oldItem = selectedItem.old;
-                d = d.addField(`${i18n.get('PrioUpdate')}:`,`${i18n.get('Gold')}: ${oldItem.price} ${dependency}`)
-                .addField('\u200B',`${oldItem.description}`)
-            } 
+            // if (selectedItem.hasOwnProperty('old')) {
+            //     let oldItem = selectedItem.old;
+            //     d = d.addField(`${i18n.get('PrioUpdate')}:`,`${i18n.get('Gold')}: ${oldItem.price} ${dependency}`)
+            //     .addField('\u200B',`${oldItem.description}`)
+            // } 
             message.channel.send(d);
         }
     } else {

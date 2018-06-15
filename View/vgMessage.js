@@ -600,12 +600,12 @@ function fetchMatch(message, playerName, shouldUpdate, didFailedHandler) {
                     d = d.addField(header, `${heroSelection} | KDA ${kda} | ${csPerMin} (${cs})`);
                 }
             }
-            //log.debug(`${c.imageURL()}/${data.hero.toLowerCase()}.png`);
             d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
             
             //man of the match
             if (data.mom != null) {
                 const mom = i18n.get(`Mom`).replace("$1",data.mom.name);
+                log.info(`IMG: ${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
                 d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
             }
             

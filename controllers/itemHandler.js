@@ -11,7 +11,7 @@ const i18n = require('../general/langSupport');
 var log = require('loglevel');
 
 const TIER_LIST = ['Tier 1','Tier 2','Tier 3'];
-const RELEASE_VERSION = ['3.0','3.1',"3.2","3.3"];
+const RELEASE_VERSION = ['3.0','3.1',"3.2","3.3","3.4"];
 
 var ItemDescriptionManager = (function () {
     var instance;
@@ -139,6 +139,12 @@ const list = function(category, tier) {
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
             
+            //item was removed
+            if (!itm.hasOwnProperty(`${RELEASE_VERSION[index]}`)) {
+                needsSkipping = true;
+                break;
+            }
+
             let singleItem = itm[`${RELEASE_VERSION[index]}`]; 
 
             if (Object.keys(singleItem).length == 0) {
@@ -207,6 +213,10 @@ const singleItemCode = function(code) {
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
 
+            if (!itm.hasOwnProperty(`${RELEASE_VERSION[index]}`)) {
+                continue;
+            }
+
             var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
             
             if (Object.keys(singleItem).length == 0) {
@@ -231,6 +241,10 @@ const singleItem = function(name) {
         
         //check each version
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
+
+            if (!itm.hasOwnProperty(`${RELEASE_VERSION[index]}`)) {
+                continue;
+            }
 
             var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
             
@@ -263,6 +277,11 @@ const updatedList = function(version) {
         for (var index = RELEASE_VERSION.length-1; index >= 0; index--) {
             
             if (`${RELEASE_VERSION[index]}` === version) {
+
+                if (!itm.hasOwnProperty(`${RELEASE_VERSION[index]}`)) {
+                    continue;
+                }
+
                 var singleItem = itm[`${RELEASE_VERSION[index]}`]; 
 
                 if (Object.keys(singleItem).length == 0) {
