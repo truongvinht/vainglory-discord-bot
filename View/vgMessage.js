@@ -118,6 +118,7 @@ function getPlayerDetails(playerName, player) {
     var d = new Discord.RichEmbed();
     d = d.addField(`${i18n.get('Level')} (${i18n.get('XP')})`, `${player.level} (${player.xp})`)
         .addField(`${i18n.get('Skilltier')}`, `${player.skillTier}`)
+        .addField(`${i18n.get('Region')}`, `${player.shardId.toUpperCase()}`)
         .setColor(getClassColor(`${player.skillTier}`));
 
     if (player.guildTag != "") {

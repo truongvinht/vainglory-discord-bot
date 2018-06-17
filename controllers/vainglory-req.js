@@ -2,15 +2,16 @@
 // ================
 
 //dependency
-var request = require('request');
-var fs = require('fs');
-var log = require('loglevel');
+const fs = require('fs');
+const log = require('loglevel');
 
 // CONTROLLER
 const itemHandler = require('./itemHandler');
 const gameMode = require('./gameMode');
+const vgData = require('./vgDataSeparator');
+const vgHandler = require('./vgHandler');
 
-var vgbase = require('../models/vainglory-base.js');
+const vgbase = require('../models/vainglory-base.js');
 
 // URL for Vainglory developer API
 const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
@@ -19,28 +20,18 @@ const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 // request token for VG API
 var requestToken = '';
 
-var matchStats = function(region, playerName, callback) {
-    const requestURL = VG_URL + region + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]=1&page[offset]=0";
-    log.debug(requestURL);
+const matchStats = function(region, playerName, callback) {
 
-    const reqOption = getRequestHeader(requestURL);
-
-    if (reqOption == null) {
-        return null;
-    }
-
-    request(reqOption, function(error, response, body) {
-
-        if (!error && response.statusCode == 200) {
-            var json = JSON.parse(body);
-
+    //after requesting json data
+    const requestCallback = function(json) {
+        if (json != null) {
             //fetch own player id
-            var ownPlayerID = fetchPlayerID(json, playerName);
+            var ownPlayerID =  vgData.findPlayerByName(json,playerName);
             var ownPlayedHero = "";
             var totalCountGames = json.data.length;
 
             //prepare match data
-            var match = fetchLastMatch(json)
+            var match = vgData.getLastMatch(json)
 
             //map for callback
             var matchContent = {};
@@ -62,7 +53,7 @@ var matchStats = function(region, playerName, callback) {
             
             for (var rosterID of match.roster) {
 
-                var roster = fetchRoster(json, rosterID);
+                var roster = vgData.getRoster(json, rosterID);
 
                 if (roster.won == "true" && roster.side == 'left/blue') {
                     matchContent["won"] = 'left/blue';
@@ -71,9 +62,9 @@ var matchStats = function(region, playerName, callback) {
                 }
 
                 for (var part of roster.participants) {
-                    var p = fetchParticipants(json, part);
+                    var p = vgData.getParticipant(json, part);
 
-                    var mom = calculateManOfMatch(p);
+                    var mom = vgHandler.getMoMScore(p);
 
                     mappingMOM[p.playerID] = mom;
                     
@@ -105,7 +96,7 @@ var matchStats = function(region, playerName, callback) {
             for (let side of rosterSides) {
                 for (var p of side) {
 
-                    var player = fetchPlayer(json, p.playerID);
+                    var player = vgData.getPlayer(json, p.playerID);//fetchPlayer(json, p.playerID);
                     player["participant"] = p;
 
                     if (mappingMOM[player.id] != undefined) {
@@ -157,28 +148,13 @@ var matchStats = function(region, playerName, callback) {
                     break;
                 }
             }
-
         } else {
-            var text = "";
-
-            if (response != null) {
-                log.debug("# # # # #");
-                log.debug("URL: " + requestURL);
-                log.debug("Status: " + response.statusCode);
-                log.debug("Header: " + response.rawHeaders);
-                log.debug("Body: " + body);
-                log.debug("Failed: " + error);
-                
-                if (response.statusCode==404) {
-                    callback(null, player);
-                    return;
-                } else {
-                    text = response.statusCode + " " + response.headers + " " + body + " " + error;
-                }
-            }
-            callback(text, player);
+            callback(null, null);
         }
-    });
+    };
+    
+    //request last match (index 0, only a match is relevant)
+    vgHandler.getMatch(playerName, 1, 0, requestCallback);
 }
 
 /**
@@ -188,94 +164,73 @@ var matchStats = function(region, playerName, callback) {
  * @type Object
  */
 const matchDetails = function(data, callback) {
-    var reqAssetsOption = {
-        url: data.asset,
-        headers: {
-            'User-Agent': 'request',
-            'Accept': 'application/json'
+
+    const requestCallback = function(json) {
+        var leftBan = [];
+        var rightBan = [];
+        var left = [];
+        var right = [];
+        
+        var heroSelections = {};
+        
+        var bannedHero = {};
+        
+        for (var entry of json) {
+            if (entry.type == 'HeroBan') {
+                if (entry.payload.Team == 1) {
+                    leftBan.push(entry.payload.Hero);
+                } else {
+                    rightBan.push(entry.payload.Hero);
+                }
+            }
+            if (entry.type == 'HeroSelect') {
+                if (entry.payload.Team == 1) {
+                    left.push(entry.payload);
+                } else {
+                    right.push(entry.payload);
+                }
+            }
+            
+            //skip every other object
+            if (entry.typ == 'PlayerFirstSpawn') {
+                break;
+            }
         }
-    }
-
-    request(reqAssetsOption, function(err, resp, assetbody) {
-
-        if (!err && resp.statusCode == 200) {
-            var json = JSON.parse(assetbody);
-            var leftBan = [];
-            var rightBan = [];
-            var left = [];
-            var right = [];
-            
-            var heroSelections = {};
-            
-            var bannedHero = {};
-            
-            for (var entry of json) {
-                if (entry.type == 'HeroBan') {
-                    if (entry.payload.Team == 1) {
-                        leftBan.push(entry.payload.Hero);
-                    } else {
-                        rightBan.push(entry.payload.Hero);
-                    }
-                }
-                if (entry.type == 'HeroSelect') {
-                    if (entry.payload.Team == 1) {
-                        left.push(entry.payload);
-                    } else {
-                        right.push(entry.payload);
-                    }
-                }
-                
-                //skip every other object
-                if (entry.typ == 'PlayerFirstSpawn') {
-                    break;
-                }
-            }
-            
-            heroSelections['left'] = left;
-            heroSelections['right'] = right;
-            
-            var maxLength = 1000;
-            
-            if (json.length < 1000) {
-                maxLength = json.length;
-            }
-
-            var soldItems = [];
-            
-            // trace sold items (last 1000 actions)
-            for (var entry of json.reverse().slice(0,maxLength)) {
-                if (entry.type == 'SellItem') {
-                    soldItems.push(entry);
-                } 
-            }
-            
-            heroSelections['banned'] = {'left':leftBan,'right':rightBan};
-            heroSelections['data'] = data;
-            heroSelections['SellItem'] = soldItems;
-            
-            callback(heroSelections);
+        
+        heroSelections['left'] = left;
+        heroSelections['right'] = right;
+        
+        //maximal relevant events
+        var maxLength = 1000;
+        
+        if (json.length < 1000) {
+            maxLength = json.length;
         }
-    });
+
+        var soldItems = [];
+        
+        // trace sold items (last 1000 actions)
+        for (var entry of json.reverse().slice(0,maxLength)) {
+            if (entry.type == 'SellItem') {
+                soldItems.push(entry);
+            } 
+        }
+        
+        heroSelections['banned'] = {'left':leftBan,'right':rightBan};
+        heroSelections['data'] = data;
+        heroSelections['SellItem'] = soldItems;
+        
+        callback(heroSelections);
+    };
+
+    vgHandler.getMatchDetails(data, requestCallback);
 }
 
+// player stats during match
 const matchDetailsPlayer = (data, callback) => {
 
-    log.debug(`URL: ${data.asset}`);
-
-    var reqAssetsOption = {
-        url: data.asset,
-        headers: {
-            'User-Agent': 'request',
-            'Accept': 'application/json'
-        }
-    }
-
-    request(reqAssetsOption, function(err, resp, assetbody) {
-
-        if (!err && resp.statusCode == 200) {
-            let json = JSON.parse(assetbody);
-            
-            var playerName = {}
+    const requestCallback = function(json) {
+        var playerName = {}
 
             var teamLeft = {};
             var teamRight = {};
@@ -544,39 +499,34 @@ const matchDetailsPlayer = (data, callback) => {
             }
 
             callback({'left': teamLeft, 'right': teamRight});
-        }
-    });
+    };
+
+    vgHandler.getMatchDetails(data, requestCallback);
 }
 
 /**
  * Getting recent played heroes
- * @private
  */
 const recentPlayedHeroes = function(region, player, callback) {
 
-    var requestURL = VG_URL + region + "/matches?filter[playerNames]=" + player + "&sort=-createdAt";
-    log.debug(requestURL);
-    const reqOption = getRequestHeader(requestURL);
-    
-    if (reqOption==null) {
-        return null;
-    }
+    //after requesting json data
+    const requestCallback = function(json) {
 
-    request(reqOption, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var json = JSON.parse(body);
+        if (json!=null) {
             var ownPlayerID = "";
 
             //fetch own player id
             if (player.indexOf(',') == -1) {
-                //only for single player info
-                ownPlayerID = fetchPlayerID(json, player);
+            //only for single player info
+                ownPlayerID = vgData.findPlayerByName(json, player);
             }
 
             var heroSelectionMap = {};
             var playerMatchingMap = {};
             
-            var roles = {"Carry":0,"Jungler":0,"Captain":0};
+            var roles = {"Carry":0,
+                        "Jungler":0,
+                        "Captain":0};
 
             //collect match starting time
             var playedTime = {};
@@ -607,15 +557,15 @@ const recentPlayedHeroes = function(region, player, callback) {
                 }
             
                 //helper list with both roster
-                let rosterSides = [fetchRoster(json, rosterA.id),fetchRoster(json, rosterB.id)];
+                let rosterSides = [vgData.getRoster(json, rosterA.id),vgData.getRoster(json, rosterB.id)];
                 
                 for (var roster of rosterSides) {
                     
                     var teamsData = [];
                     
-                     for (var part of roster.participants) {
-                         teamsData.push(fetchParticipants(json, part));
-                     }
+                    for (var part of roster.participants) {
+                        teamsData.push(vgData.getParticipant(json, part));
+                    }
                     
                     for (let matchType of gameMode.getData().relevant) {
                         if (matchType === match.attributes.gameMode) {
@@ -691,7 +641,7 @@ const recentPlayedHeroes = function(region, player, callback) {
             var playerList = [];
 
             for (var p of Object.keys(playerMatchingMap)) {
-                var playerData = fetchPlayer(json,p);
+                var playerData = vgData.getPlayer(json,p);//fetchPlayer(json,p);
             
                 playerList.push({
                     name: playerData.name,
@@ -706,40 +656,22 @@ const recentPlayedHeroes = function(region, player, callback) {
             
             //fetch player names
             callback(heroesList, playerList, json.data.length, roles, playedGameMode, playedTime);
-            
         } else {
-
-            if (response != null) {
-                log.debug("# # # # #");
-                log.debug("URL: " + requestURL);
-                log.debug("Status: " + response.statusCode);
-                log.debug("Header: " + response.rawHeaders);
-                log.debug("Body: " + body);
-                log.debug("Failed: " + error);
-            }
             callback([], 0);
         }
-    });
+
+    };
+
+    //request based on 50 last matches
+    vgHandler.getMatch(player,50,0,requestCallback);
 }
 
-
 // function to get player stats
-var playerStats = function(region, playerName, callback) {
+const playerStats = function(region, playerName, callback) {
 
-    var requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerName;
-    log.debug(requestURL);
-    const reqOption = getRequestHeader(requestURL);
-
-    
-    if (reqOption==null) {
-        return null;
-    }
-
-    request(reqOption, function(error, response, body) {
-
-        if (!error && response.statusCode == 200) {
-            var json = JSON.parse(body);
-
+    //after requesting json data
+    const requestCallback = function(json) {
+        if (json!=null) {
             if (json.data.length > 0) {
 
                 //parse first item
@@ -768,8 +700,9 @@ var playerStats = function(region, playerName, callback) {
                     ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
                 }
                 
-                var player = {
+                const player = {
                     "id": anyPlayer.id,
+                    "shardId":anyPlayer.attributes.shardId,
                     "name": anyPlayer.attributes.name,
                     "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                     "skillTierImg": vgbase.convertTier(vgbase.getTier(anyPlayer.attributes.stats.skillTier)),
@@ -792,18 +725,10 @@ var playerStats = function(region, playerName, callback) {
                 callback(playerName, null);
             }
         } else {
-
-            if (response != null) {
-                log.debug("# # # # #");
-                log.debug("URL: " + requestURL);
-                log.debug("Status: " + response.statusCode);
-                log.debug("Header: " + response.rawHeaders);
-                log.debug("Body: " + body);
-                log.debug("Failed: " + error);
-            }
             callback(playerName, null);
         }
-    });
+    };
+    vgHandler.getPlayer(playerName,requestCallback);
 }
 
 const playersQuickInfo = function(region, playerNames, callback, resultList) {
@@ -820,14 +745,12 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
         const subCallback = function(content) {
             playersQuickInfo(region, otherList, callback);
         }
-
         remainingList = playerNames.slice(6, playerNames.list);
         
         //slice max 6 entries
         currentNames = playerNames.slice(0, 6);
     } 
     
-
     //list fits into single request
     for (var n of currentNames) {
 
@@ -839,20 +762,9 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
         }
     }
     
-    const requestURL = VG_URL + region + "/players?filter[playerNames]=" + playerRequest;
-    log.debug(requestURL);
-    const reqOption = getRequestHeader(requestURL);
-    
-    if (reqOption==null) {
-        return null;
-    }
-    request(reqOption, function(error, response, body) {
-
-        if (!error && response.statusCode == 200) {
-
-            //body content
-            var json = JSON.parse(body);
-
+    //after requesting json data
+    const requestCallback = function(json) {
+        if (json!=null) {
             if (json.data.length > 0) {
 
                 var players = [];
@@ -864,7 +776,6 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                         guildTag = anyPlayer.attributes.stats.guildTag;
                     }
 
-                
                     var blitzRank = 0;
                 
                     if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
@@ -883,8 +794,9 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                         ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
                     }
 
-                    var player = {
+                    const player = {
                         "id": anyPlayer.id,
+                        "shardId":anyPlayer.shardId,
                         "name": anyPlayer.attributes.name,
                         "skillTier": vgbase.getTier(anyPlayer.attributes.stats.skillTier),
                         "rankPoints": {
@@ -916,137 +828,10 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                 } else {
                     callback(players);
                 }
-            } else {
-                if (response != null) {
-                    log.debug("# # # # #");
-                    log.debug("URL: " + requestURL);
-                    log.debug("Status: " + response.statusCode);
-                    log.debug("Header: " + response.rawHeaders);
-                    log.debug("Body: " + body);
-                    log.debug("Failed: " + error);
-                }
             }
         }
-    });
-}
-
-// function for getting latest match
-function fetchLastMatch(json) {
-
-    var latestMatch = null;
-    for (var game of json.data) {
-        //fetch game information
-        var attributes = game.attributes;
-
-        if (latestMatch == null) {
-            latestMatch = prepareMatchContent(game);
-        } else {
-            // check whether we already got the latest match
-            if (latestMatch.createdAt < attributes.createdAt) {
-                latestMatch = prepareMatchContent(game);
-            }
-        }
-    }
-    return latestMatch;
-}
-
-function prepareMatchContent(game) {
-
-    var roster1 = game.relationships.rosters.data[0];
-    var roster2 = game.relationships.rosters.data[1];
-
-    var gameInfo = {
-        "id": game.id,
-        "createdAt": game.attributes.createdAt,
-        "duration": game.attributes.duration,
-        "gameMode": vgbase.getMode(game.attributes.gameMode),
-        "queue": game.attributes.stats.queue,
-        "roster": [roster1.id, roster2.id]
     };
-    //log.debug(JSON.stringify(game));
-    return gameInfo;
-}
-
-
-// function to fetch all objects for given ID
-function fetchRoster(json, rosterID) {
-
-    var roster = null;
-
-    for (var included of json.included) {
-
-        // fetch item attributes
-        var attributes = included.attributes;
-
-        if ('roster' == included.type && rosterID == included.id) {
-            var list = [];
-
-            for (var p of included.relationships.participants.data) {
-                list.push(p.id);
-            }
-
-            roster = {
-                "id": included.id,
-                "side": attributes.stats.side,
-                "participants": list,
-                "won": attributes.won
-            };
-        }
-    }
-    return roster;
-}
-
-//function to fetch all participants for given ID
-function fetchParticipants(json, participantID) {
-
-    var participant = null;
-
-    for (var included of json.included) {
-
-        // fetch item attributes
-        var attributes = included.attributes;
-
-        if ('participant' == included.type) {
-            if (participantID == included.id) {
-
-                var actor = attributes.actor;
-                
-                var itemCategory = {'1':0,"2":0,"3":0,"4":0,"5":0};
-                
-                for (let i of attributes.stats.items) {
-                    let itemObject = itemHandler.getItemByName(i);
-                    
-                    if (itemObject != null) {
-                        for (let category of itemObject.category) {
-                            itemCategory[category] = itemCategory[category] + 1;
-                        }
-                    }
-                }
-                
-                participant = {
-                    "id": included.id,
-                    "actor": actor.replace('\*', '').replace('\*', ''),
-                    "kills": attributes.stats.kills,
-                    "tier": vgbase.getTier(attributes.stats.skillTier),
-                    "playerID": included.relationships.player.data.id,
-                    "deaths": attributes.stats.deaths,
-                    "assists": attributes.stats.assists,
-                    "krakenCaptures": attributes.stats.krakenCaptures,
-                    "turretCaptures": attributes.stats.turretCaptures,
-                    "minionKills": attributes.stats.minionKills,
-                    "jungleKills":attributes.stats.jungleKills,
-                    "nonJungleMinionKills":attributes.stats.nonJungleMinionKills,
-                    "goldMineCaptures": attributes.stats.goldMineCaptures,
-                    "crystalMineCaptures": attributes.stats.crystalMineCaptures,
-                    "wentafk":attributes.stats.wentAfk,
-                    "skinKey": attributes.stats.skinKey,
-                    "items": attributes.stats.items,
-                    "itemstats": itemCategory
-                };
-            }
-        }
-    }
-    return participant;
+    vgHandler.getPlayer(playerRequest,requestCallback);
 }
 
 function getRolesForParticipants(participantList) {
@@ -1104,126 +889,9 @@ function getRolesForParticipants(participantList) {
     return memberList;
 }
 
-
-function fetchPlayerID(json, playerName) {
-
-    for (var included of json.included) {
-
-        // fetch item attributes
-        var attributes = included.attributes;
-
-        if ('player' == included.type) {
-            if (playerName == attributes.name) {
-                return included.id;
-            }
-        }
-    }
-    return null;
-}
-
-function fetchPlayer(json, playerId) {
-
-    for (var included of json.included) {
-        // fetch item attributes
-        var attributes = included.attributes;
-        if ('player' == included.type) {
-            if (playerId == included.id) {
-                var player = {
-                    "id": included.id,
-                    "name": attributes.name,
-                    "skillTier": vgbase.getTier(attributes.stats.skillTier),
-                    "guildTag": attributes.stats.guildTag,
-                };
-                
-                //prevent broken data for rank points
-                if (attributes.stats.hasOwnProperty('rankPoints')) {
-                    if (attributes.stats.rankPoints.hasOwnProperty('ranked')) {
-                        
-                        if (attributes.stats.rankPoints.hasOwnProperty("ranked")) {
-                            player["rankPoints"] = attributes.stats.rankPoints.ranked.toFixed(2);
-                        }
-                        
-                        if (attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
-                            player["ranked_5v5"] = attributes.stats.rankPoints.ranked_5v5.toFixed(2);
-                        }
-                    }
-                }
-                return player;
-            }
-        }
-    }
-    return null;
-}
-
-/**
- *  function for calculating man of the match based on game details
- */
-function calculateManOfMatch(details) {
-    // hero kills
-    const sumKills = details.kills * 30;
-
-    // deaths
-    const sumDeaths = details.deaths * 30;
-
-    // assist
-    const sumAssists = details.assists * 30;
-
-    // kraken captured
-    const sumKraken = details.krakenCaptures * 50;
-
-    //turrets destroyed
-    const sumTurret = details.turretCaptures * 30;
-
-    // minions killed
-    const sumMinion = details.minionKills * 1;
-
-    // captured gold miner
-    const sumGoldMiner = details.goldMineCaptures * 40;
-
-    // captured crystal miner
-    const sumCrystalMiner = details.crystalMineCaptures * 30;
-
-    return sumKills - sumDeaths + sumAssists + sumKraken + sumTurret + sumMinion + sumGoldMiner + sumCrystalMiner;
-}
-
-// function to get formatted time stamp
-function getTimeStamp(date) {
-    const month = (date.getMonth() < 9) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-    const day = ((date.getDate() - 1) < 10) ? "0" + (date.getDate() - 1) : (date.getDate());
-    return "" + date.getFullYear() + "-" + month + "-" + day + "T00:00:00Z";
-}
-
-var updateToken = function(token) {
+const updateToken = function(token) {
     requestToken = token;
-}
-
-/**
- * Method for generating header for request
- * @private
- * @param {String} url url for request
- * @returns header with request information
- * @type Object
- */
-function getRequestHeader(url) {
-    //check for non-empty VG key
-    var key = requestToken;
-    if (key == null || key == '') {
-        log.error("Error: API Key is empty");
-        return null;
-    }
-
-    return {
-        url: url,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': key,
-            'X-TITLE-ID': 'semc-vainglory',
-            'Accept': 'application/json',
-            'Cache-Control': 'private, no-cache, no-store, must-revalidate',
-            'Expires': '-1',
-            'Pragma': 'no-cache'
-        }
-    };
+    vgHandler.setToken(token);
 }
 
 //export

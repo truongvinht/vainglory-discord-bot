@@ -79,10 +79,10 @@ if (heroURL == "") {
 // API CONFIGURATIONS
 
 // Vainglory API Token
-var vgApiToken = botSettings.vgAPIToken;
+var vgApiToken = botSettings.VG.TOKEN;
 if (vgApiToken == "") {
     // Heroku ENV token
-    vgApiToken = process.env.vgAPIToken;
+    vgApiToken = process.env.VG_TOKEN;
 }
 
 // default language
@@ -157,6 +157,10 @@ const getVgServerCode = (code) => {
         return botSettings.vaingloryAPIServer;
     }
 }
+// list of regions
+const getRegions = () => {
+    return botSettings.VG.REGION;
+}
 
 // roles for accessing special features
 const getRestrictedRoles = () => {
@@ -209,6 +213,7 @@ module.exports = {
     gameModeListURL: getGameModeURL,
     prefix: getPrefix,
     vgServerCode: getVgServerCode,
+    vgRegionList: getRegions,
     restriction: getRestrictedRoles,
     vgToken: getVgToken,
     language: lang,

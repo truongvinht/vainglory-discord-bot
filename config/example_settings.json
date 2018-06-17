@@ -7,16 +7,20 @@
   "vgAPIToken":"",
   "DATA_URL":"",
   "DATA_FILES": {
-      "GAME_MODE": "gameMode",
-      "HEROES": "heroes",
-      "ITEMS_DESCRIPTION": "itemsDescription",
-      "ELO_LIST":"numerical_vst"
+    "GAME_MODE": "gameMode",
+    "HEROES": "heroes",
+    "ITEMS_DESCRIPTION": "itemsDescription",
+    "ELO_LIST":"numerical_vst"
   },
   "EXTERNAL": {
-      "HERO": "",
-      "PLAYER": ""
+    "HERO": "",
+    "PLAYER": ""
   },
   "vaingloryAPIServer": "eu",
+  "VG": {
+    "TOKEN":"",
+    "REGION": ["eu","na","sg","sa","ea","cn"]  
+  },
   "author":"roest, C4CW & EuE Community",
-  "version":"1.9.5"
+  "version":"2.0.0"
 }
