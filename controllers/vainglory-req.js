@@ -20,7 +20,7 @@ const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
 // request token for VG API
 var requestToken = '';
 
-const matchStats = function(region, playerName, callback) {
+const matchStats = function(region, page, playerName, callback) {
 
     //after requesting json data
     const requestCallback = function(json) {
@@ -154,7 +154,7 @@ const matchStats = function(region, playerName, callback) {
     };
     
     //request last match (index 0, only a match is relevant)
-    vgHandler.getMatch(playerName, 1, 0, requestCallback);
+    vgHandler.getMatch(playerName, 1, page, requestCallback);
 }
 
 /**

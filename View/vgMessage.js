@@ -169,12 +169,8 @@ function getPlayerDetails(playerName, player) {
                                 `Battle Royal: ${player.gamesPlayed.aral}`;
         }
     }
-
-
     const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
     
-
-
     return d.addField(`${i18n.get('RankPoints')}`, `${eloRank3v3Blitz}${eloRank3v3}${eloRank5v5}`)
         .addField(`${i18n.get('GamesPlayed')}`, `${gamesPlayedContent}`)
         .addField(`${i18n.get('Karma')}`, `${vgBase.getKarma(player.karmaLevel)}`)
@@ -481,6 +477,23 @@ let requestMatch = function(message) {
     if (playerName.length == 0) {
         playerName = messageArray[strH.numberOfSpaces(message.content)];
     }
+
+    if (messageArray.length > 2) {
+        
+        //index
+        const recentIndex = parseInt(messageArray[2]);
+        if (recentIndex!=null && recentIndex!=undefined) {
+            if (recentIndex>=0 && recentIndex < 50) {
+                   
+                let didFailed = function(d,playerName) {
+                    message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+                }
+            
+                fetchMatch(message,playerName, recentIndex, false, didFailed);
+                return;
+            }
+        }
+    }
     
     requestMatchForPlayer(message,playerName);
 }
@@ -492,7 +505,7 @@ let requestMatchForMe = function(message, playerName) {
         requestMatchForPlayer(message, guildMember.displayName);
     }
     
-    fetchMatch(message,playerName, false, didFailed);
+    fetchMatch(message,playerName, 0, false, didFailed);
 }
 
 let requestMatchForPlayer = function(message, playerName) {
@@ -501,7 +514,7 @@ let requestMatchForPlayer = function(message, playerName) {
         message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
     }
     
-    fetchMatch(message,playerName, false, didFailed);
+    fetchMatch(message,playerName, 0, false, didFailed);
 }
 
 
@@ -511,11 +524,12 @@ function updateMatch(message, playerName) {
         message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
     }
     
-    fetchMatch(message,playerName, true, didFailed);
+    //index = 0 => last match
+    fetchMatch(message,playerName,0 , true, didFailed);
 }
 
 
-function fetchMatch(message, playerName, shouldUpdate, didFailedHandler) {
+function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) {
     
     message.channel.startTyping();
     const messageArray = message.content.split(" ");
@@ -650,7 +664,7 @@ function fetchMatch(message, playerName, shouldUpdate, didFailedHandler) {
         
     };
     vg.setToken(VaingloryToken.getInstance().token());
-    vg.getMatchStats(serverCode, playerName, callback);
+    vg.getMatchStats(serverCode, index, playerName, callback);
 }
 
 // Player draft/ hero selection and builds in target match
