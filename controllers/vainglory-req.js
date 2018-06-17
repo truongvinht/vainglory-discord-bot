@@ -683,21 +683,21 @@ const playerStats = function(region, playerName, callback) {
                 }
                 
                 var blitzRank = 0;
-                
-                if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
-                    blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
-                }
-                
                 var rankedRank = 0;
-                
-                if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
-                    rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
-                }
-                
                 var ranked5v5Rank = 0;
                 
-                if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
-                    ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
+                if (anyPlayer.attributes.stats.hasOwnProperty("rankPoints")) {
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
+                        blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
+                    }
+                    
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
+                        rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
+                    }
+                    
+                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
+                        ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
+                    }
                 }
                 
                 const player = {

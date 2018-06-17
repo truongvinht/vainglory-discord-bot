@@ -150,18 +150,26 @@ function getPlayerDetails(playerName, player) {
     }
     
     // Game mode
-    const playedRank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
-        `Ranked: ${player.gamesPlayed.ranked}\n`: '';
+    var gamesPlayedContent = "-";
+    
+    if (player.hasOwnProperty("gamesPlayed")) {
 
-    const playedRank5v5 = player.gamesPlayed.hasOwnProperty('ranked_5v5')?
-        `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
+        if (player.gamesPlayed!=undefined) {
+            const playedRank3v3 = player.gamesPlayed.hasOwnProperty('ranked')?
+                `Ranked: ${player.gamesPlayed.ranked}\n`: '';
 
-    const gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
-                          `Casual 3v3: ${player.gamesPlayed.casual}\n` +
-                          playedRank3v3 + 
-                          playedRank5v5 + 
-                          `Blitz: ${player.gamesPlayed.blitz}\n` +
-                          `Battle Royal: ${player.gamesPlayed.aral}`;
+            const playedRank5v5 = player.gamesPlayed.hasOwnProperty('ranked_5v5')?
+                `Ranked 5v5: ${player.gamesPlayed.ranked_5v5}\n`: '';
+
+            gamesPlayedContent =  `Casual 5v5: ${player.gamesPlayed.casual_5v5}\n` +
+                                `Casual 3v3: ${player.gamesPlayed.casual}\n` +
+                                playedRank3v3 + 
+                                playedRank5v5 + 
+                                `Blitz: ${player.gamesPlayed.blitz}\n` +
+                                `Battle Royal: ${player.gamesPlayed.aral}`;
+        }
+    }
+
 
     const gameDate = formatter.dateToString(new Date(player.createdAt),`${i18n.get('DateFormattingCode')}`);
     
