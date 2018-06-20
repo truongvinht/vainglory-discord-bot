@@ -1098,7 +1098,6 @@ const requestSummerEvent2018 = (message) => {
         var d = new Discord.RichEmbed();
         if (data !=null) {
 
-            console.log(data);
             // Game mode
             var gamesPlayedContent = "-";
             if (data!=undefined) {
@@ -1124,7 +1123,9 @@ const requestSummerEvent2018 = (message) => {
             d.setDescription(`${i18n.get('SummerEventReq2018')}`);
             message.channel.send(d.addField(`${i18n.get('Victory')}`, `${gamesPlayedContent}`));
         } else {
-            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+            d.setTitle(`${i18n.get('SummerEventWonGames')}`)
+            d.setDescription(`${i18n.get('SummerEventReq2018')}`);
+            message.channel.send(d.addField(`---`, `${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
         }
     };
     
