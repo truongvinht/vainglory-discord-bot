@@ -180,6 +180,23 @@ const lastMatch = (json) =>  {
     return latestMatch;
 }
 
+const singleMatch = (game) => {
+    var match = null;
+
+    //fetch game information
+    const attributes = game.attributes;
+
+    if (match == null) {
+        match = prepareMatchContent(game);
+    } else {
+        // check whether we already got the latest match
+        if (match.createdAt < attributes.createdAt) {
+            match = prepareMatchContent(game);
+        }
+    }
+    return match;
+}
+
 function prepareMatchContent(game) {
 
     var roster1 = game.relationships.rosters.data[0];
@@ -203,5 +220,6 @@ module.exports = {
     findPlayerByName: playerID,
     getRoster: roster,
     getParticipant: participant,
-    getLastMatch: lastMatch
+    getLastMatch: lastMatch,
+    getSingleMatch: singleMatch
 };

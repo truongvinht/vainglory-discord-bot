@@ -394,6 +394,19 @@ bot.on("message", async message => {
             return;
         }
 
+        // show game stats
+        if (strH.hasCmds(command, [`${PREFIX}game`, `${PREFIX}g`])) {
+            //TODO: not implemented yet
+            //vgMsg.requestPlayedGame(message);
+            return;
+        }
+
+        // show event fullfillment
+        if (strH.hasCmds(command, [`${PREFIX}event`, `${PREFIX}e`])) {
+            vgMsg.requestSummerEvent2018(message);
+            return;
+        }
+
         //only allow users with roles
         if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
             vgMsg.requestMatch(message);

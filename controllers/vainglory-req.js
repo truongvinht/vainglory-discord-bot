@@ -504,6 +504,57 @@ const matchDetailsPlayer = (data, callback) => {
     vgHandler.getMatchDetails(data, requestCallback);
 }
 
+// Request games for the event
+const summerEvent = function(playerName, callback) {
+
+    //after requesting json data
+    const requestCallback = function(json) {
+
+        if (json!=null) {
+            var ownPlayerID = "";
+
+            //fetch own player id
+            if (playerName.indexOf(',') == -1) {
+                //only for single player info
+                ownPlayerID = vgData.findPlayerByName(json, playerName);
+            }
+
+            var playedGameMode = {};
+
+            for (var match of json.data) {
+                
+                //collect game mode data
+                const gMode = match.attributes.gameMode;//vgbase.getMode(match.attributes.gameMode);
+                
+                const m = vgData.getSingleMatch(match);
+
+                for (const roster of m.roster) {
+                    const r = vgData.getRoster(json, roster);
+
+                    for (const participant of r.participants) {
+                        const p = vgData.getParticipant(json, participant);
+
+                        if (ownPlayerID == p.playerID) {
+                            if (r.won == 'true') {
+                                if (playedGameMode.hasOwnProperty(`${gMode}`)) {
+                                    playedGameMode[`${gMode}`] = playedGameMode[`${gMode}`] + 1;
+                                } else {
+                                    playedGameMode[`${gMode}`] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            callback(playerName, playedGameMode);
+        } else {
+            callback(playerName,null);
+        }
+    };
+    //request based last matches
+    vgHandler.getMatchesFromDate(playerName,"2018-06-20T02:00:00Z",requestCallback);
+}
+
 /**
  * Getting recent played heroes
  */
@@ -662,6 +713,41 @@ const recentPlayedHeroes = function(region, player, callback) {
 
     };
 
+    //request based on 50 last matches
+    vgHandler.getMatch(player,50,0,requestCallback);
+}
+
+const playedGames = function(player, callback) {
+
+    //after requesting json data
+    const requestCallback = function(json) {
+        if (json!=null) {
+            var ownPlayerID = "";
+
+            //fetch own player id
+            if (player.indexOf(',') == -1) {
+            //only for single player info
+                ownPlayerID = vgData.findPlayerByName(json, player);
+            }
+
+            var heroSelectionMap = {};
+            var playerMatchingMap = {};
+            
+            var roles = {"Carry":0,
+                        "Jungler":0,
+                        "Captain":0};
+
+            //collect match starting time
+            var playedTime = {};
+
+            var playedGameMode = {};
+
+            var text = player + ": " + "\n";
+            for (var match of json.data) {
+
+            }
+        }
+    };
     //request based on 50 last matches
     vgHandler.getMatch(player,50,0,requestCallback);
 }
@@ -900,6 +986,8 @@ module.exports = {
     getPlayerStats: playerStats,
     getPlayersInfo: playersQuickInfo,
     getRecentPlayedHeroes: recentPlayedHeroes,
+    getPlayedGame: playedGames,
+    getSummerEvent: summerEvent,
     getMatchDetails: matchDetails,
     getMatchDetailsForPlayer: matchDetailsPlayer,
     setToken: updateToken

@@ -467,6 +467,21 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     vg.getRecentPlayedHeroes(serverCode, playerName, callback);
 }
 
+const requestPlayedGames = function(message, nextCaller) {
+    const messageArray = message.content.split(" ");
+    
+    var playerName = messageArray[1];
+
+    if (playerName.length == 0) {
+        playerName = messageArray[strH.numberOfSpaces(message.content)];
+    }
+    fetchPlayedGames(message, playerName, nextCaller);
+}
+
+function fetchPlayedGames(message, playerName, nextCaller) {
+
+}
+
 let requestMatch = function(message) {
     
     const messageArray = message.content.split(" ");
@@ -517,7 +532,6 @@ let requestMatchForPlayer = function(message, playerName) {
     fetchMatch(message,playerName, 0, false, didFailed);
 }
 
-
 function updateMatch(message, playerName) {
     
     let didFailed = function(d,playerName) {
@@ -527,7 +541,6 @@ function updateMatch(message, playerName) {
     //index = 0 => last match
     fetchMatch(message,playerName,0 , true, didFailed);
 }
-
 
 function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) {
     
@@ -1071,6 +1084,54 @@ const requestMatchForEmoji = (message) => {
     }
 }
 
+const requestSummerEvent2018 = (message) => {
+
+    const messageArray = message.content.split(" ");
+    
+    // restricted actions
+    var playerName = messageArray[1];
+
+    if (playerName.length == 0) {
+        playerName = messageArray[strH.numberOfSpaces(message.content)];
+    }
+    let callback = function(playerName, data) {
+        var d = new Discord.RichEmbed();
+        if (data !=null) {
+
+            console.log(data);
+            // Game mode
+            var gamesPlayedContent = "-";
+            if (data!=undefined) {
+
+                const playedCas5v5 = data.hasOwnProperty('5v5_pvp_casual')?
+                    `Casual 5v5: ${data["5v5_pvp_casual"]}\n`: '';
+        
+                const playedRank5v5 = data.hasOwnProperty('5v5_pvp_ranked')?
+                    `Ranked 5v5: ${data["5v5_pvp_ranked"]}\n`: '';
+        
+                const playedBlitz = data.hasOwnProperty('blitz_pvp_ranked')?
+                    `Blitz: ${data["blitz_pvp_ranked"]}\n`: '';
+        
+                const playedBr = data.hasOwnProperty('casual_aral')?
+                    `Battle Royal: ${data["casual_aral"]}\n`: '';
+        
+                gamesPlayedContent =  playedCas5v5 +
+                                    playedRank5v5 + 
+                                    playedBlitz + 
+                                    playedBr
+            }
+            d.setTitle(`${i18n.get('SummerEventWonGames')}`)
+            d.setDescription(`${i18n.get('SummerEventReq2018')}`);
+            message.channel.send(d.addField(`${i18n.get('Victory')}`, `${gamesPlayedContent}`));
+        } else {
+            message.channel.send(d.setDescription(`${i18n.get('ErrorNoMatchFoundFor').replace('$1',playerName)}`));
+        }
+    };
+    
+    vg.setToken(VaingloryToken.getInstance().token());
+    vg.getSummerEvent(playerName, callback);
+} 
+
 const requestEloForPlayer = (message, playerName, callback) => {
 
     vg.setToken(VaingloryToken.getInstance().token());
@@ -1133,7 +1194,6 @@ const loadMateDetails = (message, position) => {
         }
     }
 }
-
 
 function getSoldItems(actor, team, soldItemList) {
     var items = '';
@@ -1269,9 +1329,11 @@ module.exports = {
     requestRecentPlayedHeroes: requestRecentPlayedHeroes,
     requestRecentPlayedHeroesForMe:requestRecentPlayedHeroesForMe,
     requestRecentPlayedHeroesForName:requestRecentPlayedHeroesForName,
+    requestPlayedGames: requestPlayedGames,
     requestMatch: requestMatch,
     requestMatchForMe: requestMatchForMe,
     requestMatchForPlayer: requestMatchForPlayer,
+    requestSummerEvent2018: requestSummerEvent2018,
     getMatchDetails:matchDetails,
     getMatchDetailsForPlayer: matchDetailsPlayer,
     getFullPlayerDetails: fullDetails,

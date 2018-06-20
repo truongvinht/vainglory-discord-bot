@@ -23,13 +23,20 @@ var requestToken = '';
 
 // MATCH
 const match = (playerName, limit, index, callback) => {
-    getMatchForPlayer(playerName, limit, index, c.vgRegionList(), callback);
+
+    const parameter = "&sort=-createdAt&page[limit]="+limit+"&page[offset]=" + index;
+    getMatchForPlayer(playerName, parameter, c.vgRegionList(), callback);
 }
 
-function getMatchForPlayer(playerName, limit, index, regions, callback) {
+const matchTillDate = (playerName, date, callback) => {
+    const parameter = "&sort=-createdAt&filter[createdAt-start]="+date;
+    getMatchForPlayer(playerName, parameter, c.vgRegionList(), callback);
+}
+
+function getMatchForPlayer(playerName, parameter, regions , callback) {//limit, index, regions, callback) {
 
     if (regions.length > 0) {
-        const requestURL = VG_URL + regions[0] + "/matches?filter[playerNames]=" + playerName + "&sort=-createdAt&page[limit]="+limit+"&page[offset]=" + index;
+        const requestURL = VG_URL + regions[0] + "/matches?filter[playerNames]=" + playerName + parameter;
         log.debug(requestURL);
     
         const reqOption = getRequestHeader(requestURL);
@@ -44,7 +51,7 @@ function getMatchForPlayer(playerName, limit, index, regions, callback) {
                 if (regions.length==1) {
                     callback(null);
                 } else {
-                    getMatchForPlayer(playerName, limit, index, regions.slice(1,regions.length-1), callback);
+                    getMatchForPlayer(playerName, parameter, regions.slice(1,regions.length-1), callback);
                 }
 
             }
@@ -175,6 +182,7 @@ const updateToken = function(token) {
 //export
 module.exports = {
     getMatch: match,
+    getMatchesFromDate: matchTillDate,
     getMatchDetails: matchDetails,
     getPlayer: player,
     getMoMScore: getManOfMatch,
