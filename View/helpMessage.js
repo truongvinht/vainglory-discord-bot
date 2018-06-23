@@ -29,7 +29,6 @@ const helpMessage = (PREFIX, author, hasRole) => {
         .addField(`${PREFIX}player ${i18n.get('Player')}`,`${i18n.get('HelpPlayerDetails')}`)
         .addField(`${PREFIX}recent ${i18n.get('Player')}`, `${i18n.get('RecentHeroes')}`)
         .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
-        .addField(`${PREFIX}event ${i18n.get('Player')}`,`${i18n.get('SummerEventWonGames')}`) // TODO: needs to be removed
         .addField(`${PREFIX}elo ELO | ${PREFIX}elo ${i18n.get('Player')}`, `${i18n.get('EloDetails')}`)
         .addField(`${PREFIX}vgitem CODE`, `${i18n.get('ItemDescription')}`);
 
