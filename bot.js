@@ -242,35 +242,35 @@ bot.on("message", async message => {
         return;
     }
 
-    // single item code
-    if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
+    // // single item code
+    // if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
 
-        if (messageArray.length == 1) {
-            // show list
-            itemMsg.showItemWithParam(PREFIX, message, ["", '1', '3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["", '2', '3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["", '3', '3']);
-            itemMsg.showItemWithParam(PREFIX, message, ["", '4', '3']);
-        } else {
-            itemMsg.showSingleItem(message);
-        }
-        return
-    }
+    //     if (messageArray.length == 1) {
+    //         // show list
+    //         itemMsg.showItemWithParam(PREFIX, message, ["", '1', '3']);
+    //         itemMsg.showItemWithParam(PREFIX, message, ["", '2', '3']);
+    //         itemMsg.showItemWithParam(PREFIX, message, ["", '3', '3']);
+    //         itemMsg.showItemWithParam(PREFIX, message, ["", '4', '3']);
+    //     } else {
+    //         itemMsg.showSingleItem(message);
+    //     }
+    //     return
+    // }
 
-    // command to show items: ITEM CATEGORY TIER INDEX
-    if (strH.hasCmd(command, `${PREFIX}item`)) {
-        if (hasRole) {
-            itemMsg.showItem(PREFIX, message);
-        } else {
-            message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
-        }
-        return;
-    }
+    // // command to show items: ITEM CATEGORY TIER INDEX
+    // if (strH.hasCmd(command, `${PREFIX}item`)) {
+    //     if (hasRole) {
+    //         itemMsg.showItem(PREFIX, message);
+    //     } else {
+    //         message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+    //     }
+    //     return;
+    // }
 
-    if (strH.hasCmd(command, `${PREFIX}itemcount`)) {
-        message.channel.send(itemMsg.showItemsNumber(message));
-        return;
-    }
+    // if (strH.hasCmd(command, `${PREFIX}itemcount`)) {
+    //     message.channel.send(itemMsg.showItemsNumber(message));
+    //     return;
+    // }
 
     if (messageArray.length == 1) {
         //hero commands
@@ -472,15 +472,15 @@ bot.on("message", async message => {
 
         // commands with special rights
 
-        //updated item list
-        if (strH.hasCmds(command, [`${PREFIX}update`, `${PREFIX}upates`])) {
-            if (hasRole) {
-                itemMsg.showUpdatedItems(hero, message);
-            } else {
-                message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
-            }
-            return
-        }
+        // //updated item list
+        // if (strH.hasCmds(command, [`${PREFIX}update`, `${PREFIX}upates`])) {
+        //     if (hasRole) {
+        //         itemMsg.showUpdatedItems(hero, message);
+        //     } else {
+        //         message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
+        //     }
+        //     return
+        // }
 
         //information
         if (strH.hasCmds(command, [`${PREFIX}info`, `${PREFIX}i`])) {
@@ -535,6 +535,21 @@ function directMessage(message) {
 
         return;
     }
+
+    if (messageArray.length == 1) {
+        // last match
+        if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
+            vgMsg.requestMatchForMe(message, message.author.username);
+            return;
+        }
+    } else {
+        //only allow users with roles
+        if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
+            vgMsg.requestMatch(message);
+            return;
+        }
+    }
+    
 
     //server and channel information
     if (strH.hasCmd(command, `${PREFIX}whereami`)) {

@@ -29,11 +29,12 @@ const helpMessage = (PREFIX, author, hasRole) => {
         .addField(`${PREFIX}player ${i18n.get('Player')}`,`${i18n.get('HelpPlayerDetails')}`)
         .addField(`${PREFIX}recent ${i18n.get('Player')}`, `${i18n.get('RecentHeroes')}`)
         .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
-        .addField(`${PREFIX}elo ELO | ${PREFIX}elo ${i18n.get('Player')}`, `${i18n.get('EloDetails')}`)
-        .addField(`${PREFIX}vgitem CODE`, `${i18n.get('ItemDescription')}`);
+        .addField(`${PREFIX}elo ELO | ${PREFIX}elo ${i18n.get('Player')}`, `${i18n.get('EloDetails')}`);
+        //.addField(`${PREFIX}vgitem CODE`, `${i18n.get('ItemDescription')}`);
 
     if (hasRole) {
-        embed.addField(`${PREFIX}update VERSION`, `${i18n.get('HelpUpdatedItems')}`)
+        embed
+            //.addField(`${PREFIX}update VERSION`, `${i18n.get('HelpUpdatedItems')}`)
             .addField(`${PREFIX}clear`, `${i18n.get('ClearCmd')}`);
     }
     embed.setFooter(`${i18n.get('Version')}: ${constant.version()} - ${constant.author()}`);
@@ -54,6 +55,7 @@ const directHelpMessage = (PREFIX, author) => {
     .setAuthor(`${author}`)
     .setDescription(`${i18n.get('FollowingCommands')}`)
     .addField(`${PREFIX}afk ${i18n.get('Player')}`, `${i18n.get('AfkInfo')}`)
+    .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
     .addField(`${PREFIX}msg CHANNEL MESSAGE`, `${i18n.get('HelpSendMessage')}`)
     .addField(`${PREFIX}cmd CHANNEL ${PREFIX}player ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetails')}`)
     .addField(`${PREFIX}cmd CHANNEL ${PREFIX}help`, `${i18n.get('HelpInfos')}`)
