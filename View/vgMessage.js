@@ -430,6 +430,8 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
                 // action for showing player details
                 await message.react('🗒');
 
+                await message.react('🏹');
+
                 //TODO: needs to be optimized (dirty hack)
                 if (playerList.length > 0) {
                     await message.react('1⃣');
@@ -465,6 +467,91 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
     };
     vg.setToken(VaingloryToken.getInstance().token());
     vg.getRecentPlayedHeroes(serverCode, playerName, callback);
+}
+
+const requestRecentMatchTypes = function(message) {
+    
+    var playerName = null;
+    
+    for (var embed of message.embeds) {
+        
+        // reload player details
+        if (colorMng.isMatch(embed.hexColor)||colorMng.isRecentStats(embed.hexColor)
+            ||colorMng.isPlayerDetails(embed.hexColor)) {
+            playerName = embed.author.name;
+            break;
+        } else {
+            log.info('Ignore call for match details');
+            return;
+        }
+    }
+
+    if (playerName != null) {
+        const callback = function(name, data) {
+            var d = new Discord.RichEmbed()
+            .setAuthor(playerName)
+            .setColor(colorMng.getColor(14))
+            .setDescription(`${i18n.get('HeroPerformanceGameMode')}`);
+            
+            for (var gameMode of Object.keys(data)) {
+
+                const matchData = data[gameMode];
+
+                const list = matchData.heroesList;
+                const role = matchData.roles;
+                const matches = matchData.length;
+
+                var count = 0;
+            
+                var recentRate = "";
+                var victoryRate = "";
+                var totalVictory = 0;
+            
+                for (var obj of list) {
+                    if (count++ < 5) {
+
+                        var symbole = "";
+                        if (recentRate!="") {
+                            symbole = ", ";
+                        }
+
+                        recentRate = recentRate + symbole + obj.name + ": " + (obj.value.played/matches*100).toFixed(0) + "%";
+                        victoryRate = victoryRate + symbole + obj.name + ": " + (obj.value.victory/obj.value.played*100).toFixed(0) + "%";
+                    }
+                    totalVictory = totalVictory + obj.value.victory;
+                }
+                
+                //Prepare Most played Role
+                var mostPlayedRole = "-";
+                
+                var totalCountRoles = 0;
+                
+                for (let r of Object.keys(role)) {
+                    totalCountRoles = totalCountRoles + role[r];
+                }
+                
+                for (let r of Object.keys(role)) {
+                    
+                    if (role[r] > totalCountRoles*0.3) {
+                        if (mostPlayedRole=="-") {
+                            mostPlayedRole = r;
+                        } else {
+                            mostPlayedRole = mostPlayedRole + ", " + r;
+                        }
+                    }
+                }
+            
+                const gMode = vgBase.getMode(gameMode);
+
+                d.addField(gMode + ` [${(totalVictory*100/matches).toFixed(0)}%]`,`__${i18n.get('RecentHeroes')}:__ ${recentRate}\n__${i18n.get('WinningChance')}:__ ${victoryRate}`);
+            }
+
+            message.channel.send(d);
+        };
+        
+        vg.setToken(VaingloryToken.getInstance().token());
+        vg.getPlayedGame(playerName, callback);
+    }
 }
 
 const requestPlayedGames = function(message, nextCaller) {
@@ -558,7 +645,9 @@ function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) 
             
             const gameDate = formatter.dateToString(new Date(data.createdAt),`${i18n.get('DateFormattingCode')}`);
             
-            var header = `${data.match.gameMode} | ${gameDuration} mins | ${gameDate} | ${i18n.get('Winner')}: ${i18n.get(data.won)} `; 
+            const isWinner = data.won === data.teamSide ? `${i18n.get('Won')}`:`${i18n.get('Lost')}`;
+
+            var header = `${data.match.gameMode} | ${gameDuration} mins | ${gameDate} | ${isWinner}`; 
             var d = new Discord.RichEmbed()
                  .setAuthor(playerName)
                  .setColor(colorMng.getColor(9))
@@ -636,13 +725,16 @@ function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) 
                     d = d.addField(header, `${heroSelection} | KDA ${kda} | ${csPerMin} (${cs})`);
                 }
             }
+
+            // add heroes avatar
             d = d.setThumbnail(`${c.imageURL()}/${data.hero.toLowerCase()}.png`)
             
             //man of the match
             if (data.mom != null) {
                 const mom = i18n.get(`Mom`).replace("$1",data.mom.name);
-                log.info(`IMG: ${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
-                d = d.setFooter(`${mom}`, `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`);
+                const avatarImgUrl = `${c.imageURL()}/${data.mom.actor.toLowerCase()}.png`;
+                log.info(`IMG: ${avatarImgUrl}`);
+                d = d.setFooter(`${mom}`, `${avatarImgUrl}`);
             }
             
             if (shouldUpdate) {
@@ -1330,6 +1422,7 @@ module.exports = {
     requestRecentPlayedHeroes: requestRecentPlayedHeroes,
     requestRecentPlayedHeroesForMe:requestRecentPlayedHeroesForMe,
     requestRecentPlayedHeroesForName:requestRecentPlayedHeroesForName,
+    requestRecentMatchTypes: requestRecentMatchTypes,
     requestPlayedGames: requestPlayedGames,
     requestMatch: requestMatch,
     requestMatchForMe: requestMatchForMe,

@@ -38,6 +38,7 @@
   "HelpUpdatedItems":"Displaying changes regarding items",
   "HeroSelection":"Hero selection",
   "HeroBanned": "$1 banned",
+  "HeroPerformanceGameMode": "Hero performance based on game mode",
   "InvalidHeroCode": "Invalid hero code!",
   "InvalidInput":"Invalid input!",
   "IsStrongAgainst":"is strong against",
@@ -58,6 +59,7 @@
   "ListAvailableCategories":"List of available categories",
   "ListAvailableTiers":"List of available tiers",
   "ListOfMatchingItems":"List of matching items",
+  "Lost":"Lost",
   "Matches":"Matches",
   "Mom":"Man of the match is $1",
   "MostPlayedRoles":"Most played roles",
@@ -103,6 +105,7 @@
   "victory":"Victory",
   "Winner":"Winner",
   "WinningChance":"Winning chance",
+  "Won":"Won",
   "right/red":"Right/Red",
   "left/blue":"Left/Blue",
   "DateFormattingCode":"en-US"

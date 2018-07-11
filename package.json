@@ -1,6 +1,6 @@
 {
   "name": "vgb",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Vainglory Bot",
   "main": "bot.js",
   "scripts": {

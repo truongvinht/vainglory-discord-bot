@@ -38,6 +38,7 @@
   "HelpUpdatedItems":"Anzeige der Änderungen bzgl Gegenstände im Update",
   "HeroSelection":"Heldenauswahl",
   "HeroBanned": "$1 gesperrt",
+  "HeroPerformanceGameMode": "Heldenstatistik basierend auf verschiedene Spielmodi",
   "InvalidHeroCode": "Ungültiger Code!",
   "InvalidInput":"Ungültige Eingabe!",
   "IsStrongAgainst":"ist gut gegen",
@@ -58,6 +59,7 @@
   "ListAvailableCategories":"Liste verfügbarer Kategorien für Gegenstände",
   "ListAvailableTiers":"Liste verfügbarer Klassen",
   "ListOfMatchingItems":"Liste der gefilterten Gegenstände",
+  "Lost":"Verloren",
   "Matches":"Spiele",
   "Mom":"Bester Spieler ist $1",
   "MostPlayedRoles":"Meist gespielte Position",
@@ -103,6 +105,7 @@
   "Victory":"Siege",
   "Winner":"Gewinner",
   "WinningChance":"Gewinnerquote",
+  "Won":"Gewonnen",
   "right/red":"Rechts/Rot",
   "left/blue":"Links/Blau",
   "DateFormattingCode":"de-DE"

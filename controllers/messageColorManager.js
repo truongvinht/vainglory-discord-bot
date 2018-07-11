@@ -16,7 +16,8 @@ const MessageTypes = {
     MATCH_DETAILS: 10,
     ELO_LIST: 11,
     MATCH_PLAYER_DETAILS: 12,
-    VGPRO_PLAYER_DATA:13
+    VGPRO_PLAYER_DATA:13,
+    RECENT_MATCH_TYPE: 14
 };
 
 const colorMap = {
@@ -32,7 +33,8 @@ const colorMap = {
     "10": "#222222", // MATCH_DETAILS
     "11": "#234234", // ELO_LIST
     "12": "#123123", // MATCH_PLAYER_DETAILS
-    "13": "#FFFF00" // VGPRO PLAYER DATA
+    "13": "#FFFF00", // VGPRO PLAYER DATA
+    "14": "531B90" // RECENT MATCH TYPES
     
 };
 

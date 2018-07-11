@@ -144,16 +144,25 @@ bot.on('messageReactionAdd', (reaction, user) => {
     //remove own message from bot
     if (reaction.emoji == '🗑' && user != reaction.message.author) {
         reaction.message.delete();
+        return;
     }
 
     //show player info
     if (reaction.count > 1 && reaction.emoji == '🗒') {
         vgMsg.requestPlayerForEmoji(reaction.message);
+        return;
     }
 
     //show last match
     if (reaction.count > 1 && reaction.emoji == '⚔') {
         vgMsg.requestMatchForEmoji(reaction.message);
+        return;
+    }
+
+    //show recent match details 
+    if (reaction.count > 1 && reaction.emoji == '🏹') {
+        vgMsg.requestRecentMatchTypes(reaction.message);
+        return;
     }
 
     //load mate details

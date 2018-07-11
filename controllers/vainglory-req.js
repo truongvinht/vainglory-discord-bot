@@ -2,24 +2,16 @@
 // ================
 
 //dependency
-const fs = require('fs');
 const log = require('loglevel');
 
 // CONTROLLER
-const itemHandler = require('./itemHandler');
 const gameMode = require('./gameMode');
 const vgData = require('./vgDataSeparator');
 const vgHandler = require('./vgHandler');
 
 const vgbase = require('../models/vainglory-base.js');
 
-// URL for Vainglory developer API
-const VG_URL = 'https://api.dc01.gamelockerapp.com/shards/'
-//const VG_URL = 'http://localhost:8080/'
-
-// request token for VG API
-var requestToken = '';
-
+// command MATCH
 const matchStats = function(region, page, playerName, callback) {
 
     //after requesting json data
@@ -76,6 +68,9 @@ const matchStats = function(region, page, playerName, callback) {
                     
                     if (p.playerID == ownPlayerID) {
                         ownPlayedHero = p.actor;
+
+                        //players team side
+                        matchContent["teamSide"] = roster.side;
                     }
 
                     if (roster.side == 'left/blue') {
@@ -226,7 +221,9 @@ const matchDetails = function(data, callback) {
     vgHandler.getMatchDetails(data, requestCallback);
 }
 
-// player stats during match
+/**
+ * Method to get stats for selected match (command i within a match)
+ */
 const matchDetailsPlayer = (data, callback) => {
 
     const requestCallback = function(json) {
@@ -504,7 +501,7 @@ const matchDetailsPlayer = (data, callback) => {
     vgHandler.getMatchDetails(data, requestCallback);
 }
 
-// Request games for the event
+// Request games for the summer event (not currently used)
 const summerEvent = function(playerName, callback) {
 
     //after requesting json data
@@ -556,7 +553,7 @@ const summerEvent = function(playerName, callback) {
 }
 
 /**
- * Getting recent played heroes
+ * Getting recent played heroes (command RECENT)
  */
 const recentPlayedHeroes = function(region, player, callback) {
 
@@ -572,109 +569,17 @@ const recentPlayedHeroes = function(region, player, callback) {
                 ownPlayerID = vgData.findPlayerByName(json, player);
             }
 
-            var heroSelectionMap = {};
-            var playerMatchingMap = {};
+            const collectedData = collectMatchData(ownPlayerID,json.data, json);
+
+            var heroSelectionMap = collectedData.heroSelectionMap;
+            var playerMatchingMap = collectedData.playerMatchingMap;
             
-            var roles = {"Carry":0,
-                        "Jungler":0,
-                        "Captain":0};
+            var roles = collectedData.roles;
 
             //collect match starting time
-            var playedTime = {};
+            var playedTime = collectedData.playedTime;
 
-            var playedGameMode = {};
-
-            var text = player + ": " + "\n";
-            for (var match of json.data) {
-                //find my roster
-                const hour = new Date(match.attributes.createdAt).getHours();
-
-                if (playedTime.hasOwnProperty(hour)) {
-                    playedTime[hour] = playedTime[hour] + 1;
-                } else {
-                    playedTime[hour] = 1;
-                }
-
-                const rosterA = match.relationships.rosters.data[0];
-                const rosterB = match.relationships.rosters.data[1];
-                
-                //collect game mode data
-                const gMode = vgbase.getMode(match.attributes.gameMode);
-                
-                if (playedGameMode.hasOwnProperty(`${gMode}`)) {
-                    playedGameMode[`${gMode}`] = playedGameMode[`${gMode}`] + 1;
-                } else {
-                    playedGameMode[`${gMode}`] = 1;
-                }
-            
-                //helper list with both roster
-                let rosterSides = [vgData.getRoster(json, rosterA.id),vgData.getRoster(json, rosterB.id)];
-                
-                for (var roster of rosterSides) {
-                    
-                    var teamsData = [];
-                    
-                    for (var part of roster.participants) {
-                        teamsData.push(vgData.getParticipant(json, part));
-                    }
-                    
-                    for (let matchType of gameMode.getData().relevant) {
-                        if (matchType === match.attributes.gameMode) {
-                            teamsData = getRolesForParticipants(teamsData);
-                            break;
-                        }
-                    }
-                    
-                    for (var p of teamsData) {
-
-                        if (p.playerID == ownPlayerID) {
-                            
-                            if (roles.hasOwnProperty(p.role)) {
-                                roles[p.role] = roles[p.role] + 1;
-                            }
-                            
-                            if (heroSelectionMap[p.actor] != undefined) {
-                                let victory = heroSelectionMap[p.actor].victory;
-                                
-                                heroSelectionMap[p.actor] = {
-                                    "played": heroSelectionMap[p.actor].played + 1,
-                                    "victory": (roster.won === "true") ? victory + 1 : victory
-                                }
-                            } else {
-                                heroSelectionMap[p.actor] = {
-                                    "played": 1,
-                                    "victory": (roster.won === "true") ? 1 : 0
-                                };
-                            }
-                            continue;
-                        } else {
-                            
-                            //check for players which are played in the same team
-                            let ownPlayer = teamsData.find(function (pl){
-                                return pl.playerID == ownPlayerID;
-                            });
-
-                            if (ownPlayer == null||ownPlayer == undefined) {
-                                continue;
-                            } 
-
-                            if (playerMatchingMap[p.playerID] != undefined) {
-                                let victory = playerMatchingMap[p.playerID].victory;
-                                
-                                playerMatchingMap[p.playerID] = {
-                                    "played": playerMatchingMap[p.playerID].played + 1,
-                                    "victory": (roster.won === "true") ? victory + 1 : victory
-                                }
-                            } else {
-                                playerMatchingMap[p.playerID] = {
-                                    "played": 1,
-                                    "victory": (roster.won === "true") ? 1 : 0
-                                };
-                            }
-                        }
-                    }
-                }
-            }
+            var playedGameMode = collectedData.playedGameMode;
 
             var heroesList = [];
 
@@ -717,6 +622,122 @@ const recentPlayedHeroes = function(region, player, callback) {
     vgHandler.getMatch(player,50,0,requestCallback);
 }
 
+function collectMatchData(ownPlayerID, matches, json) {
+
+    var heroSelectionMap = {};
+    var playerMatchingMap = {};
+    
+    var roles = {"Carry":0,
+                "Jungler":0,
+                "Captain":0};
+
+    //collect match starting time
+    var playedTime = {};
+
+    var playedGameMode = {};
+
+    for (var match of matches) {
+        //find my roster
+        const hour = new Date(match.attributes.createdAt).getHours();
+
+        if (playedTime.hasOwnProperty(hour)) {
+            playedTime[hour] = playedTime[hour] + 1;
+        } else {
+            playedTime[hour] = 1;
+        }
+
+        const rosterA = match.relationships.rosters.data[0];
+        const rosterB = match.relationships.rosters.data[1];
+        
+        //collect game mode data
+        const gMode = vgbase.getMode(match.attributes.gameMode);
+        
+        if (playedGameMode.hasOwnProperty(`${gMode}`)) {
+            playedGameMode[`${gMode}`] = playedGameMode[`${gMode}`] + 1;
+        } else {
+            playedGameMode[`${gMode}`] = 1;
+        }
+    
+        //helper list with both roster
+        let rosterSides = [vgData.getRoster(json, rosterA.id),vgData.getRoster(json, rosterB.id)];
+        
+        for (var roster of rosterSides) {
+            
+            var teamsData = [];
+            
+            for (var part of roster.participants) {
+                teamsData.push(vgData.getParticipant(json, part));
+            }
+            
+            for (let matchType of gameMode.getData().relevant) {
+                if (matchType === match.attributes.gameMode) {
+                    teamsData = getRolesForParticipants(teamsData);
+                    break;
+                }
+            }
+            
+            for (var p of teamsData) {
+
+                if (p.playerID == ownPlayerID) {
+                    
+                    if (roles.hasOwnProperty(p.role)) {
+                        roles[p.role] = roles[p.role] + 1;
+                    }
+                    
+                    if (heroSelectionMap[p.actor] != undefined) {
+                        let victory = heroSelectionMap[p.actor].victory;
+                        
+                        heroSelectionMap[p.actor] = {
+                            "played": heroSelectionMap[p.actor].played + 1,
+                            "victory": (roster.won === "true") ? victory + 1 : victory
+                        }
+                    } else {
+                        heroSelectionMap[p.actor] = {
+                            "played": 1,
+                            "victory": (roster.won === "true") ? 1 : 0
+                        };
+                    }
+                    continue;
+                } else {
+                    
+                    //check for players which are played in the same team
+                    let ownPlayer = teamsData.find(function (pl){
+                        return pl.playerID == ownPlayerID;
+                    });
+
+                    if (ownPlayer == null||ownPlayer == undefined) {
+                        continue;
+                    } 
+
+                    if (playerMatchingMap[p.playerID] != undefined) {
+                        let victory = playerMatchingMap[p.playerID].victory;
+                        
+                        playerMatchingMap[p.playerID] = {
+                            "played": playerMatchingMap[p.playerID].played + 1,
+                            "victory": (roster.won === "true") ? victory + 1 : victory
+                        }
+                    } else {
+                        playerMatchingMap[p.playerID] = {
+                            "played": 1,
+                            "victory": (roster.won === "true") ? 1 : 0
+                        };
+                    }
+                }
+            }
+        }
+    }
+
+    var dataMap = {};
+    dataMap['heroSelectionMap'] = heroSelectionMap;
+    dataMap['playerMatchingMap'] = playerMatchingMap;
+    dataMap['roles'] = roles;
+    dataMap['playedTime'] = playedTime;
+    dataMap['playedGameMode'] = playedGameMode;
+
+    return dataMap;
+}
+
+// command RECENT played games
 const playedGames = function(player, callback) {
 
     //after requesting json data
@@ -730,29 +751,58 @@ const playedGames = function(player, callback) {
                 ownPlayerID = vgData.findPlayerByName(json, player);
             }
 
-            var heroSelectionMap = {};
-            var playerMatchingMap = {};
-            
-            var roles = {"Carry":0,
-                        "Jungler":0,
-                        "Captain":0};
+            // map with matches grouped by game mode
+            var matchesMap = {};
 
-            //collect match starting time
-            var playedTime = {};
-
-            var playedGameMode = {};
-
-            var text = player + ": " + "\n";
             for (var match of json.data) {
 
+                if (matchesMap.hasOwnProperty(match.attributes.gameMode)) {
+                    matchesMap[match.attributes.gameMode].push(match);
+                } else {
+                    matchesMap[match.attributes.gameMode] = [match];
+                }
             }
+
+            var resultMap = {};
+
+            for (var type of Object.keys(matchesMap)) {
+                //console.log(type +": " + matchesMap[type].length);
+
+                const collectedData = collectMatchData(ownPlayerID,matchesMap[type], json);
+
+                var heroSelectionMap = collectedData.heroSelectionMap;
+                var playerMatchingMap = collectedData.playerMatchingMap;
+                
+                var roles = collectedData.roles;
+    
+                //collect match starting time
+                var playedTime = collectedData.playedTime;
+    
+                var playedGameMode = collectedData.playedGameMode;
+
+                var heroesList = [];
+
+                for (var k of Object.keys(heroSelectionMap)) {
+                    heroesList.push({
+                        name: k,
+                        value: heroSelectionMap[k]
+                    });
+                }
+
+                heroesList.sort(function(a, b) {
+                    return b.value.played - a.value.played;
+                });
+
+                resultMap[type] = {'heroesList':heroesList,'length':matchesMap[type].length,'roles':roles};
+            }
+            callback(player, resultMap);
         }
     };
     //request based on 50 last matches
     vgHandler.getMatch(player,50,0,requestCallback);
 }
 
-// function to get player stats
+// command PLAYER
 const playerStats = function(region, playerName, callback) {
 
     //after requesting json data
@@ -816,7 +866,7 @@ const playerStats = function(region, playerName, callback) {
     };
     vgHandler.getPlayer(playerName,requestCallback);
 }
-
+// command AFK
 const playersQuickInfo = function(region, playerNames, callback, resultList) {
 
     //fill a batch of player names, VG allows 6 for each request
@@ -976,7 +1026,6 @@ function getRolesForParticipants(participantList) {
 }
 
 const updateToken = function(token) {
-    requestToken = token;
     vgHandler.setToken(token);
 }
 
