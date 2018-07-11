@@ -545,8 +545,9 @@ const requestRecentMatchTypes = function(message) {
 
                 d.addField(gMode + ` [${(totalVictory*100/matches).toFixed(0)}%]`,`__${i18n.get('RecentHeroes')}:__ ${recentRate}\n__${i18n.get('WinningChance')}:__ ${victoryRate}`);
             }
-
-            message.channel.send(d);
+            message.channel.send(d).then(async function (message) {
+                await message.react('🗑');
+            });
         };
         
         vg.setToken(VaingloryToken.getInstance().token());
