@@ -420,6 +420,12 @@ const matchDetailsPlayer = (data, callback) => {
                     }
                     if (entry.payload.Team == 'Left') {
                         var hero = teamLeft[entry.payload.Actor];
+                        
+                        // prevent bad objects
+                        if (hero == undefined) {
+                            continue;
+                        }
+
                         var dealDamage = hero['DealDamage'];
                         dealDamage.push(damage);
                         
@@ -441,6 +447,12 @@ const matchDetailsPlayer = (data, callback) => {
                     } else {
                         
                         var hero = teamRight[entry.payload.Actor];
+
+                        // prevent bad objects
+                        if (hero == undefined) {
+                            continue;
+                        }
+
                         var dealDamage = hero['DealDamage'];
                         dealDamage.push(damage);
                         
