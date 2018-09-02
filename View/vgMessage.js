@@ -235,7 +235,8 @@ function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
         }
     };
     vg.setToken(VaingloryToken.getInstance().token());
-    vg.getPlayerStats(serverCode, playerName, callback);
+    const name = getPlayerName(playerName);
+    vg.getPlayerStats(serverCode, name, callback);
 }
 
 let requestPlayerDetailsInChannel = function(channel,playerName, code) {
@@ -466,7 +467,9 @@ function fetchRecentPlaying(message, playerName, nextCaller, didFailedHandler) {
         }
     };
     vg.setToken(VaingloryToken.getInstance().token());
-    vg.getRecentPlayedHeroes(serverCode, playerName, callback);
+
+    const name = getPlayerName(playerName);
+    vg.getRecentPlayedHeroes(serverCode, name, callback);
 }
 
 const requestRecentMatchTypes = function(message) {
@@ -769,8 +772,12 @@ function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) 
         }
         
     };
+
     vg.setToken(VaingloryToken.getInstance().token());
-    vg.getMatchStats(serverCode, index, playerName, callback);
+    let validName = getPlayerName(playerName);
+
+    vg.setToken(VaingloryToken.getInstance().token());
+    vg.getMatchStats(serverCode, index, validName, callback);
 }
 
 // Player draft/ hero selection and builds in target match
@@ -1371,6 +1378,21 @@ function getClassColor(classification) {
     }
 
     return "#FFFFFF";
+}
+
+
+/**
+ * Parse only first name component
+ * @param {String} name of the player
+ */
+function getPlayerName(name) {
+    // fetch only first name (if name contains spaces or special symbols)
+    let nameComponent = name.split(" ");
+    if (nameComponent.length > 1) {
+        return nameComponent[0];
+    } else {
+        return name;
+    }
 }
 
 /**
