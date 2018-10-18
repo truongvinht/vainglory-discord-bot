@@ -561,6 +561,7 @@ const summerEvent = function(playerName, callback) {
         }
     };
     //request based last matches
+    //TODO: need to fix
     vgHandler.getMatchesFromDate(playerName,"2018-06-20T02:00:00Z",requestCallback);
 }
 

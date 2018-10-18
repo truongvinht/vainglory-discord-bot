@@ -562,7 +562,7 @@ function directMessage(message) {
 
     //server and channel information
     if (strH.hasCmd(command, `${PREFIX}whereami`)) {
-        let embed = adminMsg.getServerInfo(bot, message);
+        let embed = adminMsg.getServerInfo(bot);
         message.channel.send(embed);
         return;
     }

@@ -38,6 +38,11 @@ const player = (json, playerId) => {
                         if (attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
                             player["ranked_5v5"] = attributes.stats.rankPoints.ranked_5v5.toFixed(2);
                         }
+
+                        if (attributes.stats.rankPoints.hasOwnProperty("blitz")) {
+                            player["blitz"] = attributes.stats.rankPoints.blitz.toFixed(2);
+                        }
+
                     }
                 }
                 return player;

@@ -697,6 +697,14 @@ function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) 
                         if (score != null) {
                             eloLevel = score.elo;
                         }
+                    } else if (data.match.gameMode == 'Blitz') {
+                        let score = player.blitz;
+                        
+                        if (score != null) {
+                            eloLevel = score;
+                        } else {
+                            eloLevel = "-"
+                        }
                     } else {
                         // 3v3 rank data
                         let score = eloCalc.getResult(player.rankPoints);
@@ -709,6 +717,11 @@ function fetchMatch(message, playerName, index, shouldUpdate, didFailedHandler) 
                     
                     if (tier == 'T0') {
                         tier = 'Unranked';
+                    }
+
+                    // Blitz score instead of tier
+                    if (data.match.gameMode == 'Blitz') {
+                        tier = eloLevel;
                     }
                     
                     //header
