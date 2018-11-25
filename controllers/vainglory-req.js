@@ -251,6 +251,7 @@ const matchDetailsPlayer = (data, callback) => {
                             'DealDamage':[],
                             'ReceiveDamage':[],
                             'Kill':[],
+                            'Heal':[],
                             'Death':[]
                         };
                     } else {
@@ -260,6 +261,7 @@ const matchDetailsPlayer = (data, callback) => {
                             'DealDamage':[],
                             'ReceiveDamage':[],
                             'Kill':[],
+                            'Heal':[],
                             'Death':[]
                         };
                     }
@@ -276,6 +278,7 @@ const matchDetailsPlayer = (data, callback) => {
                                 'DealDamage':[],
                                 'ReceiveDamage':[],
                                 'Kill':[],
+                                'Heal':[],
                                 'Death':[]
                             };
                         } else {
@@ -285,6 +288,7 @@ const matchDetailsPlayer = (data, callback) => {
                                 'DealDamage':[],
                                 'ReceiveDamage':[],
                                 'Kill':[],
+                                'Heal':[],
                                 'Death':[]
                             };
                         }
@@ -365,6 +369,56 @@ const matchDetailsPlayer = (data, callback) => {
                 }
                 
                 if (entry.type == 'HealTarget') {
+
+                    var heal = {};
+                    heal['Actor'] = entry.payload.Actor;
+                    heal['Heal'] = entry.payload.Heal;
+                    heal['Healed'] = entry.payload.Healed;
+
+                    if (entry.payload.Actor == undefined || entry.payload.Actor === 'undefined') {
+                        continue;
+                    }
+
+                    if (entry.payload.TargetIsHero != 1) {
+                        continue;
+                    }
+                    if (entry.payload.Team == 'Left') {
+                        var hero = teamLeft[entry.payload.Actor];
+
+                        // prevent bad objects
+                        if (hero == undefined) {
+                            continue;
+                        }
+
+                        var healing = hero['Heal'];
+                        healing.push(heal);
+                        
+                        var opponent = teamLeft[entry.payload.Target];
+                        
+                        if (teamLeft.hasOwnProperty(entry.payload.Target)) {
+                            hero['Heal'] = healing;
+                            teamLeft[entry.payload.Actor] = hero;
+                        }
+                    } else {
+
+                        var hero = teamRight[entry.payload.Actor];
+
+                        // prevent bad objects
+                        if (hero == undefined) {
+                            continue;
+                        }
+
+                        var healing = hero['Heal'];
+                        healing.push(heal);
+                        
+                        var opponent = teamRight[entry.payload.Target];
+                        
+                        if (teamRight.hasOwnProperty(entry.payload.Target)) {
+                            hero['Heal'] = healing;
+                            teamRight[entry.payload.Actor] = hero;
+                        }
+                    }
+
                     continue;
                 }
                 

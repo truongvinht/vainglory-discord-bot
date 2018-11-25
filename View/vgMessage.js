@@ -1087,6 +1087,15 @@ const matchDetailsPlayer  = (message) => {
                     receivedDmg = receivedDmg + parseInt(hero.score);
                 } 
             }
+
+
+            // healing
+            var healMap = {};
+            var totalHeal = 0;
+            
+            for (let healing of ownData.Heal) {
+                totalHeal= totalHeal + healing.Heal;
+            }
             
             if (damageDealtHeroes.length > 0) {
                 d.addField(`${i18n.get('DamageDealt')} [${dealtDmg}]`, damageDealtHeroes.split("*").join("**"));
@@ -1094,6 +1103,10 @@ const matchDetailsPlayer  = (message) => {
             
             if (damageReceivedHeroes.length > 0) {
                 d.addField(`${i18n.get('DamageReceived')} [${receivedDmg}]`, damageReceivedHeroes.split("*").join("**"));
+            }
+            
+            if (totalHeal > 0) {
+                d.addField(`${i18n.get('Healing')}`, totalHeal);
             }
             
             channel.send(d).then(async function (message) {
