@@ -124,7 +124,7 @@ const score = function(index) {
 
 // function to get random message for tier
 const randomMessage = () => {
-    const MAX_RANDOM = 18;
+    const MAX_RANDOM = 24;
     
     const random = Math.floor((Math.random() * MAX_RANDOM) + 1);
     return `Random${random}`;
