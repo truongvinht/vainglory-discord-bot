@@ -599,6 +599,14 @@ function directMessage(message) {
         return;
     }
 
+    //feature to fetch player uuids
+    if (strH.hasCmds(command, [`${PREFIX}uuid`])) {
+        var list = message.content.replace(/(?:\r\n|\r|\n)/g, " ").split(" ");
+        list = list.slice(1, list.length);
+        vgMsg.uuidInfo(list, message.channel);
+        return;
+    }
+
     // commands
     if (strH.hasCmd(command, `${PREFIX}cmd`)) {
         if (messageArray.length <= 2) {

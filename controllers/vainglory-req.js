@@ -173,7 +173,7 @@ const matchDetails = function(data, callback) {
         var bannedHero = {};
         
         for (var entry of json) {
-            if (entry.type == 'HeroBan') {
+            if (entry.type == 'HeroBan') {  
                 if (entry.payload.Team == 1) {
                     leftBan.push(entry.payload.Hero);
                 } else {
@@ -190,7 +190,7 @@ const matchDetails = function(data, callback) {
 
             // talent selection
             if (entry.type == 'TalentEquipped') {
-                if (entry.payload.Team == 1) {
+                if (entry.payload.Team == "Left") {
                     leftTalent.push(entry.payload);
                 } else {
                     rightTalent.push(entry.payload);

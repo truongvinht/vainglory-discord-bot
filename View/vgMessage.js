@@ -818,6 +818,10 @@ const matchDetails = (message) => {
             for (var selected of data.left) {
                 ban = ban + `${selected.Hero} (${selected.Handle})\n`;
             }
+
+            if (data.talent.left.length > 0) {
+                ban = ban + "\n";
+            }
             
             // show talent
             for (const talent of data.talent.left) {
@@ -834,6 +838,11 @@ const matchDetails = (message) => {
                 ban = ban + `${selected.Hero} (${selected.Handle})\n`;
             }
             
+
+            if (data.talent.right.length > 0) {
+                ban = ban + "\n";
+            }
+
             // show talent
             for (const talent of data.talent.right) {
                 ban = ban + `${talent.Actor}: ${i18n.get('TalentSelected').replace('$1',`${talent.Talent} [${talent.Level}]`)}\n`;
@@ -1398,6 +1407,55 @@ let afkDetails = function(list, channel) {
     //needs to figure out for more than 6 ids
     vg.getPlayersInfo(serverCode, list, callback);
 }
+let uuidInfo = function(list, channel) {
+    
+    var callback = function(content) {
+        var d = new Discord.RichEmbed().setColor("#FFFFFF");
+        
+        
+        if (content != null) {
+            
+            d = d.setTitle(`ID`);
+            
+            var contentMessage = "";
+            var contentHeader = "";
+            
+            var count = 0;
+            
+            for (var p of content) {
+
+                var diff = fm.timeToNow(new Date(p.createdAt));
+                
+                contentHeader = `${contentHeader} ${p.name}`;
+                contentMessage = `${contentMessage}${p.id}\n`;
+                
+                count = count + 1;
+                
+                if (count >= 20) {
+                    count = 0;
+                    d = d.addField(contentHeader,contentMessage);
+                    contentHeader = "";
+                    contentMessage = "";
+                }
+            }
+            
+            if (contentMessage.length > 0) {
+                d = d.addField(contentHeader,contentMessage);
+            }
+            channel.send(d);
+        } else {
+            channel.send(d.setDescription(`'${list}' ${i18n.get('NotFound')}`).setColor("#FFD700"));
+        }
+        return;
+    }
+
+    vg.setToken(VaingloryToken.getInstance().token());
+    
+    const serverCode = c.vgServerCode(null);
+    
+    //needs to figure out for more than 6 ids
+    vg.getPlayersInfo(serverCode, list, callback);
+}
 
 function getTimeSince(time) {
     var diff = fm.timeToNow(new Date(time));
@@ -1495,5 +1553,6 @@ module.exports = {
     requestMatchForEmoji: requestMatchForEmoji,
     reloadContent: reloadContent,
     loadMates: loadMateDetails,
-    afkInfo: afkDetails
+    afkInfo: afkDetails,
+    uuidInfo: uuidInfo
 };
