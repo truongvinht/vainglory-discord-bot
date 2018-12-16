@@ -165,6 +165,8 @@ const matchDetails = function(data, callback) {
         var rightBan = [];
         var left = [];
         var right = [];
+        var leftTalent = [];
+        var rightTalent = [];
         
         var heroSelections = {};
         
@@ -185,11 +187,20 @@ const matchDetails = function(data, callback) {
                     right.push(entry.payload);
                 }
             }
-            
-            //skip every other object
-            if (entry.typ == 'PlayerFirstSpawn') {
-                break;
+
+            // talent selection
+            if (entry.type == 'TalentEquipped') {
+                if (entry.payload.Team == 1) {
+                    leftTalent.push(entry.payload);
+                } else {
+                    rightTalent.push(entry.payload);
+                }
             }
+            
+            //skip every other object, cant predict when to stop picking, because a player might select talent very late
+            // if (entry.typ == 'BuyItem') {
+            //     break;
+            // }
         }
         
         heroSelections['left'] = left;
@@ -212,6 +223,7 @@ const matchDetails = function(data, callback) {
         }
         
         heroSelections['banned'] = {'left':leftBan,'right':rightBan};
+        heroSelections['talent'] = {'left':leftTalent,'right':rightTalent};
         heroSelections['data'] = data;
         heroSelections['SellItem'] = soldItems;
         

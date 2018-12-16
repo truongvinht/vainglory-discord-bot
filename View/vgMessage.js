@@ -818,6 +818,11 @@ const matchDetails = (message) => {
             for (var selected of data.left) {
                 ban = ban + `${selected.Hero} (${selected.Handle})\n`;
             }
+            
+            // show talent
+            for (const talent of data.talent.left) {
+                ban = ban + `${talent.Actor}: ${i18n.get('TalentSelected').replace('$1',`${talent.Talent} [${talent.Level}]`)}\n`;
+            }
 
             d = d.addField(`${i18n.get('Left')}`,`${ban}`);
             
@@ -827,6 +832,11 @@ const matchDetails = (message) => {
             }
             for (var selected of data.right) {
                 ban = ban + `${selected.Hero} (${selected.Handle})\n`;
+            }
+            
+            // show talent
+            for (const talent of data.talent.right) {
+                ban = ban + `${talent.Actor}: ${i18n.get('TalentSelected').replace('$1',`${talent.Talent} [${talent.Level}]`)}\n`;
             }
             
             d = d.addField(`${i18n.get('Right')}`,`${ban}`);
