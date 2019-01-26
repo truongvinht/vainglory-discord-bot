@@ -55,6 +55,7 @@ const directHelpMessage = (PREFIX, author) => {
     .setAuthor(`${author}`)
     .setDescription(`${i18n.get('FollowingCommands')}`)
     .addField(`${PREFIX}afk ${i18n.get('Player')}`, `${i18n.get('AfkInfo')}`)
+    .addField(`${PREFIX}find UUID`, `${i18n.get('HelpPlayerDetails')} [UUID]`)
     .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
     .addField(`${PREFIX}msg CHANNEL MESSAGE`, `${i18n.get('HelpSendMessage')}`)
     .addField(`${PREFIX}cmd CHANNEL ${PREFIX}player ${i18n.get('Player')}`, `${i18n.get('HelpPlayerDetails')}`)

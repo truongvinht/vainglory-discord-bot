@@ -23,6 +23,7 @@
   "EnteredHeroDoesntExist": "Entered hero doesn't exist!",
   "ErrorInvalidElo":"Invalid elo value. Please only insert numeric value!",
   "ErrorNoMatchFoundFor":"No match found for $1.",
+  "ErrorPlayerIdNotFound":"No match for given player ID.",
   "EloDetails":"Display player tier and missing elo for next tier",
   "FollowingCommands":"Following commands are available:",
   "GamesPlayed":"Games played",

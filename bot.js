@@ -607,6 +607,17 @@ function directMessage(message) {
         return;
     }
 
+    //find player by uuid
+    if (strH.hasCmds(command, [`${PREFIX}find`])) {
+
+        const cb = function(d, uuid) {
+            message.channel.send(`${i18n.get('ErrorPlayerIdNotFound')}`);
+        }
+
+        vgMsg.requestPlayerDetailsByUuid(message, cb);
+        return;
+    }
+
     // commands
     if (strH.hasCmd(command, `${PREFIX}cmd`)) {
         if (messageArray.length <= 2) {

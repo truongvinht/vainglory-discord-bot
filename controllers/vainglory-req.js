@@ -881,8 +881,16 @@ const playedGames = function(player, callback) {
     vgHandler.getMatch(player,50,0,requestCallback);
 }
 
-// command PLAYER
 const playerStats = function(region, playerName, callback) {
+    playerDetails(region, playerName, callback, true);
+}
+
+const playerStatsByUuid = function(region, uuid, callback) {
+    playerDetails(region, uuid, callback, false);
+}
+
+// command PLAYER
+function playerDetails(region, input, callback, isName) {
 
     //after requesting json data
     const requestCallback = function(json) {
@@ -934,17 +942,24 @@ const playerStats = function(region, playerName, callback) {
                     "wins": anyPlayer.attributes.stats.wins,
                     "xp": anyPlayer.attributes.stats.xp
                 };
-                callback(playerName, player);
+                callback(anyPlayer.attributes.name, player);
             } else {
                 // no result
-                callback(playerName, null);
+                callback(input, null);
             }
         } else {
-            callback(playerName, null);
+            callback(input, null);
         }
     };
-    vgHandler.getPlayer(playerName,requestCallback);
+
+    if (isName) {
+        vgHandler.getPlayer(input,requestCallback);
+    } else {
+        vgHandler.getPlayerByUuid(input,requestCallback);
+    }
 }
+
+
 // command AFK
 const playersQuickInfo = function(region, playerNames, callback, resultList) {
 
@@ -992,22 +1007,28 @@ const playersQuickInfo = function(region, playerNames, callback, resultList) {
                     }
 
                     var blitzRank = 0;
-                
-                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
-                        blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
-                    }
-                
                     var rankedRank = 0;
-                
-                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
-                        rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
-                    }
-                
                     var ranked5v5Rank = 0;
-                
-                    if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
-                        ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
+                    
+                    try {
+
+                        if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("blitz")) {
+                            blitzRank = anyPlayer.attributes.stats.rankPoints.blitz;
+                        }
+                    
+                    
+                        if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked")) {
+                            rankedRank = anyPlayer.attributes.stats.rankPoints.ranked;
+                        }
+                    
+                    
+                        if (anyPlayer.attributes.stats.rankPoints.hasOwnProperty("ranked_5v5")) {
+                            ranked5v5Rank = anyPlayer.attributes.stats.rankPoints.ranked_5v5;
+                        }
+                    }catch(e) {
+                        console.log("["+anyPlayer.attributes.name + "] No ranking score for player")
                     }
+
 
                     const player = {
                         "id": anyPlayer.id,
@@ -1112,6 +1133,7 @@ const updateToken = function(token) {
 module.exports = {
     getMatchStats: matchStats,
     getPlayerStats: playerStats,
+    getPlayerStatsByUuid: playerStatsByUuid,
     getPlayersInfo: playersQuickInfo,
     getRecentPlayedHeroes: recentPlayedHeroes,
     getPlayedGame: playedGames,

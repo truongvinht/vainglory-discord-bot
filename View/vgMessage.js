@@ -193,6 +193,52 @@ function updatePlayerDetails(message, playerName) {
     vg.getPlayerStats(serverCode, playerName, callback);
 }
 
+let requestPlayerDetailsByUuid = function(message,didFailedHandler) {
+    
+    const messageArray = message.content.split(" ");
+    
+    var uuid = messageArray[1];
+
+    if (uuid.length == 0) {
+        uuid = messageArray[strH.numberOfSpaces(message.content)];
+    }
+
+    message.channel.startTyping();
+    
+    //override default server
+    const code = messageArray.length === 3?messageArray[2]:null;
+    const serverCode = c.vgServerCode(code);
+
+    const callback = function(playerName, player) {
+
+        var d = new Discord.RichEmbed();
+
+        if (player != null) {
+            d = getPlayerDetails(playerName,player);
+            
+            message.channel.send(d.setAuthor(`${player.name}`)).then(async function (message) {
+
+                // action for showing player details
+                await message.react('🗒');
+                await message.react('⚔');
+
+                if (c.playerLink() != "") {
+                    await message.react('🕵');
+                }
+
+                await message.react('🔄');
+                await message.react('🗑');
+            });
+            message.channel.stopTyping();
+        } else {
+            message.channel.stopTyping();
+            didFailedHandler(d,uuid);
+        }
+    };
+    vg.setToken(VaingloryToken.getInstance().token());
+    vg.getPlayerStatsByUuid(serverCode, uuid, callback);
+}
+
 function fetchPlayerDetails(message, playerName, nextCaller, didFailedHandler) {
 
     message.channel.startTyping();
@@ -1533,6 +1579,7 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     requestPlayerDetails: requestPlayerDetails,
+    requestPlayerDetailsByUuid: requestPlayerDetailsByUuid,
     requestPlayerDetailsForName: requestPlayerDetailsForName,
     requestPlayerDetailsForMe:requestPlayerDetailsForMe,
     requestPlayerDetailsInChannel:requestPlayerDetailsInChannel,

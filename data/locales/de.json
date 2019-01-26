@@ -24,6 +24,7 @@
   "EnteredHeroDoesntExist": "Eingegebener Held existiert nicht!",
   "ErrorInvalidElo":"Ungültiger Elo-Wert. Bitte den Elo-Wert angeben! z.B. 1000",
   "ErrorNoMatchFoundFor":"Es wurde kein Spiel für $1 gefunden.",
+  "ErrorPlayerIdNotFound":"Spieler mit der ID konnte nicht gefunde werden.",
   "FollowingCommands":"Folgende Befehle sind verfügbar:",
   "GamesPlayed":"Gespielte Spiele",
   "Gold":"Gold",

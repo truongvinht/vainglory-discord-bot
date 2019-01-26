@@ -84,10 +84,14 @@ const player = (playerName, callback) => {
     getPlayerForRegion(playerName, c.vgRegionList(), callback);
 }
 
-function getPlayerForRegion(playerName, regions, callback) {
+const playerUuid = (uuid, callback) => {
+    getPlayerForRegion(uuid, c.vgRegionList(), callback, "playerIds");
+}
+
+function getPlayerForRegion(playerName, regions, callback, key = "playerNames") {
 
     if (regions.length > 0) {
-        const requestURL = VG_URL + regions[0] + "/players?filter[playerNames]=" + playerName;
+        const requestURL = VG_URL + regions[0] + "/players?filter["+key+"]=" + playerName;
         log.debug(requestURL);
     
         const reqOption = getRequestHeader(requestURL);
@@ -185,6 +189,7 @@ module.exports = {
     getMatchesFromDate: matchTillDate,
     getMatchDetails: matchDetails,
     getPlayer: player,
+    getPlayerByUuid: playerUuid,
     getMoMScore: getManOfMatch,
     setToken: updateToken
 };
