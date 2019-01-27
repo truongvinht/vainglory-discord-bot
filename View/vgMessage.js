@@ -127,6 +127,8 @@ let requestPlayerAndValidate = function(message, playerName) {
             if (c.validationCmd() != null && c.validationCmd() != "") {
                 let cmd = c.validationCmd().replace("?",player.id);
                 message.channel.send(cmd).then(async function (message) {
+                    await message.react('🗒');
+                    await message.react('🗑');
                     await message.delete();
                 });
             }
