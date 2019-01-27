@@ -122,16 +122,13 @@ let requestPlayerAndValidate = function(message, playerName) {
         if (player != null) {
             d = getPlayerDetails(playerName,player);
             
-            message.channel.send(d.setAuthor(`${player.name}`));
+            message.channel.send(d.setAuthor(`${player.name}`)).then(async function (message) {
+                if (c.validationCmd() != null && c.validationCmd() != "") {
+                    let cmd = c.validationCmd().replace("?",player.id);
+                    message.channel.send(cmd);
+                }
+            });
             message.channel.stopTyping();
-            if (c.validationCmd() != null && c.validationCmd() != "") {
-                let cmd = c.validationCmd().replace("?",player.id);
-                message.channel.send(cmd).then(async function (message) {
-                    await message.react('🗒');
-                    await message.react('🗑');
-                    await message.delete();
-                });
-            }
         } else {
             message.channel.stopTyping();
         }
