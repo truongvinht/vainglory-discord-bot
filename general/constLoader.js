@@ -78,7 +78,7 @@ if (heroURL == "") {
 
 var validationCmd = botSettings.validationCmd;
 if (validationCmd == "") {
-    validationCmd = process.env.VvalidationCmd;
+    validationCmd = process.env.validationCmd;
 }
 
 
