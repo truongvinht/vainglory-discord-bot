@@ -170,11 +170,6 @@ const getRegions = () => {
 
 // roles for accessing special features
 const getRestrictedRoles = () => {
-
-    if (process.env.hasOwnProperty('restricted')) {
-        return process.env.restricted;
-    }
-
     return botSettings.restricted;
 }
 
