@@ -416,6 +416,13 @@ bot.on("message", async message => {
             return;
         }
 
+        //validate player and send message
+        if (strH.hasCmds(command, [`${PREFIX}validate`]) && hasRole) {
+            let playerName = messageArray[1];
+            vgMsg.requestPlayerAndValidate(message, playerName);
+            return;
+        }
+
         //elo info for given value
         if (command.toLowerCase() === `${PREFIX}elo`) {
             var d = new Discord.RichEmbed();

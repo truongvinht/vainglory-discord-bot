@@ -76,6 +76,12 @@ if (heroURL == "") {
     heroURL = process.env.EXTERNAL_LINK_HERO;
 }
 
+var validationCmd = botSettings.validationCmd;
+if (validationCmd == "") {
+    validationCmd = process.env.VvalidationCmd;
+}
+
+
 // API CONFIGURATIONS
 
 // Vainglory API Token
@@ -184,6 +190,10 @@ const getVersion = () => {
     return exampleSettings.version;
 };
 
+const getValidationCmd = () => {
+    return validationCmd;
+};
+
 const getPlayerURL = () => {
 
     if (playerURL == undefined) {
@@ -220,5 +230,6 @@ module.exports = {
     author: author,
     version: getVersion,
     playerLink: getPlayerURL,
+    validationCmd: getValidationCmd,
     heroLink: getHeroURL
 };

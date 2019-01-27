@@ -106,6 +106,39 @@ let requestPlayerDetailsForName = function(message, playerName, nextCaller) {
     fetchPlayerDetails(message,playerName,nextCaller,didFailed);
 }
 
+let requestPlayerAndValidate = function(message, playerName) {
+
+    message.channel.startTyping();
+    
+    //override default server
+    const messageArray = message.content.split(" ");
+    const code = messageArray.length === 3?messageArray[2]:null;
+    const serverCode = c.vgServerCode(code);
+
+    const callback = function(playerName, player) {
+
+        var d = new Discord.RichEmbed();
+
+        if (player != null) {
+            d = getPlayerDetails(playerName,player);
+            
+            message.channel.send(d.setAuthor(`${player.name}`));
+            message.channel.stopTyping();
+            if (c.validationCmd() != null && c.validationCmd() != "") {
+                let cmd = c.validationCmd().replace("?",player.id);
+                message.channel.send(cmd).then(async function (message) {
+                    await message.delete();
+                });
+            }
+        } else {
+            message.channel.stopTyping();
+        }
+    };
+    vg.setToken(VaingloryToken.getInstance().token());
+    const name = getPlayerName(playerName);
+    vg.getPlayerStats(serverCode, name, callback);
+}
+
 /**
  * Method to get player details
  * @private
@@ -1579,6 +1612,7 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     requestPlayerDetails: requestPlayerDetails,
+    requestPlayerAndValidate: requestPlayerAndValidate,
     requestPlayerDetailsByUuid: requestPlayerDetailsByUuid,
     requestPlayerDetailsForName: requestPlayerDetailsForName,
     requestPlayerDetailsForMe:requestPlayerDetailsForMe,
