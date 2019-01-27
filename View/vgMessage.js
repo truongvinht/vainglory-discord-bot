@@ -125,10 +125,14 @@ let requestPlayerAndValidate = function(message, playerName) {
             message.channel.send(d.setAuthor(`${player.name}`)).then(async function (message) {
                 if (c.validationCmd() != null && c.validationCmd() != "") {
                     let cmd = c.validationCmd().replace("?",player.id);
-                    message.channel.send(cmd);
+                    message.channel.send(cmd).then(async function (message) {
+                        await message.react('🗑');
+                        await message.delete();
+                    });
                 }
             });
             message.channel.stopTyping();
+            
         } else {
             message.channel.stopTyping();
         }
