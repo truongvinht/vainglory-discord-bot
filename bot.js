@@ -423,6 +423,13 @@ bot.on("message", async message => {
             return;
         }
 
+        // randomize hero selection
+        if (strH.hasCmds(command, [`${PREFIX}random`, `${PREFIX}?`])) {
+            let players = messageArray.slice(1,messageArray.length);
+            cntMsg.getRandomizer(message,players);
+            return;
+        }
+
         //elo info for given value
         if (command.toLowerCase() === `${PREFIX}elo`) {
             var d = new Discord.RichEmbed();

@@ -131,7 +131,7 @@ const generalInfo = (heroName) => {
 
     if (heroName != null) {
         let result = cp.getCounter(heroName.toLowerCase());
-        let resultSupport = cp.getSupport(heroName.toLowerCase());
+        //let resultSupport = cp.getSupport(heroName.toLowerCase());
 
         if (result != null) {
             return result;
@@ -143,6 +143,89 @@ const generalInfo = (heroName) => {
     }
 }
 
+const randomizer = (message, players) => {
+
+    if (players.length > 10) {
+        message.channel.send(i18n.get('ErrorToManyNames'));
+        return;
+    }
+
+    // collect hero names
+    var heroList = [];
+    for (let item of cp.getHeroes().content) {
+        heroList.push(item.name);
+    }
+
+    let userData = message.mentions.users;
+
+    var playerPick = [];
+
+    for (let index in players) {
+
+        let heroIndex = Math.floor(Math.random() * Math.floor(heroList.length));
+
+        var pick = {};
+
+        var playerName = players[index];
+        var test = playerName.replace(/[\\<>@#&!]/g, "");
+        if (playerName.match(/\<\@.*\>/g)) {
+
+
+
+            playerName = userData.get(test).username;
+        }
+
+        pick['name'] = playerName;
+        pick['hero'] = heroList[heroIndex];
+        pick['spec'] = getRandomSpecs();
+        playerPick.push(pick);
+
+        heroList.splice(heroIndex,1);
+    }
+    writePlayer(message, playerPick);
+    //console.log("hey " + players[index] + " you play " + heroList[heroIndex] + " " + getRandomSpecs())
+}
+
+function writePlayer(message, playerPick) {
+    if (playerPick.length > 0) {
+        var pick = playerPick.shift();
+
+        var d = new Discord.RichEmbed();
+        d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
+        //d = d.setThumbnail(`${c.imageURL()}/${pick['hero'].toLowerCase()}.png`);
+
+        const avatarImgUrl = `${c.imageURL()}/${pick['hero'].toLowerCase()}.png`;
+        d = d.setFooter(`${pick['hero']}`, `${avatarImgUrl}`);
+
+
+        message.channel.send(d).then(async function (message) {
+            writePlayer(message, playerPick);
+        });
+
+    }
+}
+
+function getRandomSpecs() {
+    
+    let spec = Math.floor(Math.random() * Math.floor(5));
+
+    switch(spec) {
+        case 0:
+            return "WP";
+        case 1:
+            return "CP";
+        case 2:
+            return "WP";
+        case 3:
+            return "CP";
+        default:
+            return "CAP";
+    }
+
+}
+
+
+
 // export
 module.exports = {
     getHeroes: heroList,
@@ -150,5 +233,6 @@ module.exports = {
     getQuickCounter: quickCounterPickHero,
     getSupport: supportPickHero,
     getQuickSupport:quickSupportPickHero,
-    getGeneral: generalInfo
+    getGeneral: generalInfo,
+    getRandomizer: randomizer
 };
