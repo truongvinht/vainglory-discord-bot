@@ -74,7 +74,7 @@
   "OverviewItems":"Overview of available items",
   "PlayedWith":"Played with",
   "Player":"Player",
-  "PlayerXplaysHeroY": "$1 plays $2 [$3]",
+  "PlayerXplaysHeroY": "$1, try $2 [$3]",
   "PrioUpdate": "Prio Update",
   "Random1":"Almost there! Only $1 elo missing",
   "Random2":"A little more! $1 elo more and the next tophy is save!",
