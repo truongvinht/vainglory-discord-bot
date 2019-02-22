@@ -17,7 +17,8 @@ const MessageTypes = {
     ELO_LIST: 11,
     MATCH_PLAYER_DETAILS: 12,
     VGPRO_PLAYER_DATA:13,
-    RECENT_MATCH_TYPE: 14
+    RECENT_MATCH_TYPE: 14,
+    RANDOMIZER: 15
 };
 
 const colorMap = {
@@ -34,7 +35,8 @@ const colorMap = {
     "11": "#234234", // ELO_LIST
     "12": "#123123", // MATCH_PLAYER_DETAILS
     "13": "#FFFF00", // VGPRO PLAYER DATA
-    "14": "531B90" // RECENT MATCH TYPES
+    "14": "531B90", // RECENT MATCH TYPES
+    "15": "#942192" // RANDOMIZER
     
 };
 
@@ -117,6 +119,11 @@ const isCounterPick = (color) => {
     }
 }
 
+const isRandomizer = (color) => {
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    return colorIndex == MessageTypes.RANDOMIZER
+}
+
 const greenString = (text) => {
     return "```CSS\n"+text+"\n```";
 }
@@ -130,5 +137,6 @@ module.exports = {
     isDamageStats: isDamageStats,
     isMatch: isMatch,
     isCounterPick:isCounterPick,
+    isRandomizer:isRandomizer,
     getGreenString: greenString
 };

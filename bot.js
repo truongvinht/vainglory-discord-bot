@@ -88,6 +88,16 @@ bot.on('messageReactionAdd', (reaction, user) => {
 
     //reload content
     if (reaction.count > 1 && reaction.emoji == '🔄') {
+
+        for (var embed of reaction.message.embeds) {
+            
+            // reload randomizer
+            if (colorMng.isRandomizer(embed.hexColor)) {
+                cntMsg.reloadRandomizer(reaction.message, embed);
+                return;
+            }
+        }
+
         vgMsg.reloadContent(reaction.message);
         return;
     }

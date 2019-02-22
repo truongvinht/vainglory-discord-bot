@@ -190,7 +190,7 @@ function writePlayer(message, playerPick) {
     if (playerPick.length > 0) {
         var pick = playerPick.shift();
 
-        var d = new Discord.RichEmbed();
+        var d = new Discord.RichEmbed().setColor(colorMng.getColor(15));
         d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
         //d = d.setThumbnail(`${c.imageURL()}/${pick['hero'].toLowerCase()}.png`);
 
@@ -199,6 +199,7 @@ function writePlayer(message, playerPick) {
 
 
         message.channel.send(d).then(async function (message) {
+            await message.react('🔄');
             writePlayer(message, playerPick);
         });
 
@@ -224,7 +225,28 @@ function getRandomSpecs() {
 
 }
 
+const reloadRandomizer = (message, embed) => {
 
+    // collect hero names
+    var heroList = [];
+    for (let item of cp.getHeroes().content) {
+        heroList.push(item.name);
+    }
+
+    var pick = {};
+    let heroIndex = Math.floor(Math.random() * Math.floor(heroList.length));
+    pick['name'] = embed.title.split(",")[0];
+    pick['hero'] = heroList[heroIndex];
+    pick['spec'] = getRandomSpecs();
+
+    var d = new Discord.RichEmbed().setColor(colorMng.getColor(15));
+    d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
+        
+    const avatarImgUrl = `${c.imageURL()}/${pick['hero'].toLowerCase()}.png`;
+    d = d.setFooter(`${pick['hero']}`, `${avatarImgUrl}`);
+
+    message.edit(d);
+}
 
 // export
 module.exports = {
@@ -234,5 +256,6 @@ module.exports = {
     getSupport: supportPickHero,
     getQuickSupport:quickSupportPickHero,
     getGeneral: generalInfo,
-    getRandomizer: randomizer
+    getRandomizer: randomizer,
+    reloadRandomizer: reloadRandomizer
 };
