@@ -453,20 +453,38 @@ const matchDetailsPlayer = (data, callback) => {
                     if (entry.payload.Team == 'Left') {
 
                         var hero = teamLeft[entry.payload.Actor];
+
+                        if (hero == undefined || hero == null) {
+                            continue;
+                        }
                         var kills = hero['Kill'];
-                        kills.push(killedHero);
                         
                         var deathHero = teamRight[entry.payload.Killed];
+
+                        if (deathHero == undefined || deathHero == null) {
+                            continue;
+                        }
+
                         var death = deathHero['Death'];
+                        kills.push(killedHero);
                         death.push(killedHero)
                         
                     } else {
                         var hero = teamRight[entry.payload.Actor];
-                        var kills = hero['Kill'];
-                        kills.push(killedHero);
 
+                        if (hero == undefined || hero == null) {
+                            continue;
+                        }
+
+                        var kills = hero['Kill'];
                         var deathHero = teamLeft[entry.payload.Killed];
+
+                        if (deathHero == undefined || deathHero == null) {
+                            continue;
+                        }
+
                         var death = deathHero['Death'];
+                        kills.push(killedHero);
                         death.push(killedHero)
                     }
                     continue;

@@ -1213,9 +1213,10 @@ const matchDetailsPlayer  = (message) => {
             channel.send(d).then(async function (message) {
                 await message.react('🗒');
                 await message.react('🗑');
-                await setTimeout(function () {
-                    message.delete();
-                },MATCH_AUTO_DELETE_TIMER);
+                // disable auto deleting
+                // await setTimeout(function () {
+                //     message.delete();
+                // },MATCH_AUTO_DELETE_TIMER);
             });
         };
 
