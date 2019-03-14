@@ -14,6 +14,7 @@
   "DamageDealt":"Schaden verteilt",
   "DamageReceived":"Schaden erhalten",
   "Dependency":"Benötigt",
+  "DisabledAsk":"Funktion ist deaktiviert. Bitte kontaktiere Admin für mehr Infos.",
   "DisplayWeaknessHero":"Anzeige der Helden, die diesen Helden überlegen sind (Heldennamen)",
   "DisplayWeaknessHeroCode":"Anzeige der Helden, die diesen Helden überlegen sind (Code)",
   "DisplayStrengthHero":"Anzeige der Helden, wo dieser Held unterlegen ist (Heldennamen)",

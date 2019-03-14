@@ -352,13 +352,17 @@ bot.on("message", async message => {
 
         // recent played heroes
         if (strH.hasCmds(command, [`${PREFIX}recent`, `${PREFIX}r`])) {
-            vgMsg.requestRecentPlayedHeroesForMe(message, message.author.username);
+            //TODO: needs to be enabled
+            message.channel.send(d.setDescription(`${i18n.get('DisabledAsk')}`));
+            //vgMsg.requestRecentPlayedHeroesForMe(message, message.author.username);
             return;
         }
 
         // last match
         if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
-            vgMsg.requestMatchForMe(message, message.author.username);
+            //TODO: needs to be enabled
+            message.channel.send(d.setDescription(`${i18n.get('DisabledAsk')}`));
+            //vgMsg.requestMatchForMe(message, message.author.username);
             return;
         }
 
@@ -409,7 +413,9 @@ bot.on("message", async message => {
 
         // show recent played heroes
         if (strH.hasCmds(command, [`${PREFIX}recent`, `${PREFIX}r`])) {
-            vgMsg.requestRecentPlayedHeroes(message, null);
+            //TODO: needs to be enabled
+            message.channel.send(d.setDescription(`${i18n.get('DisabledAsk')}`));
+            //vgMsg.requestRecentPlayedHeroes(message, null);
             return;
         }
 
@@ -422,7 +428,9 @@ bot.on("message", async message => {
 
         //only allow users with roles
         if (strH.hasCmds(command, [`${PREFIX}match`, `${PREFIX}m`])) {
-            vgMsg.requestMatch(message);
+            //TODO: needs to be enabled
+            message.channel.send(d.setDescription(`${i18n.get('DisabledAsk')}`));
+            //vgMsg.requestMatch(message);
             return;
         }
 

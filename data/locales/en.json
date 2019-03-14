@@ -14,6 +14,7 @@
   "DamageDealt":"Damage dealt",
   "DamageReceived":"Damaged received",
   "Dependency":"Requires",
+  "DisabledAsk":"Feature is disabled. Please contact admin.",
   "DisplayWeaknessHero":"Display weakness for given hero name",
   "DisplayWeaknessHeroCode":"Display weakness for given hero code",
   "DisplayStrengthHero":"Display strength for given hero name",
