@@ -18,7 +18,10 @@ const MessageTypes = {
     MATCH_PLAYER_DETAILS: 12,
     VGPRO_PLAYER_DATA:13,
     RECENT_MATCH_TYPE: 14,
-    RANDOMIZER: 15
+    RANDOMIZER: 15,
+    RANDOMIZER_LANER: 16,
+    RANDOMIZER_JUNGLER: 17,
+    RANDOMIZER_CAPTAIN: 18
 };
 
 const colorMap = {
@@ -36,7 +39,10 @@ const colorMap = {
     "12": "#123123", // MATCH_PLAYER_DETAILS
     "13": "#FFFF00", // VGPRO PLAYER DATA
     "14": "531B90", // RECENT MATCH TYPES
-    "15": "#942192" // RANDOMIZER
+    "15": "#942192", // RANDOMIZER
+    "16": "#942193", // RANDOMIZER Laner
+    "17": "#942194", // RANDOMIZER Jungler
+    "18": "#942195" // RANDOMIZER Captain
     
 };
 
@@ -123,6 +129,21 @@ const isRandomizer = (color) => {
     let colorIndex = parseInt(messageType(color.toUpperCase()));
     return colorIndex == MessageTypes.RANDOMIZER
 }
+const randomizerIndex = (color) => {
+    let colorIndex = parseInt(messageType(color.toUpperCase()));
+    if(colorIndex == MessageTypes.RANDOMIZER_LANER) {
+        return 1;
+    }  
+    
+    if(colorIndex == MessageTypes.RANDOMIZER_JUNGLER) {
+        return 2;
+    }  
+    
+    if(colorIndex == MessageTypes.RANDOMIZER_CAPTAIN) {
+        return 3;
+    } 
+    return 0;
+}
 
 const greenString = (text) => {
     return "```CSS\n"+text+"\n```";
@@ -138,5 +159,6 @@ module.exports = {
     isMatch: isMatch,
     isCounterPick:isCounterPick,
     isRandomizer:isRandomizer,
+    randomizerIndex:randomizerIndex,
     getGreenString: greenString
 };

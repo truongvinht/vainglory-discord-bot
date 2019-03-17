@@ -95,6 +95,11 @@ bot.on('messageReactionAdd', (reaction, user) => {
             if (colorMng.isRandomizer(embed.hexColor)) {
                 cntMsg.reloadRandomizer(reaction.message, embed);
                 return;
+            } else {
+                if (colorMng.randomizerIndex(embed.hexColor) > 0) {
+                    cntMsg.reloadRandomizer(reaction.message, embed);
+                    return;
+                }
             }
         }
 
@@ -445,6 +450,24 @@ bot.on("message", async message => {
         if (strH.hasCmds(command, [`${PREFIX}random`, `${PREFIX}?`])) {
             let players = messageArray.slice(1,messageArray.length);
             cntMsg.getRandomizer(message,players);
+            return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}?l`, `${PREFIX}?laner`])) {
+            let player = messageArray[1];
+            cntMsg.getRandomizerForRole(message,player,'l');
+            return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}?j`, `${PREFIX}?jungler`])) {
+            let player = messageArray[1];
+            cntMsg.getRandomizerForRole(message,player,'j');
+            return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}?c`, `${PREFIX}?captain`])) {
+            let player = messageArray[1];
+            cntMsg.getRandomizerForRole(message,player,'c');
             return;
         }
 

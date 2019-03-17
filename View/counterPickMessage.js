@@ -143,12 +143,69 @@ const generalInfo = (heroName) => {
     }
 }
 
+const roleRandomizer = (message, name, role) => {
+    var heroList = [];
+
+    for (let item of cp.getHeroes().content) {
+        switch(role) {
+            case 'l':
+                // laner
+                if (item.type == 'laner') {
+                    heroList.push(item.name);
+                }
+                break;
+            case 'j':
+                // jungler
+                if (item.type == 'jungler') {
+                    heroList.push(item.name);
+                }
+                break;
+            default:
+                // captain
+                if (item.type == 'captain') {
+                    heroList.push(item.name);
+                }
+                break;
+        }
+    }
+
+    let heroIndex = Math.floor(Math.random() * Math.floor(heroList.length));
+    var pick = {};
+    pick['name'] = name;
+    pick['hero'] = heroList[heroIndex];
+    pick['spec'] = "";
+
+    let playerPick = [pick];
+
+    switch(role) {
+        case 'l':
+            // laner
+            writePlayer(message, playerPick,colorMng.getColor(16));
+            break;
+        case 'j':
+            // jungler
+            writePlayer(message, playerPick,colorMng.getColor(17));
+            break;
+        default:
+            // captain
+            writePlayer(message, playerPick,colorMng.getColor(18));
+            break;
+    }
+}
+
 const randomizer = (message, players) => {
 
     if (players.length > 10) {
         message.channel.send(i18n.get('ErrorToManyNames'));
         return;
     }
+
+    var maxNumCaptain = 1;
+
+    if (players.length > 5) {
+        maxNumCaptain = 2;
+    }
+
 
     // collect hero names
     var heroList = [];
@@ -169,15 +226,24 @@ const randomizer = (message, players) => {
         var playerName = players[index];
         var test = playerName.replace(/[\\<>@#&!]/g, "");
         if (playerName.match(/\<\@.*\>/g)) {
-
-
-
             playerName = userData.get(test).username;
         }
 
         pick['name'] = playerName;
         pick['hero'] = heroList[heroIndex];
         pick['spec'] = getRandomSpecs();
+
+        if (pick['spec'] == 'CAP') {
+            if (maxNumCaptain > 0) {
+                maxNumCaptain = maxNumCaptain - 1;
+            } else {
+                // pick something else
+                while (pick['spec'] == 'CAP') {
+                    pick['spec'] = getRandomSpecs();
+                }
+            }
+        }
+
         playerPick.push(pick);
 
         heroList.splice(heroIndex,1);
@@ -186,20 +252,25 @@ const randomizer = (message, players) => {
     //console.log("hey " + players[index] + " you play " + heroList[heroIndex] + " " + getRandomSpecs())
 }
 
-function writePlayer(message, playerPick) {
+function writePlayer(message, playerPick, color = colorMng.getColor(15)) {
     if (playerPick.length > 0) {
         var pick = playerPick.shift();
 
-        var d = new Discord.RichEmbed().setColor(colorMng.getColor(15));
-        d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
-        //d = d.setThumbnail(`${c.imageURL()}/${pick['hero'].toLowerCase()}.png`);
+        var d = new Discord.RichEmbed().setColor(color);
 
+        if (pick['spec'] == "") {
+            d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("[$3]", pick['spec']));
+        } else {
+            d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
+        //d = d.setThumbnail(`${c.imageURL()}/${pick['hero'].toLowerCase()}.png`);
+        }
         const avatarImgUrl = `${c.imageURL()}/${pick['hero'].toLowerCase()}.png`;
         d = d.setFooter(`${pick['hero']}`, `${avatarImgUrl}`);
 
 
         message.channel.send(d).then(async function (message) {
             await message.react('🔄');
+            await message.react('🗑');
             writePlayer(message, playerPick);
         });
 
@@ -208,16 +279,12 @@ function writePlayer(message, playerPick) {
 
 function getRandomSpecs() {
     
-    let spec = Math.floor(Math.random() * Math.floor(5));
+    let spec = Math.floor(Math.random() * Math.floor(3));
 
     switch(spec) {
         case 0:
             return "WP";
         case 1:
-            return "CP";
-        case 2:
-            return "WP";
-        case 3:
             return "CP";
         default:
             return "CAP";
@@ -257,5 +324,6 @@ module.exports = {
     getQuickSupport:quickSupportPickHero,
     getGeneral: generalInfo,
     getRandomizer: randomizer,
+    getRandomizerForRole: roleRandomizer,
     reloadRandomizer: reloadRandomizer
 };
