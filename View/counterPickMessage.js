@@ -171,6 +171,13 @@ const roleRandomizer = (message, name, role) => {
 
     let heroIndex = Math.floor(Math.random() * Math.floor(heroList.length));
     var pick = {};
+
+    let userData = message.mentions.users;
+    var test = name.replace(/[\\<>@#&!]/g, "");
+    if (name.match(/\<\@.*\>/g)) {
+        name = userData.get(test).username;
+    }
+
     pick['name'] = name;
     pick['hero'] = heroList[heroIndex];
     pick['spec'] = "";
