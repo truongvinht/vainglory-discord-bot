@@ -143,7 +143,7 @@ const generalInfo = (heroName) => {
     }
 }
 
-const roleRandomizer = (message, name, role) => {
+const roleRandomizer = (message, name, role, editing = false) => {
     var heroList = [];
 
     for (let item of cp.getHeroes().content) {
@@ -183,21 +183,29 @@ const roleRandomizer = (message, name, role) => {
     pick['spec'] = "";
 
     let playerPick = [pick];
+    var color = colorMng.getColor(18);
 
     switch(role) {
         case 'l':
             // laner
-            writePlayer(message, playerPick,colorMng.getColor(16));
+            color = colorMng.getColor(16);
             break;
         case 'j':
             // jungler
-            writePlayer(message, playerPick,colorMng.getColor(17));
+            color = colorMng.getColor(17);
             break;
         default:
             // captain
-            writePlayer(message, playerPick,colorMng.getColor(18));
+            color = colorMng.getColor(18);
             break;
     }
+
+    if (editing) {
+        writePlayer(message, playerPick,color, true);
+    } else {
+        writePlayer(message, playerPick,color);
+    }
+    
 }
 
 const randomizer = (message, players) => {
@@ -259,7 +267,7 @@ const randomizer = (message, players) => {
     //console.log("hey " + players[index] + " you play " + heroList[heroIndex] + " " + getRandomSpecs())
 }
 
-function writePlayer(message, playerPick, color = colorMng.getColor(15)) {
+function writePlayer(message, playerPick, color = colorMng.getColor(15), editing = false) {
     if (playerPick.length > 0) {
         var pick = playerPick.shift();
 
@@ -269,17 +277,19 @@ function writePlayer(message, playerPick, color = colorMng.getColor(15)) {
             d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("[$3]", pick['spec']));
         } else {
             d.setTitle(i18n.get('PlayerXplaysHeroY').replace("$1", pick['name']).replace("$2", pick['hero']).replace("$3", pick['spec']));
-        //d = d.setThumbnail(`${c.imageURL()}/${pick['hero'].toLowerCase()}.png`);
         }
         const avatarImgUrl = `${c.imageURL()}/${pick['hero'].toLowerCase()}.png`;
         d = d.setFooter(`${pick['hero']}`, `${avatarImgUrl}`);
 
-
-        message.channel.send(d).then(async function (message) {
-            await message.react('🔄');
-            await message.react('🗑');
-            writePlayer(message, playerPick);
-        });
+        if (editing) {
+            message.edit(d);
+        } else {
+            message.channel.send(d).then(async function (message) {
+                await message.react('🔄');
+                await message.react('🗑');
+                writePlayer(message, playerPick);
+            });
+        }
 
     }
 }
@@ -322,6 +332,10 @@ const reloadRandomizer = (message, embed) => {
     message.edit(d);
 }
 
+const reloadRoleRandomizer = (message, embed, role) => {
+    roleRandomizer(message,embed.title.split(",")[0], role, true);
+}
+
 // export
 module.exports = {
     getHeroes: heroList,
@@ -332,5 +346,6 @@ module.exports = {
     getGeneral: generalInfo,
     getRandomizer: randomizer,
     getRandomizerForRole: roleRandomizer,
-    reloadRandomizer: reloadRandomizer
+    reloadRandomizer: reloadRandomizer,
+    reloadRoleRandomizer: reloadRoleRandomizer
 };

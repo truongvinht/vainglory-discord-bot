@@ -96,8 +96,16 @@ bot.on('messageReactionAdd', (reaction, user) => {
                 cntMsg.reloadRandomizer(reaction.message, embed);
                 return;
             } else {
-                if (colorMng.randomizerIndex(embed.hexColor) > 0) {
-                    cntMsg.reloadRandomizer(reaction.message, embed);
+                let index = colorMng.randomizerIndex(embed.hexColor);
+                if (index > 0) {
+                    if (index == 1) {
+                        cntMsg.reloadRoleRandomizer(reaction.message, embed, 'l');
+                    } else if (index == 2) {
+                        cntMsg.reloadRoleRandomizer(reaction.message, embed,'j');
+                    } else {
+                        cntMsg.reloadRoleRandomizer(reaction.message, embed,'c');
+                    }
+
                     return;
                 }
             }
