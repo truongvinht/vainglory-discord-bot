@@ -125,6 +125,9 @@ let cwl = function(message, tag) {
     const callback = function(rawdata, error) {
 
         var clanMap = {};
+        var finalCallback = function() {
+
+        };
 
         if (rawdata == null) {
             message.channel.send(error);
@@ -152,18 +155,21 @@ let cwl = function(message, tag) {
 
                 for (var i=0;i<rawdata["clans"].length;i++) {
                     var detail = rawdata["clans"];
-                    var team = detail[i];
-                    clanMap[team["name"]] = detail;
-                    text = `${text}${i+1}. ${team["name"]} [${team["clanLevel"]}] - ${team["tag"]}\n`;
+                    var singleClan = detail[i];
+                    singleClan["stats"] = {"attacks":0, "stars":0,"destructionPercentage":0.0,"round":0};
+                    var team = singleClan;
+                    clanMap[singleClan["tag"]] = singleClan;
+                    text = `${text}${i+1}. ${singleClan["name"]} [${team["clanLevel"]}] - ${team["tag"]}\n`;
                 }
 
                 if (text != "") {
                     d.setDescription(text);
                 } else {
                     d.setDescription("-");
+                    message.channel.send(d);
+                    return;
                 }
 
-                message.channel.send(d);
             }
 
             let roundList = rawdata["rounds"];
@@ -175,10 +181,28 @@ let cwl = function(message, tag) {
                 for (var index = 0;index < 4;index ++ ) {
                     var matchData = rawdata["" + index];
                     const result = getMatchString(matchData);
+
+                    for (let match of [matchData["clan"],matchData["opponent"]]) {
+                        let clanTag = match["tag"];
+                        var details = clanMap[clanTag];
+                        var stats = details["stats"];
+                        
+                        var attacks = stats["attacks"] + match["attacks"];
+                        var stars = stats["stars"] + match["stars"];
+                        var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                        var round = stats["round"] + 1;
+                        details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                        clanMap[clanTag] = details;
+                    }
+
                     d.addField(result[0],result[1]);
                 }
                 
                 message.channel.send(d);
+                
+                finalCallback = function() {
+                    getCWLSummary(message,clanMap);
+                };
 
                 let callbackRound2  = function(rawdata) {
                     var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -187,10 +211,28 @@ let cwl = function(message, tag) {
                     for (var index = 0;index < 4;index ++ ) {
                         var matchData = rawdata["" + index];
                         const result = getMatchString(matchData);
+
+                        for (let match of [matchData["clan"],matchData["opponent"]]) {
+                            let clanTag = match["tag"];
+                            var details = clanMap[clanTag];
+                            var stats = details["stats"];
+                            
+                            var attacks = stats["attacks"] + match["attacks"];
+                            var stars = stats["stars"] + match["stars"];
+                            var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                            var round = stats["round"] + 1;
+                            details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                            clanMap[clanTag] = details;
+                        }
+
                         d.addField(result[0],result[1]);
                     }
                     
                     message.channel.send(d);
+                
+                    finalCallback = function() {
+                        getCWLSummary(message,clanMap);
+                    };
 
                     let callbackRound3  = function(rawdata) {
                         var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -199,10 +241,27 @@ let cwl = function(message, tag) {
                         for (var index = 0;index < 4;index ++ ) {
                             var matchData = rawdata["" + index];
                             const result = getMatchString(matchData);
+
+                            for (let match of [matchData["clan"],matchData["opponent"]]) {
+                                let clanTag = match["tag"];
+                                var details = clanMap[clanTag];
+                                var stats = details["stats"];
+                                
+                                var attacks = stats["attacks"] + match["attacks"];
+                                var stars = stats["stars"] + match["stars"];
+                                var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                                var round = stats["round"] + 1;
+                                details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                clanMap[clanTag] = details;
+                            }
                             d.addField(result[0],result[1]);
                         }
                         
                         message.channel.send(d);
+                
+                        finalCallback = function() {
+                            getCWLSummary(message,clanMap);
+                        };
 
                         let callbackRound4  = function(rawdata) {
                             var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -211,10 +270,29 @@ let cwl = function(message, tag) {
                             for (var index = 0;index < 4;index ++ ) {
                                 var matchData = rawdata["" + index];
                                 const result = getMatchString(matchData);
+
+
+                                for (let match of [matchData["clan"],matchData["opponent"]]) {
+                                    let clanTag = match["tag"];
+                                    var details = clanMap[clanTag];
+                                    var stats = details["stats"];
+                                    
+                                    var attacks = stats["attacks"] + match["attacks"];
+                                    var stars = stats["stars"] + match["stars"];
+                                    var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                                    var round = stats["round"] + 1;
+                                    details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                    clanMap[clanTag] = details;
+                                }
+                                
                                 d.addField(result[0],result[1]);
                             }
                             
                             message.channel.send(d);
+                
+                            finalCallback = function() {
+                                getCWLSummary(message,clanMap);
+                            };
 
                             let callbackRound5  = function(rawdata) {
                                 var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -223,10 +301,28 @@ let cwl = function(message, tag) {
                                 for (var index = 0;index < 4;index ++ ) {
                                     var matchData = rawdata["" + index];
                                     const result = getMatchString(matchData);
+                                    
+
+                                    for (let match of [matchData["clan"],matchData["opponent"]]) {
+                                        let clanTag = match["tag"];
+                                        var details = clanMap[clanTag];
+                                        var stats = details["stats"];
+                                        
+                                        var attacks = stats["attacks"] + match["attacks"];
+                                        var stars = stats["stars"] + match["stars"];
+                                        var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                                        var round = stats["round"] + 1;
+                                        details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                        clanMap[clanTag] = details;
+                                    }
                                     d.addField(result[0],result[1]);
                                 }
                                 
                                 message.channel.send(d);
+                
+                                finalCallback = function() {
+                                    getCWLSummary(message,clanMap);
+                                };
 
                                 let callbackRound6  = function(rawdata) {
                                     var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -235,10 +331,28 @@ let cwl = function(message, tag) {
                                     for (var index = 0;index < 4;index ++ ) {
                                         var matchData = rawdata["" + index];
                                         const result = getMatchString(matchData);
+
+                                        for (let match of [matchData["clan"],matchData["opponent"]]) {
+                                            let clanTag = match["tag"];
+                                            var details = clanMap[clanTag];
+                                            var stats = details["stats"];
+                                            
+                                            var attacks = stats["attacks"] + match["attacks"];
+                                            var stars = stats["stars"] + match["stars"];
+                                            var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                                            var round = stats["round"] + 1;
+                                            details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                            clanMap[clanTag] = details;
+                                        }
+
                                         d.addField(result[0],result[1]);
                                     }
                                     
                                     message.channel.send(d);
+                
+                                    finalCallback = function() {
+                                        getCWLSummary(message,clanMap);
+                                    };
 
                                     let callbackRound7  = function(rawdata) {
                                         var d = new Discord.RichEmbed().setColor("#FEF910");
@@ -247,24 +361,44 @@ let cwl = function(message, tag) {
                                         for (var index = 0;index < 4;index ++ ) {
                                             var matchData = rawdata["" + index];
                                             const result = getMatchString(matchData);
+
+                                            for (let match of [matchData["clan"],matchData["opponent"]]) {
+                                                let clanTag = match["tag"];
+                                                var details = clanMap[clanTag];
+                                                var stats = details["stats"];
+                                                
+                                                var attacks = stats["attacks"] + match["attacks"];
+                                                var stars = stats["stars"] + match["stars"];
+                                                var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
+                                                var round = stats["round"] + 1;
+                                                details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                                clanMap[clanTag] = details;
+                                            }
+
                                             d.addField(result[0],result[1]);
                                         }
                                         
                                         message.channel.send(d);
+
+                                        
+                
+                                        finalCallback = function() {
+                                            getCWLSummary(message,clanMap);
+                                        };
                                     };
-                                    prepareRound(roundList[6].warTags,callbackRound7);
+                                    prepareRound(roundList[6].warTags,callbackRound7,finalCallback);
                                 };
-                                prepareRound(roundList[5].warTags,callbackRound6);
+                                prepareRound(roundList[5].warTags,callbackRound6,finalCallback);
                             };
-                            prepareRound(roundList[4].warTags,callbackRound5);
+                            prepareRound(roundList[4].warTags,callbackRound5,finalCallback);
                         };
-                        prepareRound(roundList[3].warTags,callbackRound4);
+                        prepareRound(roundList[3].warTags,callbackRound4,finalCallback);
                     };
-                    prepareRound(roundList[2].warTags,callbackRound3);
+                    prepareRound(roundList[2].warTags,callbackRound3,finalCallback);
                 };
-                prepareRound(roundList[1].warTags,callbackRound2);
+                prepareRound(roundList[1].warTags,callbackRound2,finalCallback);
             };
-            prepareRound(roundList[0].warTags,callbackRound1);
+            prepareRound(roundList[0].warTags,callbackRound1,finalCallback);
         }
     }
     coc.setToken(ClashToken.getInstance().token());
@@ -280,7 +414,24 @@ function getMatchString(matchData) {
     return [head,subtitle];                
 }
 
-function prepareRound(roundList, callback) {
+function getCWLSummary(message, clandetails) {
+    var d = new Discord.RichEmbed().setColor("#FEF995");
+
+    d.setTitle("Clankrieg Übersicht");
+
+    for (let k of Object.keys(clandetails)) {
+        let clan = clandetails[k];
+        var header = `${clan["name"]} - ${clan["tag"]}`;
+        let stats = clan["stats"];
+
+        let avg = stats["destructionPercentage"] /  stats["round"];
+        var content = `Angriffe: ${stats["attacks"]}\nSterne: ${stats["stars"]}\nDurschnittlich Zerstört: ${avg.toFixed(2)}`;
+        d.addField(header,content);
+    }
+    message.channel.send(d);
+}
+
+function prepareRound(roundList, callback, finalCallback) {
     let match1Tag = roundList[0];
     let match2Tag = roundList[1];
     let match3Tag = roundList[2];
@@ -289,6 +440,7 @@ function prepareRound(roundList, callback) {
 
     if (match1Tag == "#0" || match2Tag == "#0" || match3Tag == "#0" || match4Tag == "#0" ) {
         //skip
+        finalCallback();
         return;
     }
 
