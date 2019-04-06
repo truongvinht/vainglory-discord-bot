@@ -34,7 +34,7 @@ const clan = (rawTag, callback) => {
                 callback(JSON.parse(body), error);
             } else {
                 // error
-                callback(null,error);
+                callback(null,response.body);
                 log.debug(error);
             }
         }
