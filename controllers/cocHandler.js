@@ -42,7 +42,15 @@ const clan = (rawTag, callback) => {
 
 // convert hash tag to symbol for request
 function convertHashTag(tag) {
-    return tag.replace("#", "%23");
+
+    var inputTag = tag;
+    
+    //add missing tag
+    if (!inputTag.startsWith("#")) {
+        inputTag = "#" + inputTag;
+    }
+
+    return inputTag.replace("#", "%23");
 }
 /**
  * Method for generating header for request
