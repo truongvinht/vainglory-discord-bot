@@ -690,6 +690,15 @@ function directMessage(message) {
         return;
     }
 
+
+    // commands
+    if (strH.hasCmd(command, `${PREFIX}coc`)) {
+        let token = messageArray[1];
+        cocMsg.setToken(token);
+        message.channel.send("Clash Token aktualisiert.");
+        return;
+    }
+
     // commands
     if (strH.hasCmd(command, `${PREFIX}cmd`)) {
         if (messageArray.length <= 2) {
