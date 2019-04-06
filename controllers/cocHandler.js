@@ -35,7 +35,7 @@ const clan = (rawTag, callback) => {
             } else {
                 // error
                 callback(null,response.body);
-                log.debug(error);
+                log.debug(response.body);
             }
         }
     });
