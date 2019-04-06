@@ -86,7 +86,7 @@ let clan = function(message, tag) {
             for (let member of rawdata["memberList"]) {
                 let league = member["league"]
                 output = output + "__" + member["name"]+ "__" + 
-                " | " + league["name"] + "[" + member["donations"] + "/" + member["donationsReceived"] + "]" +"\n";
+                " | " + league["name"] + "[" + member["donations"] + "/" + member["donationsReceived"] + "]" + " | " + member["tag"] +"\n";
 
                 if (output.length > 1800) {
                     d.setDescription(output);
