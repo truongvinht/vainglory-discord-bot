@@ -86,8 +86,18 @@ let clan = function(message, tag) {
             for (let member of rawdata["memberList"]) {
                 let league = member["league"]
                 output = output + "__" + member["name"]+ "__" + 
-                " | " + league["name"] + " [" + member["donations"] + " / " + member["donationsReceived"] + "]" +"\n";
+                " | " + league["name"] + "[" + member["donations"] + "/" + member["donationsReceived"] + "]" +"\n";
+
+                if (output.length > 1800) {
+                    d.setDescription(output);
+                    message.channel.send(d);
+
+                    d = new Discord.RichEmbed().setColor("#FEF990");
+                    d.setTitle(rawdata["name"]);
+                    output = "";
+                }
             }
+
             d.setDescription(output);
             message.channel.send(d);
 
@@ -109,6 +119,31 @@ let clan = function(message, tag) {
     };
     coc.setToken(ClashToken.getInstance().token());
     coc.getClan(tag, callback);
+}
+
+let clanfinder = function(message, name) {
+    const callback = function(rawdata, error) {
+        var d = new Discord.RichEmbed().setColor("#FEF991");
+
+        if (rawdata["items"].length == 0) {
+            d.setTitle("Keinen Clan gefunden [" + name +"].");
+        } else {
+            d.setTitle(`Suche nach '${name}'...`);
+            for (let clan of rawdata["items"]) {
+                var locationString = "";
+                if (clan["location"] != undefined) {
+                    const location = clan["location"];
+                    locationString = `, Land: ${location["name"]}`;
+                }
+                d.addField(`${clan["name"]} [${clan["tag"]}] - Clanlevel ${clan["clanLevel"]}`,`Art: ${clan["type"]}, Min. Trophäen: ${clan["requiredTrophies"]}, Mitglieder: ${clan["members"]}${locationString}`);
+            }
+        }
+
+
+        message.channel.send(d);
+    };
+    coc.setToken(ClashToken.getInstance().token());
+    coc.findClan(name, callback);
 }
 
 /**
@@ -134,4 +169,5 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     getClan: clan,
+    findClan: clanfinder
 };

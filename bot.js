@@ -569,9 +569,16 @@ bot.on("message", async message => {
         }
 
         if (strH.hasCmds(command, [`${PREFIX}clan`])) { 
-            
             let clantag = messageArray[1];
             cocMsg.getClan(message,clantag);
+            return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}clans`,`${PREFIX}clansuche`])) { 
+
+            let clanName = messageArray[1];
+            cocMsg.findClan(message,clanName);
+            return;
         }
     }
 });

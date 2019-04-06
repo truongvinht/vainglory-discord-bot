@@ -41,6 +41,31 @@ const clan = (rawTag, callback) => {
     });
 }
 
+const clanFinder = (name, callback) => {
+
+    var requestURL = COC_URL + "clans?name=" + name + "&limit=20";
+
+    log.debug(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+    if (reqOption == null) {
+        return null;
+    }
+
+    request(reqOption, function(error, response, body) {
+
+        if (callback != null) {
+            if (!error && response.statusCode == 200) {
+                callback(JSON.parse(body), error);
+            } else {
+                // error
+                callback(null,response.body);
+                log.debug(response.body);
+            }
+        }
+    });
+}
+
 // convert hash tag to symbol for request
 function convertHashTag(tag) {
 
@@ -87,5 +112,6 @@ const updateToken = function(token) {
 //export
 module.exports = {
     getClan: clan,
+    findClan: clanFinder,
     setToken: updateToken
 };
