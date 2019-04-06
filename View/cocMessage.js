@@ -123,27 +123,75 @@ let clan = function(message, tag) {
 
 let clanfinder = function(message, name) {
     const callback = function(rawdata, error) {
-        var d = new Discord.RichEmbed().setColor("#FEF991");
 
-        if (rawdata["items"].length == 0) {
-            d.setTitle("Keinen Clan gefunden [" + name +"].");
+        if (rawdata == null) {
+            message.channel.send(error);
         } else {
-            d.setTitle(`Suche nach '${name}'...`);
-            for (let clan of rawdata["items"]) {
-                var locationString = "";
-                if (clan["location"] != undefined) {
-                    const location = clan["location"];
-                    locationString = `, Land: ${location["name"]}`;
+            var d = new Discord.RichEmbed().setColor("#FEF991");
+
+            if (rawdata["items"].length == 0) {
+                d.setTitle("Keinen Clan gefunden [" + name +"].");
+            } else {
+                d.setTitle(`Suche nach '${name}'...`);
+                for (let clan of rawdata["items"]) {
+                    var locationString = "";
+                    if (clan["location"] != undefined) {
+                        const location = clan["location"];
+                        locationString = `, Land: ${location["name"]}`;
+                    }
+                    d.addField(`${clan["name"]} [${clan["tag"]}] - Clanlevel ${clan["clanLevel"]}`,`Art: ${clan["type"]}, Min. Trophäen: ${clan["requiredTrophies"]}, Mitglieder: ${clan["members"]}${locationString}`);
                 }
-                d.addField(`${clan["name"]} [${clan["tag"]}] - Clanlevel ${clan["clanLevel"]}`,`Art: ${clan["type"]}, Min. Trophäen: ${clan["requiredTrophies"]}, Mitglieder: ${clan["members"]}${locationString}`);
             }
+    
+    
+            message.channel.send(d);
         }
 
-
-        message.channel.send(d);
     };
     coc.setToken(ClashToken.getInstance().token());
     coc.findClan(name, callback);
+}
+
+let memberfinder = function(message, tag) {
+    const callback = function(rawdata, error) {
+
+        if (rawdata == null) {
+            message.channel.send(error);
+        } else {
+            var d = new Discord.RichEmbed().setColor("#FEF992");
+            
+            d.setTitle(rawdata["name"] + " - Level " +rawdata["expLevel"]);
+            d.addField(`Tag`,rawdata["tag"]);
+            
+            d.addField(`Rathaus-Level`,rawdata["townHallLevel"]);
+
+            if (rawdata.hasOwnProperty("league")) {
+                let league = rawdata["league"];
+                d.addField(`Liga`,league["name"]);
+                if (league.hasOwnProperty("iconUrls")) {
+                    let iconUrl = league["iconUrls"];
+                    d.setThumbnail(iconUrl["medium"]);
+                }
+            }
+            d.addField(`Trophäen`,rawdata["trophies"]);
+            d.addField(`Bestes Ergebnis`,rawdata["bestTrophies"]);
+            d.addField(`Gewonnene Kriegssterne`,rawdata["warStars"]);
+
+            d.addField(`Rolle`,rawdata["role"]);
+            d.addField(`Gespendet/Erhalten`,rawdata["donations"] + " / " + rawdata["donationsReceived"]);
+            d.addField(`Gewonnene Angriffe/Verteidigungen`,rawdata["attackWins"] + " / " + rawdata["defenseWins"]);
+
+            if (rawdata.hasOwnProperty("clan")) {
+                let clan = rawdata["clan"];
+                let badge = clan["badgeUrls"];
+                d.setFooter(`${clan["name"]} [${clan["clanLevel"]}] - ${clan["tag"]}`,badge["medium"]);
+            }
+            message.channel.send(d);
+        }
+
+    };
+    coc.setToken(ClashToken.getInstance().token());
+    coc.findMember(tag, callback);
 }
 
 /**
@@ -169,5 +217,6 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     getClan: clan,
-    findClan: clanfinder
+    findClan: clanfinder,
+    findMember: memberfinder
 };

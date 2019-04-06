@@ -33,9 +33,13 @@ const clan = (rawTag, callback) => {
             if (!error && response.statusCode == 200) {
                 callback(JSON.parse(body), error);
             } else {
-                // error
-                callback(null,response.body);
-                log.debug(response.body);
+                if (response.statusCode == 404) {
+                    callback(null, "Clan nicht gefunden!");
+                } else {
+                    // error
+                    callback(null,response.body);
+                    log.debug(response.body);
+                }
             }
         }
     });
@@ -61,6 +65,37 @@ const clanFinder = (name, callback) => {
                 // error
                 callback(null,response.body);
                 log.debug(response.body);
+            }
+        }
+    });
+}
+
+const memberfinder = (rawTag, callback) => {
+    const tag = convertHashTag(rawTag);
+
+    var requestURL = COC_URL + "players/" + tag;
+
+    log.debug(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+    if (reqOption == null) {
+        return null;
+    }
+
+    request(reqOption, function(error, response, body) {
+
+        if (callback != null) {
+            if (!error && response.statusCode == 200) {
+                callback(JSON.parse(body), error);
+            } else {
+                // error
+                if (response.statusCode == 404) {
+                    callback(null, "Spieler nicht gefunden!");
+                } else {
+                    // error
+                    callback(null,response.body);
+                    log.debug(response.body);
+                }
             }
         }
     });
@@ -113,5 +148,6 @@ const updateToken = function(token) {
 module.exports = {
     getClan: clan,
     findClan: clanFinder,
+    findMember: memberfinder,
     setToken: updateToken
 };

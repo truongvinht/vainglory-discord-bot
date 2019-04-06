@@ -580,6 +580,12 @@ bot.on("message", async message => {
             cocMsg.findClan(message,clanName);
             return;
         }
+
+        if (strH.hasCmds(command, [`${PREFIX}clasher`,`${PREFIX}mitglied`,`${PREFIX}claner`])) { 
+            let tag = messageArray[1];
+            cocMsg.findMember(message,tag);
+            return;
+        }
     }
 });
 
