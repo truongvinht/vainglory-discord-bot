@@ -22,6 +22,9 @@
     "TOKEN":"",
     "REGION": ["eu","na","sg","sa","ea","cn"]  
   },
+  "COC": {
+    "TOKEN":""
+  },
   "author":"roest, C4CW & EuE Community",
   "version":"2.6.0"
 }

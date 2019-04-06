@@ -90,6 +90,12 @@ if (vgApiToken == "") {
     // Heroku ENV token
     vgApiToken = process.env.VG_TOKEN;
 }
+// Clash of Clans API Token
+var cocApiToken = botSettings.COC.TOKEN;
+if (cocApiToken == "") {
+    // Heroku ENV token
+    cocApiToken = process.env.COC_TOKEN;
+}
 
 // default language
 var language = botSettings.lang;
@@ -177,6 +183,10 @@ const getVgToken = () => {
     return vgApiToken;
 }
 
+const getCocToken = () => {
+    return cocApiToken;
+}
+
 const lang = () => {
     return language;
 }
@@ -226,6 +236,7 @@ module.exports = {
     vgRegionList: getRegions,
     restriction: getRestrictedRoles,
     vgToken: getVgToken,
+    cocToken: getCocToken,
     language: lang,
     author: author,
     version: getVersion,

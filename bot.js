@@ -17,6 +17,7 @@ const helpMsg = require('./View/helpMessage');
 const cntMsg = require('./View/counterPickMessage');
 const itemMsg = require('./View/itemMessage');
 const vgMsg = require('./View/vgMessage');
+const cocMsg = require('./View/cocMessage');
 const eloMsg = require('./View/eloMessage');
 const adminMsg = require('./View/adminMessage');
 
@@ -42,6 +43,7 @@ log.setLevel('info');
 // prefix for commands
 const PREFIX = c.prefix();
 const VG_TOKEN = c.vgToken();
+const COC_TOKEN = c.cocToken();
 
 const bot = new Discord.Client({
     disableEveryone: true
@@ -64,6 +66,7 @@ bot.on("ready", async() => {
 
         //init vainglory API token for the bot
         vgMsg.setToken(VG_TOKEN);
+        cocMsg.setToken(COC_TOKEN);
 
         if (c.playerLink() != "") {
             log.info('Load custom urls configuration: ' + c.playerLink());
@@ -563,6 +566,12 @@ bot.on("message", async message => {
                 message.channel.send(`'${message.author.username}': ${i18n.get('NoPermissionCommand')}`);
             }
             return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}clan`])) { 
+            
+            let clantag = messageArray[1];
+            cocMsg.getClan(message,clantag);
         }
     }
 });
