@@ -52,9 +52,9 @@ var ClashToken = (function () {
 })();
 
 let clan = function(message, tag) {
-    const callback = function(rawdata) {
+    const callback = function(rawdata, error) {
         if (rawdata == null) {
-            message.channel.send("-");
+            message.channel.send(error);
         } else {
             var d = new Discord.RichEmbed().setColor("#FEF99F");
             d.setTitle(rawdata["name"] + " [" + rawdata["tag"] +"]");

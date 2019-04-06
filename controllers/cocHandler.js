@@ -31,10 +31,11 @@ const clan = (rawTag, callback) => {
 
         if (callback != null) {
             if (!error && response.statusCode == 200) {
-                callback(JSON.parse(body));
+                callback(JSON.parse(body), error);
             } else {
                 // error
-                callback(null);
+                callback(null,error);
+                log.debug(error);
             }
         }
     });
@@ -44,7 +45,7 @@ const clan = (rawTag, callback) => {
 function convertHashTag(tag) {
 
     var inputTag = tag;
-    
+
     //add missing tag
     if (!inputTag.startsWith("#")) {
         inputTag = "#" + inputTag;
