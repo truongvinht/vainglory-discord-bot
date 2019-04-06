@@ -277,6 +277,16 @@ bot.on("message", async message => {
         return;
     }
 
+    // commands with 0 or more parameters
+    if (strH.hasCmd(command, `${PREFIX}cochelp`)) {
+        let embed = helpMsg.getCocHelp(PREFIX, message.author.username);
+
+        message.channel.send(embed).then(message => {
+        });
+
+        return;
+    }
+
     // // single item code
     // if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
 
@@ -584,6 +594,12 @@ bot.on("message", async message => {
         if (strH.hasCmds(command, [`${PREFIX}clasher`,`${PREFIX}mitglied`,`${PREFIX}claner`])) { 
             let tag = messageArray[1];
             cocMsg.findMember(message,tag);
+            return;
+        }
+
+        if (strH.hasCmds(command, [`${PREFIX}cwl`])) { 
+            var clanTag = messageArray[1];
+            cocMsg.getCWL(message,clanTag);
             return;
         }
     }

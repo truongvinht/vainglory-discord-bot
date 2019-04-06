@@ -121,6 +121,203 @@ let clan = function(message, tag) {
     coc.getClan(tag, callback);
 }
 
+let cwl = function(message, tag) {
+    const callback = function(rawdata, error) {
+
+        var clanMap = {};
+
+        if (rawdata == null) {
+            message.channel.send(error);
+        } else {
+
+            var clandetails = null;
+
+            for (let clan of rawdata["clans"]) {
+                if (clan["tag"].includes(tag)) {
+                    clandetails = clan;
+                    break;
+                }
+            }
+
+            if (clandetails == null) {
+                message.channel.send("Keine Daten zum CWL gefunden.");
+            } else{
+                var d = new Discord.RichEmbed().setColor("#FEF995");
+
+                d.setTitle("Clankrieg " + clandetails["name"] + " [" + clandetails["tag"] +"]");
+                const badges = clandetails["badgeUrls"];
+                d.setThumbnail(clandetails["medium"]);
+
+                var text = "";
+
+                for (var i=0;i<rawdata["clans"].length;i++) {
+                    var detail = rawdata["clans"];
+                    var team = detail[i];
+                    clanMap[team["name"]] = detail;
+                    text = `${text}${i+1}. ${team["name"]} [${team["clanLevel"]}] - ${team["tag"]}\n`;
+                }
+
+                if (text != "") {
+                    d.setDescription(text);
+                } else {
+                    d.setDescription("-");
+                }
+
+                message.channel.send(d);
+            }
+
+            let roundList = rawdata["rounds"];
+
+            let callbackRound1  = function(rawdata) {
+                var d = new Discord.RichEmbed().setColor("#FEF910");
+                d.setTitle("Clankrieg Runde 1 (Angriffe | Sterne | Prozent)");
+
+                for (var index = 0;index < 4;index ++ ) {
+                    var matchData = rawdata["" + index];
+                    const result = getMatchString(matchData);
+                    d.addField(result[0],result[1]);
+                }
+                
+                message.channel.send(d);
+
+                let callbackRound2  = function(rawdata) {
+                    var d = new Discord.RichEmbed().setColor("#FEF910");
+                    d.setTitle("Clankrieg Runde 2 (Angriffe | Sterne | Prozent)");
+
+                    for (var index = 0;index < 4;index ++ ) {
+                        var matchData = rawdata["" + index];
+                        const result = getMatchString(matchData);
+                        d.addField(result[0],result[1]);
+                    }
+                    
+                    message.channel.send(d);
+
+                    let callbackRound3  = function(rawdata) {
+                        var d = new Discord.RichEmbed().setColor("#FEF910");
+                        d.setTitle("Clankrieg Runde 3 (Angriffe | Sterne | Prozent)");
+    
+                        for (var index = 0;index < 4;index ++ ) {
+                            var matchData = rawdata["" + index];
+                            const result = getMatchString(matchData);
+                            d.addField(result[0],result[1]);
+                        }
+                        
+                        message.channel.send(d);
+
+                        let callbackRound4  = function(rawdata) {
+                            var d = new Discord.RichEmbed().setColor("#FEF910");
+                            d.setTitle("Clankrieg Runde 4 (Angriffe | Sterne | Prozent)");
+        
+                            for (var index = 0;index < 4;index ++ ) {
+                                var matchData = rawdata["" + index];
+                                const result = getMatchString(matchData);
+                                d.addField(result[0],result[1]);
+                            }
+                            
+                            message.channel.send(d);
+
+                            let callbackRound5  = function(rawdata) {
+                                var d = new Discord.RichEmbed().setColor("#FEF910");
+                                d.setTitle("Clankrieg Runde 5 (Angriffe | Sterne | Prozent)");
+            
+                                for (var index = 0;index < 4;index ++ ) {
+                                    var matchData = rawdata["" + index];
+                                    const result = getMatchString(matchData);
+                                    d.addField(result[0],result[1]);
+                                }
+                                
+                                message.channel.send(d);
+
+                                let callbackRound6  = function(rawdata) {
+                                    var d = new Discord.RichEmbed().setColor("#FEF910");
+                                    d.setTitle("Clankrieg Runde 6 (Angriffe | Sterne | Prozent)");
+                
+                                    for (var index = 0;index < 4;index ++ ) {
+                                        var matchData = rawdata["" + index];
+                                        const result = getMatchString(matchData);
+                                        d.addField(result[0],result[1]);
+                                    }
+                                    
+                                    message.channel.send(d);
+
+                                    let callbackRound7  = function(rawdata) {
+                                        var d = new Discord.RichEmbed().setColor("#FEF910");
+                                        d.setTitle("Clankrieg Runde 7 (Angriffe | Sterne | Prozent)");
+                    
+                                        for (var index = 0;index < 4;index ++ ) {
+                                            var matchData = rawdata["" + index];
+                                            const result = getMatchString(matchData);
+                                            d.addField(result[0],result[1]);
+                                        }
+                                        
+                                        message.channel.send(d);
+                                    };
+                                    prepareRound(roundList[6].warTags,callbackRound7);
+                                };
+                                prepareRound(roundList[5].warTags,callbackRound6);
+                            };
+                            prepareRound(roundList[4].warTags,callbackRound5);
+                        };
+                        prepareRound(roundList[3].warTags,callbackRound4);
+                    };
+                    prepareRound(roundList[2].warTags,callbackRound3);
+                };
+                prepareRound(roundList[1].warTags,callbackRound2);
+            };
+            prepareRound(roundList[0].warTags,callbackRound1);
+        }
+    }
+    coc.setToken(ClashToken.getInstance().token());
+    coc.getCWL(tag, callback);
+}
+
+function getMatchString(matchData) {
+    var matchDataClan = matchData["clan"];
+    var matchDataOpponent = matchData["opponent"];
+    var head = `${matchDataClan["name"]} [${matchDataClan["clanLevel"]}] - ${matchDataClan["tag"]} vs ${matchDataOpponent["name"]} [${matchDataOpponent["clanLevel"]}] - ${matchDataOpponent["tag"]}`;
+    var subtitle = `${matchDataClan["name"]}: ${matchDataClan["attacks"]} | ${matchDataClan["stars"]} | ${matchDataClan["destructionPercentage"].toFixed(2)}\n` + 
+                    `${matchDataOpponent["name"]}: ${matchDataOpponent["attacks"]} | ${matchDataOpponent["stars"]} | ${matchDataOpponent["destructionPercentage"].toFixed(2)}`;
+    return [head,subtitle];                
+}
+
+function prepareRound(roundList, callback) {
+    let match1Tag = roundList[0];
+    let match2Tag = roundList[1];
+    let match3Tag = roundList[2];
+    let match4Tag = roundList[3];
+    var matchups = {};
+
+    if (match1Tag == "#0" || match2Tag == "#0" || match3Tag == "#0" || match4Tag == "#0" ) {
+        //skip
+        return;
+    }
+
+
+    const call1 = function(r1,k1, e1) {
+        matchups[k1] = r1;
+        const call2 = function(r2,k2, e2) {
+            matchups[k2] = r2;
+            
+            const call3 = function(r3,k3, e3) {
+                matchups[k3] = r3;
+
+                const call4 = function(r4,k4, e4) {
+                    matchups[k4] = r4;
+                    callback(matchups);
+                };
+                coc.setToken(ClashToken.getInstance().token());
+                coc.getCWLMatch(match4Tag,"3", call4);
+            };
+            coc.setToken(ClashToken.getInstance().token());
+            coc.getCWLMatch(match3Tag,"2", call3);
+        };
+        coc.setToken(ClashToken.getInstance().token());
+        coc.getCWLMatch(match2Tag,"1", call2);
+    };
+    coc.setToken(ClashToken.getInstance().token());
+    coc.getCWLMatch(match1Tag,"0", call1);
+}
+
 let clanfinder = function(message, name) {
     const callback = function(rawdata, error) {
 
@@ -217,6 +414,7 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     getClan: clan,
+    getCWL: cwl,
     findClan: clanfinder,
     findMember: memberfinder
 };

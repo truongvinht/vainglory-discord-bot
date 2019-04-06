@@ -45,6 +45,105 @@ const clan = (rawTag, callback) => {
     });
 }
 
+
+// war
+const currentwar = (rawTag, callback) => {
+
+    //clan tag
+    const tag = convertHashTag(rawTag);
+
+    const requestURL = COC_URL + "clans/" + tag + "/currentwar";
+    log.debug(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+    if (reqOption == null) {
+        return null;
+    }
+
+    request(reqOption, function(error, response, body) {
+
+        if (callback != null) {
+            if (!error && response.statusCode == 200) {
+                callback(JSON.parse(body), error);
+            } else {
+                if (response.statusCode == 404) {
+                    callback(null, "Clan nicht gefunden!");
+                } else {
+                    // error
+                    callback(null,response.body);
+                    log.debug(response.body);
+                }
+            }
+        }
+    });
+}
+
+
+
+
+// cwl
+const leagueGroup = (rawTag, callback) => {
+
+    //clan tag
+    const tag = convertHashTag(rawTag);
+
+    const requestURL = COC_URL + "clans/" + tag + "/currentwar/leaguegroup";
+    log.debug(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+    if (reqOption == null) {
+        return null;
+    }
+
+    request(reqOption, function(error, response, body) {
+
+        if (callback != null) {
+            if (!error && response.statusCode == 200) {
+                callback(JSON.parse(body), error);
+            } else {
+                if (response.statusCode == 404) {
+                    callback(null, "Clan nicht gefunden!");
+                } else {
+                    // error
+                    callback(null,response.body);
+                    log.debug(response.body);
+                }
+            }
+        }
+    });
+}
+const cwlMatch = (rawTag, key, callback) => {
+
+    //war tag
+    const tag = convertHashTag(rawTag);
+
+    const requestURL = COC_URL + "clanwarleagues/wars/" + tag ;
+    log.debug(requestURL);
+
+    const reqOption = getRequestHeader(requestURL);
+    if (reqOption == null) {
+        return null;
+    }
+
+    request(reqOption, function(error, response, body) {
+
+        if (callback != null) {
+            if (!error && response.statusCode == 200) {
+                callback(JSON.parse(body),key, error);
+            } else {
+                if (response.statusCode == 404) {
+                    callback(null,key, "Match nicht gefunden!");
+                } else {
+                    // error
+                    callback(null,key, response.body);
+                    log.debug(response.body);
+                }
+            }
+        }
+    });
+}
+
+
 const clanFinder = (name, callback) => {
 
     var requestURL = COC_URL + "clans?name=" + name + "&limit=20";
@@ -147,6 +246,9 @@ const updateToken = function(token) {
 //export
 module.exports = {
     getClan: clan,
+    getCurrentwar: currentwar,
+    getCWL: leagueGroup,
+    getCWLMatch: cwlMatch,
     findClan: clanFinder,
     findMember: memberfinder,
     setToken: updateToken

@@ -65,6 +65,23 @@ const directHelpMessage = (PREFIX, author) => {
     return embed;
 }
 
+/**
+ * Sending general informations about coc commands
+ * @param {PREFIX} prefix for each command for bot control
+ * @param {author} name of the user who triggers the bot
+ * @returns message block with all informations about available commands
+ * @type RichEmbed
+ */
+const cocHelpMessage = (PREFIX, author) => {
+    let embed = new Discord.RichEmbed()
+    .setColor(`${colorMng.getColor(1)}`)
+    .setAuthor(`${author}`)
+    .setDescription(`${i18n.get('FollowingCommands')}`)
+    .addField(`${PREFIX}clan CODE`, `Details zum Clan`)
+    .addField(`${PREFIX}clans NAME / ${PREFIX}clansuche NAME`, `Suche nach clan (Name)`)
+    .addField(`${PREFIX}clasher CODE / ${PREFIX}mitglied CODE / ${PREFIX}claner CODE`, `Details zum Spieler`);
+    return embed;
+}
 const externalPlayerLink = (player) => {
     return ""  +constant.playerLink() + player;
 }
@@ -78,6 +95,7 @@ const externalHeroLink = (hero) => {
 module.exports = {
     getChannelHelp: helpMessage,
     getDmHelp: directHelpMessage,
+    getCocHelp: cocHelpMessage,
     getExternalLinkForPlayer: externalPlayerLink,
     getExternalLinkForHero: externalHeroLink
 };
