@@ -564,6 +564,8 @@ function sendErrorLog(message, error) {
     if (errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied.invalidIp") {
         console.log(errorMap.message);
         message.author.send(errorMap.message);
+    } else if(errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied") {
+        message.author.send(errorMap.message);
     } else {
         message.channel.send(error);
     }
