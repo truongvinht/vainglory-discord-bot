@@ -54,6 +54,10 @@ var ClashToken = (function () {
 let clan = function(message, tag) {
     const callback = function(rawdata, error) {
         if (rawdata == null) {
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
             message.channel.send(error);
         } else {
             var d = new Discord.RichEmbed().setColor("#FEF99F");
@@ -130,6 +134,10 @@ let cwl = function(message, tag) {
         };
 
         if (rawdata == null) {
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
             message.channel.send(error);
         } else {
 
@@ -408,7 +416,7 @@ let cwl = function(message, tag) {
 function getMatchString(matchData) {
     var matchDataClan = matchData["clan"];
     var matchDataOpponent = matchData["opponent"];
-    var head = `${matchDataClan["name"]} [${matchDataClan["clanLevel"]}] - ${matchDataClan["tag"]} vs ${matchDataOpponent["name"]} [${matchDataOpponent["clanLevel"]}] - ${matchDataOpponent["tag"]}`;
+    var head = `${matchDataClan["name"]} [${matchDataClan["clanLevel"]}] vs ${matchDataOpponent["name"]} [${matchDataOpponent["clanLevel"]}]`;
     var subtitle = `${matchDataClan["name"]}: ${matchDataClan["attacks"]} | ${matchDataClan["stars"]} | ${matchDataClan["destructionPercentage"].toFixed(2)}\n` + 
                     `${matchDataOpponent["name"]}: ${matchDataOpponent["attacks"]} | ${matchDataOpponent["stars"]} | ${matchDataOpponent["destructionPercentage"].toFixed(2)}`;
     return [head,subtitle];                
@@ -474,6 +482,10 @@ let clanfinder = function(message, name) {
     const callback = function(rawdata, error) {
 
         if (rawdata == null) {
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
             message.channel.send(error);
         } else {
             var d = new Discord.RichEmbed().setColor("#FEF991");
@@ -505,6 +517,10 @@ let memberfinder = function(message, tag) {
     const callback = function(rawdata, error) {
 
         if (rawdata == null) {
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
             message.channel.send(error);
         } else {
             var d = new Discord.RichEmbed().setColor("#FEF992");
@@ -541,6 +557,16 @@ let memberfinder = function(message, tag) {
     };
     coc.setToken(ClashToken.getInstance().token());
     coc.findMember(tag, callback);
+}
+
+function sendErrorLog(message, error) {
+    let errorMap = JSON.parse(error);
+    if (errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied.invalidIp") {
+        console.log(errorMap.message);
+        message.author.send(errorMap.message);
+    } else {
+        message.channel.send(error);
+    }
 }
 
 /**
