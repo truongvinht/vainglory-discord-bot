@@ -432,7 +432,7 @@ function getCWLSummary(message, clandetails) {
         var header = `${clan["name"]} - ${clan["tag"]}`;
         let stats = clan["stats"];
 
-        let avg = stats["destructionPercentage"] /  stats["round"];
+        let avg = stats["destructionPercentage"] /  (stats["round"]-1);
         var content = `Angriffe: ${stats["attacks"]}\nSterne: ${stats["stars"]}\nDurschnittlich Zerstört: ${avg.toFixed(2)}`;
         d.addField(header,content);
     }

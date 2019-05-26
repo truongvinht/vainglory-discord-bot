@@ -26,9 +26,9 @@ const helpMessage = (PREFIX, author, hasRole) => {
         .addField(`${PREFIX}support HERO`, `${i18n.get('DisplayStrengthHero')}`)
         .addField(`${PREFIX}HERO-CODE`, `${i18n.get('DisplayInfoHeroCode')}`)
         .addField(`${PREFIX}hero`, `${i18n.get('DisplayListHero')}`)
-        .addField(`${PREFIX}player ${i18n.get('Player')}`,`${i18n.get('HelpPlayerDetails')}`)
-        .addField(`${PREFIX}recent ${i18n.get('Player')}`, `${i18n.get('RecentHeroes')}`)
-        .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
+        // .addField(`${PREFIX}player ${i18n.get('Player')}`,`${i18n.get('HelpPlayerDetails')}`)
+        // .addField(`${PREFIX}recent ${i18n.get('Player')}`, `${i18n.get('RecentHeroes')}`)
+        // .addField(`${PREFIX}match ${i18n.get('Player')}`,`${i18n.get('LastMatchDetails')}`)
         .addField(`${PREFIX}elo ELO | ${PREFIX}elo ${i18n.get('Player')}`, `${i18n.get('EloDetails')}`)
         .addField(`${PREFIX}random NAME`, `${i18n.get('RandomizerInfo')}`);
         //.addField(`${PREFIX}vgitem CODE`, `${i18n.get('ItemDescription')}`);
