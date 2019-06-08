@@ -591,6 +591,12 @@ bot.on("message", async message => {
             return;
         }
 
+        if (strH.hasCmds(command, [`${PREFIX}troop`,`${PREFIX}troops`,`${PREFIX}w8`])) { 
+            let player = messageArray[1];
+            cocMsg.getPlayerStats(message,player);
+            return;
+        }
+
         if (strH.hasCmds(command, [`${PREFIX}clasher`,`${PREFIX}mitglied`,`${PREFIX}claner`])) { 
             let tag = messageArray[1];
             cocMsg.findMember(message,tag);

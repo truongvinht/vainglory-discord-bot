@@ -16,6 +16,7 @@ const log = require('loglevel');
 
 // CONTROLLERS
 var coc = require('../controllers/cocHandler');
+const cocdata = require(`../data/coc-data.json`);
 
 const formatter = require('../general/contentFormatter');
 
@@ -123,6 +124,130 @@ let clan = function(message, tag) {
     };
     coc.setToken(ClashToken.getInstance().token());
     coc.getClan(tag, callback);
+}
+
+let playerStats = function(message, tag) {
+    const callback = function(rawdata, error) {
+        if (rawdata == null) {
+
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
+            message.channel.send(error);
+        } else {
+            var d = new Discord.RichEmbed().setColor("#FEF99F");
+            d.setTitle(rawdata["name"] + " [" + rawdata["tag"] +"]");
+
+            if (rawdata.hasOwnProperty("league")) {
+                let league = rawdata["league"];
+                d.addField(`Liga`,league["name"]);
+                if (league.hasOwnProperty("iconUrls")) {
+                    let iconUrl = league["iconUrls"];
+                    d.setThumbnail(iconUrl["medium"]);
+                }
+            }
+
+            let cocWeightMap = cocdata.home;
+
+            // TROOPS
+            var troopString = "";
+            var troopsWeight = 0;
+
+            let troopMap = cocWeightMap.troops;
+
+            for (let troop of rawdata.troops) {
+                // only count home village
+                if (troop.village == 'home') {
+                    troopString = troopString + troop.name + ":" + troop.level + " "
+
+                    if (troopMap.hasOwnProperty(troop.name)) {
+
+                        let levelList = troopMap[troop.name].weight;
+
+                        if (levelList.length > troop.level) {
+                            let weight = levelList[troop.level-1];
+                            troopsWeight = troopsWeight + weight;
+                        } else {
+                            console.log(troop.name + " missing level - " + troop.level);
+                        }
+
+                    } else {
+                        console.log(troop.name + " missing");
+                    }
+                }
+            }
+            
+            if (troopString.length > 0) {
+                d.addField(`Truppen [${formatNumber(troopsWeight)}]`,troopString);
+            }
+
+            // SPELL
+            var spellString = "";
+            var spellWeight = 0;
+
+            let spellMap = cocWeightMap.spells;
+
+            for (let spell of rawdata.spells) {
+                // only count home village
+                if (spell.village == 'home') {
+                    spellString = spellString + spell.name + ":" + spell.level + " ";
+
+                    if (spellMap.hasOwnProperty(spell.name)) {
+
+                        let levelList = spellMap[spell.name].weight;
+                        if (levelList.length > spell.level) {
+                            let weight = levelList[spell.level-1];
+                            spellWeight = spellWeight + weight;
+                        } else {
+                            console.log(spell.name + " missing level - " + spell.level);
+                        }
+                    } else {
+                        console.log(spell.name + " missing");
+                    }
+                }
+            }
+            
+            if (spellString.length > 0) {
+                d.addField(`Zauber [${formatNumber(spellWeight)}]`,spellString);
+            }
+
+            // HERO
+            var heroString = "";
+            var heroWeight = 0;
+
+            let heroMap = cocWeightMap.heroes;
+
+            for (let heroes of rawdata.heroes) {
+                // only count home village
+                if (heroes.village == 'home') {
+                    heroString = heroString + heroes.name + ": " + heroes.level + "\n";
+
+                    if (heroMap.hasOwnProperty(heroes.name)) {
+
+                        let levelValue = heroMap[heroes.name][0];
+                        let weight = levelValue * heroes.level
+                        heroWeight = heroWeight + weight;
+                    } else {
+                        console.log(heroes.name + " missing");
+                    }
+                }
+            }
+            
+            if (heroString.length > 0) {
+                d.addField(`Helden [${formatNumber(heroWeight)}]`,heroString);
+            }
+
+            d.setFooter(`Offensive Wertung von ${rawdata["name"]}: ${formatNumber(heroWeight + spellWeight + troopsWeight)}`);
+            
+            message.channel.send(d);
+        }
+    };
+    coc.setToken(ClashToken.getInstance().token());
+    coc.findMember(tag, callback);
+}
+function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
 }
 
 let cwl = function(message, tag) {
@@ -560,6 +685,16 @@ let memberfinder = function(message, tag) {
 }
 
 function sendErrorLog(message, error) {
+
+    if (error == null || error == undefined) {
+        message.channel.send('undefined');
+    }
+
+    if (typeof error === 'string') {
+        message.channel.send(error);
+        return;
+    }
+
     let errorMap = JSON.parse(error);
     if (errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied.invalidIp") {
         console.log(errorMap.message);
@@ -595,6 +730,7 @@ module.exports = {
     setToken: setToken,
     getToken: getToken,
     getClan: clan,
+    getPlayerStats:playerStats,
     getCWL: cwl,
     findClan: clanfinder,
     findMember: memberfinder
