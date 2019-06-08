@@ -689,22 +689,23 @@ function sendErrorLog(message, error) {
     if (error == null || error == undefined) {
         message.channel.send('undefined');
     }
+    try{
 
-    if (typeof error === 'string') {
+        let errorMap = JSON.parse(error);
+        if (errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied.invalidIp") {
+            console.log(errorMap.message);
+            message.author.send(errorMap.message);
+            message.author.send("https://developer.clashofclans.com/#/");
+        } else if(errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied") {
+            message.author.send(errorMap.message);
+        } else {
+            message.channel.send(error);
+        }
+    }
+    catch(e){
         message.channel.send(error);
-        return;
     }
 
-    let errorMap = JSON.parse(error);
-    if (errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied.invalidIp") {
-        console.log(errorMap.message);
-        message.author.send(errorMap.message);
-        message.author.send("https://developer.clashofclans.com/#/");
-    } else if(errorMap.hasOwnProperty("reason") && errorMap.reason == "accessDenied") {
-        message.author.send(errorMap.message);
-    } else {
-        message.channel.send(error);
-    }
 }
 
 /**
