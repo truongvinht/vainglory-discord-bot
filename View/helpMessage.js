@@ -80,6 +80,7 @@ const cocHelpMessage = (PREFIX, author) => {
     .addField(`${PREFIX}clan CODE`, `Details zum Clan`)
     .addField(`${PREFIX}clans NAME / ${PREFIX}clansuche NAME`, `Suche nach clan (Name)`)
     .addField(`${PREFIX}cwl CODE`, `Suche nach letztem Clan War League`)
+    .addField(`${PREFIX}cwlm CODE`, `Suche nach der letzten Besetzung im CWL`)
     .addField(`${PREFIX}clasher CODE / ${PREFIX}mitglied CODE / ${PREFIX}claner CODE`, `Details zum Spieler`);
     return embed;
 }

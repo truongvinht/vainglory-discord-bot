@@ -608,6 +608,12 @@ bot.on("message", async message => {
             cocMsg.getCWL(message,clanTag);
             return;
         }
+
+        if (strH.hasCmds(command, [`${PREFIX}cwlm`])) { 
+            var clanTag = messageArray[1];
+            cocMsg.getCWLM(message,clanTag);
+            return;
+        }
     }
 });
 

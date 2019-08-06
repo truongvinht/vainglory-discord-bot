@@ -531,6 +531,50 @@ let cwl = function(message, tag) {
     coc.getCWL(tag, callback);
 }
 
+let cwlm = function(message, tag) {
+
+    const callback = function(rawdata, error) {
+
+
+        var clanMap = {};
+        var finalCallback = function() {
+
+        };
+
+        if (rawdata == null) {
+            if (error != null && error != undefined) {
+                sendErrorLog(message,error);
+                return;
+            }
+            message.channel.send(error);
+        } else {
+            let clans = rawdata["clans"];
+
+            for (let c of clans) {
+                if (c.tag.includes(tag)) {
+
+                    var d = new Discord.RichEmbed().setColor("#FEF995");
+                    d.setTitle("Clankrieg Teilnehmer - " + c.name + "/" + c.tag + " (" + c.members.length + ")");
+        
+                    var members = "";
+
+                    for (let m of c.members) {
+                        members = members + m.name + " / RH" + m.townHallLevel + "\n";
+                    }
+
+                    d.setDescription(members);
+                    message.channel.send(d);
+                }
+            }
+
+
+
+        }
+    };
+    coc.setToken(ClashToken.getInstance().token());
+    coc.getCWL(tag, callback);
+}
+
 function getMatchString(matchData) {
     var matchDataClan = matchData["clan"];
     var matchDataOpponent = matchData["opponent"];
@@ -732,6 +776,7 @@ module.exports = {
     getClan: clan,
     getPlayerStats:playerStats,
     getCWL: cwl,
+    getCWLM: cwlm,
     findClan: clanfinder,
     findMember: memberfinder
 };
