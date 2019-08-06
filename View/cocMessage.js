@@ -535,12 +535,6 @@ let cwlm = function(message, tag) {
 
     const callback = function(rawdata, error) {
 
-
-        var clanMap = {};
-        var finalCallback = function() {
-
-        };
-
         if (rawdata == null) {
             if (error != null && error != undefined) {
                 sendErrorLog(message,error);
@@ -555,10 +549,17 @@ let cwlm = function(message, tag) {
 
                     var d = new Discord.RichEmbed().setColor("#FEF995");
                     d.setTitle("Clankrieg Teilnehmer - " + c.name + "/" + c.tag + " (" + c.members.length + ")");
-        
+                    
+                    var listOfMembers = c.members;
+
+                    listOfMembers.sort(function(a, b) {
+                        return b.townHallLevel - a.townHallLevel;
+                    });
+
+
                     var members = "";
 
-                    for (let m of c.members) {
+                    for (let m of listOfMembers) {
                         members = members + m.name + " / RH" + m.townHallLevel + "\n";
                     }
 
