@@ -289,7 +289,7 @@ let cwl = function(message, tag) {
                 for (var i=0;i<rawdata["clans"].length;i++) {
                     var detail = rawdata["clans"];
                     var singleClan = detail[i];
-                    singleClan["stats"] = {"attacks":0, "stars":0,"destructionPercentage":0.0,"round":0};
+                    singleClan["stats"] = {"attacks":0, "stars":0,"round":0};
                     var team = singleClan;
                     clanMap[singleClan["tag"]] = singleClan;
                     text = `${text}${i+1}. ${singleClan["name"]} [${team["clanLevel"]}] - ${team["tag"]}\n`;
@@ -309,7 +309,7 @@ let cwl = function(message, tag) {
 
             let callbackRound1  = function(rawdata) {
                 var d = new Discord.RichEmbed().setColor("#FEF910");
-                d.setTitle("Clankrieg Runde 1 (Angriffe | Sterne | Prozent)");
+                d.setTitle("Clankrieg Runde 1 (Angriffe | Sterne)");
 
                 for (var index = 0;index < 4;index ++ ) {
                     var matchData = rawdata["" + index];
@@ -322,9 +322,8 @@ let cwl = function(message, tag) {
                         
                         var attacks = stats["attacks"] + match["attacks"];
                         var stars = stats["stars"] + match["stars"];
-                        var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                         var round = stats["round"] + 1;
-                        details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                        details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                         clanMap[clanTag] = details;
                     }
 
@@ -339,7 +338,7 @@ let cwl = function(message, tag) {
 
                 let callbackRound2  = function(rawdata) {
                     var d = new Discord.RichEmbed().setColor("#FEF910");
-                    d.setTitle("Clankrieg Runde 2 (Angriffe | Sterne | Prozent)");
+                    d.setTitle("Clankrieg Runde 2 (Angriffe | Sterne)");
 
                     for (var index = 0;index < 4;index ++ ) {
                         var matchData = rawdata["" + index];
@@ -352,9 +351,8 @@ let cwl = function(message, tag) {
                             
                             var attacks = stats["attacks"] + match["attacks"];
                             var stars = stats["stars"] + match["stars"];
-                            var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                             var round = stats["round"] + 1;
-                            details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                            details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                             clanMap[clanTag] = details;
                         }
 
@@ -369,7 +367,7 @@ let cwl = function(message, tag) {
 
                     let callbackRound3  = function(rawdata) {
                         var d = new Discord.RichEmbed().setColor("#FEF910");
-                        d.setTitle("Clankrieg Runde 3 (Angriffe | Sterne | Prozent)");
+                        d.setTitle("Clankrieg Runde 3 (Angriffe | Sterne)");
     
                         for (var index = 0;index < 4;index ++ ) {
                             var matchData = rawdata["" + index];
@@ -382,9 +380,8 @@ let cwl = function(message, tag) {
                                 
                                 var attacks = stats["attacks"] + match["attacks"];
                                 var stars = stats["stars"] + match["stars"];
-                                var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                                 var round = stats["round"] + 1;
-                                details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                                 clanMap[clanTag] = details;
                             }
                             d.addField(result[0],result[1]);
@@ -398,7 +395,7 @@ let cwl = function(message, tag) {
 
                         let callbackRound4  = function(rawdata) {
                             var d = new Discord.RichEmbed().setColor("#FEF910");
-                            d.setTitle("Clankrieg Runde 4 (Angriffe | Sterne | Prozent)");
+                            d.setTitle("Clankrieg Runde 4 (Angriffe | Sterne)");
         
                             for (var index = 0;index < 4;index ++ ) {
                                 var matchData = rawdata["" + index];
@@ -412,9 +409,8 @@ let cwl = function(message, tag) {
                                     
                                     var attacks = stats["attacks"] + match["attacks"];
                                     var stars = stats["stars"] + match["stars"];
-                                    var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                                     var round = stats["round"] + 1;
-                                    details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                    details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                                     clanMap[clanTag] = details;
                                 }
                                 
@@ -429,7 +425,7 @@ let cwl = function(message, tag) {
 
                             let callbackRound5  = function(rawdata) {
                                 var d = new Discord.RichEmbed().setColor("#FEF910");
-                                d.setTitle("Clankrieg Runde 5 (Angriffe | Sterne | Prozent)");
+                                d.setTitle("Clankrieg Runde 5 (Angriffe | Sterne)");
             
                                 for (var index = 0;index < 4;index ++ ) {
                                     var matchData = rawdata["" + index];
@@ -443,9 +439,8 @@ let cwl = function(message, tag) {
                                         
                                         var attacks = stats["attacks"] + match["attacks"];
                                         var stars = stats["stars"] + match["stars"];
-                                        var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                                         var round = stats["round"] + 1;
-                                        details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                        details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                                         clanMap[clanTag] = details;
                                     }
                                     d.addField(result[0],result[1]);
@@ -459,7 +454,7 @@ let cwl = function(message, tag) {
 
                                 let callbackRound6  = function(rawdata) {
                                     var d = new Discord.RichEmbed().setColor("#FEF910");
-                                    d.setTitle("Clankrieg Runde 6 (Angriffe | Sterne | Prozent)");
+                                    d.setTitle("Clankrieg Runde 6 (Angriffe | Sterne)");
                 
                                     for (var index = 0;index < 4;index ++ ) {
                                         var matchData = rawdata["" + index];
@@ -472,9 +467,8 @@ let cwl = function(message, tag) {
                                             
                                             var attacks = stats["attacks"] + match["attacks"];
                                             var stars = stats["stars"] + match["stars"];
-                                            var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                                             var round = stats["round"] + 1;
-                                            details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                            details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                                             clanMap[clanTag] = details;
                                         }
 
@@ -489,7 +483,7 @@ let cwl = function(message, tag) {
 
                                     let callbackRound7  = function(rawdata) {
                                         var d = new Discord.RichEmbed().setColor("#FEF910");
-                                        d.setTitle("Clankrieg Runde 7 (Angriffe | Sterne | Prozent)");
+                                        d.setTitle("Clankrieg Runde 7 (Angriffe | Sterne)");
                     
                                         for (var index = 0;index < 4;index ++ ) {
                                             var matchData = rawdata["" + index];
@@ -502,9 +496,8 @@ let cwl = function(message, tag) {
                                                 
                                                 var attacks = stats["attacks"] + match["attacks"];
                                                 var stars = stats["stars"] + match["stars"];
-                                                var destructionPercentage = stats["destructionPercentage"] + match["destructionPercentage"];
                                                 var round = stats["round"] + 1;
-                                                details["stats"] = {"attacks":attacks, "stars":stars,"destructionPercentage":destructionPercentage,"round":round};
+                                                details["stats"] = {"attacks":attacks, "stars":stars,"round":round};
                                                 clanMap[clanTag] = details;
                                             }
 
@@ -542,8 +535,8 @@ function getMatchString(matchData) {
     var matchDataClan = matchData["clan"];
     var matchDataOpponent = matchData["opponent"];
     var head = `${matchDataClan["name"]} [${matchDataClan["clanLevel"]}] vs ${matchDataOpponent["name"]} [${matchDataOpponent["clanLevel"]}]`;
-    var subtitle = `${matchDataClan["name"]}: ${matchDataClan["attacks"]} | ${matchDataClan["stars"]} | ${matchDataClan["destructionPercentage"].toFixed(2)}\n` + 
-                    `${matchDataOpponent["name"]}: ${matchDataOpponent["attacks"]} | ${matchDataOpponent["stars"]} | ${matchDataOpponent["destructionPercentage"].toFixed(2)}`;
+    var subtitle = `${matchDataClan["name"]}: ${matchDataClan["attacks"]} | ${matchDataClan["stars"]}\n` + 
+                    `${matchDataOpponent["name"]}: ${matchDataOpponent["attacks"]} | ${matchDataOpponent["stars"]}`;
     return [head,subtitle];                
 }
 
@@ -554,11 +547,17 @@ function getCWLSummary(message, clandetails) {
 
     for (let k of Object.keys(clandetails)) {
         let clan = clandetails[k];
+        let playersCount = clan.members.length;
+
+        var sum = 0;
+
+        for (let pl of clan.members) {
+            sum = sum + pl.townHallLevel;
+        }
+
         var header = `${clan["name"]} - ${clan["tag"]}`;
         let stats = clan["stats"];
-
-        let avg = stats["destructionPercentage"] /  (stats["round"]-1);
-        var content = `Angriffe: ${stats["attacks"]}\nSterne: ${stats["stars"]}\nDurschnittlich Zerstört: ${avg.toFixed(2)}`;
+        var content = `Angriffe: ${stats["attacks"]}\nSterne: ${stats["stars"]}\nTeam: ${playersCount}\nAvg RH: ${(sum * 1.0 / playersCount).toFixed(2)}`;
         d.addField(header,content);
     }
     message.channel.send(d);
