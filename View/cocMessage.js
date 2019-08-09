@@ -250,6 +250,32 @@ function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
 }
 
+let checkToken = function(message, token) {
+    setToken(token);
+    const callback = function(rawdata, error) {
+        if (rawdata == null) {
+            if (error != null && error != undefined) {
+
+                if (error == "Clan nicht gefunden!") {
+                    message.channel.send("Clash Token aktualisiert.");
+                    return;
+                }
+
+                sendErrorLog(message,error);
+                return;
+            } else {
+                message.channel.send("Clash Token aktualisiert.");
+            }
+        } else {
+            message.channel.send("Clash Token aktualisiert.");
+        }
+    };
+
+    coc.setToken(ClashToken.getInstance().token());
+    // dummy request for receiving error
+    coc.getClan("Clash", callback);
+}
+
 let cwl = function(message, tag) {
     const callback = function(rawdata, error) {
 
@@ -505,12 +531,7 @@ let cwl = function(message, tag) {
                                         }
                                         
                                         message.channel.send(d);
-
-                                        
-                
-                                        finalCallback = function() {
-                                            getCWLSummary(message,clanMap);
-                                        };
+                                        getCWLSummary(message,clanMap);
                                     };
                                     prepareRound(roundList[6].warTags,callbackRound7,finalCallback);
                                 };
@@ -613,9 +634,11 @@ function prepareRound(roundList, callback, finalCallback) {
     let match2Tag = roundList[1];
     let match3Tag = roundList[2];
     let match4Tag = roundList[3];
+    let match5Tag = roundList[4];
+    let match6Tag = roundList[5];
     var matchups = {};
 
-    if (match1Tag == "#0" || match2Tag == "#0" || match3Tag == "#0" || match4Tag == "#0" ) {
+    if (match1Tag == "#0" || match2Tag == "#0" || match3Tag == "#0" || match4Tag == "#0" || match5Tag == "#0" || match6Tag == "#0") {
         //skip
         finalCallback();
         return;
@@ -632,7 +655,19 @@ function prepareRound(roundList, callback, finalCallback) {
 
                 const call4 = function(r4,k4, e4) {
                     matchups[k4] = r4;
-                    callback(matchups);
+
+                    const call5 = function(r5,k5, e5) {
+                        matchups[k5] = r5;
+        
+                        const call6 = function(r6,k6, e6) {
+                            matchups[k6] = r6;
+                            callback(matchups);
+                        };
+                        coc.setToken(ClashToken.getInstance().token());
+                        coc.getCWLMatch(match4Tag,"5", call6);
+                    };
+                    coc.setToken(ClashToken.getInstance().token());
+                    coc.getCWLMatch(match4Tag,"4", call5);
                 };
                 coc.setToken(ClashToken.getInstance().token());
                 coc.getCWLMatch(match4Tag,"3", call4);
@@ -779,5 +814,6 @@ module.exports = {
     getCWL: cwl,
     getCWLM: cwlm,
     findClan: clanfinder,
+    checkToken: checkToken,
     findMember: memberfinder
 };

@@ -735,8 +735,8 @@ function directMessage(message) {
     // commands
     if (strH.hasCmd(command, `${PREFIX}coc`)) {
         let token = messageArray[1];
-        cocMsg.setToken(token);
-        message.channel.send("Clash Token aktualisiert.");
+        cocMsg.checkToken(message, token);
+        //message.channel.send("Clash Token aktualisiert.");
         return;
     }
 
