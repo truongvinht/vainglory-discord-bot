@@ -84,6 +84,18 @@ const cocHelpMessage = (PREFIX, author) => {
     .addField(`${PREFIX}clasher CODE / ${PREFIX}mitglied CODE / ${PREFIX}claner CODE`, `Details zum Spieler`);
     return embed;
 }
+
+const autoChessHelpMessage = (PREFIX, author) => {
+    let embed = new Discord.RichEmbed()
+    .setColor(`${colorMng.getColor(1)}`)
+    .setAuthor(`${author}`)
+    .setDescription(`${i18n.get('FollowingCommands')}`)
+    .addField(`${PREFIX}acrace NAME`, `${i18n.get('RandomizerInfo')} [RACE]`)
+    .addField(`${PREFIX}acclass NAME`, `${i18n.get('RandomizerInfo')} [CLASS]`)
+    .addField(`${PREFIX}acany/${PREFIX}? NAME`, `${i18n.get('RandomizerInfo')} [RACE/CLASS]`);
+    return embed;
+}
+
 const externalPlayerLink = (player) => {
     return ""  +constant.playerLink() + player;
 }
@@ -98,6 +110,7 @@ module.exports = {
     getChannelHelp: helpMessage,
     getDmHelp: directHelpMessage,
     getCocHelp: cocHelpMessage,
+    getAutoChessHelp: autoChessHelpMessage,
     getExternalLinkForPlayer: externalPlayerLink,
     getExternalLinkForHero: externalHeroLink
 };

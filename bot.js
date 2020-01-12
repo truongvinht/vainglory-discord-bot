@@ -20,6 +20,7 @@ const vgMsg = require('./View/vgMessage');
 const cocMsg = require('./View/cocMessage');
 const eloMsg = require('./View/eloMessage');
 const adminMsg = require('./View/adminMessage');
+const autoMsg = require('./View/autoChessMessage');
 
 const vgBase = require('./models/vainglory-base.js');
 
@@ -287,6 +288,16 @@ bot.on("message", async message => {
         return;
     }
 
+    // commands with 0 or more parameters
+    if (strH.hasCmds(command, [`${PREFIX}achelp`,`${PREFIX}autohelp`,`${PREFIX}autochesshelp`])) {
+        let embed = helpMsg.getAutoChessHelp(PREFIX, message.author.username);
+
+        message.channel.send(embed).then(message => {
+        });
+
+        return;
+    }
+
     // // single item code
     // if (strH.hasCmds(command, [`${PREFIX}vgitem`])) {
 
@@ -468,7 +479,7 @@ bot.on("message", async message => {
         }
 
         // randomize hero selection
-        if (strH.hasCmds(command, [`${PREFIX}random`, `${PREFIX}?`])) {
+        if (strH.hasCmds(command, [`${PREFIX}random`])) {
             let players = messageArray.slice(1,messageArray.length);
             cntMsg.getRandomizer(message,players);
             return;
@@ -612,6 +623,27 @@ bot.on("message", async message => {
         if (strH.hasCmds(command, [`${PREFIX}cwlm`])) { 
             var clanTag = messageArray[1];
             cocMsg.getCWLM(message,clanTag);
+            return;
+        }
+
+        // randomize race selection
+        if (strH.hasCmds(command, [`${PREFIX}acrace`])) {
+            let players = messageArray.slice(1,messageArray.length);
+            autoMsg.getRandomRace(message,players);
+            return;
+        }
+
+        // randomize class selection
+        if (strH.hasCmds(command, [`${PREFIX}acclass`])) {
+            let players = messageArray.slice(1,messageArray.length);
+            autoMsg.getRandomClass(message,players);
+            return;
+        }
+
+        // randomize class selection
+        if (strH.hasCmds(command, [`${PREFIX}?`, `${PREFIX}acany`])) {
+            let players = messageArray.slice(1,messageArray.length);
+            autoMsg.getRandom(message,players);
             return;
         }
     }
